@@ -1,3 +1,13 @@
+/*
+ * Solution for problem E: Both Directions
+ *
+ * If the graph contains an odd cycle, then the answer is -1. This is because we can traverse along
+ * the odd cycle in either direction and accumuluate a negative distance. Repeat indefinitely, then go to n
+ * we then get a cost that is negative infinity.
+ *
+ * If the graph does not contain an odd cycle, then the solution is simply the distance from 1 to n.
+ */
+
 #include <bits/stdc++.h>
 #define maxn 200005
 using namespace std;
