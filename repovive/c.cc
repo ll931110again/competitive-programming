@@ -33,13 +33,14 @@ bool ok() {
         return true;
     }
 
-    // put a[0] - a[i] and a[i + 1] - a[n - 1]
+    // put a[0] - a[i] and a[i + 1] - a[n - 1] in two partitions
     for (int i = 0; i + 1 < n; i++) {
         if (a[i] - a[0] == a[n - 1] - a[i + 1]) {
             return true;
         }
     }
 
+    // Put a[0] - a[i] and delta - a[n - 1] in two partitions
     for (int i = 1; i + 1 < n; i++) {
         int delta = a[n - 1] - (a[i] - a[0]);
         if (delta > a[i]) {
