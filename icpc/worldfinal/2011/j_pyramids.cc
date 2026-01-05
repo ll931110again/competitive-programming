@@ -32,6 +32,7 @@ using namespace std;
 
 int n;
 bool is_valid[maxn][maxk];
+int choice[maxn][maxk];
 int max_height[maxn];
 
 vector< pair<int,int> > pyramids;
@@ -106,9 +107,6 @@ int main() {
   }
 
   sort(pyramids.begin(), pyramids.end());
-  for (auto x : pyramids) {
-    cerr << x.first << ' ' << x.second << endl;
-  }
 
   for (int i = 1; i < maxn; i++) {
     max_height[i] = max_height[i - 1];
@@ -123,16 +121,18 @@ int main() {
 
   memset(is_valid, false, sizeof is_valid);
   is_valid[0][0] = true;
+  choice[0][0] = -1;
   for (int i = 1; i < maxn; i++) {
     for (int j = 1; j < maxk; j++) {
-      for (int t = max_height[i]; t >= 0; t--) {
+      for (int t = 0; t <= max_height[i]; t++) {
         int h = pyramids[t].first;
         if (i < h) {
-          continue;
+          break;
         }
 
-        if (is_valid[i - h][j - 1]) {
+        if (is_valid[i - h][j - 1] && t > choice[i - h][j - 1]) {
           is_valid[i][j] = true;
+          choice[i][j] = t;
           break;
         }
       }
