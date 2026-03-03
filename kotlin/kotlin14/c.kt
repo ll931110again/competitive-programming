@@ -1,3 +1,24 @@
+/* Solution for problem C: Minesweeper.
+ *
+ *
+	Note there's a special case of k = 1 with the following pattern that needs to
+	be handled separately:
+		*
+		.
+ 	The below section handles only the normal cases.
+
+ 	The constraint each free cell must be adjacent to at most one mine shows that
+ 	we can decompose the grid into disjoint blocks of mine and its adjacent free cells.
+ 	We can quickly see that there are only two patterns possible:
+		.*.         and.    *.
+		...                 ..
+	where the later can only appear at most twice (in the left and right corner).
+
+	The first pattern contributes 5 free cells each, while the second pattern contributes
+	3 cells each. Hence the only valid k are of the form 5m, 5m + 3, and 5m + 6 where m >= 0.
+
+ */
+
 import kotlin.math.*;
 
 fun next() = readLine()!!
