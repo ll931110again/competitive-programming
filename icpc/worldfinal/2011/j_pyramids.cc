@@ -2,30 +2,7 @@
  * Solution for problem J: Pyramids.
  */
 
-#ifdef ONLINE_JUDGE
-  #include <bits/stdc++.h>
-#endif
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <utility>
-#include <unordered_set>
-#include <vector>
+#include <bits/stdc++.h>
 #define maxn 1000005
 #define maxk 7
 using namespace std;
