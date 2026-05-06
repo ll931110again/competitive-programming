@@ -1,4 +1,3 @@
-#include <cstdio>
 #include <iostream>
 #include <vector>
 #define MAXK 1000005
@@ -35,7 +34,7 @@ void solveCase(int it) {
     if (!isTyped)
       result += input.size();
   }
-  printf("Case #%d: %d\n", it, result);
+  cout << "Case #" << it << ": " << result << '\n';
 }
 
 int main() {

@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <deque>
@@ -50,10 +49,10 @@ void DFS(int u, int pre) {
 }
 
 int main() {
-  scanf("%d", &n);
+  cin >> n;
   for (int i = 1; i < n; i++) {
     int u, v;
-    scanf("%d %d", &u, &v);
+    cin >> u >> v;
     adj[u].push_back(v);
     adj[v].push_back(u);
   }
@@ -61,7 +60,7 @@ int main() {
   for (int i = 1; i <= n - 2; i++)
     if (found[i])
       store.push_back(i);
-  printf("%d\n", store.size());
+  cout << store.size() << '\n';
   for (int i = 0; i < store.size(); i++)
-    printf("%d %d\n", store[i], n - 1 - store[i]);
+    cout << store[i] << ' ' << n - 1 - store[i] << '\n';
 }

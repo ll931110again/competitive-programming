@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -26,9 +25,9 @@ int n;
 int main() {
   //    freopen("diff.in","r",stdin);
   //    freopen("diff.ou","w",stdout);
-  scanf("%d", &n);
+  cin >> n;
   for (int i = 1; i <= n; i++)
-    scanf("%d", &a[i]);
+    cin >> a[i];
   stack<int> s;
   f1[0] = 0;
   for (int i = 1; i <= n; i++) {

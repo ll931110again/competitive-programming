@@ -13,7 +13,7 @@ void solveCase(int it) {
   int hypen = input.find("-");
   int a = atoi(input.substr(0, hypen).c_str());
   int b = atoi(input.substr(hypen + 1, input.size()).c_str());
-  printf("Case #%d: %d %d\n", it, sfree[a][b], sful[b][b]);
+  cout << "Case #" << it << ": " << sfree[a][b] << ' ' << sful[b][b] << '\n';
 }
 
 int main() {

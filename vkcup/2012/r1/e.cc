@@ -81,10 +81,10 @@ int main() {
       prod *= 10;
     }
   }
-  scanf("%d", &T);
+  cin >> T;
   while (T--) {
     int n;
-    scanf("%d", &n);
+    cin >> n;
     cout << solve(n) << endl;
   }
 }

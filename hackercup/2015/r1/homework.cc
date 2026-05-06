@@ -31,6 +31,6 @@ int main() {
     for (int i = A; i <= B; i++)
       if (primacity[i] == K)
         result++;
-    printf("Case #%d: %d\n", it, result);
+    cout << "Case #" << it << ": " << result << '\n';
   }
 }

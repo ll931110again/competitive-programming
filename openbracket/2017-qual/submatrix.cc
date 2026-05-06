@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -26,7 +25,7 @@ vector<long long> sum_chain;
 int m, n;
 
 int main() {
-  scanf("%d %d", &m, &n);
+  cin >> m >> n;
   a.resize(m);
   breakpoint.resize(m);
   pos.resize(m);
@@ -37,7 +36,7 @@ int main() {
     pos[i].resize(n);
 
     for (int j = 0; j < n; j++) {
-      scanf("%d", &a[i][j]);
+      cin >> a[i][j];
     }
   }
 
@@ -111,6 +110,6 @@ int main() {
     }
   }
 
-  printf("%lld\n", ret);
+  cout << ret << '\n';
   return 0;
 }

@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <cstdio>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -57,7 +56,7 @@ int main() {
 
   cin >> T;
   for (int it = 1; it <= T; it++) {
-    printf("Case #%d: %lld\n", it, solve());
+    cout << "Case #" << it << ": " << solve() << '\n';
   }
   return 0;
 }

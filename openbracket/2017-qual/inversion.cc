@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -52,9 +51,9 @@ int query(int i, int low, int high, int u, int v) {
 }
 
 int main() {
-  scanf("%d %d", &n, &m);
+  cin >> n >> m;
   for (int i = 1; i <= n; i++) {
-    scanf("%d", &a[i].first);
+    cin >> a[i].first;
     a[i].second = i;
 
     if (i <= m) {
@@ -62,7 +61,7 @@ int main() {
     }
   }
   if (m == 1) {
-    printf("0\n");
+    cout << "0\n";
     return 0;
   }
 
@@ -120,6 +119,6 @@ int main() {
     inv_count += (nbig[i] - nsmall[i - m]);
     ret += inv_count;
   }
-  printf("%lld\n", ret);
+  cout << ret << '\n';
   return 0;
 }

@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -25,13 +24,13 @@ int n, m, x, y;
 pair<int, int> a[maxn], b[maxn];
 
 int main() {
-  scanf("%d %d %d %d", &n, &m, &x, &y);
+  cin >> n >> m >> x >> y;
   for (int i = 1; i <= n; i++) {
-    scanf("%d", &a[i].first);
+    cin >> a[i].first;
     a[i].second = i;
   }
   for (int i = 1; i <= m; i++) {
-    scanf("%d", &b[i].first);
+    cin >> b[i].first;
     b[i].second = i;
   }
   sort(a + 1, a + n + 1);
@@ -52,7 +51,7 @@ int main() {
       fa++;
   }
 
-  printf("%d\n", (int)ret.size());
+  cout << (int)ret.size() << '\n';
   for (int i = 0; i < ret.size(); i++)
-    printf("%d %d\n", ret[i].first, ret[i].second);
+    cout << ret[i].first << ' ' << ret[i].second << '\n';
 }

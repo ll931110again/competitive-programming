@@ -69,7 +69,7 @@ int main() {
   c.push_back(1);
   for (int i = 0; i < (m - 1) / 2; i++) {
     int x;
-    scanf("%d", &x);
+    cin >> x;
     c.push_back(x);
   }
   c.push_back(36);
@@ -92,6 +92,6 @@ int main() {
     ret /= 36;
   }
   for (int i = fin.size() - 1; i >= 0; i--)
-    printf("%c", fin[i]);
-  printf("\n");
+    cout << fin[i];
+  cout << '\n';
 }

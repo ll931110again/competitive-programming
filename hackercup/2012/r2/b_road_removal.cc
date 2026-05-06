@@ -62,11 +62,11 @@ void checkLink(int u, int v) {
 int main() {
   freopen("road.in.2", "r", stdin);
   freopen("road.out.2", "w", stdout);
-  scanf("%d", &T);
+  cin >> T;
   for (int it = 1; it <= T; it++) {
-    scanf("%d %d %d", &n, &m, &k);
+    cin >> n >> m >> k;
     for (int i = 0; i < m; i++)
-      scanf("%d %d", &ma[i], &mb[i]);
+      cin >> ma[i] >> mb[i];
     for (int i = 0; i < n; i++)
       pre[i] = i, rank[i] = 0;
     for (int i = 0; i < n; i++)
@@ -78,6 +78,6 @@ int main() {
     for (int i = 0; i < m; i++)
       if (ma[i] < k || mb[i] < k)
         checkLink(ma[i], mb[i]);
-    printf("Case #%d: %d\n", it, ret);
+    cout << "Case #" << it << ": " << ret << '\n';
   }
 }

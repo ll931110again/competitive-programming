@@ -69,18 +69,18 @@ void BFS() {
 
   for (int i = 1; i <= n; i++)
     if (back[i] && ford[i])
-      printf("1\n");
+      cout << "1\n";
     else
-      printf("0\n");
+      cout << "0\n";
 }
 
 int main() {
-  scanf("%d %d", &n, &m);
+  cin >> n >> m;
   for (int i = 1; i <= n; i++)
-    scanf("%d", &init[i]);
+    cin >> init[i];
   for (int i = 0; i < m; i++) {
     int u, v;
-    scanf("%d %d", &u, &v);
+    cin >> u >> v;
     adj[u].push_back(v);
     rev[v].push_back(u);
   }

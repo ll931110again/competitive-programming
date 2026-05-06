@@ -1,4 +1,3 @@
-#include <cstdio>
 #include <cstdlib>
 #include <iostream>
 #include <vector>
@@ -29,7 +28,7 @@ vector<int> solve(int n) {
 }
 
 int main() {
-  scanf("%d", &T);
+  cin >> T;
   while (T--) {
     cin >> n;
     auto ans = solve(n);

@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <iostream>
 #include <unordered_set>
@@ -57,33 +56,33 @@ long long query(int a, int b, long long treeHeight) {
 }
 
 void solve() {
-  scanf("%d", &Q);
+  cin >> Q;
   Range lhs = {.minValue = 1, .maxValue = (long long)1e18};
 
   while (Q--) {
     int eventType, a, b, n;
-    scanf("%d %d %d", &eventType, &a, &b);
+    cin >> eventType >> a >> b;
     if (eventType == 1) {
-      scanf("%d", &n);
+      cin >> n;
       bool ok;
       Range rhs = getRange(a, b, n);
       lhs = intersect(lhs, rhs, &ok);
-      printf("%d ", ok);
+      cout << ok << ' ';
     } else {
       long long minDates = query(a, b, lhs.minValue);
       long long maxDates = query(a, b, lhs.maxValue);
       if (minDates != maxDates) {
-        printf("-1 ");
+        cout << "-1 ";
       } else {
-        printf("%lld ", minDates);
+        cout << minDates << ' ';
       }
     }
   }
-  printf("\n");
+  cout << '\n';
 }
 
 int main() {
-  scanf("%d", &T);
+  cin >> T;
   while (T--) {
     solve();
   }

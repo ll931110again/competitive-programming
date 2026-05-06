@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -82,9 +81,9 @@ void maxFlow() {
 }
 
 int main() {
-  scanf("%d %d", &n, &k);
+  cin >> n >> k;
   for (int i = 0; i < n; i++) {
-    scanf("%d %d %d", &a[i], &b[i], &c[i]);
+    cin >> a[i] >> b[i] >> c[i];
     b[i] += a[i];
   }
   vector<pair<int, int>> v;
@@ -112,8 +111,8 @@ int main() {
   maxFlow();
   for (int i = 0; i < n; i++)
     if (flow[taskIdx[i]] > 0)
-      printf("1 ");
+      cout << "1 ";
     else
-      printf("0 ");
-  printf("\n");
+      cout << "0 ";
+  cout << '\n';
 }

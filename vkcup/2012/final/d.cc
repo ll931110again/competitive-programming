@@ -27,9 +27,9 @@ void calcR() {
 }
 
 int main() {
-  scanf("%d", &n);
+  cin >> n;
   for (int i = 1; i <= n; i++)
-    scanf("%d", &h[i]);
+    cin >> h[i];
   calcL();
   calcR();
   for (int i = 1; i <= n; i++) {
@@ -42,10 +42,10 @@ int main() {
     d2[i] += d2[i - 1];
     sum[i] = sum[i - 1] + d2[i];
   }
-  scanf("%d", &Q);
+  cin >> Q;
   while (Q--) {
     int x;
-    scanf("%d", &x);
-    printf("%.18lf\n", 1.0 * sum[x] / (n - x + 1));
+    cin >> x;
+    cout << fixed << setprecision(18) << 1.0 * sum[x] / (n - x + 1) << '\n';
   }
 }

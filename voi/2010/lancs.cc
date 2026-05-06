@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -21,11 +20,11 @@ int a[1010], b[1010], f[1010][1010];
 
 int main() {
   int n, m;
-  scanf("%d %d", &n, &m);
+  cin >> n >> m;
   for (int i = 1; i <= n; i++)
-    scanf("%d", &a[i]);
+    cin >> a[i];
   for (int i = 1; i <= m; i++)
-    scanf("%d", &b[i]);
+    cin >> b[i];
   memset(f, 0, sizeof(f));
   for (int i = 1; i <= n; i++)
     f[i][1] = (a[i] == b[1]) ? 1 : f[i - 1][1];
@@ -37,5 +36,5 @@ int main() {
       if (a[i] == b[j])
         f[i][j] = max(f[i][j], f[i - 2][j - 2] + 1);
     };
-  printf("%d\n", f[n][m]);
+  cout << f[n][m] << '\n';
 };

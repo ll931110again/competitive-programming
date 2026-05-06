@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -48,16 +47,16 @@ void modify(int pos, int delta) {
 int main() {
   // freopen("d.in","r",stdin);
 
-  scanf("%d %d", &n, &Q);
+  cin >> n >> Q;
   block = (int)floor(sqrt(n));
   if (!block)
     block = 1;
   for (int i = 0; i < n; i++)
-    scanf("%d", &a[i]);
+    cin >> a[i];
 
   for (int i = 0; i < Q; i++) {
     int u, v;
-    scanf("%d %d", &u, &v);
+    cin >> u >> v;
     u--;
     v--;
     bucket[u / block].push_back(query(u, v, i));
@@ -88,5 +87,5 @@ int main() {
     }
 
   for (int i = 0; i < Q; i++)
-    printf("%I64d\n", ret[i]);
+    cout << ret[i] << '\n';
 }

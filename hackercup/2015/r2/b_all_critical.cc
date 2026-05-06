@@ -3,8 +3,8 @@
 #endif
 
 #include <algorithm>
-#include <cstdio>
 #include <cstring>
+#include <iomanip>
 #include <iostream>
 #include <map>
 #include <numeric>
@@ -65,7 +65,8 @@ int main() {
   cin >> T;
   for (int it = 1; it <= T; it++) {
     cin >> p;
-    printf("Case #%d: %.9lf\n", it, solve(p));
+    cout << fixed << setprecision(9) << "Case #" << it << ": " << solve(p)
+         << '\n';
   }
 
   return 0;

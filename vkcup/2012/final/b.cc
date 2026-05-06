@@ -21,7 +21,7 @@ int main() {
   for (int i = n - 1; i >= 0; i--)
     for (int j = 0; j < 26; j++)
       nxt[i][j] = (s[i] == j + 'a') ? i : nxt[i + 1][j];
-  scanf("%d", &Q);
+  cin >> Q;
   for (int it = 0; it < Q; it++) {
     string query;
     cin >> query;
@@ -50,5 +50,5 @@ int main() {
     }
   }
   for (int i = 0; i < Q; i++)
-    printf("%d\n", counter[maskValue[i]]);
+    cout << counter[maskValue[i]] << '\n';
 }

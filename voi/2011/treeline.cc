@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -58,9 +57,9 @@ void divide(int x) {
 int main() {
   //  freopen("TREELINE.INP","r",stdin);
   //  freopen("TREELINE.OUT","w",stdout);
-  scanf("%d %d", &n, &h);
+  cin >> n >> h;
   for (int i = 0; i < n; i++)
-    scanf("%d", &a[i]);
+    cin >> a[i];
   int way = n + 1, minh = a[n - 1];
   for (int i = n - 2; i >= 0; i--)
     if (a[i] > minh) {
@@ -68,7 +67,7 @@ int main() {
       break;
     } else
       minh = a[i];
-  printf("%d\n", way);
+  cout << way << '\n';
 
   n++;
   for (int i = n + 2; i <= 2 * n; i++)

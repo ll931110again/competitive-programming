@@ -46,10 +46,10 @@ void DFS(int u, int pre) {
 }
 
 int main() {
-  scanf("%d %d", &n, &k);
+  cin >> n >> k;
   for (int i = 1; i < n; i++) {
     int u, v;
-    scanf("%d %d", &u, &v);
+    cin >> u >> v;
     adj[u].push_back(v);
     adj[v].push_back(u);
   }

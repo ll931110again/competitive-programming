@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -47,5 +46,5 @@ int main() {
   int ret = 0;
   for (int i = 0; i < a.size(); i++)
     ret = (ret + rec(i, b.size() - 1, 0)) % mod;
-  printf("%d\n", (ret + mod) % mod);
+  cout << (ret + mod) % mod << '\n';
 }

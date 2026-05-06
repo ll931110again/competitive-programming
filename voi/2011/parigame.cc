@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -31,14 +30,14 @@ bool even(int x1, int y1, int x2, int y2) {
 int main() {
   //  freopen("PARIGAME.INP","r",stdin);
   //  freopen("PARIGAME.OUT","w",stdout);
-  scanf("%d", &T);
+  cin >> T;
   while (T--) {
-    scanf("%d", &n);
+    cin >> n;
     memset(a, 0, sizeof(a));
     for (int i = 1; i <= n; i++)
       for (int j = 1; j <= n; j++) {
         int x;
-        scanf("%d", &x);
+        cin >> x;
         a[i][j] = (x % 2);
       }
     for (int i = 2; i <= n; i++)
@@ -57,8 +56,8 @@ int main() {
           ret[i][j] = true;
       }
     if (ret[n][n])
-      printf("YES\n");
+      cout << "YES\n";
     else
-      printf("NO\n");
+      cout << "NO\n";
   }
 }

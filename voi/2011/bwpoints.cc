@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -23,15 +22,15 @@ vector<pair<int, int>> v;
 int main() {
   //  freopen("BWPOINTS.INP","r",stdin);
   //  freopen("BWPOINTS.OUT","w",stdout);
-  scanf("%d", &n);
+  cin >> n;
   for (int i = 0; i < n; i++) {
     int x;
-    scanf("%d", &x);
+    cin >> x;
     v.push_back(make_pair(x, 0));
   }
   for (int i = 0; i < n; i++) {
     int x;
-    scanf("%d", &x);
+    cin >> x;
     v.push_back(make_pair(x, 1));
   }
   sort(v.begin(), v.end());
@@ -43,5 +42,5 @@ int main() {
       ret++;
       col = -1;
     }
-  printf("%d\n", ret);
+  cout << ret << '\n';
 }

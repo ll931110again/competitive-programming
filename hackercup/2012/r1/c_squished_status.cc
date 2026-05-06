@@ -9,6 +9,7 @@
 #include <fstream>
 #include <functional>
 #include <iomanip>
+#include <limits>
 #include <iostream>
 #include <map>
 #include <queue>
@@ -55,16 +56,18 @@ long long rec(int pos) {
 int main() {
   freopen("encode.in.1", "r", stdin);
   freopen("encode.out.1", "w", stdout);
-  scanf("%d\n", &T);
+  cin >> T;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
   for (int it = 1; it <= T; it++) {
-    scanf("%d\n", &m);
-    gets(s);
+    cin >> m;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.getline(s, 1005);
     encode = "";
     for (int i = 0; i < strlen(s); i++)
       if ('0' <= s[i] && s[i] <= '9')
         encode += s[i];
     memset(f, -1, sizeof(f));
-    fprintf(stderr, "%d\n", m);
-    printf("Case #%d: %lld\n", it, rec(encode.size() - 1));
+    cerr << m << '\n';
+    cout << "Case #" << it << ": " << rec(encode.size() - 1) << '\n';
   }
 }

@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -94,7 +93,7 @@ void attempt(int sx, int sy) {
 int main() {
   // freopen("b.in","r",stdin);
 
-  scanf("%d %d", &m, &n);
+  cin >> m >> n;
   for (int i = 0; i < m; i++)
     cin >> s[i];
 
@@ -106,7 +105,7 @@ int main() {
       if (ans[i][j] < 0 && s[i][j] == '.') {
         attempt(i, j);
         if (!flag) {
-          printf("-1\n");
+          cout << "-1\n";
           return 0;
         }
       }

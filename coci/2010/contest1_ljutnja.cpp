@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -25,9 +24,9 @@ int a[100010];
 int main() {
   //    freopen("lj.in","r",stdin);
   //    freopen("lj.ou","w",stdout);
-  scanf("%d %d", &m, &n);
+  cin >> m >> n;
   for (int i = 1; i <= n; i++)
-    scanf("%d", &a[i]);
+    cin >> a[i];
   sort(a + 1, a + n + 1);
   for (int i = n; i > 0; i--) {
     int delta = a[i] - a[i - 1], cnt = n - i + 1;

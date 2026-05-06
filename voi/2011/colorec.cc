@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -24,11 +23,11 @@ int n;
 int main() {
   //  freopen("COLOREC.INP","r",stdin);
   //  freopen("COLOREC.OUT","w",stdout);
-  scanf("%d", &n);
+  cin >> n;
   memset(a, 0, sizeof(a));
   for (int i = 0; i < n; i++) {
     int x, y, c;
-    scanf("%d %d %d", &x, &y, &c);
+    cin >> x >> y >> c;
     x += 200;
     y += 200;
     a[x][y] = c;

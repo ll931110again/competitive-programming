@@ -10,14 +10,14 @@ vector<int> adj[maxn];
 int deg[maxn];
 
 void solve(int it) {
-  scanf("%d", &n);
+  cin >> n;
   for (int i = 1; i <= n; i++) {
     adj[i].clear();
   }
 
   memset(deg, 0, sizeof deg);
   for (int i = 1; i <= n; i++) {
-    scanf("%d", &par[i]);
+    cin >> par[i];
     if (par[i]) {
       adj[par[i]].push_back(i);
       deg[par[i]]++;
@@ -56,11 +56,11 @@ void solve(int it) {
   for (int i = 2; i < maxk; i++) {
     ret = min(ret, dp[1][i]);
   }
-  printf("Case #%d: %d\n", it, ret);
+  cout << "Case #" << it << ": " << ret << '\n';
 }
 
 int main() {
-  scanf("%d", &T);
+  cin >> T;
   for (int it = 1; it <= T; it++) {
     solve(it);
   }

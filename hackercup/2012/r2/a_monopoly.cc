@@ -53,10 +53,10 @@ void merge(int mu, int mv) {
 int main() {
   freopen("monopoly.in.2", "r", stdin);
   freopen("monopoly.out.2", "w", stdout);
-  scanf("%d", &T);
+  cin >> T;
   for (int it = 1; it <= T; it++) {
-    fprintf(stderr, "%d\n", it);
-    scanf("%d %d", &n, &d);
+    cerr << it << '\n';
+    cin >> n >> d;
     for (int i = 1; i <= n; i++) {
       bucket[i].clear();
       bucket[i].push_back(i);
@@ -65,7 +65,7 @@ int main() {
     }
     for (int i = 1; i < n; i++) {
       int u, v;
-      scanf("%d %d", &u, &v);
+      cin >> u >> v;
       int mu = pos[u], mv = pos[v];
       int smu = order[bucket[mu][0]].first, smv = order[bucket[mv][0]].first;
       for (int j = 0; j < bucket[mu].size(); j++) {
@@ -96,6 +96,6 @@ int main() {
     for (int i = 1; i <= n; i++)
       if (order[i].second <= d)
         ret = min(ret, order[i].first);
-    printf("Case #%d: %d\n", it, ret);
+    cout << "Case #" << it << ": " << ret << '\n';
   }
 }

@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <iostream>
 #include <unordered_set>
@@ -12,9 +11,9 @@ int T, n, deleteCost, insertCost;
 int a[maxn];
 
 long long solve() {
-  scanf("%d %d %d", &n, &deleteCost, &insertCost);
+  cin >> n >> deleteCost >> insertCost;
   for (int i = 0; i < n; i++) {
-    scanf("%d", &a[i]);
+    cin >> a[i];
   }
   sort(a, a + n);
 
@@ -32,9 +31,9 @@ long long solve() {
 }
 
 int main() {
-  scanf("%d", &T);
+  cin >> T;
   while (T--) {
-    printf("%lld\n", solve());
+    cout << solve() << '\n';
   }
   return 0;
 }

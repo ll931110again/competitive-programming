@@ -130,7 +130,7 @@ void query(string s) {
 }
 
 int main() {
-  scanf("%d %d", &Q, &n);
+  cin >> Q >> n;
   for (int i = 0; i < n; i++)
     cin >> pattern[i];
   AhoCorasick();

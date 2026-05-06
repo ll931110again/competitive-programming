@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <cstdio>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -34,7 +33,7 @@ int main() {
   cin >> T;
   for (int it = 1; it <= T; it++) {
     cin >> n;
-    printf("Case #%d: %d\n", it, dp[n]);
+    cout << "Case #" << it << ": " << dp[n] << '\n';
   }
   return 0;
 }

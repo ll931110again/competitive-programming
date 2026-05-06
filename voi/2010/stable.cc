@@ -21,9 +21,9 @@ int main() {
   //    freopen("stable.in","r",stdin);
   //    freopen("stable.out","w",stdout);
 
-  scanf("%d%d%d", &n, &m, &s);
+  cin >> n >> m >> s;
   for (int i = 0; i < m; i++) {
-    scanf("%d%d", &x, &y);
+    cin >> x >> y;
     e.push_back(make_pair(x, y));
   };
   sort(e.begin(), e.end());
@@ -58,5 +58,5 @@ int main() {
   for (int i = 1; i <= n; i++)
     if (way[i] >= 2)
       ret++;
-  printf("%d\n", ret);
+  cout << ret << '\n';
 };

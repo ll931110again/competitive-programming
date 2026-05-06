@@ -1,4 +1,3 @@
-#include <cstdio>
 #include <cstdlib>
 #include <iostream>
 #include <vector>
@@ -22,7 +21,7 @@ bool solve() {
 }
 
 int main() {
-  scanf("%d", &T);
+  cin >> T;
   while (T--) {
     if (solve()) {
       cout << "YES";

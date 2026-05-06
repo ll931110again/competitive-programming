@@ -9,6 +9,7 @@
 #include <fstream>
 #include <functional>
 #include <iomanip>
+#include <limits>
 #include <iostream>
 #include <map>
 #include <queue>
@@ -30,9 +31,10 @@ int main() {
   freopen("soup.out.1", "w", stdout);
   for (int i = 0; i < form.size(); i++)
     b[form[i]]++;
-  scanf("%d\n", &T);
+  cin >> T;
+  cin.ignore(numeric_limits<streamsize>::max(), '\n');
   for (int it = 1; it <= T; it++) {
-    gets(s);
+    cin.getline(s, 1002);
     memset(a, 0, sizeof(a));
     for (int i = 0; i < strlen(s); i++)
       a[s[i]]++;
@@ -40,6 +42,6 @@ int main() {
     for (int i = 'A'; i <= 'Z'; i++)
       if (b[i])
         ret = min(ret, a[i] / b[i]);
-    printf("Case #%d: %d\n", it, ret);
+    cout << "Case #" << it << ": " << ret << '\n';
   }
 }

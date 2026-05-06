@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -31,11 +30,11 @@ bool cmp(int x, int y) {
 }
 
 int main() {
-  scanf("%d %d %d", &n, &k, &h);
+  cin >> n >> k >> h;
   for (int i = 0; i < n; i++)
-    scanf("%d", &w[i]);
+    cin >> w[i];
   for (int i = 0; i < n; i++)
-    scanf("%d", &a[i]);
+    cin >> a[i];
 
   for (int i = 0; i < n; i++)
     pos[i] = i;
@@ -62,5 +61,5 @@ int main() {
     }
   }
   for (int i = 1; i <= k; i++)
-    printf("%d ", ans[i] + 1);
+    cout << ans[i] + 1 << ' ';
 }

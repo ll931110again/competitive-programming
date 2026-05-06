@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -33,20 +32,20 @@ int main() {
     }
 
   if (idx != 5) {
-    printf("No\n");
+    cout << "No\n";
     return 0;
   }
 
   if (inp.substr(6) != suffix) {
-    printf("No\n");
+    cout << "No\n";
     return 0;
   }
   for (int i = 0; i < 5; i++) {
     if (inp[i] < 'a' || 'z' < inp[i]) {
-      printf("No\n");
+      cout << "No\n";
       return 0;
     }
   }
-  printf("Yes\n");
+  cout << "Yes\n";
   return 0;
 }

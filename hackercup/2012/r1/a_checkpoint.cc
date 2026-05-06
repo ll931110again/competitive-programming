@@ -43,13 +43,13 @@ int findComb(int x) {
 int main() {
   freopen("checkpoint.in.1", "r", stdin);
   freopen("checkpoint.out.1", "w", stdout);
-  scanf("%d\n", &T);
+  cin >> T;
   for (int it = 1; it <= T; it++) {
-    scanf("%d", &s);
+    cin >> s;
     int ret = 2 * s;
     for (int i = 1; i * i <= s; i++)
       if (s % i == 0)
         ret = min(ret, findComb(i) + findComb(s / i));
-    printf("Case #%d: %d\n", it, ret);
+    cout << "Case #" << it << ": " << ret << '\n';
   }
 }

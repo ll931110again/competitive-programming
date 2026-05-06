@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -34,7 +33,7 @@ long long revert(long long x) {
 int main() {
   // freopen("a.in","r",stdin);
 
-  scanf("%d %d", &L, &R);
+  cin >> L >> R;
   long long ret = max(1LL * L * revert(L), 1LL * R * revert(R));
 
   for (long long sum = 9, start = 1; sum <= 99999999999LL;

@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -33,7 +32,7 @@ int order[1010];
 int main() {
   //    freopen("znan.in","r",stdin);
   //    freopen("znan.ou","w",stdout);
-  scanf("%d %d", &m, &n);
+  cin >> m >> n;
   for (int i = 0; i < m; i++)
     cin >> s[i];
   memset(order, 0, sizeof(order));
@@ -51,9 +50,9 @@ int main() {
       order[a[j].pos] = cnt;
     }
     if (cnt >= n - 1) {
-      printf("%d\n", i);
+      cout << i << '\n';
       return 0;
     }
   }
-  printf("0\n");
+  cout << "0\n";
 }

@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -33,16 +32,16 @@ bool cover(pair<int, int> p1, pair<int, int> p2) {
 int main() {
   // freopen("rijeka.in.2","r",stdin);
 
-  scanf("%d %d", &n, &m);
+  cin >> n >> m;
   for (int i = 0; i < n; i++) {
     int start, finish;
-    scanf("%d %d", &start, &finish);
+    cin >> start >> finish;
     if (start <= finish)
       continue;
     v.push_back(make_pair(start, finish));
   }
   if (v.empty()) {
-    printf("%d\n", m);
+    cout << m << '\n';
     return 0;
   }
 
@@ -66,5 +65,5 @@ int main() {
   long long ret = m;
   for (int i = 0; i < contain.size(); i++)
     ret += 2LL * abs(contain[i].first - contain[i].second);
-  printf("%lld\n", ret);
+  cout << ret << '\n';
 }

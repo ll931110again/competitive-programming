@@ -60,9 +60,9 @@ void mergeSort(int low, int high) {
 int main() {
   freopen("seq.in.1", "r", stdin);
   freopen("seq.out.1", "w", stdout);
-  scanf("%d", &T);
+  cin >> T;
   for (int it = 1; it <= T; it++) {
-    scanf("%d", &n);
+    cin >> n;
     cin >> s;
     for (int i = 0; i < n; i++)
       arr[i] = i;
@@ -73,6 +73,6 @@ int main() {
     long long ret = 1;
     for (int i = 0; i < n; i++)
       ret = (ret * 31 + opt[i] + 1) % mod;
-    printf("Case #%d: %lld\n", it, ret);
+    cout << "Case #" << it << ": " << ret << '\n';
   }
 }

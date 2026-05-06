@@ -1,5 +1,5 @@
 #include <algorithm>
-#include <cstdio>
+#include <iomanip>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -10,9 +10,9 @@ int T, n;
 pair<int, int> ts[maxn];
 
 double solve() {
-  scanf("%d", &n);
+  cin >> n;
   for (int i = 0; i < n; i++) {
-    scanf("%d %d", &ts[i].first, &ts[i].second);
+    cin >> ts[i].first >> ts[i].second;
   }
 
   double lower_bound = 0, upper_bound = 1e9;
@@ -33,7 +33,8 @@ double solve() {
 int main() {
   cin >> T;
   for (int it = 1; it <= T; it++) {
-    printf("Case #%d: %.9lf\n", it, solve());
+    cout << fixed << setprecision(9) << "Case #" << it << ": " << solve()
+         << '\n';
   }
   return 0;
 }

@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -27,9 +26,9 @@ double ret[maxn];
 vector<pair<double, int>> event;
 
 int main() {
-  scanf("%d %d %d %d", &n, &l, &v1, &v2);
+  cin >> n >> l >> v1 >> v2;
   for (int i = 0; i < n; i++)
-    scanf("%d", &pos[i]);
+    cin >> pos[i];
   double limit = 1.0 * l * v2 / (v1 + v2);
   for (int i = 0; i < n; i++) {
     double low = pos[i], high = pos[i] + limit;
@@ -53,5 +52,5 @@ int main() {
     last = event[i].first;
   }
   for (int i = 0; i <= n; i++)
-    printf("%.11lf\n", ret[i] * 0.5 / l);
+    cout << fixed << setprecision(11) << ret[i] * 0.5 / l << '\n';
 }
