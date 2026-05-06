@@ -1,17 +1,16 @@
 #ifdef ONLINE_JUDGE
-  #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
 #include <iostream>
-#include <set>
-#include <stack>
 #include <map>
 #include <queue>
-#include <vector>
-#include <unordered_set>
 #include <set>
+#include <stack>
+#include <unordered_set>
+#include <vector>
 #define maxn 200005
 using namespace std;
 
@@ -29,8 +28,8 @@ int main() {
   for (int i = 0; i < n; i++) {
     cin >> req_time[i];
   }
-  
-  map<int, vector<int> > mp;
+
+  map<int, vector<int>> mp;
   for (int i = 0; i < n; i++) {
     mp[cnt[i]].push_back(req_time[i]);
   }

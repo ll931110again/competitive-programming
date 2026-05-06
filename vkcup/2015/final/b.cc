@@ -1,5 +1,5 @@
 #ifdef ONLINE_JUDGE
-  #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 #include <algorithm>
 #include <bitset>
@@ -30,7 +30,7 @@ int dp[maxn];
 int main() {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
-  
+
   cin >> n;
   for (int i = 0; i < n; i++) {
     cin >> a[i];
@@ -38,14 +38,16 @@ int main() {
   }
 
   int ans = 0;
-  for (int i = 1; i < maxn; i++) if (freq[i]) {
-    dp[i] = max(dp[i], freq[i]);
-    ans = max(ans, dp[i]);
+  for (int i = 1; i < maxn; i++)
+    if (freq[i]) {
+      dp[i] = max(dp[i], freq[i]);
+      ans = max(ans, dp[i]);
 
-    for (int j = i + i; j < maxn; j += i) if (freq[j]) {
-      dp[j] = max(dp[j], dp[i] + freq[j]);
+      for (int j = i + i; j < maxn; j += i)
+        if (freq[j]) {
+          dp[j] = max(dp[j], dp[i] + freq[j]);
+        }
     }
-  }
 
   cout << ans << endl;
   return 0;

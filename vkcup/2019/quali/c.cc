@@ -1,17 +1,16 @@
 #ifdef ONLINE_JUDGE
-  #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
 #include <iostream>
-#include <set>
-#include <stack>
 #include <map>
 #include <queue>
-#include <vector>
-#include <unordered_set>
 #include <set>
+#include <stack>
+#include <unordered_set>
+#include <vector>
 #define maxn 105
 using namespace std;
 
@@ -38,12 +37,13 @@ int main() {
     bool found_solutions = true;
     for (int i = 0; i < n; i++) {
       bool ok = false;
-      for (int j = a[2 * i] + 1; j <= 2 * n; j++) if (!used[j]) {
-        a[2 * i + 1] = j;
-        used[j] = true;
-        ok = true;
-        break;
-      }
+      for (int j = a[2 * i] + 1; j <= 2 * n; j++)
+        if (!used[j]) {
+          a[2 * i + 1] = j;
+          used[j] = true;
+          ok = true;
+          break;
+        }
 
       if (!ok) {
         found_solutions = false;
@@ -57,7 +57,7 @@ int main() {
       for (int i = 0; i < 2 * n; i++) {
         cout << a[i] << ' ';
       }
-      cout << endl;      
+      cout << endl;
     }
   }
 

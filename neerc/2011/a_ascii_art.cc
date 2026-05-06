@@ -4,7 +4,7 @@
  */
 
 #ifdef ONLINE_JUDGE
-  #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 #include <algorithm>
 #include <bitset>
@@ -24,8 +24,8 @@
 #include <sstream>
 #include <stack>
 #include <string>
-#include <utility>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 #define maxn 105
 using namespace std;
@@ -50,7 +50,7 @@ int main() {
     for (int j = 0; j < n; j++) {
       if (s[i][j] == '/' || s[i][j] == '\\') {
         slashes++;
-        parity ^= 1; 
+        parity ^= 1;
       } else if (parity) {
         dots++;
       }

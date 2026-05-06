@@ -1,15 +1,15 @@
 #ifdef ONLINE_JUDGE
-    #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
 #include <iostream>
-#include <set>
-#include <stack>
 #include <map>
 #include <queue>
+#include <set>
+#include <stack>
 #include <vector>
 #define maxn 50005
 using namespace std;
@@ -87,18 +87,18 @@ bool ok() {
 }
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    
-    cin >> T;
-    for (int it = 1; it <= T; it++) {
-      cin >> n;
-      for (int i = 1; i <= n; i++) {
-        cin >> a[i];
-      }
+  ios_base::sync_with_stdio(false);
+  cin.tie(0);
 
-      cout << "Case #" << it << ": " << (ok() ? "yes" : "no") << endl;
+  cin >> T;
+  for (int it = 1; it <= T; it++) {
+    cin >> n;
+    for (int i = 1; i <= n; i++) {
+      cin >> a[i];
     }
 
-    return 0;
+    cout << "Case #" << it << ": " << (ok() ? "yes" : "no") << endl;
+  }
+
+  return 0;
 }

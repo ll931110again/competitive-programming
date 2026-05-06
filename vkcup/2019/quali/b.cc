@@ -1,17 +1,16 @@
 #ifdef ONLINE_JUDGE
-  #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
 #include <iostream>
-#include <set>
-#include <stack>
 #include <map>
 #include <queue>
-#include <vector>
-#include <unordered_set>
 #include <set>
+#include <stack>
+#include <unordered_set>
+#include <vector>
 #define maxn 100005
 using namespace std;
 
@@ -41,10 +40,11 @@ int main() {
       costs[i] = costs[nxt_differ[i]] + ((s[i] == 'A') ? a : b);
     }
 
-    for (int i = 0; i < n; i++) if (costs[i] <= p) {
-      cout << i + 1 << endl;
-      break;
-    }
+    for (int i = 0; i < n; i++)
+      if (costs[i] <= p) {
+        cout << i + 1 << endl;
+        break;
+      }
   }
   return 0;
 }

@@ -1,16 +1,16 @@
 #ifdef ONLINE_JUDGE
-    #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
 #include <iostream>
-#include <set>
-#include <stack>
 #include <map>
 #include <numeric>
 #include <queue>
+#include <set>
+#include <stack>
 #include <vector>
 #define maxn 22
 #define maxl 10000
@@ -37,7 +37,8 @@ double solve(double p) {
   for (int i = 1; i < maxl; i++) {
     for (int j = 0; j <= N; j++) {
       for (int k = 0; k <= j; k++) {
-        dp[i][j] += dp[i - 1][k] * pin[j - k] * pout[N - j] * binom[N - k][j - k];
+        dp[i][j] +=
+            dp[i - 1][k] * pin[j - k] * pout[N - j] * binom[N - k][j - k];
       }
     }
   }
@@ -51,21 +52,21 @@ double solve(double p) {
 }
 
 int main() {
-    binom[0][0] = 1;
-    for (int i = 1; i <= N; i++) {
-      for (int j = 0; j <= i; j++) {
-        binom[i][j] = binom[i - 1][j];
-        if (j) {
-          binom[i][j] += binom[i - 1][j - 1];
-        }
+  binom[0][0] = 1;
+  for (int i = 1; i <= N; i++) {
+    for (int j = 0; j <= i; j++) {
+      binom[i][j] = binom[i - 1][j];
+      if (j) {
+        binom[i][j] += binom[i - 1][j - 1];
       }
     }
-    
-    cin >> T;
-    for (int it = 1; it <= T; it++) {
-      cin >> p;
-      printf("Case #%d: %.9lf\n", it, solve(p));
-    }
+  }
 
-    return 0;
+  cin >> T;
+  for (int it = 1; it <= T; it++) {
+    cin >> p;
+    printf("Case #%d: %.9lf\n", it, solve(p));
+  }
+
+  return 0;
 }

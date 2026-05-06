@@ -1,15 +1,15 @@
 #ifdef ONLINE_JUDGE
-    #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
 #include <iostream>
-#include <set>
-#include <stack>
 #include <map>
 #include <queue>
+#include <set>
+#include <stack>
 #include <vector>
 #define maxn 505
 using namespace std;
@@ -22,7 +22,7 @@ bool reachable[maxn][maxn];
 
 struct BipartiteGraph {
   int N;
-  vector< vector<int> > adj;
+  vector<vector<int>> adj;
   int left_index[maxn], right_index[maxn];
   int trace[maxn];
 
@@ -36,14 +36,15 @@ struct BipartiteGraph {
     while (true) {
       bool proceed = false;
       memset(trace, -1, sizeof trace);
-      for (int i = 0; i < N; i++) if (left_index[i] < 0) {
-        int d = augment(i);
-        if (d >= 0) {
-          ans++;
-          proceed = true;
-          break;
+      for (int i = 0; i < N; i++)
+        if (left_index[i] < 0) {
+          int d = augment(i);
+          if (d >= 0) {
+            ans++;
+            proceed = true;
+            break;
+          }
         }
-      }
 
       if (!proceed) {
         break;
@@ -54,31 +55,33 @@ struct BipartiteGraph {
   }
 
   int augment(int u) {
-    for (auto v : adj[u]) if (trace[v] < 0) {
-      trace[v] = u;
-      if (right_index[v] < 0) {
-        left_index[u] = v;
-        right_index[v] = u;
-        return v;
+    for (auto v : adj[u])
+      if (trace[v] < 0) {
+        trace[v] = u;
+        if (right_index[v] < 0) {
+          left_index[u] = v;
+          right_index[v] = u;
+          return v;
+        }
+
+        int d = augment(right_index[v]);
+        if (d >= 0) {
+          left_index[u] = v;
+          right_index[v] = u;
+          return d;
+        }
       }
-      
-      int d = augment(right_index[v]);
-      if (d >= 0) {
-        left_index[u] = v;
-        right_index[v] = u;
-        return d;
-      }
-    }
 
     return -1;
   }
 };
 
 void DFS(int u, int root) {
-  for (auto v : edges[u]) if (!reachable[root][v]) {
-    reachable[root][v] = true;
-    DFS(v, root);
-  }
+  for (auto v : edges[u])
+    if (!reachable[root][v]) {
+      reachable[root][v] = true;
+      DFS(v, root);
+    }
 }
 
 BipartiteGraph build_bipartite_graph() {
@@ -93,9 +96,10 @@ BipartiteGraph build_bipartite_graph() {
   }
 
   for (int u = 0; u < n; u++) {
-    for (int v = 0; v < n; v++) if (reachable[u][v] && !reachable[v][u]) {
-      graph.adj[u].push_back(v);
-    }
+    for (int v = 0; v < n; v++)
+      if (reachable[u][v] && !reachable[v][u]) {
+        graph.adj[u].push_back(v);
+      }
   }
 
   return graph;
@@ -103,7 +107,7 @@ BipartiteGraph build_bipartite_graph() {
 
 struct SCCGraph {
   vector<int> scc_size;
-  vector< set<int> > adj;
+  vector<set<int>> adj;
 
   BipartiteGraph build_bipartite_graph() {
     BipartiteGraph graph;
@@ -143,7 +147,7 @@ int solve() {
 int main() {
   ios_base::sync_with_stdio(false);
   cin.tie(0);
-  
+
   cin >> T;
   for (int it = 1; it <= T; it++) {
     cin >> n >> m;

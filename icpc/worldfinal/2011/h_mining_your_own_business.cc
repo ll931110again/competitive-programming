@@ -21,7 +21,8 @@ int main() {
   int tc = 1;
   int E;
   while (cin >> E) {
-    if (E == 0) break;
+    if (E == 0)
+      break;
 
     vector<pair<int, int>> edges;
     edges.reserve(E);
@@ -43,7 +44,8 @@ int main() {
       g[b].push_back({a, i});
     }
 
-    vector<int> disc(V + 1, 0), low(V + 1, 0), parent(V + 1, 0), parentEdge(V + 1, -1);
+    vector<int> disc(V + 1, 0), low(V + 1, 0), parent(V + 1, 0),
+        parentEdge(V + 1, -1);
     vector<int> childCnt(V + 1, 0);
     vector<char> isArt(V + 1, 0);
     int timer = 0;
@@ -68,7 +70,8 @@ int main() {
 
     // Graph is connected per statement, but we keep the outer loop anyway.
     for (int start = 1; start <= V; start++) {
-      if (disc[start] != 0) continue;
+      if (disc[start] != 0)
+        continue;
 
       vector<Frame> st;
       st.reserve(V);
@@ -82,7 +85,8 @@ int main() {
         int u = fr.u;
         if (fr.it < (int)g[u].size()) {
           auto [v, eid] = g[u][fr.it++];
-          if (eid == fr.parentEdge) continue;
+          if (eid == fr.parentEdge)
+            continue;
 
           if (disc[v] == 0) {
             parent[v] = u;
@@ -106,7 +110,8 @@ int main() {
             low[p] = min(low[p], low[u]);
 
             // Articulation check (except root)
-            if (parent[p] != 0 && low[u] >= disc[p]) isArt[p] = 1;
+            if (parent[p] != 0 && low[u] >= disc[p])
+              isArt[p] = 1;
 
             // Biconnected component formed by (p,u) if low[u] >= disc[p]
             if (low[u] >= disc[p]) {
@@ -118,17 +123,20 @@ int main() {
                 estack.pop_back();
                 addVertex(verts, a);
                 addVertex(verts, b);
-                if ((a == p && b == u) || (a == u && b == p)) break;
+                if ((a == p && b == u) || (a == u && b == p))
+                  break;
               }
               int ac = 0;
               for (int x : verts)
-                if (isArt[x]) ac++;
+                if (isArt[x])
+                  ac++;
               compSize.push_back((int)verts.size());
               compArtCnt.push_back(ac);
             }
           } else {
             // root: articulation iff >=2 DFS children
-            if (childCnt[u] >= 2) isArt[u] = 1;
+            if (childCnt[u] >= 2)
+              isArt[u] = 1;
           }
         }
       }
@@ -140,21 +148,25 @@ int main() {
 
     // Recompute compArtCnt now that root articulation status is finalized.
     for (int i = 0; i < (int)compSize.size(); i++) {
-      // We didn't store vertices per component; recomputing accurately would require that.
-      // However, the only missed articulation status can be root nodes; to handle this cleanly,
-      // we will re-run a lightweight pass that counts leaf blocks by detecting blocks that touch
-      // exactly one articulation, using an alternate strategy below.
+      // We didn't store vertices per component; recomputing accurately would
+      // require that. However, the only missed articulation status can be root
+      // nodes; to handle this cleanly, we will re-run a lightweight pass that
+      // counts leaf blocks by detecting blocks that touch exactly one
+      // articulation, using an alternate strategy below.
       (void)i;
     }
 
-    // Alternate strategy (standard): during component creation, we used isArt which might not
-    // have root marked yet. Fix by counting leaf blocks using vertex membership again is expensive.
-    // So instead: we store vertices of each component.
+    // Alternate strategy (standard): during component creation, we used isArt
+    // which might not have root marked yet. Fix by counting leaf blocks using
+    // vertex membership again is expensive. So instead: we store vertices of
+    // each component.
     //
-    // Implemented by redoing component extraction with vertex storage in one pass would be simpler,
-    // but to keep this file consistent, we rerun decomposition once with root known.
+    // Implemented by redoing component extraction with vertex storage in one
+    // pass would be simpler, but to keep this file consistent, we rerun
+    // decomposition once with root known.
 
-    // ---- Second pass: same decomposition but store vertices per component ----
+    // ---- Second pass: same decomposition but store vertices per component
+    // ----
     disc.assign(V + 1, 0);
     low.assign(V + 1, 0);
     parent.assign(V + 1, 0);
@@ -169,7 +181,8 @@ int main() {
     seenToken = 1;
 
     for (int start = 1; start <= V; start++) {
-      if (disc[start] != 0) continue;
+      if (disc[start] != 0)
+        continue;
       vector<Frame> st;
       st.reserve(V);
       st.push_back({start, 0, -1, 0});
@@ -180,7 +193,8 @@ int main() {
         int u = fr.u;
         if (fr.it < (int)g[u].size()) {
           auto [v, eid] = g[u][fr.it++];
-          if (eid == fr.parentEdge) continue;
+          if (eid == fr.parentEdge)
+            continue;
 
           if (disc[v] == 0) {
             parent[v] = u;
@@ -209,7 +223,8 @@ int main() {
                 estack.pop_back();
                 addVertex(verts, a);
                 addVertex(verts, b);
-                if ((a == p && b == u) || (a == u && b == p)) break;
+                if ((a == p && b == u) || (a == u && b == p))
+                  break;
               }
               comps.push_back(std::move(verts));
             }
@@ -221,7 +236,8 @@ int main() {
     for (const auto &verts : comps) {
       int ac = 0;
       for (int v : verts)
-        if (isArt[v]) ac++;
+        if (isArt[v])
+          ac++;
       if (ac == 1) {
         leafBlocks++;
         shafts++;

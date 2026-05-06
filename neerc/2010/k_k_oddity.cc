@@ -4,7 +4,7 @@
  */
 
 #ifdef ONLINE_JUDGE
-  #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 #include <algorithm>
 #include <bitset>
@@ -24,8 +24,8 @@
 #include <sstream>
 #include <stack>
 #include <string>
-#include <utility>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 #define maxn 10005
 using namespace std;
@@ -37,18 +37,20 @@ int ks;
 
 void DFS(int u) {
   unordered_set<int> found_colors;
-  for (auto v : adj[u]) if (color[v]) {
-    found_colors.insert(color[v]);
-  }
+  for (auto v : adj[u])
+    if (color[v]) {
+      found_colors.insert(color[v]);
+    }
 
   color[u] = 1;
   while (found_colors.find(color[u]) != found_colors.end()) {
     color[u]++;
   }
 
-  for (auto v : adj[u]) if (!color[v]) {
-    DFS(v);
-  }
+  for (auto v : adj[u])
+    if (!color[v]) {
+      DFS(v);
+    }
 }
 
 int main() {
@@ -67,16 +69,17 @@ int main() {
   }
 
   for (int i = 1; i <= n; i++) {
-    ks = max(ks, (int) adj[i].size());
+    ks = max(ks, (int)adj[i].size());
   }
   if (ks % 2 == 0) {
     ks++;
   }
 
   int start_idx = -1;
-  for (int i = 1; i <= n; i++) if (adj[i].size() < ks) {
-    start_idx = i;
-  }
+  for (int i = 1; i <= n; i++)
+    if (adj[i].size() < ks) {
+      start_idx = i;
+    }
 
   DFS(start_idx);
 

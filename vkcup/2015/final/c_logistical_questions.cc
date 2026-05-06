@@ -1,17 +1,20 @@
 /*
  * Solution for problem C: Logistical Questions.
  *
- * We extend the concept of distance to non node points on the tree. Specifically,
- * for any point t (that could be inside an edge), define a cost function
- * 
- * cost(t) = sum(dist(t, i)**1.5, 1 <= i <= n) where dist(t, i) is the distance from t to i.
- * 
- * Suppose we are at a node u and want to find the direction to further decrease the distance.
- * We compute a direction v whose gradient is negative. Then we cut off u, and recursively call on the v's subtree.
- * If the gradient df/dv >= 0 on all the directions, then u is an optimal solution.
- * 
- * By using centroid decomposition, we only perform recusion in O(log N) steps, so the total time complexity
- * is O(N log N).
+ * We extend the concept of distance to non node points on the tree.
+ * Specifically, for any point t (that could be inside an edge), define a cost
+ * function
+ *
+ * cost(t) = sum(dist(t, i)**1.5, 1 <= i <= n) where dist(t, i) is the distance
+ * from t to i.
+ *
+ * Suppose we are at a node u and want to find the direction to further decrease
+ * the distance. We compute a direction v whose gradient is negative. Then we
+ * cut off u, and recursively call on the v's subtree. If the gradient df/dv >=
+ * 0 on all the directions, then u is an optimal solution.
+ *
+ * By using centroid decomposition, we only perform recusion in O(log N) steps,
+ * so the total time complexity is O(N log N).
  */
 
 #include <bits/stdc++.h>
@@ -21,7 +24,7 @@ using namespace std;
 
 int n;
 int weight[maxn];
-vector< pair<int,int> > adj[maxn];
+vector<pair<int, int>> adj[maxn];
 int par[maxn], ventry[maxn], vexit[maxn], vcount = 0;
 long long depth[maxn];
 int level[maxn][maxk];
@@ -35,11 +38,12 @@ int opt_node = -1;
 
 void DFS(int u, int p) {
   ventry[u] = vcount++;
-  for (auto [v, dist] : adj[u]) if (v != p) {
-    par[v] = u;
-    depth[v] = depth[u] + dist;
-    DFS(v, u);
-  }
+  for (auto [v, dist] : adj[u])
+    if (v != p) {
+      par[v] = u;
+      depth[v] = depth[u] + dist;
+      DFS(v, u);
+    }
   vexit[u] = vcount++;
 }
 
@@ -70,7 +74,7 @@ long long dist(int u, int v) {
 double f(int node) {
   double total_dist = 0;
   for (int i = 0; i < n; i++) {
-    total_dist += dist(node, i)**1.5 * weight[i];
+    total_dist += dist(node, i) * *1.5 * weight[i];
   }
   return total_dist;
 }
@@ -138,7 +142,6 @@ void opt(int u, int p) {
     if (marked[v]) {
       continue;
     }
-
   }
 
   if (c_child >= 0) {

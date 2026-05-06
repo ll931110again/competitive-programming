@@ -17,7 +17,8 @@ static vector<Pt> convexHull(vector<Pt> pts) {
   sort(pts.begin(), pts.end());
   pts.erase(unique(pts.begin(), pts.end()), pts.end());
   int n = (int)pts.size();
-  if (n <= 1) return pts;
+  if (n <= 1)
+    return pts;
 
   vector<Pt> h;
   h.reserve(n * 2);
@@ -54,9 +55,11 @@ static inline long double distToLine(const Pt &a, const Pt &b, const Pt &p) {
 
 static long double minWidthConvexPolygon(const vector<Pt> &h) {
   int m = (int)h.size();
-  if (m <= 2) return 0.0L;
+  if (m <= 2)
+    return 0.0L;
 
-  // Rotating calipers: for each edge i->i+1, find farthest vertex in normal direction.
+  // Rotating calipers: for each edge i->i+1, find farthest vertex in normal
+  // direction.
   int j = 1;
   long double ans = numeric_limits<long double>::infinity();
   const long double EPS = 1e-18L;
@@ -97,7 +100,8 @@ int main() {
   cout << setprecision(2);
 
   while (cin >> n) {
-    if (n == 0) break;
+    if (n == 0)
+      break;
 
     vector<Pt> pts;
     pts.reserve(n);

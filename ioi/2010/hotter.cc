@@ -2,16 +2,14 @@
 using namespace std;
 
 int HC(int N) {
-    Guess(1);
-    for (int i = 2; i <= N; i++) {
-        int value = Guess(i);
-        if (value == -1) {
-            return i - 1;
-        }
+  Guess(1);
+  for (int i = 2; i <= N; i++) {
+    int value = Guess(i);
+    if (value == -1) {
+      return i - 1;
     }
-    return N;
+  }
+  return N;
 }
 
-int main() {
-    return 0;
-}
+int main() { return 0; }

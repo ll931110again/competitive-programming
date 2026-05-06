@@ -4,7 +4,7 @@
  */
 
 #ifdef ONLINE_JUDGE
-  #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 #include <algorithm>
 #include <bitset>
@@ -24,8 +24,8 @@
 #include <sstream>
 #include <stack>
 #include <string>
-#include <utility>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 #define maxn 10005
 using namespace std;
@@ -43,12 +43,13 @@ int main() {
 
   cin >> n;
   memset(is_prime, true, sizeof is_prime);
-  for (int i = 2; i <= n; i++) if (is_prime[i]) {
-    primes.push_back(i);
-    for (int j = i + i; j <= n; j += i) {
-      is_prime[j] = false;
+  for (int i = 2; i <= n; i++)
+    if (is_prime[i]) {
+      primes.push_back(i);
+      for (int j = i + i; j <= n; j += i) {
+        is_prime[j] = false;
+      }
     }
-  }
 
   int low = 0, high = primes.size() - 1;
   int ans = 0;

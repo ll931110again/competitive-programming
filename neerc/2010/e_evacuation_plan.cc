@@ -4,7 +4,7 @@
  */
 
 #ifdef ONLINE_JUDGE
-  #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 #include <algorithm>
 #include <bitset>
@@ -24,15 +24,15 @@
 #include <sstream>
 #include <stack>
 #include <string>
-#include <utility>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 #define maxn 4005
 using namespace std;
 
 struct Point {
-    int pos;
-    int idx;
+  int pos;
+  int idx;
 };
 
 int m, n;
@@ -55,9 +55,7 @@ int main() {
     a[i].idx = i;
   }
 
-  sort(a + 1, a + n + 1, [&](auto x, auto y) {
-    return x.pos < y.pos;
-  });
+  sort(a + 1, a + n + 1, [&](auto x, auto y) { return x.pos < y.pos; });
 
   cin >> m;
   for (int i = 1; i <= m; i++) {
@@ -65,9 +63,7 @@ int main() {
     b[i].idx = i;
   }
 
-  sort(b + 1, b + m + 1, [&](auto x, auto y) {
-    return x.pos < y.pos;
-  });
+  sort(b + 1, b + m + 1, [&](auto x, auto y) { return x.pos < y.pos; });
 
   dp[0][0] = 0;
   for (int i = 1; i <= n; i++) {
@@ -79,16 +75,16 @@ int main() {
 
   for (int i = 1; i <= n; i++) {
     for (int j = 1; j <= m && j <= i; j++) {
-        dp[i][j] = inf;
-        if (i - 1 >= j) {
-            dp[i][j] = dp[i - 1][j];
-            trace[i][j] = j;
-        }
-        if (dp[i][j] > dp[i - 1][j - 1]) {
-            dp[i][j] = dp[i - 1][j - 1];
-            trace[i][j] = j - 1;
-        }
-        dp[i][j] += abs(a[i].pos - b[j].pos);
+      dp[i][j] = inf;
+      if (i - 1 >= j) {
+        dp[i][j] = dp[i - 1][j];
+        trace[i][j] = j;
+      }
+      if (dp[i][j] > dp[i - 1][j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1];
+        trace[i][j] = j - 1;
+      }
+      dp[i][j] += abs(a[i].pos - b[j].pos);
     }
   }
 

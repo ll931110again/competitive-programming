@@ -4,7 +4,7 @@
  */
 
 #ifdef ONLINE_JUDGE
-  #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 #include <algorithm>
 #include <bitset>
@@ -24,8 +24,8 @@
 #include <sstream>
 #include <stack>
 #include <string>
-#include <utility>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 using namespace std;
 
@@ -61,12 +61,14 @@ Move check_for_next_move(Move last_move) {
     }
     int sum_value = 0;
 
-    for (int j = 1; j <= N; j++) if (board[i][j]) {
-      remains.erase(remains.find(j));
-      sum_value += board[i][j];
-    }
+    for (int j = 1; j <= N; j++)
+      if (board[i][j]) {
+        remains.erase(remains.find(j));
+        sum_value += board[i][j];
+      }
 
-    if (remains.size() == 1 && total_sum - sum_value > 0 && total_sum - sum_value <= N) {
+    if (remains.size() == 1 && total_sum - sum_value > 0 &&
+        total_sum - sum_value <= N) {
       is_won = true;
       return {.x = i, .y = *remains.begin(), .score = total_sum - sum_value};
     }
@@ -79,18 +81,22 @@ Move check_for_next_move(Move last_move) {
     }
     int sum_value = 0;
 
-    for (int i = 1; i <= N; i++) if (board[i][j]) {
-      remains.erase(remains.find(i));
-      sum_value += board[i][j];
-    }
+    for (int i = 1; i <= N; i++)
+      if (board[i][j]) {
+        remains.erase(remains.find(i));
+        sum_value += board[i][j];
+      }
 
-    if (remains.size() == 1 && total_sum - sum_value > 0 && total_sum - sum_value <= N) {
+    if (remains.size() == 1 && total_sum - sum_value > 0 &&
+        total_sum - sum_value <= N) {
       is_won = true;
       return {.x = *remains.begin(), .y = j, .score = total_sum - sum_value};
-    }    
+    }
   }
 
-  return {.x = last_move.x, .y = N + 1 - last_move.y, .score = N + 1 - last_move.score};
+  return {.x = last_move.x,
+          .y = N + 1 - last_move.y,
+          .score = N + 1 - last_move.score};
 }
 
 int main() {

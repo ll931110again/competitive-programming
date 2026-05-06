@@ -4,7 +4,7 @@
  */
 
 #ifdef ONLINE_JUDGE
-  #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 #include <algorithm>
 #include <bitset>
@@ -24,8 +24,8 @@
 #include <sstream>
 #include <stack>
 #include <string>
-#include <utility>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 #define maxn 10005
 using namespace std;
@@ -38,7 +38,8 @@ int n;
 Point a[maxn];
 
 double scaled_volume(double h, double r) {
-  // the true volume of a cone is 1/3 pi h r^2, but we can simply scale out the constant factors
+  // the true volume of a cone is 1/3 pi h r^2, but we can simply scale out the
+  // constant factors
   return h * r * r;
 }
 
@@ -72,7 +73,8 @@ int main() {
 
   double low_h = 0, high_h = 1e5;
   for (int iter = 0; iter < 200; iter++) {
-    double m1 = (low_h + low_h + high_h) / 3, m2 = (low_h + high_h + high_h) / 3;
+    double m1 = (low_h + low_h + high_h) / 3,
+           m2 = (low_h + high_h + high_h) / 3;
     double r1 = eval(m1), r2 = eval(m2);
 
     if (r1 < 0 || scaled_volume(m1, r1) > scaled_volume(m2, r2)) {

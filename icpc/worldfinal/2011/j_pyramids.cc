@@ -12,7 +12,7 @@ bool is_valid[maxn][maxk];
 int choice[maxn][maxk];
 int max_height[maxn];
 
-vector< pair<int,int> > pyramids;
+vector<pair<int, int>> pyramids;
 
 int high_pyramid(int height) {
   return height * (height + 1) * (2 * height + 1) / 6;
@@ -29,10 +29,11 @@ int low_pyramid(int height) {
 
 string solve(int n) {
   int best_k = -1;
-  for (int k = 1; k < maxk; k++) if (is_valid[n][k]) {
-    best_k = k;
-    break;
-  }
+  for (int k = 1; k < maxk; k++)
+    if (is_valid[n][k]) {
+      best_k = k;
+      break;
+    }
 
   if (best_k < 0) {
     return "impossible";
@@ -67,7 +68,7 @@ int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-  for (int i = 2; ; i++) {
+  for (int i = 2;; i++) {
     int high = high_pyramid(i);
     if (high >= maxn) {
       break;
@@ -75,7 +76,7 @@ int main() {
     pyramids.push_back({high, i});
   }
 
-  for (int i = 3; ; i++) {
+  for (int i = 3;; i++) {
     int low = low_pyramid(i);
     if (low >= maxn) {
       break;
@@ -87,7 +88,8 @@ int main() {
 
   for (int i = 1; i < maxn; i++) {
     max_height[i] = max_height[i - 1];
-    while (max_height[i] < pyramids.size() && pyramids[max_height[i]].first <= i) {
+    while (max_height[i] < pyramids.size() &&
+           pyramids[max_height[i]].first <= i) {
       max_height[i]++;
     }
     max_height[i]--;
@@ -116,7 +118,7 @@ int main() {
     }
   }
 
-  for (int i = 1; ; i++) {
+  for (int i = 1;; i++) {
     cin >> n;
     if (n == 0) {
       break;

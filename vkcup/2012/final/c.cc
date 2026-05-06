@@ -1,5 +1,5 @@
 #ifdef ONLINE_JUDGE
-  #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 #include <algorithm>
 #include <bitset>
@@ -24,7 +24,7 @@
 
 #define maxn 105
 using namespace std;
- 
+
 long long f[maxn], g[maxn];
 int n;
 string s;

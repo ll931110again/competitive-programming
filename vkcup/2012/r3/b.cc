@@ -47,7 +47,7 @@ int main() {
   cin.tie(NULL);
 
   memset(posB, -1, sizeof posB);
-  
+
   cin >> n >> m;
   for (int i = 0; i < n; i++) {
     cin >> a[i];
@@ -64,7 +64,8 @@ int main() {
       R = L;
     }
     if (R >= 0) {
-      while ((R + 1) % n != L && good(posB[a[L]], posB[a[R]], posB[a[(R + 1) % n]])) {
+      while ((R + 1) % n != L &&
+             good(posB[a[L]], posB[a[R]], posB[a[(R + 1) % n]])) {
         R = (R + 1) % n;
       }
       ans = max(ans, length(L, R));

@@ -4,7 +4,7 @@
  */
 
 #ifdef ONLINE_JUDGE
-  #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 #include <algorithm>
 #include <bitset>
@@ -24,8 +24,8 @@
 #include <sstream>
 #include <stack>
 #include <string>
-#include <utility>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 #define maxn 205
 using namespace std;
@@ -59,25 +59,27 @@ vector<string> align(vector<vector<string>> texts) {
   int m = texts.size();
   vector<string> output(m);
 
-  for (int j = 0; ; j++) {
+  for (int j = 0;; j++) {
     int max_alignment = 0;
-    for (int i = 0; i < m; i++) if (texts[i].size() > j) {
-      max_alignment = max(max_alignment, texts[i][j].size());
-    }
+    for (int i = 0; i < m; i++)
+      if (texts[i].size() > j) {
+        max_alignment = max(max_alignment, texts[i][j].size());
+      }
 
     if (max_alignment == 0) {
       break;
     }
 
-    for (int i = 0; i < m; i++) if (texts[i].size() > j) {
-      if (j > 0) {
-        output[i] += ' ';
+    for (int i = 0; i < m; i++)
+      if (texts[i].size() > j) {
+        if (j > 0) {
+          output[i] += ' ';
+        }
+        output[i] += texts[i][j];
+        for (int k = texts[i][j].size(); k < max_alignment; k++) {
+          output[i] += ' ';
+        }
       }
-      output[i] += texts[i][j];
-      for (int k = texts[i][j].size(); k < max_alignment; k++) {
-        output[i] += ' ';
-      }
-    }
   }
 
   return output;

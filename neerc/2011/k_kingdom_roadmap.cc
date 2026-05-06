@@ -4,7 +4,7 @@
  */
 
 #ifdef ONLINE_JUDGE
-  #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 #include <algorithm>
 #include <bitset>
@@ -24,8 +24,8 @@
 #include <sstream>
 #include <stack>
 #include <string>
-#include <utility>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 #define maxn 100005
 using namespace std;
@@ -35,9 +35,10 @@ vector<int> adj[maxn];
 vector<int> leaves;
 
 void DFS(int u, int par) {
-  for (auto v : adj[u]) if (v != par) {
-    DFS(v, u);
-  }
+  for (auto v : adj[u])
+    if (v != par) {
+      DFS(v, u);
+    }
   if (adj[u].size() == 1) {
     leaves.push_back(u);
   }
@@ -61,11 +62,11 @@ int main() {
   DFS(1, -1);
   int s = leaves.size();
   cout << (s + 1) / 2 << endl;
-  for (int i = 0; i < s/2; i++) {
-    cout << leaves[i] << ' ' << leaves[s/2 + i] << endl;
+  for (int i = 0; i < s / 2; i++) {
+    cout << leaves[i] << ' ' << leaves[s / 2 + i] << endl;
   }
   if (s & 1) {
-    cout << leaves[s/2] << ' ' << leaves[s - 1] << endl;
+    cout << leaves[s / 2] << ' ' << leaves[s - 1] << endl;
   }
 
   return 0;

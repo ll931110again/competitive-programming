@@ -1,12 +1,13 @@
 /*
  * Solution for problem B: Binary Encoding.
  *
- * To construct such a code, we can insert all the codes in a prefix tries. Every step,
- * we take the shortest code word and expand it by appending 0 and 1 in the end.
+ * To construct such a code, we can insert all the codes in a prefix tries.
+ * Every step, we take the shortest code word and expand it by appending 0 and 1
+ * in the end.
  */
 
 #ifdef ONLINE_JUDGE
-  #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 #include <algorithm>
 #include <bitset>
@@ -26,8 +27,8 @@
 #include <sstream>
 #include <stack>
 #include <string>
-#include <utility>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 #define maxn 10005
 using namespace std;

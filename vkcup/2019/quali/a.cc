@@ -1,17 +1,16 @@
 #ifdef ONLINE_JUDGE
-  #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
 #include <iostream>
-#include <set>
-#include <stack>
 #include <map>
 #include <queue>
-#include <vector>
-#include <unordered_set>
 #include <set>
+#include <stack>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
 int T;

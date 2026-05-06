@@ -13,7 +13,8 @@ int main() {
   int dx, dy;
   int n, q;
   while (cin >> dx >> dy >> n >> q) {
-    if (dx == 0 && dy == 0 && n == 0 && q == 0) break;
+    if (dx == 0 && dy == 0 && n == 0 && q == 0)
+      break;
 
     const int Umin = 2;
     const int Umax = dx + dy;
@@ -47,18 +48,22 @@ int main() {
     }
 
     auto rectSum = [&](int uL, int uR, int vL, int vR) -> int {
-      if (uL > uR || vL > vR) return 0;
+      if (uL > uR || vL > vR)
+        return 0;
       uL = max(uL, Umin);
       uR = min(uR, Umax);
       vL = max(vL, Vmin);
       vR = min(vR, Vmax);
-      if (uL > uR || vL > vR) return 0;
+      if (uL > uR || vL > vR)
+        return 0;
       int a = (uL - Umin) + 1;
       int b = (uR - Umin) + 1;
       int c = (vL - Vmin) + 1;
       int d = (vR - Vmin) + 1;
       int stride = Vsize + 1;
-      auto at = [&](int ui, int vi) -> int { return cnt[idx2(ui, vi, stride)]; };
+      auto at = [&](int ui, int vi) -> int {
+        return cnt[idx2(ui, vi, stride)];
+      };
       return at(b, d) - at(a - 1, d) - at(b, c - 1) + at(a - 1, c - 1);
     };
 
