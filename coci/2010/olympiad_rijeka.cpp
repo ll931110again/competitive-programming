@@ -46,8 +46,6 @@ int main() {
   }
 
   sort(v.begin(), v.end());
-  //	for (int i = 0; i < v.size(); i++) cout << v[i].first << ' ' <<
-  //v[i].second << endl;
   for (int i = 0; i < v.size(); i++) {
     while (!contain.empty() && cover(v[i], contain[contain.size() - 1]))
       contain.pop_back();

@@ -104,10 +104,6 @@ int main() {
     high = low;
   }
 
-  /*for (int i = 1; i <= n; i++) {
-          cout << nsmall[i] << ' ' << nbig[i] << endl;
-  }*/
-
   long long ret = 0, inv_count = 0;
   memset(tx, 0, sizeof tx);
   for (int i = 1; i <= m; i++) {

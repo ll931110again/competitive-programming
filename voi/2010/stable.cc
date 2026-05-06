@@ -52,7 +52,6 @@ int main() {
         way[b] = min(200, way[b] + way[a]);
     };
   };
-  //    for (int i = 1; i <= n; i++) cout << len[i] << ' ' << way[i] << endl;
 
   int ret = 0;
   for (int i = 1; i <= n; i++)

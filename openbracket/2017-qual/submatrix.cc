@@ -87,12 +87,8 @@ int main() {
         }
       }
       long long ssum = sum_chain[ans] + 1LL * (i - low_pos) * pos[i][j];
-      // cout << "E: " << sum_chain[ans] << ' ' << 1LL * (i - low_pos) *
-      // pos[i][j] << endl;
       ssum -= 1LL * (i + 1) * (j - 1);
       ret += ssum;
-      // cout << "R: " << ret << ' ' << ans << ' ' << low_pos << ' ' <<
-      // pos[i][j] << ' ' << breakpoint[i][j] << endl;
 
       // insert breakpoint[i][j]
       if (i == m - 1)
@@ -105,7 +101,6 @@ int main() {
       sum_chain[idx_pos] = sum_chain[idx_pos - 1] +
                            1LL * (idx_chain[idx_pos] - idx_chain[idx_pos - 1]) *
                                idx_value[idx_pos];
-      // cout << idx_pos << ' ' << sum_chain[idx_pos] << endl;
       idx_pos++;
     }
   }

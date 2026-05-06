@@ -71,8 +71,6 @@ public:
       if (mp_b.count(-d)) {
         long long xa = mp_a[d].first, pa = mp_a[d].second;
         long long xb = mp_b[-d].first, pb = mp_b[-d].second;
-        // cout << d << ' ' << xa << ' ' << pa << ' ' << xb << ' ' << pb <<
-        // endl;
         if (xa + xb > ret) {
           ret = xa + xb;
           pos_a = pa;
