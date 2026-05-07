@@ -1,5 +1,4 @@
-#include <bits/stdc++.h>
-
+#include "bits/stdc++.h"
 using namespace std;
 
 struct Machine {
@@ -25,81 +24,55 @@ struct Line {
   }
 };
 
-// Dynamic convex hull trick for maximum queries (arbitrary insertion order).
-// Adapted from the well-known "LineContainer" (KACTL style), but using
-// __int128-safe division.
-struct DynamicCHTMax {
-  struct HullLine {
-    mutable long long m = 0;            // slope
-    mutable long long b = -(1LL << 60); // intercept
-    mutable long long p = 0; // first x where this line is best (inclusive)
-    bool operator<(const HullLine &o) const { return m < o.m; }
-    bool operator<(long long x) const { return p < x; }
+struct LiChaoMax {
+  struct Node {
+    Line line;
+    Node *left = nullptr;
+    Node *right = nullptr;
+    explicit Node(Line line_) : line(line_) {}
   };
 
-  static constexpr long long INF_X = numeric_limits<long long>::max();
+  long long minX, maxX;
+  Node *root = nullptr;
 
-  multiset<HullLine, less<>> hull;
+  LiChaoMax(long long minX_, long long maxX_) : minX(minX_), maxX(maxX_) {}
 
-  static long long floordiv(__int128 a, __int128 b) {
-    // floor(a / b) for b > 0 or b < 0.
-    if (b < 0)
-      a = -a, b = -b;
-    if (a >= 0)
-      return (long long)(a / b);
-    return (long long)(-(((-a) + b - 1) / b));
-  }
+  void addLine(Line newLine) { addLineRec(root, minX, maxX, newLine); }
 
-  static long long intersectX(const HullLine &x, const HullLine &y) {
-    // Smallest integer x where y(x) >= x(x). Both are linear. Assumes x.m !=
-    // y.m. Solve y.m*t + y.b >= x.m*t + x.b  =>  (y.b - x.b) >= (x.m - y.m)*t
-    // If denom > 0: t <= (y.b - x.b)/denom ; but we want smallest t where y
-    // overtakes x KACTL uses: p = floor((b2-b1)/(m1-m2)) for max with
-    // increasing slopes, with care. We'll compute as floor((x.b - y.b)/(y.m -
-    // x.m)) to match standard form. We want: x.m*t + x.b >= y.m*t + y.b for t
-    // <= p ; so p is the last t where x dominates. p = floor((y.b - x.b)/(x.m -
-    // y.m)).
-    __int128 num2 = (__int128)y.b - (__int128)x.b;
-    __int128 den2 = (__int128)x.m - (__int128)y.m;
-    return floordiv(num2, den2);
-  }
-
-  bool isect(multiset<HullLine>::iterator x, multiset<HullLine>::iterator y) {
-    if (y == hull.end()) {
-      x->p = INF_X;
-      return false;
+  void addLineRec(Node *&node, long long segLeft, long long segRight,
+                  Line newLine) {
+    if (!node) {
+      node = new Node(newLine);
+      return;
     }
-    if (x->m == y->m) {
-      x->p = (x->b >= y->b) ? INF_X : numeric_limits<long long>::min();
-    } else {
-      x->p = intersectX(*x, *y);
-    }
-    return x->p >= y->p;
+
+    long long mid = segLeft + ((segRight - segLeft) >> 1);
+    bool betterAtLeft = newLine.value(segLeft) > node->line.value(segLeft);
+    bool betterAtMid = newLine.value(mid) > node->line.value(mid);
+    if (betterAtMid)
+      swap(newLine, node->line);
+
+    if (segLeft == segRight)
+      return;
+    if (betterAtLeft != betterAtMid)
+      addLineRec(node->left, segLeft, mid, newLine);
+    else
+      addLineRec(node->right, mid + 1, segRight, newLine);
   }
 
-  void addLine(long long m, long long b) {
-    auto z = hull.insert({m, b, 0});
-    auto y = z++;
-    auto x = y;
+  long long query(long long x) const { return queryRec(root, minX, maxX, x); }
 
-    while (isect(y, z))
-      z = hull.erase(z);
-    if (x != hull.begin() && isect(--x, y))
-      isect(x, hull.erase(y));
-    while ((y = x) != hull.begin() && (--x)->p >= y->p)
-      isect(x, hull.erase(y));
-  }
-
-  long long query(long long x) const {
-    if (hull.empty())
+  long long queryRec(Node *node, long long segLeft, long long segRight,
+                     long long x) const {
+    if (!node)
       return LLONG_MIN;
-    auto l = *hull.lower_bound(x);
-    __int128 v = (__int128)l.m * (__int128)x + (__int128)l.b;
-    if (v < (__int128)LLONG_MIN)
-      return LLONG_MIN;
-    if (v > (__int128)LLONG_MAX)
-      return LLONG_MAX;
-    return (long long)v;
+    long long best = node->line.value(x);
+    if (segLeft == segRight)
+      return best;
+    long long mid = segLeft + ((segRight - segLeft) >> 1);
+    if (x <= mid)
+      return max(best, queryRec(node->left, segLeft, mid, x));
+    return max(best, queryRec(node->right, mid + 1, segRight, x));
   }
 };
 
@@ -130,8 +103,8 @@ int main() {
            return a.buyPrice < b.buyPrice;
          });
 
-    DynamicCHTMax cashAtDay;
-    cashAtDay.addLine(0, initialCash); // keep cash, no machine
+    LiChaoMax cashAtDay(1, lastDay + 1);
+    cashAtDay.addLine(Line(0, initialCash)); // keep cash, no machine
 
     for (int i = 0; i < machineCount;) {
       long long day = machines[i].dayAvailable;
@@ -152,7 +125,7 @@ int main() {
       }
 
       for (const auto &line : toAdd)
-        cashAtDay.addLine(line.slope, line.intercept);
+        cashAtDay.addLine(line);
     }
 
     long long maxCashEnd = cashAtDay.query(lastDay + 1);
