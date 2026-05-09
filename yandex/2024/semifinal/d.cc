@@ -1,85 +1,23 @@
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <set>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
-template <int MOD = 1'000'000'007> struct Modular {
-  int value;
-  static const int MOD_value = MOD;
+static constexpr unsigned MOD = 1'000'000'007;
+#include "../../../lib/modint.h"
+using Mint = ModInt<MOD>;
 
-  Modular(long long v = 0) {
-    value = v % MOD;
-    if (value < 0)
-      value += MOD;
-  }
-  Modular(long long a, long long b) : value(0) {
-    *this += a;
-    *this /= b;
-  }
-
-  Modular &operator+=(Modular const &b) {
-    value += b.value;
-    if (value >= MOD)
-      value -= MOD;
-    return *this;
-  }
-  Modular &operator-=(Modular const &b) {
-    value -= b.value;
-    if (value < 0)
-      value += MOD;
-    return *this;
-  }
-  Modular &operator*=(Modular const &b) {
-    value = (long long)value * b.value % MOD;
-    return *this;
-  }
-
-  friend Modular mexp(Modular a, long long e) {
-    Modular res = 1;
-    while (e) {
-      if (e & 1)
-        res *= a;
-      a *= a;
-      e >>= 1;
-    }
-    return res;
-  }
-  friend Modular inverse(Modular a) { return mexp(a, MOD - 2); }
-
-  Modular &operator/=(Modular const &b) { return *this *= inverse(b); }
-  friend Modular operator+(Modular a, Modular const b) { return a += b; }
-  friend Modular operator-(Modular a, Modular const b) { return a -= b; }
-  friend Modular operator-(Modular const a) { return 0 - a; }
-  friend Modular operator*(Modular a, Modular const b) { return a *= b; }
-  friend Modular operator/(Modular a, Modular const b) { return a /= b; }
-  friend std::ostream &operator<<(std::ostream &os, Modular const &a) {
-    return os << a.value;
-  }
-  friend bool operator==(Modular const &a, Modular const &b) {
-    return a.value == b.value;
-  }
-  friend bool operator!=(Modular const &a, Modular const &b) {
-    return a.value != b.value;
-  }
-};
-
-Modular<1000000007> solve(long long R) {
+Mint solve(long long R) {
   if (R < 2) {
     return 0;
   }
 
   // special case: two digits
-  auto ans = Modular(R - 1) * Modular(R) / 2 * 2;
+  auto ans = Mint(R - 1) * Mint(R) / 2 * 2;
 
   // three digits
   long long n = sqrt(R);
-  auto threes = Modular(R + 1) * (n - 1);
+  auto threes = Mint(R + 1) * (n - 1);
   // subtract 2^2 + .. + n^2
-  threes -= Modular(n) * Modular(n + 1) * Modular(n * 2 + 1) / 6 - 1;
+  threes -= Mint(n) * Mint(n + 1) * Mint(n * 2 + 1) / 6 - 1;
 
   ans += threes;
 
@@ -95,9 +33,9 @@ Modular<1000000007> solve(long long R) {
     }
   }
 
-  auto fours = Modular(R + 1) * (n - 1);
+  auto fours = Mint(R + 1) * (n - 1);
   // subtract 2^3 + ... + n^3
-  auto sums = Modular(n) * Modular(n + 1) / 2;
+  auto sums = Mint(n) * Mint(n + 1) / 2;
   sums = sums * sums;
   fours -= (sums - 1);
 
@@ -116,10 +54,10 @@ Modular<1000000007> solve(long long R) {
     }
   }
 
-  auto fives = Modular(R + 1) * (n - 1);
+  auto fives = Mint(R + 1) * (n - 1);
   // subtract 2^4 + .. + n^4
-  sums = Modular(n) * Modular(n + 1) * Modular(n * 2 + 1) *
-             Modular(n * n * 3 + n * 3 - 1) / 30 -
+  sums = Mint(n) * Mint(n + 1) * Mint(n * 2 + 1) *
+             Mint(n * n * 3 + n * 3 - 1) / 30 -
          1;
   fives -= sums;
   ans += fives;

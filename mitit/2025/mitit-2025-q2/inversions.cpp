@@ -10,7 +10,6 @@
 #include <set>
 #include <vector>
 #define maxn 200005
-#define mod 1000000007
 using namespace std;
 
 int T, n, K;

@@ -1,28 +1,13 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <utility>
-#include <vector>
+#include <bits/stdc++.h>
 #define maxn 5002
-#define mod 1000000007
 using namespace std;
 
 int f[maxn][maxn][2];
 string a, b;
+
+static constexpr unsigned MOD = 1'000'000'007;
+#include "../../../lib/modint.h"
+using Mint = ModInt<MOD>;
 
 int rec(int x, int y, int z) {
   if (x < 0 || y < 0)
@@ -30,12 +15,13 @@ int rec(int x, int y, int z) {
   int &ans = f[x][y][z];
   if (ans >= 0)
     return ans;
-  ans = z;
-  ans = (ans + rec(x, y - 1, z)) % mod;
+  Mint v = z;
+  v += rec(x, y - 1, z);
   if (z)
-    ans = (ans + mod - 1) % mod;
+    v -= 1;
   if (a[x] == b[y])
-    ans = (ans + rec(x - 1, y - 1, 1)) % mod;
+    v += rec(x - 1, y - 1, 1);
+  ans = (int)v.x;
   return ans;
 }
 
@@ -43,8 +29,8 @@ int main() {
   cin >> a;
   cin >> b;
   memset(f, -1, sizeof(f));
-  int ret = 0;
-  for (int i = 0; i < a.size(); i++)
-    ret = (ret + rec(i, b.size() - 1, 0)) % mod;
-  cout << (ret + mod) % mod << '\n';
+  Mint ret = 0;
+  for (int i = 0; i < (int)a.size(); i++)
+    ret += rec(i, (int)b.size() - 1, 0);
+  cout << ret << '\n';
 }

@@ -1,28 +1,18 @@
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
 #define maxn 10005
 #define alphabet 26
-#define mod 1000000007
 using namespace std;
 
 int T;
-long long dp[maxn][alphabet + 1][2];
+static constexpr unsigned MOD = 1'000'000'007;
+#include "../../../lib/modint.h"
+using Mint = ModInt<MOD>;
+
+Mint dp[maxn][alphabet + 1][2];
 int fill_value[maxn];
 int first_pos[alphabet], last_pos[alphabet], nxt_non_empty[maxn];
 
-long long solve(string s) {
+static int solve(const string &s) {
   int n = s.size();
   memset(fill_value, -1, sizeof fill_value);
   memset(first_pos, -1, sizeof first_pos);
@@ -74,35 +64,30 @@ long long solve(string s) {
           if (fill_value[i] >= 0) {
             // Only one choice here: fill in with the current character
             dp[i + 1][j][1] += dp[i][j][k];
-            dp[i + 1][j][1] %= mod;
           } else {
             // Fill in with the current character
             if (k) {
               dp[i + 1][j][1] += dp[i][j][k];
-              dp[i + 1][j][1] %= mod;
             }
 
             // Fill in with the next character
             if (nxt_non_empty[i] >= 0) {
               int _i = nxt_non_empty[i];
               dp[_i][j][1] += dp[i][j][k];
-              dp[_i][j][1] %= mod;
             }
             // Fill in with a new character
             if (j > 0) {
               dp[i + 1][j - 1][1] += dp[i][j][k] * j;
-              dp[i + 1][j - 1][1] %= mod;
             }
           }
         }
 
-  long long ans = 0;
+  Mint ans = 0;
   for (int j = 0; j <= alphabet; j++) {
     ans += dp[n][j][1];
-    ans %= mod;
   }
 
-  return ans;
+  return (int)ans.x;
 }
 
 int main() {

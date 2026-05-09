@@ -1,18 +1,16 @@
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <set>
-#include <vector>
+#include <bits/stdc++.h>
 #define maxn 205
 #define maxk 30
-#define mod 1000000007
 using namespace std;
 
 int n, m, Q;
 
-long long both[maxn][maxn][maxk];
-long long ones[maxn][maxk];
+static constexpr unsigned MOD = 1'000'000'007;
+#include "../../../lib/modint.h"
+using Mint = ModInt<MOD>;
+
+Mint both[maxn][maxn][maxk];
+Mint ones[maxn][maxk];
 
 int main() {
   cin >> n >> m >> Q;
@@ -27,8 +25,7 @@ int main() {
     for (int u = 1; u <= n; u++) {
       for (int v = 1; v <= n; v++) {
         for (int z = 1; z <= n; z++) {
-          both[u][v][k] =
-              (both[u][v][k] + both[u][z][k - 1] * both[z][v][k - 1]) % mod;
+          both[u][v][k] += both[u][z][k - 1] * both[z][v][k - 1];
         }
       }
     }
@@ -37,7 +34,7 @@ int main() {
   for (int k = 0; k < maxk; k++) {
     for (int u = 1; u <= n; u++) {
       for (int v = 1; v <= n; v++) {
-        ones[u][k] = (ones[u][k] + both[u][v][k]) % mod;
+        ones[u][k] += both[u][v][k];
       }
     }
   }
@@ -46,7 +43,7 @@ int main() {
     int u, k;
     cin >> u >> k;
 
-    long long cur[maxn], nxt[maxn];
+    Mint cur[maxn], nxt[maxn];
     memset(cur, 0, sizeof cur);
     cur[u] = 1;
 
@@ -56,7 +53,7 @@ int main() {
         for (int u = 1; u <= n; u++)
           if (cur[u]) {
             for (int v = 1; v <= n; v++) {
-              nxt[v] = (nxt[v] + cur[u] * both[u][v][i]) % mod;
+              nxt[v] += cur[u] * both[u][v][i];
             }
           }
         for (int u = 1; u <= n; u++) {
@@ -64,9 +61,9 @@ int main() {
         }
       }
 
-    long long ret = 0;
+    Mint ret = 0;
     for (int u = 1; u <= n; u++) {
-      ret = (ret + cur[u]) % mod;
+      ret += cur[u];
     }
 
     cout << ret << endl;

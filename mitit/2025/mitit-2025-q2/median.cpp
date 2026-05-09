@@ -1,43 +1,23 @@
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <queue>
-#include <set>
-#include <vector>
 #define maxn 900005
-#define mod 1000000007
 using namespace std;
 
 int T, n, m;
 int a[maxn], b[maxn];
 
-long long fact[maxn], inv[maxn];
+static constexpr unsigned MOD = 1'000'000'007;
+#include "../../../lib/modint.h"
+using Mint = ModInt<MOD>;
 
-long long get_power(long long x, long long p) {
-  if (!p) {
-    return 1;
-  }
-  long long q = get_power(x, p / 2);
-  q = (q * q) % mod;
-  if (p & 1) {
-    q = (q * x) % mod;
-  }
+Mint fact[maxn], inv[maxn];
 
-  return q;
+static Mint binom(int x, int y) {
+  Mint up = fact[x];
+  Mint down = inv[y] * inv[x - y];
+  return up * down;
 }
 
-long long binom(int x, int y) {
-  long long up = fact[x];
-  long long down = inv[y] * inv[x - y] % mod;
-  return up * down % mod;
-}
-
-long long solve() {
+static int solve() {
   int X = (3 * n + 1) / 2;
   int pos = -1;
 
@@ -57,7 +37,7 @@ long long solve() {
     }
   }
 
-  long long ret = 0;
+  Mint ret = 0;
   for (int value = 1; value <= 3; value++)
     if (segment < 0 || segment == value) {
       int low = (value - 1) * n + 1, high = low + n - 1;
@@ -75,20 +55,20 @@ long long solve() {
         }
       }
 
-      long long count_segment = 0;
+      Mint count_segment = 0;
       if (lc >= 0 && hc >= 0) {
-        count_segment = binom(X - 1, lc) * binom(X - 1, hc) % mod;
-        count_segment = (count_segment * fact[n / 2 - lc]) % mod;
-        count_segment = (count_segment * fact[n / 2 - hc]) % mod;
+        count_segment = binom(X - 1, lc) * binom(X - 1, hc);
+        count_segment = count_segment * fact[n / 2 - lc];
+        count_segment = count_segment * fact[n / 2 - hc];
         if (segment < 0) {
-          count_segment = count_segment * n % mod;
+          count_segment = count_segment * n;
         }
       }
-      long long count_remains = fact[slots_outside];
-      ret += (count_segment * count_remains) % mod;
+      Mint count_remains = fact[slots_outside];
+      ret += count_segment * count_remains;
     }
 
-  return ret % mod;
+  return (int)ret.x;
 }
 
 int main() {
@@ -97,11 +77,11 @@ int main() {
 
   fact[0] = 1;
   for (int i = 1; i < maxn; i++) {
-    fact[i] = fact[i - 1] * i % mod;
+    fact[i] = fact[i - 1] * i;
   }
 
   for (int i = 0; i < maxn; i++) {
-    inv[i] = get_power(fact[i], mod - 2);
+    inv[i] = fact[i].inv();
   }
 
   cin >> T;

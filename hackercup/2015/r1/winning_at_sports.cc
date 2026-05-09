@@ -1,11 +1,13 @@
-#include <iostream>
-#include <string>
-#define MOD 1000000007
+#include <bits/stdc++.h>
 #define MAXN 2000
 using namespace std;
 
 int T;
-int sfree[MAXN + 2][MAXN + 2], sful[MAXN + 2][MAXN + 2];
+static constexpr unsigned MOD = 1'000'000'007;
+#include "../../../lib/modint.h"
+using Mint = ModInt<MOD>;
+
+Mint sfree[MAXN + 2][MAXN + 2], sful[MAXN + 2][MAXN + 2];
 
 void solveCase(int it) {
   string input;
@@ -26,8 +28,6 @@ int main() {
           sfree[i][j] += sfree[i - 1][j];
         if (j > 0)
           sfree[i][j] += sfree[i][j - 1];
-        if (sfree[i][j] >= MOD)
-          sfree[i][j] -= MOD;
       }
 
   sful[0][0] = 1;
@@ -38,8 +38,6 @@ int main() {
           sful[i][j] += sful[i - 1][j];
         if (j - 1 >= i)
           sful[i][j] += sful[i][j - 1];
-        if (sful[i][j] >= MOD)
-          sful[i][j] -= MOD;
       }
 
   for (int it = 1; it <= T; it++)

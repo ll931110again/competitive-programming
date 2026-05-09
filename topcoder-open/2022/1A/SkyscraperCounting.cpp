@@ -1,28 +1,13 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <ctime>
-#include <deque>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <list>
-#include <map>
-#include <numeric>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <utility>
-#include <vector>
-#define mod 1000000007
+#include <bits/stdc++.h>
 #define maxn 105
 using namespace std;
 
-long long binom[maxn][maxn];
-long long fact[maxn];
+static constexpr unsigned MOD = 1'000'000'007;
+#include "../../../lib/modint.h"
+using Mint = ModInt<MOD>;
+
+Mint binom[maxn][maxn];
+Mint fact[maxn];
 
 class SkyscraperCounting {
 public:
@@ -34,7 +19,7 @@ public:
     int n = visibility.size();
     fact[0] = 1;
     for (int i = 1; i <= n; i++) {
-      fact[i] = fact[i - 1] * i % mod;
+      fact[i] = fact[i - 1] * i;
     }
     binom[0][0] = 1;
     for (int i = 1; i < maxn; i++) {
@@ -42,21 +27,20 @@ public:
         binom[i][j] = binom[i - 1][j];
         if (j) {
           binom[i][j] += binom[i - 1][j - 1];
-          binom[i][j] %= mod;
         }
       }
     }
 
-    long long ret = 1;
+    Mint ret = 1;
     int last = n;
     for (int i = n - 1; i >= 0; i--)
       if (visibility[i] == 'O') {
         int x = i, y = last - i - 1;
-        ret = (ret * binom[x + y][y]) % mod;
-        ret = (ret * fact[y]) % mod;
+        ret *= binom[x + y][y];
+        ret *= fact[y];
         last = i;
       }
-    return ret;
+    return (int)ret.x;
   }
 };
 

@@ -1,29 +1,13 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <list>
-#include <map>
-#include <numeric>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <utility>
-#include <vector>
-#define mod 1000000007
+#include <bits/stdc++.h>
 using namespace std;
 
-long long dp1[55][55][11];
-long long dp2[105][105][11];
-long long fact[115];
+static constexpr unsigned MOD = 1'000'000'007;
+#include "../../../lib/modint.h"
+using Mint = ModInt<MOD>;
+
+Mint dp1[55][55][11];
+Mint dp2[105][105][11];
+Mint fact[115];
 pair<int, int> info[55];
 int n, odd;
 
@@ -31,7 +15,7 @@ struct ElevenMultiples {
   int countMultiples(vector<string> pieces) {
     fact[0] = 1;
     for (int i = 1; i <= 110; i++)
-      fact[i] = (fact[i - 1] * i) % mod;
+      fact[i] = fact[i - 1] * i;
 
     n = pieces.size();
     for (int i = 0; i < n; i++) {
@@ -54,9 +38,9 @@ struct ElevenMultiples {
           if (dp1[i][j][k]) {
             int pos = i + j;
             int _k = (k + oddPlate[pos]) % 11;
-            dp1[i + 1][j][_k] = (dp1[i + 1][j][_k] + dp1[i][j][k]) % mod;
+            dp1[i + 1][j][_k] = dp1[i + 1][j][_k] + dp1[i][j][k];
             _k = (k + 11 - oddPlate[pos]) % 11;
-            dp1[i][j + 1][_k] = (dp1[i][j + 1][_k] + dp1[i][j][k]) % mod;
+            dp1[i][j + 1][_k] = dp1[i][j + 1][_k] + dp1[i][j][k];
           }
 
     int lpos = (odd + 1) / 2, lneg = odd - lpos;
@@ -67,9 +51,9 @@ struct ElevenMultiples {
       rpos = lpos + 1, rneg = lpos;
 
     memset(dp2, 0, sizeof(dp2));
-    long long prod = (fact[lpos] * fact[lneg]) % mod;
+    Mint prod = fact[lpos] * fact[lneg];
     for (int i = 0; i < 11; i++)
-      dp2[rpos][rneg][i] = (dp1[lpos][lneg][i] * prod) % mod;
+      dp2[rpos][rneg][i] = dp1[lpos][lneg][i] * prod;
 
     vector<int> evenPlate;
     for (int i = 0; i < n; i++)
@@ -83,17 +67,17 @@ struct ElevenMultiples {
             if (pos >= evenPlate.size())
               continue;
             int _k = (k + evenPlate[pos]) % 11;
-            dp2[i + 1][j][_k] = (dp2[i + 1][j][_k] + dp2[i][j][k] * i) % mod;
+            dp2[i + 1][j][_k] = dp2[i + 1][j][_k] + dp2[i][j][k] * i;
             _k = (k + 11 - evenPlate[pos]) % 11;
-            dp2[i][j + 1][_k] = (dp2[i][j + 1][_k] + dp2[i][j][k] * j) % mod;
+            dp2[i][j + 1][_k] = dp2[i][j + 1][_k] + dp2[i][j][k] * j;
           }
 
-    long long ret = 0;
+    Mint ret = 0;
     for (int i = 0; i <= 102; i++)
       for (int j = 0; j <= 102; j++)
         if (i - rpos + j - rneg == evenPlate.size())
-          ret = (ret + dp2[i][j][0]) % mod;
-    return (int)ret;
+          ret += dp2[i][j][0];
+    return (int)ret.x;
   }
 };
 
