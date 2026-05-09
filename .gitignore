@@ -1,2 +1,6 @@
 .DS_Store
 *.o
+midnightcodecup/2026/b_runner
+__pycache__/
+midnightcodecup/2026/b_problem_outputs/
+midnightcodecup/2026/lost_cursor_b_submission.zip
