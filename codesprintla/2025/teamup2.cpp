@@ -1,5 +1,5 @@
-// K – Team Up! (stub)
-// https://codesprintla25.kattis.com/problems/teamup2
+// R – Team Up! (stub)
+// https://open.kattis.com/problems/teamup2
 
 #include <bits/stdc++.h>
 using namespace std;

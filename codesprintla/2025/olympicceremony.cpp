@@ -1,5 +1,5 @@
-// I – Olympic Ceremony (interactive)
-// https://codesprintla25.kattis.com/problems/olympicceremony
+// N – Olympic Ceremony (interactive)
+// https://open.kattis.com/problems/olympicceremony
 //
 // Template: binary-search / merge-by-queries pattern depends on full analysis.
 

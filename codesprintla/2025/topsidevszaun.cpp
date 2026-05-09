@@ -1,5 +1,5 @@
-// L – Topside vs Zaun
-// https://codesprintla25.kattis.com/problems/topsidevszaun
+// S – Topside vs Zaun
+// https://open.kattis.com/problems/topsidevszaun
 //
 // Maximize S such that two disjoint teams of S people have equal total skill.
 // Process multiset one element at a time (A / B / bench); bitset tracks sumA−sumB.

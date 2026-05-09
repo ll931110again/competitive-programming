@@ -1,5 +1,5 @@
-// H – Mapping the Undercity (stub)
-// https://codesprintla25.kattis.com/problems/mappingtheundercity
+// K – Mapping the Undercity (stub)
+// https://open.kattis.com/problems/mappingtheundercity
 
 #include <bits/stdc++.h>
 using namespace std;

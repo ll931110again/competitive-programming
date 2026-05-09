@@ -1,5 +1,11 @@
 // A – The Amulet
-// https://codesprintla25.kattis.com/problems/amulet
+// https://open.kattis.com/problems/amulet
+//
+// Rolling hash gives distinct row/column counts per hash. Candidate hashes have
+// row count x and column count y. Lexicographically smallest valid code is the
+// min actual substring among horizontal windows with that hash (not merely the
+// first occurrence stored per hash). Single exact verification at the end; rare
+// hash collisions handled by checking deduped candidates in sorted order.
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -22,6 +28,52 @@ struct H2Hash {
 
 static inline int code(char ch) { return (int)(unsigned char)ch + 1; }
 
+static int count_row_substr(const vector<string> &g, int R, int C, int L,
+                            const string &t) {
+  if ((int)t.size() != L)
+    return -1;
+  int cnt = 0;
+  for (int r = 0; r < R; ++r) {
+    const string &s = g[r];
+    for (int c = 0; c + L <= C; ++c) {
+      if (s.compare(c, L, t) == 0) {
+        ++cnt;
+        break;
+      }
+    }
+  }
+  return cnt;
+}
+
+static int count_col_substr(const vector<string> &g, int R, int C, int L,
+                            const string &t) {
+  if ((int)t.size() != L)
+    return -1;
+  int cnt = 0;
+  for (int c = 0; c < C; ++c) {
+    for (int r = 0; r + L <= R; ++r) {
+      bool ok = true;
+      for (int k = 0; k < L; ++k) {
+        if (g[r + k][c] != t[k]) {
+          ok = false;
+          break;
+        }
+      }
+      if (ok) {
+        ++cnt;
+        break;
+      }
+    }
+  }
+  return cnt;
+}
+
+static bool ok_counts(const vector<string> &g, int R, int C, int L, int x,
+                      int y, const string &sub) {
+  return count_row_substr(g, R, C, L, sub) == x &&
+         count_col_substr(g, R, C, L, sub) == y;
+}
+
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
@@ -43,20 +95,16 @@ int main() {
   for (int L = maxL; L >= 1; --L) {
     unordered_map<H2, int, H2Hash> row_cover;
     unordered_map<H2, int, H2Hash> last_row;
-    unordered_map<H2, string, H2Hash> rep;
 
-    auto touch_row = [&](const H2 &key, int r, const string &sub) {
+    auto touch_row = [&](const H2 &key, int r) {
       int tag = r + 1;
       auto it = last_row.find(key);
       if (it == last_row.end() || it->second != tag) {
         row_cover[key]++;
         last_row[key] = tag;
       }
-      if (!rep.count(key))
-        rep[key] = sub;
     };
 
-    // Horizontal substrings of length L
     for (int r = 0; r < R; ++r) {
       const string &s = g[r];
       if ((int)s.size() < L)
@@ -70,8 +118,7 @@ int main() {
       for (int c = 0; c + L <= C; ++c) {
         ull h1 = p1[c + L] - p1[c] * pow1[L];
         ull h2 = p2[c + L] - p2[c] * pow2[L];
-        H2 key{h1, h2};
-        touch_row(key, r, s.substr(c, L));
+        touch_row(H2{h1, h2}, r);
       }
     }
 
@@ -87,7 +134,6 @@ int main() {
       }
     };
 
-    // Vertical substrings of length L
     for (int c = 0; c < C; ++c) {
       vector<ull> p1(R + 1), p2(R + 1);
       for (int i = 0; i < R; ++i) {
@@ -98,29 +144,83 @@ int main() {
       for (int r = 0; r + L <= R; ++r) {
         ull h1 = p1[r + L] - p1[r] * pow1[L];
         ull h2 = p2[r + L] - p2[r] * pow2[L];
-        H2 key{h1, h2};
-        touch_col(key, c);
+        touch_col(H2{h1, h2}, c);
       }
     }
 
-    string best;
-    bool found = false;
+    unordered_set<H2, H2Hash> cand;
     for (const auto &kv : row_cover) {
-      const H2 &key = kv.first;
       if (kv.second != x)
         continue;
-      auto itc = col_cover.find(key);
-      if (itc == col_cover.end() || itc->second != y)
+      auto itc = col_cover.find(kv.first);
+      if (itc != col_cover.end() && itc->second == y)
+        cand.insert(kv.first);
+    }
+
+    if (cand.empty())
+      continue;
+
+    string best;
+    bool got = false;
+    for (int r = 0; r < R; ++r) {
+      const string &s = g[r];
+      if ((int)s.size() < L)
         continue;
-      const string &s = rep.at(key);
-      if (!found || s < best) {
-        best = s;
-        found = true;
+      vector<ull> p1(C + 1), p2(C + 1);
+      for (int i = 0; i < C; ++i) {
+        int v = code(s[i]);
+        p1[i + 1] = p1[i] * B1 + v;
+        p2[i + 1] = p2[i] * B2 + v;
+      }
+      for (int c = 0; c + L <= C; ++c) {
+        ull h1 = p1[c + L] - p1[c] * pow1[L];
+        ull h2 = p2[c + L] - p2[c] * pow2[L];
+        H2 key{h1, h2};
+        if (!cand.count(key))
+          continue;
+        string sub = s.substr(c, L);
+        if (!got || sub < best) {
+          best = std::move(sub);
+          got = true;
+        }
       }
     }
-    if (found) {
+
+    if (got && ok_counts(g, R, C, L, x, y, best)) {
       cout << best << '\n';
       return 0;
+    }
+
+    // Hash collision: aggregated counts matched x,y but best substring did not.
+    vector<string> pool;
+    unordered_set<string> seen;
+    pool.reserve(R * max(0, C - L + 1));
+    for (int r = 0; r < R; ++r) {
+      const string &s = g[r];
+      if ((int)s.size() < L)
+        continue;
+      vector<ull> p1(C + 1), p2(C + 1);
+      for (int i = 0; i < C; ++i) {
+        int v = code(s[i]);
+        p1[i + 1] = p1[i] * B1 + v;
+        p2[i + 1] = p2[i] * B2 + v;
+      }
+      for (int c = 0; c + L <= C; ++c) {
+        ull h1 = p1[c + L] - p1[c] * pow1[L];
+        ull h2 = p2[c + L] - p2[c] * pow2[L];
+        if (!cand.count(H2{h1, h2}))
+          continue;
+        string sub = s.substr(c, L);
+        if (seen.insert(sub).second)
+          pool.push_back(std::move(sub));
+      }
+    }
+    sort(pool.begin(), pool.end());
+    for (const string &sub : pool) {
+      if (ok_counts(g, R, C, L, x, y, sub)) {
+        cout << sub << '\n';
+        return 0;
+      }
     }
   }
 

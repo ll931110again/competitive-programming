@@ -1,5 +1,5 @@
-// G – Get Jinxed! (stub – encrypted interactive ray simulation)
-// https://open.kattis.com/problems/getjinxed
+// M – OK Maps (stub)
+// https://open.kattis.com/problems/okmaps
 
 #include <bits/stdc++.h>
 using namespace std;

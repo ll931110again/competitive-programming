@@ -1,5 +1,5 @@
-// J – Popcorn Button (stub)
-// https://codesprintla25.kattis.com/problems/popcornbutton
+// P – Popcorn Button (stub — full solution needs BFS on microwave states)
+// https://open.kattis.com/problems/popcornbutton
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -10,13 +10,14 @@ int main() {
   int n, q;
   if (!(cin >> n >> q))
     return 0;
-  cin.ignore();
-  string line;
-  getline(cin, line);
-  getline(cin, line);
-  while (q--) {
-    int x;
-    cin >> x;
+  vector<string> broken(n);
+  for (int i = 0; i < n; ++i)
+    cin >> broken[i];
+  vector<int> xs(q);
+  for (int i = 0; i < q; ++i)
+    cin >> xs[i];
+  for (int x : xs) {
+    (void)x;
     cout << -1 << '\n';
   }
   return 0;

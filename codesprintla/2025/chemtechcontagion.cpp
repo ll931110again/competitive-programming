@@ -1,5 +1,5 @@
 // D – Chemtech Contagion
-// https://codesprintla25.kattis.com/problems/chemtechcontagion
+// https://open.kattis.com/problems/chemtechcontagion
 //
 // Close every vent that joins a room on the tree path between a and b with a
 // room off that path — otherwise gas reaches that off-path room via the vent.
