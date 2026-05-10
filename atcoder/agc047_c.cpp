@@ -6,6 +6,11 @@
 // x = g^k mod P → multiplication becomes addition of exponents mod (P-1).
 // Cyclic convolution of histogram H[k] = count at g^k gives ordered pair counts per
 // product residue. Subtract diagonal (p,p), multiply by g^m mod P, divide by 2 for i<j.
+//
+// Convolution coefficients are ≤ N² ≤ 4·10¹⁰, so one standard ~10⁹ NTT modulus would
+// overflow; either CRT (two primes) or a single NTT prime q with q > N² and enough
+// powers of two in (q−1) for the transform length. Padding is 2¹⁹ and linear conv
+// needs length 2²¹, so q ≡ 1 (mod 2²¹). Example: q = 19086·2²¹ + 1 > N²_max.
 
 #include <algorithm>
 #include <iostream>
@@ -111,10 +116,9 @@ static void ntt(vector<int64> &a, bool invert, int64 mod, int64 root) {
   }
 }
 
-static const int64 MOD1 = 998244353;
-static const int64 MOD2 = 1004535809;
-static const int64 ROOT1 = 3;
-static const int64 ROOT2 = 3;
+// q = 19086·2^21 + 1 > 200000² and 2^21 | (q−1); primitive root 5 (q−1 = 2^21·3·3181).
+static const int64 MOD = 40026243073LL;
+static const int64 ROOT = 5;
 
 static vector<int64> convolution_ll(const vector<int64> &aa, const vector<int64> &bb) {
   int need = (int)aa.size() + (int)bb.size() - 1;
@@ -123,38 +127,17 @@ static vector<int64> convolution_ll(const vector<int64> &aa, const vector<int64>
     n <<= 1;
   vector<int64> fa(n), fb(n);
   for (int i = 0; i < (int)aa.size(); ++i)
-    fa[i] = aa[i] % MOD1;
+    fa[i] = aa[i] % MOD;
   for (int i = 0; i < (int)bb.size(); ++i)
-    fb[i] = bb[i] % MOD1;
-  ntt(fa, false, MOD1, ROOT1);
-  ntt(fb, false, MOD1, ROOT1);
+    fb[i] = bb[i] % MOD;
+  ntt(fa, false, MOD, ROOT);
+  ntt(fb, false, MOD, ROOT);
   for (int i = 0; i < n; ++i)
-    fa[i] = (i128)fa[i] * fb[i] % MOD1;
-  ntt(fa, true, MOD1, ROOT1);
-
-  vector<int64> ga(n), gb(n);
-  for (int i = 0; i < (int)aa.size(); ++i)
-    ga[i] = aa[i] % MOD2;
-  for (int i = 0; i < (int)bb.size(); ++i)
-    gb[i] = bb[i] % MOD2;
-  ntt(ga, false, MOD2, ROOT2);
-  ntt(gb, false, MOD2, ROOT2);
-  for (int i = 0; i < n; ++i)
-    ga[i] = (i128)ga[i] * gb[i] % MOD2;
-  ntt(ga, true, MOD2, ROOT2);
+    fa[i] = (i128)fa[i] * fb[i] % MOD;
+  ntt(fa, true, MOD, ROOT);
 
   vector<int64> res(need);
-  int64 inv_mod1_mod2 = mod_inv(MOD1 % MOD2, MOD2);
-  i128 M = (i128)MOD1 * MOD2;
-  for (int i = 0; i < need; ++i) {
-    int64 a1 = fa[i];
-    int64 a2 = ga[i];
-    int64 t = (i128)((a2 - a1) % MOD2 + MOD2) * inv_mod1_mod2 % MOD2;
-    i128 x = (i128)a1 + (i128)MOD1 * t;
-    if (x >= M)
-      x %= M;
-    res[i] = (int64)x;
-  }
+  copy(fa.begin(), fa.begin() + need, res.begin());
   return res;
 }
 
