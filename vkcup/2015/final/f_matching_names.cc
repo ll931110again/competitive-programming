@@ -1,5 +1,5 @@
 /*
- * Solution for problem A: Matching Names.
+ * Solution for problem F: Matching Names.
  *
  * Insert all the strings into a prefix trie. Mark them with red and blue colors
  * (there could be multiple red and blue values in a terminal node).

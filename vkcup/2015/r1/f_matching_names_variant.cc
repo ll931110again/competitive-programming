@@ -1,5 +1,5 @@
 /*
- * Solution for problem A: Matching Names.
+ * Solution for VK Cup 2015 Finals F (Matching Names) — variant; not Round 1 A (contest 524).
  *
  * Insert all the strings into a prefix trie. Mark them with red and blue colors
  * (there could be multiple red and blue values in a terminal node).

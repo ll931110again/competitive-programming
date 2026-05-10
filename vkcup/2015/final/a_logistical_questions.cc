@@ -1,5 +1,5 @@
 /*
- * Solution for problem C: Logistical Questions.
+ * Solution for problem A: Logistical Questions.
  *
  * We extend the concept of distance to non node points on the tree.
  * Specifically, for any point t (that could be inside an edge), define a cost
