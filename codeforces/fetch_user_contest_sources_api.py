@@ -74,7 +74,8 @@ def extension_for_language(lang: str) -> str:
     if not lang or not lang.strip():
         return "txt"
     low = lang.strip().lower()
-    if low.startswith("kotlin"):
+    # Codeforces uses "Kotlin", "Kotlin 1.4", "Kotlin 2.2", etc.
+    if "kotlin" in low:
         return "kt"
     if low == "go":
         return "go"

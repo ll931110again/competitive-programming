@@ -103,6 +103,8 @@ def main() -> int:
                 str(cid),
                 "--out-dir",
                 out,
+                "--ext",
+                "kt",
                 "--api-env",
                 os.path.join(repo_root, args.api_env),
             ],
