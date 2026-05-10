@@ -1,6 +1,10 @@
 .DS_Store
+**/.DS_Store
+*.zip
 *.o
 midnightcodecup/2026/b_runner
+midnightcodecup/2026/c_runner
+midnightcodecup/2026/a_submit_tmp/
 __pycache__/
 midnightcodecup/2026/b_problem_outputs/
 midnightcodecup/2026/lost_cursor_b_submission.zip
