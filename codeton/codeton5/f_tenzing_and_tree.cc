@@ -1,80 +1,70 @@
+// Codeforces 1842 (CodeTON Round 5 (Div. 1 + Div. 2, Rated, Prizes!)) — F. Tenzing and Tree
+// Submission: https://codeforces.com/contest/1842/submission/334322452
+
 #ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
+    #include <bits/stdc++.h>
 #endif
 
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
 #include <iostream>
+#include <stack>
 #include <map>
 #include <queue>
-#include <stack>
 #include <vector>
-#define maxn 105
+#define maxn 5005
 using namespace std;
 
-int n, m;
-long long dist[maxn][maxn];
-long long inf = 1e18;
+int n;
+vector<int> adj[maxn];
+int ans[maxn];
+bool vis[maxn];
 
-int orders[maxn];
-vector<pair<string, long long>> ops;
+void solve(int root) {
+    memset(vis, false, sizeof vis);
+
+    queue< pair<int,int> > q;
+    q.push({root, 0});
+    vis[root] = true;
+
+    int k = 0, adds = 0, subs = 0;
+    while (!q.empty()) {
+        auto u = q.front().first, depth = q.front().second;
+        q.pop();
+
+        k++;
+        adds += (n - 1);
+        subs += 2 * depth;
+        ans[k] = max(ans[k], adds - subs);
+
+        for (auto v : adj[u]) if (!vis[v]) {
+            vis[v] = true;
+            q.push({v, depth + 1});
+        }
+    }
+}
 
 int main() {
-  ios::sync_with_stdio(false);
-  cin.tie(nullptr);
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
 
-  for (int i = 1; i <= n; i++) {
-    for (int j = 1; j <= n; j++) {
-      dist[i][j] = (i == j) ? 0 : inf;
+    cin >> n;
+    for (int i = 1; i < n; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
     }
-  }
-  cin >> n >> m;
-  for (int i = 0; i < m; i++) {
-    int u, v, w;
-    cin >> u >> v >> w;
-    dist[u][v] = dist[v][u] = w;
-  }
 
-  for (int k = 1; k <= n; k++) {
-    for (int u = 1; u <= n; u++) {
-      for (int v = 1; v <= n; v++) {
-        dist[u][v] = min(dist[u][v], dist[u][k] + dist[k][v]);
-      }
+    for (int root = 1; root <= n; root++) {
+        solve(root);
     }
-  }
 
-  if (dist[1][n] >= inf) {
-    cout << "inf" << endl;
+    for (int i = 0; i <= n; i++) {
+        cout << ans[i] << ' ';
+    }
+    cout << endl;
+
     return 0;
-  }
-
-  for (int i = 1; i <= n; i++) {
-    orders[i] = i;
-  }
-
-  sort(orders + 1, orders + n + 1,
-       [&](int u, int v) { return (dist[1][u] < dist[1][v]); });
-
-  for (int i = 1; i < n; i++)
-    if (dist[1][orders[i]] < dist[1][orders[i + 1]]) {
-      long long diffs = dist[1][orders[i + 1]] - dist[1][orders[i]];
-      string s = "";
-      for (int u = 0; u < n; u++) {
-        s += '0';
-      }
-
-      for (int j = 1; j <= i; j++) {
-        s[orders[j] - 1] = '1';
-      }
-
-      ops.push_back({s, diffs});
-    }
-
-  cout << dist[1][n] << ' ' << ops.size() << endl;
-  for (auto [s, t] : ops) {
-    cotu << s << ' ' << t << endl;
-  }
-
-  return 0;
 }

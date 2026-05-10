@@ -8,3 +8,8 @@ midnightcodecup/2026/a_submit_tmp/
 __pycache__/
 midnightcodecup/2026/b_problem_outputs/
 midnightcodecup/2026/lost_cursor_b_submission.zip
+
+# Codeforces API (local only — never commit)
+codeforces/.cf_api.env
+.cf_api.env
+codeforces/.cf_cookie

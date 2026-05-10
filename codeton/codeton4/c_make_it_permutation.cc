@@ -1,5 +1,9 @@
+// Codeforces 1810 (CodeTON Round 4 (Div. 1 + Div. 2, Rated, Prizes!)) — C. Make It Permutation
+// Submission: https://codeforces.com/contest/1810/submission/201603958
+
 #include <algorithm>
 #include <cmath>
+#include <cstdio>
 #include <cstdlib>
 #include <iostream>
 #include <unordered_set>
@@ -11,29 +15,28 @@ int T, n, deleteCost, insertCost;
 int a[maxn];
 
 long long solve() {
-  cin >> n >> deleteCost >> insertCost;
-  for (int i = 0; i < n; i++) {
-    cin >> a[i];
-  }
-  sort(a, a + n);
+    scanf("%d %d %d", &n, &deleteCost, &insertCost);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &a[i]);
+    }
+    sort(a, a + n);
 
-  // first case corresponds to delete everything and insert 1.
-  long long minCost = 1LL * n * deleteCost + insertCost;
-  unordered_set<int> reps;
-  for (int i = 0; i < n; i++) {
-    reps.insert(a[i]);
-    minCost = min((unsigned long long)minCost,
-                  1LL * (i + 1 - reps.size() + (n - 1 - i)) * deleteCost +
-                      1LL * (a[i] - reps.size()) * insertCost);
-  }
+    // first case corresponds to delete everything and insert 1.
+    long long minCost = 1LL * n * deleteCost + insertCost;
+    unordered_set<int> reps;
+    for (int i = 0; i < n; i++) {
+        reps.insert(a[i]);
+        minCost = min((unsigned long long) minCost,
+                       1LL * (i + 1 - reps.size() + (n - 1 - i)) * deleteCost + 1LL * (a[i] - reps.size()) * insertCost);
+    }
 
-  return minCost;
+    return minCost;
 }
 
 int main() {
-  cin >> T;
-  while (T--) {
-    cout << solve() << '\n';
-  }
-  return 0;
+    scanf("%d", &T);
+    while (T--) {
+        printf("%lld\n", solve());
+    }
+    return 0;
 }

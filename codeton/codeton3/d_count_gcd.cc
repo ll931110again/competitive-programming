@@ -1,5 +1,5 @@
-// Codeforces 1810 (CodeTON Round 4 (Div. 1 + Div. 2, Rated, Prizes!)) — G. The Maximum Prefix
-// Submission: https://codeforces.com/contest/1810/submission/331018545
+// Codeforces 1750 (CodeTON Round 3 (Div. 1 + Div. 2, Rated, Prizes!)) — D. Count GCD
+// Submission: https://codeforces.com/contest/1750/submission/334473118
 
 #ifdef ONLINE_JUDGE
     #include <bits/stdc++.h>
@@ -13,7 +13,7 @@
 #include <map>
 #include <queue>
 #include <vector>
-#define maxn 5005
+#define maxn 200005
 using namespace std;
 
 template <unsigned M_> struct ModInt {
@@ -53,52 +53,70 @@ template <unsigned M_> struct ModInt {
   friend std::ostream &operator<<(std::ostream &os, const ModInt &a) { return os << a.x; }
 };
  
-constexpr unsigned MOD = 1'000'000'007;
+constexpr unsigned MOD = 998'244'353;
 using Mint = ModInt<MOD>;
 
-int T, n;
-int x[maxn], y[maxn], h[maxn];
+int T, n, m;
+int a[maxn];
+vector<int> factors;
 
-Mint p[maxn];
-Mint dp[maxn][maxn];
-
-void solve() {
-    for (int i = 1; i <= n; i++) {
-        p[i] = x[i];
-        p[i] /= y[i];
-    }
-
-    for (int i = 0; i <= n; i++) {
-        dp[0][i] = h[i];
-    }
-
-    for (int i = 1; i <= n; i++) {
-        for (int j = 0; j <= n; j++) {
-            dp[i][j] = p[i] * dp[i - 1][j + 1];
-            dp[i][j] += (1 - p[i]) * dp[i - 1][max(j - 1, 0)];
+Mint solve() {
+    for (int i = 1; i < n; i++) {
+        if (a[i - 1] % a[i] > 0) {
+            return 0;
         }
     }
 
-    for (int i = 1; i <= n; i++) {
-        cout << dp[i][0] << ' ';
+    factors.clear();
+    int tmp = a[0];
+    for (int i = 2; i * i <= m; i++) if (tmp % i == 0) {
+        factors.push_back(i);
+        while (tmp % i == 0) {
+            tmp /= i;
+        }
     }
-    cout << endl;
+    if (tmp > 1) {
+        factors.push_back(tmp);
+    }
+
+    Mint ans = 1;
+    for (int i = 1; i < n; i++) {
+        Mint value = 0;
+
+        tmp = a[i - 1] / a[i];
+        vector<int> i_factors;
+        for (auto x : factors) if (tmp % x == 0) {
+            i_factors.push_back(x);
+        }
+
+        int k = i_factors.size();
+        for (int mask = 0; mask < (1 << k); mask++) {
+            int prod = 1;
+            int sgn = 1;
+            for (int j = 0; j < k; j++) if (mask & (1 << j)) {
+                sgn *= -1;
+                prod *= i_factors[j];
+            }
+            value += sgn * (m / a[i]) / prod;
+        }
+
+        ans *= value;
+    }
+
+    return ans;
 }
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
     cin >> T;
     while (T--) {
-        cin >> n;
-        for (int i = 1; i <= n; i++) {
-            cin >> x[i] >> y[i];
+        cin >> n >> m;
+        for (int i = 0; i < n; i++) {
+            cin >> a[i];
         }
-        for (int i = 0; i <= n; i++) {
-            cin >> h[i];
-        }
-        solve();
+        cout << solve() << endl;
     }
     return 0;
 }
