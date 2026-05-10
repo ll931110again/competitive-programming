@@ -7,21 +7,24 @@
 
 using namespace std;
 
+// Longest even-length palindrome substring (compare chars at i+k vs i-k-1).
+// Bounds use r = i+k-1 (not i+k); see e-maxx / proven naive checks.
 template <class F>
 static int longest_even_manacher(int n, F getch) {
     vector<int> d2(n, 0);
     int best = 0;
-    for (int i = 0, l = 0, r = -1; i < n; i++) {
+    int l = 0, r = -1;
+    for (int i = 0; i < n; i++) {
         int k = (i > r) ? 0 : min(d2[l + r - i + 1], r - i + 1);
-        while (i - k - 1 >= 0 && i + k < n &&
-               getch(i - k - 1) == getch(i + k)) {
-            k++;
+        while (i + k < n && i - k - 1 >= 0 &&
+               getch(i + k) == getch(i - k - 1)) {
+            ++k;
         }
-        d2[i] = k--;
+        d2[i] = k;
         best = max(best, 2 * d2[i]);
-        if (i + k > r) {
+        if (i + k - 1 > r) {
             l = i - k;
-            r = i + k;
+            r = i + k - 1;
         }
     }
     return best;

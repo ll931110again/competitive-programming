@@ -29,7 +29,7 @@ g++ -std=c++17 -O2 -I "$(git rev-parse --show-toplevel)" ocarinaandchime.cc -o o
 
 ## Known gaps / risks
 
-- **`leftshift.cc`**: Correct; builds the rotated string explicitly each trial. Still \(\Theta(n^3)\) (`n ≤ 2000`) — may time out on worst-case limits.
+- **`leftshift.cc`**: Enumerates every substring shift once (explicit string build). Even-length Manacher must mirror around gaps using \(r=i+k-1\) bounds (see e-maxx); an earlier \(r=i+k\) variant over-counted. Still \(\Theta(n^3)\) for \(n \leq 2000\) — may time out on worst-case limits.
 - **`lynelmelee.cc`**: Large instances use randomized hill climbing (not proven optimal). If WA, replace with the contest’s intended DP / ordering proof.
 - **`multiversemadness.cc`**: Models influence as connectivity in the undirected skeleton after deleting `F`. This matches the official sample, but may differ from a fully careful treatment of arbitrary Boolean gates / probabilities on hidden tests.
 - **`cutthecake2.cc`**: Assumes `query == 0` on an axis-aligned box **iff** that box contains exactly one final piece (aligned union). If Kattis excludes boundary cuts differently, the `(k ↔ query)` checks may need adjustment. Watch total query count on worst cases.
