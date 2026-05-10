@@ -1,3 +1,7 @@
+/*
+    E — Lynel Melee (user AC)
+*/
+
 #ifdef ONLINE_JUDGE
     #include <bits/stdc++.h>
 #endif
@@ -63,7 +67,7 @@ int main() {
                     nxt[t] |= cur[t - i];
                 }
             }
-            for (int t = 0; t <= n; t++) {
+            for (int t = 0; t <= bound; t++) {
                 cur[t] = nxt[t];
             }
         }
