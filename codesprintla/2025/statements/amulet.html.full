@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html class="" lang="en">
+<head>
+    <!-- Load sentry as early as possible -->
+            <script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" src="https://js.sentry-cdn.com/1ad5e9767ad243d396a93ef40135e743.min.js" crossorigin="anonymous" data-lazy="no"></script>
+
+    <script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" type="module">
+        Sentry.onLoad(function() {
+            Sentry.init({
+                dsn: "https://1ad5e9767ad243d396a93ef40135e743:0f66eac85d88443baa349f5bc2497f28@sentry.io/271015",
+                release: "928a0f0d57f51a63ecafed2d37fa2c422f3ec122",
+                environment: "production",
+                whitelistUrls: [
+                    /https?:\/\/open\.kattis\.com/                 ],
+                ignoreErrors: [
+                    "Non-Error exception captured",                     "Non-Error promise rejection captured",                    'ResizeObserver loop limit exceeded',                    'Can\'t find variable: zaloJSV2'                ],
+                denyUrls: ['/static\.cloudflareinsights\.com/'],                 autoSessionTracking: false,
+                integrations: [                    new Sentry.BrowserTracing(),
+                ],
+                tracesSampleRate: 0,
+                profilesSampleRate: 1.0,
+                replaysSessionSampleRate: 0,                 replaysOnErrorSampleRate: 0,                 tracePropagationTargets: ["localhost", /https?:\/\/open\.kattis\.com/],             });
+                        Sentry.configureScope((scope) => scope.setTransactionName("problems_view"));         })
+    </script>
+
+    <meta charset="UTF-8" >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Amulet &ndash; Kattis, Kattis</title>
+
+    <!-- Jquery and Jquery-ui -->
+    <link href="/assets/af09957458029929306917fcfc6e05c3/jquery-ui-dist/jquery-ui.theme.min.css" rel="stylesheet">
+    <script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" src="/assets/af09957458029929306917fcfc6e05c3/jquery/dist/jquery.min.js"></script>
+    <script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" src="/assets/af09957458029929306917fcfc6e05c3/jquery-ui-dist/jquery-ui.min.js"></script>
+
+    <!-- Timezone Cookie -->
+    <script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/modules/timezone.js"></script>
+
+    <!-- Fonts/Icons -->
+    <link href="/assets/af09957458029929306917fcfc6e05c3/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+
+            <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/merriweather/300.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/merriweather/300-italic.css" rel="stylesheet">
+            <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/merriweather/400.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/merriweather/400-italic.css" rel="stylesheet">
+            <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/merriweather/700.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/merriweather/700-italic.css" rel="stylesheet">
+                <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/300.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/300-italic.css" rel="stylesheet">
+            <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/400.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/400-italic.css" rel="stylesheet">
+            <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/500.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/500-italic.css" rel="stylesheet">
+            <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/700.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/700-italic.css" rel="stylesheet">
+    
+    <!-- DateRangePicker CSS -->
+    <link href="/assets/af09957458029929306917fcfc6e05c3/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
+    <!-- Editable and Select2 -->
+    <link href="/assets/af09957458029929306917fcfc6e05c3/select2/dist/css/select2.css" rel="stylesheet">
+
+            <link rel="apple-touch-icon-precomposed" sizes="57x57"   href="/images/favicon/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/favicon/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72"   href="/images/favicon/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/favicon/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon-precomposed" sizes="60x60"   href="/images/favicon/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/images/favicon/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon-precomposed" sizes="76x76"   href="/images/favicon/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/images/favicon/apple-touch-icon-152x152.png">
+        <link rel="icon" type="image/png" href="/images/favicon/favicon-196x196.png" sizes="196x196">
+        <link rel="icon" type="image/png" href="/images/favicon/favicon-96x96.png"   sizes="96x96">
+        <link rel="icon" type="image/png" href="/images/favicon/favicon-32x32.png"   sizes="32x32">
+        <link rel="icon" type="image/png" href="/images/favicon/favicon-16x16.png"   sizes="16x16">
+        <link rel="icon" type="image/png" href="/images/favicon/favicon-128.png"     sizes="128x128">
+        <link rel="shortcut icon"         href="/images/favicon/favicon.ico">
+        <meta name="application-name"                content="Kattis, Kattis">
+        <meta name="msapplication-TileColor"         content="#FFFFFF">
+        <meta name="msapplication-TileImage"         content="/images/favicon/mstile-144x144.png">
+        <meta name="msapplication-square70x70logo"   content="/images/favicon/mstile-70x70.png">
+        <meta name="msapplication-square150x150logo" content="/images/favicon/mstile-150x150.png">
+        <meta name="msapplication-wide310x150logo"   content="/images/favicon/mstile-310x150.png">
+        <meta name="msapplication-square310x310logo" content="/images/favicon/mstile-310x310.png">
+    
+    <!-- Own CSS -->
+    <link rel="stylesheet" href="/css/5c201b1cc07aece6b2d5377eae27226a/style.css">
+    <style type="text/css">           .logo {
+         background-color: ;
+     }
+          :root {
+                      --branding-border: linear-gradient(rgb(240,176,52), rgb(240,176,52));
+              }
+
+          div.page-content.clearfix.above-everything.alert.alert-danger { color: #31708f; background: #d9edf7; border-color: #bce8f1; }
+div.page-content.clearfix.above-everything.alert.alert-danger div.main-content { padding-bottom: 0; }
+
+         </style>
+
+    <script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" type="text/javascript">
+        window.page_loaded_at = new Date();
+        jQuery.noConflict();
+    </script>
+
+    
+    <meta name="robots" content="noindex">
+    <script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/non-es6/mathjax_conf.js" defer></script>
+<script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" src="/assets/af09957458029929306917fcfc6e05c3/mathjax/es5/tex-mml-chtml.js" defer id="MathJax-script"></script>
+    <script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" defer src="/assets/af09957458029929306917fcfc6e05c3/ace-builds/src-min-noconflict/ace.js"></script>
+
+</head>
+
+<body class=" l-body_grid"  >
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="l-page_header">
+    <div class="page_header-arrow_expand_collapse">
+        <i class="page_header-arrow_expand_collapse-arrow"></i>
+    </div>
+    <div class="page_header-wrapper">
+        <div class="logo-container">
+            <a class="logo-link" href="/" title="Kattis">
+                <img class="logo" src="/images/site-logo?v=0a3f6018aacf449381741e45cf0ff6ba" alt="Kattis logo" />
+            </a>
+            <h4 class="logo-container-text">Kattis</h4>
+            <button class="menu_mobile_link" >
+                <i class="fas fa-bars menu_mobile_link_icon"></i>
+            </button>
+            <script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/pages/master/nav.js"></script>
+        </div>
+        <div class="branding_border"></div>
+        <div class="page_header-content">
+            <nav>
+                <ul class="main_menu">
+                                                                    <li>
+                            <a  href="/problems" class="main_menu-item main_menu-item_link  is-main_menu-item-active" title="Problems">
+                                                                    <i class="fas fa-puzzle-piece main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name ">Problems</span>
+                                                            </a>
+                        </li>
+                                                                    <li>
+                            <a  href="/contests" class="main_menu-item main_menu-item_link  " title="Contests">
+                                                                    <i class="fas fa-award main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name ">Contests</span>
+                                                            </a>
+                        </li>
+                                                                    <li>
+                            <a  href="/challenge" class="main_menu-item main_menu-item_link  " title="Challenge">
+                                                                    <i class="fas fa-star main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name beta_label">Challenge</span>
+                                                            </a>
+                        </li>
+                                                                    <li>
+                            <a  href="/ranklist" class="main_menu-item main_menu-item_link  " title="Ranklists">
+                                                                    <i class="fas fa-trophy main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name ">Ranklists</span>
+                                                            </a>
+                        </li>
+                                                                    <li>
+                            <a  href="/jobs" class="main_menu-item main_menu-item_link  " title="Jobs">
+                                                                    <i class="fas fa-suitcase main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name ">Jobs</span>
+                                                            </a>
+                        </li>
+                                                                    <li>
+                            <a  href="/languages" class="main_menu-item main_menu-item_link  " title="Languages">
+                                                                    <i class="fas fa-code main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name ">Languages</span>
+                                                            </a>
+                        </li>
+                                                                    <li>
+                            <a  href="/info" class="main_menu-item main_menu-item_link  " title="Info">
+                                                                    <i class="fas fa-info main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name ">Info</span>
+                                                            </a>
+                        </li>
+                                                                    <li>
+                            <a  href="https://support.kattis.com" class="main_menu-item main_menu-item_link  " title="Help">
+                                                                    <i class="fas fa-question main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name ">Help</span>
+                                                            </a>
+                        </li>
+                                    </ul>
+            </nav>
+                            <div class="header_item_margin search-lower">
+                    <label for="search_input" class="search-label search-label-right">Search</label>
+                    <form id="search_form" method="GET" action="/search" class="search">
+                                                    <img src="/images/site/header/logo-empty.png?0bb770=" alt="Kattis Cat" class="search-mascot" />
+                                                <input id="search_input" type="search" name="q" class="search-input" placeholder="Search Kattis" />
+                        <i id="search_submit" class="fas fa-search search-icon"></i>
+                    </form>
+                </div>
+                    </div>
+    </div>
+</header>
+
+    <div class="l-main_area">
+        
+
+        
+        <main class="flex flex-col grow content_padding">
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_bar ">
+    <script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/pages/master/top_bar.js"></script>
+    <div class="branding_border"></div>
+            <div class="top_bar-content-wrapper">
+            <div class="top_bar-section top_bar-section-large">
+                <div class="breadcrumb top_bar-item">
+                                                                        <a href="/problems" class="breadcrumb-link">Problems</a><span class="breadcrumb-divider">/</span>
+                                                                                    <span class="breadcrumb-current">
+                                                    The Amulet
+                                            </span>
+                </div>
+
+                            </div>
+
+            <div class="top_bar-section collapsible-menu-group-right top_bar-section-small items-center">
+                
+                
+
+                                    <a href="/login" class="button button-primary button-small">Log in</a>
+                            </div>
+        </div>
+    
+    
+
+    </div>
+
+            
+            
+
+            
+            
+            
+
+<script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" defer src="/assets/af09957458029929306917fcfc6e05c3/ace-builds/src-min-noconflict/ace.js"></script>
+<script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/modules/highlight.js"></script>
+<script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/modules/mobile_tabs.js"></script>
+<script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/modules/load_select.js"></script>
+<script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/pages/problems/view.js"></script>
+<script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" type="application/json" id="javascript-translations">
+    { "copy_msg": "Copied to clipboard!" }
+</script>
+
+<div class="l-book">
+    <div class="book-container">
+        <div id="bookmark" class="book-bookmark is-hidden">
+            <div class="book-bookmark-text" data-cy="instruction-bookmark">
+                View problem statement: <span class="book-bookmark-text-subtext">The Amulet</span><i class="fas fa-chevron-left book-bookmark-text-icon"></i>
+            </div>
+        </div>
+        <div id="instructions-container" class="book-page-container grow book-page-fixed_width h-max-content">
+            <article class="book-page">
+                <div class="book-page-fixed_width">
+                    <div id="instructions-close" class="book-close"><i class="fas fa-chevron-left book-close-icon"></i>Hide</div>
+                                        <h1 class="book-page-heading">The Amulet</h1>
+                                                                                                                            
+  <div class="problembody">
+    <p>Caitlyn is on another case. Her biggest clue this time is a
+    small amulet containing an <span class="tex2jax_process">$R
+    \times C$</span> grid of characters. From an informant, she
+    learned that the amulet has a secret code. She’s not sure what
+    the code is yet, but knows it satisfies the following
+    properties:</p>
+    <ul class="itemize">
+      <li>
+        <p>The code appears as a substring in exactly <span class=
+        "tex2jax_process">$x$</span> rows, and does not appear in
+        any other rows.</p>
+      </li>
+      <li>
+        <p>The code appears as a substring in exactly <span class=
+        "tex2jax_process">$y$</span> columns, and does not appear
+        in any other columns.</p>
+      </li>
+      <li>
+        <p>The code is maximal length of all strings that satisfy
+        the first two conditions.</p>
+      </li>
+      <li>
+        <p>The code is lexicographically smallest of all strings
+        that satisfy the first three conditions.</p>
+      </li>
+      <li>
+        <p>The code has length greater than zero.</p>
+      </li>
+    </ul>
+    <p>A string appears as a substring in a row if it appears as a
+    contiguous sequence of characters in that row when read from
+    left to right. A string appears as a substring in a column if
+    it appears as a contiguous sequence of characters in that
+    column when read from top to bottom. For two strings of equal
+    length, <span class="tex2jax_process">$S$</span> and
+    <span class="tex2jax_process">$T$</span>, <span class=
+    "tex2jax_process">$S$</span> is lexicographically smaller than
+    <span class="tex2jax_process">$T$</span> if there exists an
+    index <span class="tex2jax_process">$k$</span> such that for
+    all <span class="tex2jax_process">$i &lt; k$</span>,
+    <span class="tex2jax_process">$S_i = T_i$</span>, and
+    <span class="tex2jax_process">$S_k$</span> precedes
+    <span class="tex2jax_process">$T_k$</span> in alphabetical
+    order.</p>
+    <p>Caitlyn knows <span class="tex2jax_process">$x$</span> and
+    <span class="tex2jax_process">$y$</span>, but she still can’t
+    spot the code, and she’s starting to suspect that the informant
+    was just wasting her time. Can you create an algorithm to help
+    Caitlyn crack the code?</p>
+    <h2>Input</h2>
+    <p>The first line contains four integers <span class=
+    "tex2jax_process">$R$</span>, <span class=
+    "tex2jax_process">$C$</span>, <span class=
+    "tex2jax_process">$x$</span>, and <span class=
+    "tex2jax_process">$y$</span> (<span class="tex2jax_process">$1
+    \leq R \times C \leq 2 \cdot 10^5$</span>, <span class=
+    "tex2jax_process">$0 \leq x \leq R$</span>, <span class=
+    "tex2jax_process">$0 \leq y \leq C$</span>, <span class=
+    "tex2jax_process">$x + y &gt; 0$</span>). The next <span class=
+    "tex2jax_process">$R$</span> lines each contain a string of
+    length <span class="tex2jax_process">$C$</span> consisting of
+    lowercase letters <tt class="ttfamily">a-z</tt>, representing
+    the amulet.</p>
+    <h2>Output</h2>
+    <p>Output a single line containing the secret code as described
+    above. If no such code exists, output <tt class=
+    "ttfamily">-1</tt> instead.</p>
+    <table class="sample" summary="sample data">
+      <tr>
+        <th>Sample Input 1</th>
+        <th>Sample Output 1</th>
+      </tr>
+      <tr>
+        <td>
+          <pre>3 3 2 2
+xba
+bab
+acc
+</pre>
+        </td>
+        <td>
+          <pre>ba
+</pre>
+        </td>
+      </tr>
+    </table>
+    <table class="sample" summary="sample data">
+      <tr>
+        <th>Sample Input 2</th>
+        <th>Sample Output 2</th>
+      </tr>
+      <tr>
+        <td>
+          <pre>3 3 2 2
+aba
+bab
+acc
+</pre>
+        </td>
+        <td>
+          <pre>ab
+</pre>
+        </td>
+      </tr>
+    </table>
+    <table class="sample" summary="sample data">
+      <tr>
+        <th>Sample Input 3</th>
+        <th>Sample Output 3</th>
+      </tr>
+      <tr>
+        <td>
+          <pre>3 3 2 2
+aba
+bab
+abc
+</pre>
+        </td>
+        <td>
+          <pre>ba
+</pre>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+                                                        </div>
+            </article>
+        </div>
+
+        <div id="editor-container" class="book-page-container grow static-fixed-parent" data-problem-name="amulet"
+                                                                                        data-submit-url="/problems/amulet/submit"
+                                                                                        data-sourcelim="131072"
+                                                                                        data-may-submit="false"
+                                                                                                                                                                                data-csrf-token="8375314462340101366567859258741033141071"
+                                                                                                                                                                                data-current-tab="edit-and-submit-tab"
+                                                                                        data-default-tab="edit-and-submit-tab">
+            <div class="tab static-fixed-content l-strip_list-flex">
+                    <div class="strip-item-plain problem-view-tab-nav-container"><nav class="tab-nav problem-view-tab-nav" data-mobile-select-classes="is-hidden@md tab-select-js" data-active-page="edit-and-submit-tab"><a id="edit-and-submit-tab-link" class="tab-nav-item tab-nav-js active" title="Edit &amp; Submit" data-tab-id-to-open="edit-and-submit-tab">Edit &amp; Submit</a><a id="metadata-tab-link" class="tab-nav-item tab-nav-js " title="Metadata" data-tab-id-to-open="metadata-tab">Metadata</a><a id="submissions-tab-link" class="tab-nav-item tab-nav-js " title="My Submissions" data-tab-id-to-open="submissions-tab">My Submissions</a></nav><div class="tabs-close book-close-tabs">Hide <i class="fas fa-chevron-right book-close-icon"></i></div></div>
+                    <div id="edit-and-submit-tab" class="overflow-y-auto grow " data-tabs-container="#editor-container">
+                                                    <div id="editor-container-intro" class="editor-container-content">
+                                <div class="editor-container-intro-half">
+                                    <div class="editor-container-intro-half-content">
+                                        <div class="editor-container-intro-content">
+                                            <p class="editor-container-intro-text">
+                                                                                                    Please log in to submit a solution to this problem                                                                                            </p>
+                                                                                            <a href="/login" class="button button-primary button-medium editor-container-intro-button">Log in</a>
+                                                                                    </div>
+                                    </div>
+                                </div>
+                                <div class="editor-drag_highlight is-hidden">
+                                </div>
+                            </div>
+                                            </div>
+                    <div id="metadata-tab" class="is-hidden scrollable-container" data-tabs-container="#editor-container" data-bookmark-label="Metadata">
+                                                <div class="overflow-y-auto metadata-grid-container">
+                            <div class="metadata-grid">
+                                <div class="card my-0 gap-3 metadata-cpu-card"><i class="fas fa-tachometer-alt text-3xl self-center" style="color: #ced5e4;"></i><div class="flex flex-col gap-2 self-center"><span class="info_label">CPU Time limit</span><span class="text-lg font-bold text-blue-200">5 seconds</span></div></div> <div class="card my-0 gap-3 metadata-memory-card"><i class="fas fa-memory text-3xl self-center" style="color: #ced5e4;"></i><div class="flex flex-col gap-2 self-center"><span class="info_label">Memory limit</span><span class="text-lg font-bold text-blue-200">1024 MB</span></div></div> <div class="card my-0 gap-3 metadata-difficulty-card"><span class="self-center whitespace-nowrap difficulty_number difficulty_number-problem_view difficulty_hard">9.4</span><div class="flex flex-col gap-2 self-center"><span class="info_label">Difficulty</span><span class="text-lg font-bold text-blue-200">Hard</span></div></div>
+                                <div class="card my-0 metadata-links-card"><div class="flex flex-col gap-3"><span class="info_label">Links</span><a href="/problems/amulet/statistics" class="flex gap-3"><i class="fas fa-chart-column text-blue-100 self-center"></i>Statistics</a></div></div>     <div class="card my-0 metadata-downloads-card"><div class="flex flex-col gap-3"><span class="info_label">Downloads</span><a href="/problems/amulet/file/statement/samples.zip" class="flex gap-3" download="amulet.zip"}><i class="fas fa-file-arrow-down text-blue-100 self-center"></i>Sample data files</a></div></div>    <div class="card my-0 metadata-license-card"><div class="flex flex-col gap-3"><span class="info_label">Source &amp; License</span><span class="flex flex-wrap gap-3"><i class="fas fa-feather-pointed text-gray-200 self-center" title="Author"></i><a href="/problem-authors/Andy%20Polizzotto">Andy Polizzotto</a></span><span class="flex gap-3"><a href="/problem-sources/CodeSprint%20LA%202025">CodeSprint LA 2025</a></span><span class="flex gap-3"><a rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/" style="vertical-align: middle;"><img class="problem-license" alt="Creative Commons License (cc by-sa)" src="https://licensebuttons.net/l/by-sa/3.0/80x15.png" /></a></span></div></div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                                            <div id="submissions-tab" class="book-page static-fixed-content-no-expand is-hidden" data-tabs-container="#editor-container" data-bookmark-label="Submissions">
+                            <p align="center">
+                                You haven&#039;t made any submissions on this problem yet.                            </P>
+                        </div>
+                                                                                
+            </div>
+        </div>
+        <div id="bookmark-editor" class="book-bookmark is-hidden">
+            <div class="book-bookmark-text" data-cy="editor-bookmark">
+                Editor: <span id="editor-bookmark-label" class="book-bookmark-text-subtext" data-intro-text="Intro"></span><i class="fas fa-chevron-right book-bookmark-text-icon"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        </main>
+
+        
+
+
+
+    <footer class="l-footer ">
+        <span class="text-center text-sm divider-separated-list">
+            <a href="/contact">Contact</a>
+            <a href="https://status.kattis.com">System Status</a>
+            <a rel="terms-of-service" href="/contracts/current/tos">Terms of Service</a>
+            <a rel="privacy-policy" href="/contracts/current/privacy_policy">Privacy Policy</a>
+        </span>
+    </footer>
+
+    </div>
+
+
+<script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" src="/assets/af09957458029929306917fcfc6e05c3/moment/min/moment.min.js"></script>
+<script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" src="/assets/af09957458029929306917fcfc6e05c3/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" src="/assets/af09957458029929306917fcfc6e05c3/select2/dist/js/select2.full.min.js"></script>
+
+
+
+        <script defer nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" src="https://status.kattis.com/embed/script.js"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" nonce="d49b913d9b3abeb41095551d308450916e716f90505375761a0c44c075bb340c" data-cf-beacon='{"version":"2024.11.0","token":"6651308a007d4d459b12876077322bfb","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
