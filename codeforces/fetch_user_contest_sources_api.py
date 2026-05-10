@@ -69,6 +69,32 @@ def name_slug(name: str) -> str:
     return re.sub(r"_+", "_", s).strip("_")
 
 
+def extension_for_language(lang: str) -> str:
+    """Pick a file extension from Codeforces ``programmingLanguage``."""
+    if not lang or not lang.strip():
+        return "txt"
+    low = lang.strip().lower()
+    if low.startswith("kotlin"):
+        return "kt"
+    if low == "go":
+        return "go"
+    if "python" in low:
+        return "py"
+    if "javascript" in low or "node" in low:
+        return "js"
+    if "rust" in low:
+        return "rs"
+    if "go " in low or low == "go":
+        return "go"
+    if "java" in low and "javascript" not in low:
+        return "java"
+    if "c++" in low or "gnu c++" in low or "clang" in low or "gcc" in low:
+        return "cc"
+    if "c#" in low or "mono c#" in low:
+        return "cs"
+    return "txt"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--handle", required=True)
@@ -78,6 +104,12 @@ def main() -> int:
         "--api-env",
         default="codeforces/.cf_api.env",
         help="Path with CODEFORCES_API_KEY and CODEFORCES_API_SECRET",
+    )
+    ap.add_argument(
+        "--ext",
+        default=None,
+        metavar="EXT",
+        help="Force file extension (e.g. kt). Default: infer from submission language.",
     )
     args = ap.parse_args()
 
@@ -162,7 +194,18 @@ def main() -> int:
         title = index_to_title.get(idx, sub["problem"].get("name", idx))
         slug = name_slug(title)
         prefix = idx.lower().replace("+", "plus")
-        fn = f"{prefix}_{slug}.cc"
+        ext = (
+            args.ext.lstrip(".")
+            if args.ext
+            else extension_for_language(sub.get("programmingLanguage", ""))
+        )
+        if ext == "txt":
+            print(
+                f"Note: unknown language {sub.get('programmingLanguage')!r} "
+                f"for {idx}, using .txt",
+                file=sys.stderr,
+            )
+        fn = f"{prefix}_{slug}.{ext}"
         path = os.path.join(out_dir, fn)
 
         src_raw = base64.b64decode(sub["sourceBase64"]).decode("utf-8", errors="replace")
