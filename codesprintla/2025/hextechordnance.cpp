@@ -1,10 +1,18 @@
 // G – Hextech Ordnance
-// https://codesprintla25.kattis.com/problems/hextechordnance
+// https://open.kattis.com/problems/hextechordnance
 //
-// Count subarrays (length ≥ 2) with max−min ≤ K using monotone deques in O(n).
-// For K ≥ global spread D = max(a)−min(a), every subarray qualifies, so count = n(n−1)/2.
+// Stable iff for every k ∈ [1, n], there are ≥ k subarrays [i, j] with i < j,
+// length ≥ 2, and max(a[i..j]) − min(a[i..j]) ≤ k.
+//
+// Let F(k) = # of such subarrays for threshold k. Need F(k) ≥ k for all k.
+// Monotone deques count F(K) in O(n). If K ≥ D = max(a) − min(a), every
+// subarray qualifies: F(K) = n(n−1)/2.
+//
+// Early stop: if F(k) ≥ n, then for any k' ∈ (k, n], F(k') ≥ F(k) ≥ n ≥ k',
+// so remaining checks are automatic once k ≤ n.
 
 #include <bits/stdc++.h>
+#include <cassert>
 using namespace std;
 
 static long long count_at_most_K(const vector<int> &a, long long K) {
@@ -65,7 +73,11 @@ int main() {
             cout << "unstable\n";
             return 0;
         }
+        if (cnt >= n) {
+            cout << "stable\n";
+            return 0;
+        }
     }
-    cout << "stable\n";
+    assert(false);
     return 0;
 }
