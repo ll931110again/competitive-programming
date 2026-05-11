@@ -1,62 +1,51 @@
 /*
  * Solution for problem D: Dome of Circus.
  *
+ * Cone: apex (0,0,h), base circle z=0 radius r. Point (x,y,z) lies inside iff
+ *   sqrt(x^2+y^2) <= r * (h-z)/h  <=>  r >= h * d / (h - z),  d = sqrt(x^2+y^2).
+ * For fixed h > max z_i, minimal r(h) = max_i h*d_i/(h-z_i). Minimize V ∝ h*r(h)^2.
+ * V(h) is unimodal (convex); ternary search on h.
  */
 
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 #include <algorithm>
-#include <bitset>
 #include <cmath>
 #include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
 #include <iomanip>
 #include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <unordered_set>
-#include <utility>
-#include <vector>
-#define maxn 10005
+
 using namespace std;
+
+static const int maxn = 10005;
 
 struct Point {
   double x, y, z;
 };
 
-int n;
-Point a[maxn];
+static int n;
+static Point a[maxn];
 
-double scaled_volume(double h, double r) {
-  // the true volume of a cone is 1/3 pi h r^2, but we can simply scale out the
-  // constant factors
-  return h * r * r;
+static double max_z() {
+  double m = 0;
+  for (int i = 0; i < n; ++i)
+    m = max(m, a[i].z);
+  return m;
 }
 
-double eval(double h) {
+// Minimal base radius for height h (requires h > z_i for all i).
+static double min_radius(double h) {
   double r = 0;
-  for (int i = 0; i < n; i++) {
-    if (a[i].z >= h) {
-      return -1;
-    }
-
-    // connecting from (0, 0, h) to (x, y, z)
-    double dh = h - a[i].z;
-    double dx = sqrt(a[i].x * a[i].x + a[i].y * a[i].y);
-    r = max(r, dx / dh * h);
+  for (int i = 0; i < n; ++i) {
+    double dz = h - a[i].z;
+    double d = hypot(a[i].x, a[i].y);
+    r = max(r, h * d / dz);
   }
-
   return r;
+}
+
+// Proportional to cone volume (1/3)π r^2 h; constant dropped for optimization.
+static double vol_scale(double h) {
+  double r = min_radius(h);
+  return h * r * r;
 }
 
 int main() {
@@ -67,27 +56,27 @@ int main() {
   freopen("dome.out", "w", stdout);
 
   cin >> n;
-  for (int i = 0; i < n; i++) {
+  for (int i = 0; i < n; ++i)
     cin >> a[i].x >> a[i].y >> a[i].z;
+
+  double zmx = max_z();
+  double lo = zmx + 1e-7;
+  double hi = 1e5;
+
+  for (int it = 0; it < 200; ++it) {
+    double m1 = lo + (hi - lo) / 3.0;
+    double m2 = hi - (hi - lo) / 3.0;
+    double v1 = vol_scale(m1);
+    double v2 = vol_scale(m2);
+    if (v1 < v2)
+      hi = m2;
+    else
+      lo = m1;
   }
 
-  double low_h = 0, high_h = 1e5;
-  for (int iter = 0; iter < 200; iter++) {
-    double m1 = (low_h + low_h + high_h) / 3,
-           m2 = (low_h + high_h + high_h) / 3;
-    double r1 = eval(m1), r2 = eval(m2);
+  double h = 0.5 * (lo + hi);
+  double r = min_radius(h);
 
-    if (r1 < 0 || scaled_volume(m1, r1) > scaled_volume(m2, r2)) {
-      low_h = m1;
-    } else {
-      high_h = m2;
-    }
-  }
-
-  double r = eval(low_h);
-  cout << std::fixed;
-  cout << setprecision(12);
-  cout << low_h << ' ' << r << endl;
-
+  cout << fixed << setprecision(3) << h << ' ' << r << '\n';
   return 0;
 }
