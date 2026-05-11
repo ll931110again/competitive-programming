@@ -1,19 +1,8 @@
 /**
  * Ocarina and Chime — harmonious starts.
  *
- * Input (Kattis): M N k, then M chimes, then N melody.
- *
- * For each start s, residues (mel[i] + ch[s+i]) mod k must be uniform.
- * Character-sum test: for each j = 1..k-1,
- *   S_j(s) = sum_i ω^{j*(mel[i]+ch[s+i])} must be 0.
- * Since S_{k-j} = conj(S_j), it suffices to check j = 1..floor(k/2).
- *
- * Each S_j(s) is a cross-correlation => one convolution per j.
- *
- * Performance (no OpenMP available):
- *   - Use complex<float> FFT as a fast *filter* with a generous threshold to
- *     avoid false negatives; then do exact residue-count verification on the
- *     surviving starts to guarantee correctness.
+ * The solution is that, for a distribution to be uniform
+ * we need to check that sum w^j (mel[i] + ch[s+i]) is 0 for j = 1..k-1.
  */
 
 #ifdef ONLINE_JUDGE
