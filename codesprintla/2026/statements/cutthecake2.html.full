@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html class="" lang="en">
+<head>
+    <!-- Load sentry as early as possible -->
+            <script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" src="https://js.sentry-cdn.com/1ad5e9767ad243d396a93ef40135e743.min.js" crossorigin="anonymous" data-lazy="no"></script>
+
+    <script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" type="module">
+        Sentry.onLoad(function() {
+            Sentry.init({
+                dsn: "https://1ad5e9767ad243d396a93ef40135e743:0f66eac85d88443baa349f5bc2497f28@sentry.io/271015",
+                release: "928a0f0d57f51a63ecafed2d37fa2c422f3ec122",
+                environment: "production",
+                whitelistUrls: [
+                    /https?:\/\/codesprintla26\.kattis\.com/                 ],
+                ignoreErrors: [
+                    "Non-Error exception captured",                     "Non-Error promise rejection captured",                    'ResizeObserver loop limit exceeded',                    'Can\'t find variable: zaloJSV2'                ],
+                denyUrls: ['/static\.cloudflareinsights\.com/'],                 autoSessionTracking: false,
+                integrations: [                    new Sentry.BrowserTracing(),
+                ],
+                tracesSampleRate: 0,
+                profilesSampleRate: 1.0,
+                replaysSessionSampleRate: 0,                 replaysOnErrorSampleRate: 0,                 tracePropagationTargets: ["localhost", /https?:\/\/codesprintla26\.kattis\.com/],             });
+                        Sentry.configureScope((scope) => scope.setTransactionName("contests_problems_view"));         })
+    </script>
+
+    <meta charset="UTF-8" >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cut the Cake &ndash; Kattis, CodeSprint LA 2026</title>
+
+    <!-- Jquery and Jquery-ui -->
+    <link href="/assets/af09957458029929306917fcfc6e05c3/jquery-ui-dist/jquery-ui.theme.min.css" rel="stylesheet">
+    <script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" src="/assets/af09957458029929306917fcfc6e05c3/jquery/dist/jquery.min.js"></script>
+    <script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" src="/assets/af09957458029929306917fcfc6e05c3/jquery-ui-dist/jquery-ui.min.js"></script>
+
+    <!-- Timezone Cookie -->
+    <script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/modules/timezone.js"></script>
+
+    <!-- Fonts/Icons -->
+    <link href="/assets/af09957458029929306917fcfc6e05c3/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+
+            <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/merriweather/300.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/merriweather/300-italic.css" rel="stylesheet">
+            <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/merriweather/400.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/merriweather/400-italic.css" rel="stylesheet">
+            <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/merriweather/700.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/merriweather/700-italic.css" rel="stylesheet">
+                <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/300.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/300-italic.css" rel="stylesheet">
+            <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/400.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/400-italic.css" rel="stylesheet">
+            <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/500.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/500-italic.css" rel="stylesheet">
+            <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/700.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/700-italic.css" rel="stylesheet">
+    
+    <!-- DateRangePicker CSS -->
+    <link href="/assets/af09957458029929306917fcfc6e05c3/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
+    <!-- Editable and Select2 -->
+    <link href="/assets/af09957458029929306917fcfc6e05c3/select2/dist/css/select2.css" rel="stylesheet">
+
+            <link rel="apple-touch-icon-precomposed" sizes="57x57"   href="/images/favicon/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/favicon/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72"   href="/images/favicon/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/favicon/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon-precomposed" sizes="60x60"   href="/images/favicon/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/images/favicon/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon-precomposed" sizes="76x76"   href="/images/favicon/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/images/favicon/apple-touch-icon-152x152.png">
+        <link rel="icon" type="image/png" href="/images/favicon/favicon-196x196.png" sizes="196x196">
+        <link rel="icon" type="image/png" href="/images/favicon/favicon-96x96.png"   sizes="96x96">
+        <link rel="icon" type="image/png" href="/images/favicon/favicon-32x32.png"   sizes="32x32">
+        <link rel="icon" type="image/png" href="/images/favicon/favicon-16x16.png"   sizes="16x16">
+        <link rel="icon" type="image/png" href="/images/favicon/favicon-128.png"     sizes="128x128">
+        <link rel="shortcut icon"         href="/images/favicon/favicon.ico">
+        <meta name="application-name"                content="Kattis, CodeSprint LA 2026">
+        <meta name="msapplication-TileColor"         content="#FFFFFF">
+        <meta name="msapplication-TileImage"         content="/images/favicon/mstile-144x144.png">
+        <meta name="msapplication-square70x70logo"   content="/images/favicon/mstile-70x70.png">
+        <meta name="msapplication-square150x150logo" content="/images/favicon/mstile-150x150.png">
+        <meta name="msapplication-wide310x150logo"   content="/images/favicon/mstile-310x150.png">
+        <meta name="msapplication-square310x310logo" content="/images/favicon/mstile-310x310.png">
+    
+    <!-- Own CSS -->
+    <link rel="stylesheet" href="/css/5c201b1cc07aece6b2d5377eae27226a/style.css">
+    <style type="text/css">           :root {
+                      --branding-border: linear-gradient(to left, #e7b763 0%, #e47f43 38%);
+              }
+
+         </style>
+
+    <script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" type="text/javascript">
+        window.page_loaded_at = new Date();
+        jQuery.noConflict();
+    </script>
+
+    
+    <meta name="robots" content="noindex">
+    <script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/non-es6/mathjax_conf.js" defer></script>
+<script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" src="/assets/af09957458029929306917fcfc6e05c3/mathjax/es5/tex-mml-chtml.js" defer id="MathJax-script"></script>
+    <script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" defer src="/assets/af09957458029929306917fcfc6e05c3/ace-builds/src-min-noconflict/ace.js"></script>
+
+</head>
+
+<body class="header-collapsed l-body_grid"  >
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="l-page_header">
+    <div class="page_header-arrow_expand_collapse">
+        <i class="page_header-arrow_expand_collapse-arrow"></i>
+    </div>
+    <div class="page_header-wrapper">
+        <div class="logo-container">
+            <a class="logo-link" href="/" title="CodeSprint LA 2026">
+                <img class="logo" src="/images/site-logo?v=200f9ac2e8f894fa7119399bfd31094d" alt="CodeSprint LA 2026 logo" />
+            </a>
+            <h4 class="logo-container-text">CodeSprint LA 2026</h4>
+            <button class="menu_mobile_link" >
+                <i class="fas fa-bars menu_mobile_link_icon"></i>
+            </button>
+            <script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/pages/master/nav.js"></script>
+        </div>
+        <div class="branding_border"></div>
+        <div class="page_header-content">
+            <nav>
+                <ul class="main_menu">
+                                                                    <li>
+                            <a  href="/contests" class="main_menu-item main_menu-item_link  is-main_menu-item-active" title="Contests">
+                                                                    <i class="fas fa-award main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name ">Contests</span>
+                                                            </a>
+                        </li>
+                                                                    <li>
+                            <a  href="/info" class="main_menu-item main_menu-item_link  " title="Info">
+                                                                    <i class="fas fa-info main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name ">Info</span>
+                                                            </a>
+                        </li>
+                                                                    <li>
+                            <a  href="https://support.kattis.com" class="main_menu-item main_menu-item_link  " title="Help">
+                                                                    <i class="fas fa-question main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name ">Help</span>
+                                                            </a>
+                        </li>
+                                    </ul>
+            </nav>
+                    </div>
+    </div>
+</header>
+
+    <div class="l-main_area">
+        
+
+        
+        <main class="flex flex-col grow content_padding">
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_bar ">
+    <script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/pages/master/top_bar.js"></script>
+    <div class="branding_border"></div>
+            <div class="top_bar-content-wrapper">
+            <div class="top_bar-section top_bar-section-large">
+                <div class="breadcrumb top_bar-item">
+                                                                        <a href="/contests" class="breadcrumb-link">Contests</a><span class="breadcrumb-divider">/</span>
+                                                    <a href="/contests/codesprintla26open" class="breadcrumb-link">CodeSprint LA 2026 - Open</a><span class="breadcrumb-divider">/</span>
+                                                    <a href="/contests/codesprintla26open/problems" class="breadcrumb-link">Problems</a><span class="breadcrumb-divider">/</span>
+                                                                                    <span class="breadcrumb-current">
+                                                    Cut the Cake
+                                            </span>
+                </div>
+
+                            </div>
+
+            <div class="top_bar-section collapsible-menu-group-right top_bar-section-small items-center">
+                
+                
+        
+
+
+
+    <div id="contest_time" data-props="{&quot;has_start&quot;:true,&quot;elapsed_seconds&quot;:19850,&quot;total_seconds&quot;:18000,&quot;refresh_at_start&quot;:true}" class="top_bar-item top_bar-item-right top_bar-item-button flex items-center text-xs">
+        <div class="contest-progress collapsible-menu-container session-finished">
+            <div class="py-2 top_bar-button" data-open-collapsible-menu-id="top_contest_menu">
+                <div class="only_in_contest flex gap-2 items-center">
+                    <i class="fa fa-stopwatch text-gray-200"></i>
+                    <div class="time-remaining whitespace-nowrap">
+                        <span class="count_remaining" >0:00:00</span>
+                    </div>
+                    <i class="fas fa-chevron-down top_bar-button-chevron_down"></i>
+                    <i class="fas fa-chevron-up top_bar-button-chevron_up"></i>
+                </div>
+                                <div class="only_before_contest flex gap-2 items-center">
+                    <i class="fa fa-hourglass-start text-gray-200"></i>
+                                            <div class="starts-in whitespace-nowrap">
+                            <span class="countdown">-5:30:50</span>
+                        </div>
+                                        <i class="fas fa-chevron-down top_bar-button-chevron_down"></i>
+                    <i class="fas fa-chevron-up top_bar-button-chevron_up"></i>
+                </div>
+                <div class="finished flex gap-2 items-center">
+                    <i class="fa fa-calendar-times text-gray-200"></i>
+                    <div class="time-remaining whitespace-nowrap">
+                        Contest is over                    </div>
+                    <i class="fas fa-chevron-down top_bar-button-chevron_down"></i>
+                    <i class="fas fa-chevron-up top_bar-button-chevron_up"></i>
+                </div>
+            </div>
+
+            <div id="top_contest_menu" class="collapsible-menu">
+                <span class="collapsible-menu-arrow"></span>
+                <div class="collapsible-menu-content">
+                    <h2 class="mb-2">CodeSprint LA 2026 - Open</h2>
+                    <hr>
+                    <div class="only_in_contest">
+                        <div class="time-elapsed flex justify-between mb-2">
+                            <h4>Time elapsed</h4>
+                            <span class="count_elapsed text-right">5:00:00</span>
+                        </div>
+                        <div class="time-remaining flex justify-between">
+                            <h4>Time Remaining</h4>
+                            <span class="count_remaining text-sm">0:00:00</span>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="only_before_contest">
+                                                    <div class="starts-in flex justify-between mb-2">
+                                <h4>Starts in</h4>
+                                <span class="countdown">-5:30:50</span>
+                            </div>
+                                                                            <div class="time-remaining flex justify-between">
+                                <h4>Ends in</h4>
+                                <span class="count_until_end">-30:50</span>
+                            </div>
+                                                <hr>
+                    </div>
+                    <div>
+                        <div class="contest-start flex justify-between mb-2">
+                                                                                                <h4>Start</h4>
+                                    11:30 PDT
+                                                                                    </div>
+                        <div class="contest-end flex justify-between">
+                                                            <h4>End</h4>
+                                16:30 PDT
+                                                    </div>
+                                            </div>
+                    <hr>
+                    <a href="/contests/codesprintla26open/standings" class="font-bold">Visit Scoreboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+                                    <a href="/login" class="button button-primary button-small">Log in</a>
+                            </div>
+        </div>
+    
+    
+        
+
+
+
+            
+    
+            
+
+    </div>
+
+                            <script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/modules/banner.js"></script>
+            
+            
+
+            
+            
+            
+
+<script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" defer src="/assets/af09957458029929306917fcfc6e05c3/ace-builds/src-min-noconflict/ace.js"></script>
+<script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/modules/highlight.js"></script>
+<script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/modules/mobile_tabs.js"></script>
+<script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/modules/load_select.js"></script>
+<script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/pages/problems/view.js"></script>
+<script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" type="application/json" id="javascript-translations">
+    { "copy_msg": "Copied to clipboard!" }
+</script>
+
+<div class="l-book">
+    <div class="book-container">
+        <div id="bookmark" class="book-bookmark is-hidden">
+            <div class="book-bookmark-text" data-cy="instruction-bookmark">
+                View problem statement: <span class="book-bookmark-text-subtext">Cut the Cake</span><i class="fas fa-chevron-left book-bookmark-text-icon"></i>
+            </div>
+        </div>
+        <div id="instructions-container" class="book-page-container grow book-page-fixed_width h-max-content">
+            <article class="book-page">
+                <div class="book-page-fixed_width">
+                    <div id="instructions-close" class="book-close"><i class="fas fa-chevron-left book-close-icon"></i>Hide</div>
+                                        <h1 class="book-page-heading">Problem A<br/>Cut the Cake</h1>
+                                                                                                                            
+  <div class="problembody">
+    <div style="width:40.00%" class="illustration">
+      <img src=
+      "/problems/cutthecake2/file/statement/en/img-0001.png" alt=
+      "/problems/cutthecake2/file/statement/en/img-0001.png" class=
+      "illustration">
+      <div class="description">
+        Example Interaction
+      </div>
+    </div>
+    <p>Link is buying a cake from Pita and Wheaton’s bakery.
+    However, his cake has been cut to certain sizes for his friends
+    and then put back together. However, he can’t find the slices
+    anymore! Help him find them.</p>
+    <p>His cake can be described as a rectangle whose corners lie
+    at <span class="tex2jax_process">$(0, 0)$</span>, <span class=
+    "tex2jax_process">$(N, 0)$</span>, <span class=
+    "tex2jax_process">$(N, M)$</span>, and <span class=
+    "tex2jax_process">$(0, M)$</span>. This cake is cut into
+    <span class="tex2jax_process">$K$</span> different rectangles,
+    through a series of axis-aligned cuts. Each of these cuts
+    chooses one of the current rectangle slices, and completely
+    cuts it into two slices. Each of these resulting rectangles
+    have side lengths that are integers. All the slices have then
+    been put together again into their original shape in the exact
+    same way as they were constructed.</p>
+    <p>Link can feel around a specific part of the cake and ask a
+    query <span class="tex2jax_process">$X_1$</span> <span class=
+    "tex2jax_process">$X_2$</span> <span class=
+    "tex2jax_process">$Y_1$</span> <span class=
+    "tex2jax_process">$Y_2 \: (0 \leq X_1 &lt; X_2 \leq N, 0 \leq
+    Y_1 &lt; Y_2 \leq M)$</span>, which asks the length of the
+    longest cut within the axis-aligned subrectangle stretching
+    from <span class="tex2jax_process">$(X_1, Y_1)$</span> to
+    <span class="tex2jax_process">$(X_2, Y_2)$</span>. Cuts not
+    entirely contained within the subrectangle still contribute to
+    our query, but we only consider the part of that cut that is
+    contained within the subrectangle. Cuts on the edges of the
+    subrectangle are excluded from the query. Because cuts are
+    restricted to individual slices, two colinear cuts made on
+    opposite sides of a perpendicular cut remain distinct. They do
+    not combine to form one continuous cut for queries. If no such
+    cut exists inside the subrectangle, he gets a value of
+    <span class="tex2jax_process">$0$</span>.</p>
+    <p>Using at most <span class="tex2jax_process">$1600$</span>
+    queries, help him find all internal cuts of the cake.</p>
+    <h2>Input</h2>
+    <p>The only line of input contains three space-separated
+    integers <span class="tex2jax_process">$N$</span>, <span class=
+    "tex2jax_process">$M$</span>, and <span class=
+    "tex2jax_process">$K$</span> <span class="tex2jax_process">$(2
+    \leq N \leq 2\, 000, 2 \leq M \leq 2\, 000, 2 \leq K \leq \min
+    (NM, 100))$</span>, the width of the cake, the height of the
+    cake, and the number of constituent rectangles
+    respectively.</p>
+    <h2>Interaction</h2>
+    <p>This is an interactive problem. You can interact with the
+    cake using standard input and output, but you only have time to
+    make <span class="tex2jax_process">$1600$</span> queries before
+    his friends arrive.</p>
+    <p>To ask a query, write to standard output in the following
+    format:</p>
+    <ul class="itemize">
+      <li>
+        <p>“<tt class="ttfamily">?</tt> <span class=
+        "tex2jax_process">$X_1$</span> <span class=
+        "tex2jax_process">$X_2$</span> <span class=
+        "tex2jax_process">$Y_1$</span> <span class=
+        "tex2jax_process">$Y_2$</span>” <span class=
+        "tex2jax_process">$\: (0 \leq X_1 &lt; X_2 \leq N, 0 \leq
+        Y_1 &lt; Y_2 \leq M)$</span></p>
+      </li>
+    </ul>
+    <p>As a response, you will receive the longest cut within the
+    subrectangle from <span class="tex2jax_process">$(X_1,
+    Y_1)$</span> to <span class="tex2jax_process">$(X_2,
+    Y_2)$</span>. If there is no such cut within the subrectangle,
+    you will receive <span class="tex2jax_process">$0$</span>.</p>
+    <p>When you determine the answer for the current test case,
+    print:</p>
+    <ul class="itemize">
+      <li>
+        <p>“<tt class="ttfamily">!</tt> <span class=
+        "tex2jax_process">$P$</span>” <span class=
+        "tex2jax_process">$\: (1 \leq P \leq K)$</span></p>
+      </li>
+    </ul>
+    <p>This means that you will print <span class=
+    "tex2jax_process">$P$</span> more lines of output. Please
+    restrict <span class="tex2jax_process">$P$</span> to the range
+    required; otherwise you will receive a verdict of <tt class=
+    "ttfamily">Wrong Answer</tt>. Each line of output should
+    consist of</p>
+    <ul class="itemize">
+      <li>
+        <p>“<span class="tex2jax_process">$t$</span> <span class=
+        "tex2jax_process">$a$</span> <span class=
+        "tex2jax_process">$b$</span> <span class=
+        "tex2jax_process">$c$</span>”</p>
+      </li>
+    </ul>
+    <p>where <span class="tex2jax_process">$a &lt; b$</span>.
+    <span class="tex2jax_process">$t$</span> is either “<tt class=
+    "ttfamily">h</tt>” or “<tt class="ttfamily">v</tt>”, which
+    represents a horizontal or vertical cut respectively. If
+    <span class="tex2jax_process">$t = \texttt{h}$</span>, this
+    represents a horizontal cake cut stretching from <span class=
+    "tex2jax_process">$(a, c)$</span> to <span class=
+    "tex2jax_process">$(b, c) \: (0 \leq a &lt; b \leq N, 0 &lt; c
+    &lt; M)$</span>. If <span class="tex2jax_process">$t =
+    \texttt{v}$</span>, this represents a vertical cake cut
+    stretching from <span class="tex2jax_process">$(c, a)$</span>
+    to <span class="tex2jax_process">$(c, b) \: (0 \leq a &lt; b
+    \leq M, 0 &lt; c &lt; N)$</span>. Any outputting of cuts is
+    acceptable as long as they exactly cover all cuts in the
+    rectangle (i.e. they do not cover any non-cuts). The cuts you
+    output may even overlap.</p>
+    <p>The judge is not adaptive, meaning that the cuts for a given
+    test case are known to the judge before the participant starts
+    to query. The total number of queries allowed is <span class=
+    "tex2jax_process">$1600$</span>, meaning that your program can
+    only output <span class="tex2jax_process">$1600$</span> lines
+    starting with <tt class="ttfamily">?</tt>. In particular, the
+    final answer does not count as a query. If the number of
+    queries is exceeded, you will receive a verdict of <tt class=
+    "ttfamily">Wrong Answer</tt>. If, at any interaction step, you
+    read <span class="tex2jax_process">$-1$</span> instead of valid
+    data, your solution must exit immediately. This means that your
+    solution will receive <tt class="ttfamily">Wrong answer</tt>
+    because of an invalid query or any other mistake. Failing to
+    exit can result in an arbitrary verdict because your solution
+    will continue to read from a closed stream. Any queries not in
+    the specified form will immediately result in a verdict of
+    <tt class="ttfamily">Wrong Answer</tt>. After printing a query
+    do not forget to output the end of line and flush the output.
+    Otherwise, you may receive a verdict of <tt class=
+    "ttfamily">Idleness limit exceeded</tt>. To do this, use</p>
+    <ul class="itemize">
+      <li>
+        <p>fflush(stdout) or cout.flush() in C++;</p>
+      </li>
+      <li>
+        <p>System.out.flush() in Java;</p>
+      </li>
+      <li>
+        <p>stdout.flush() in Python;</p>
+      </li>
+    </ul>
+    <p>See documentation for other languages.</p>
+    <p>A testing tool is provided as an attachment to help you
+    develop your solution.</p>
+    <table class="sample" summary="sample data">
+      <tr>
+        <th style="text-align:left; width:33%;">Read</th>
+        <th style="text-align:center; width:33%;">Sample
+        Interaction 1</th>
+        <th style="text-align:right; width:33%;">Write</th>
+      </tr>
+    </table>
+    <div class="sampleinteractionread">
+      <pre> 3 3 4</pre>
+    </div>
+    <div class="sampleinteractionwrite">
+      <pre> ? 1 3 2 3</pre>
+    </div>
+    <div class="sampleinteractionread">
+      <pre> 0</pre>
+    </div>
+    <div class="sampleinteractionwrite">
+      <pre> ? 0 2 0 2</pre>
+    </div>
+    <div class="sampleinteractionread">
+      <pre> 2</pre>
+    </div>
+    <div class="sampleinteractionwrite">
+      <pre> ? 1 3 1 3</pre>
+    </div>
+    <div class="sampleinteractionread">
+      <pre> 2</pre>
+    </div>
+    <div class="sampleinteractionwrite">
+      <pre> ? 1 3 0 2</pre>
+    </div>
+    <div class="sampleinteractionread">
+      <pre> 2</pre>
+    </div>
+    <div class="sampleinteractionwrite">
+      <pre> ? 0 2 2 3</pre>
+    </div>
+    <div class="sampleinteractionread">
+      <pre> 1</pre>
+    </div>
+    <div class="sampleinteractionwrite">
+      <pre> ! 3
+ v 0 3 1
+ h 1 3 2
+ v 0 2 2</pre>
+    </div>
+  </div>
+
+                                                                <div class="metadata_list-item" data-name="metadata_item-downloads">
+                            <span class="metadata_list-label">Attachments</span>
+                            <div class="metadata_list-downloads">
+                                                                    <a href="/problems/cutthecake2/file/statement/attachments/testing_tool.py">
+                                        testing_tool.py
+                                    </a>
+                                                            </div>
+                        </div>
+                                    </div>
+            </article>
+        </div>
+
+        <div id="editor-container" class="book-page-container grow static-fixed-parent" data-problem-name="cutthecake2"
+                                                                                        data-submit-url="/contests/codesprintla26open/problems/cutthecake2/submit"
+                                                                                        data-sourcelim="131072"
+                                                                                        data-may-submit="false"
+                                                                                                                                                                                data-csrf-token="4438889385664294351472094631824644192297"
+                                                                                                                                                                                data-current-tab="edit-and-submit-tab"
+                                                                                        data-default-tab="edit-and-submit-tab">
+            <div class="tab static-fixed-content l-strip_list-flex">
+                    <div class="strip-item-plain problem-view-tab-nav-container"><nav class="tab-nav problem-view-tab-nav" data-mobile-select-classes="is-hidden@md tab-select-js" data-active-page="edit-and-submit-tab"><a id="edit-and-submit-tab-link" class="tab-nav-item tab-nav-js active" title="Edit &amp; Submit" data-tab-id-to-open="edit-and-submit-tab">Edit &amp; Submit</a><a id="metadata-tab-link" class="tab-nav-item tab-nav-js " title="Metadata" data-tab-id-to-open="metadata-tab">Metadata</a><a id="submissions-tab-link" class="tab-nav-item tab-nav-js " title="My Submissions" data-tab-id-to-open="submissions-tab">My Submissions</a></nav><div class="tabs-close book-close-tabs">Hide <i class="fas fa-chevron-right book-close-icon"></i></div></div>
+                    <div id="edit-and-submit-tab" class="overflow-y-auto grow " data-tabs-container="#editor-container">
+                                                    <div id="editor-container-intro" class="editor-container-content">
+                                <div class="editor-container-intro-half">
+                                    <div class="editor-container-intro-half-content">
+                                        <div class="editor-container-intro-content">
+                                            <p class="editor-container-intro-text">
+                                                                                                    Please log in to submit a solution to this problem                                                                                            </p>
+                                                                                            <a href="/login" class="button button-primary button-medium editor-container-intro-button">Log in</a>
+                                                                                    </div>
+                                    </div>
+                                </div>
+                                <div class="editor-drag_highlight is-hidden">
+                                </div>
+                            </div>
+                                            </div>
+                    <div id="metadata-tab" class="is-hidden scrollable-container" data-tabs-container="#editor-container" data-bookmark-label="Metadata">
+                                                <div class="overflow-y-auto metadata-grid-container">
+                            <div class="metadata-grid">
+                                <div class="card my-0 gap-3 metadata-cpu-card"><i class="fas fa-tachometer-alt text-3xl self-center" style="color: #ced5e4;"></i><div class="flex flex-col gap-2 self-center"><span class="info_label">CPU Time limit</span><span class="text-lg font-bold text-blue-200">1 second</span></div></div> <div class="card my-0 gap-3 metadata-memory-card"><i class="fas fa-memory text-3xl self-center" style="color: #ced5e4;"></i><div class="flex flex-col gap-2 self-center"><span class="info_label">Memory limit</span><span class="text-lg font-bold text-blue-200">1024 MB</span></div></div> <div class="card my-0 gap-3 metadata-difficulty-card"><span class="self-center whitespace-nowrap difficulty_number difficulty_number-problem_view difficulty_not available">?</span><div class="flex flex-col gap-2 self-center"><span class="info_label">Difficulty</span><span class="text-lg font-bold text-blue-200">Not Available</span></div></div>
+                                <div class="card my-0 metadata-links-card"><div class="flex flex-col gap-3"><span class="info_label">Links</span><em>No links available</em></div></div>     <div class="card my-0 metadata-downloads-card"><div class="flex flex-col gap-3"><span class="info_label">Downloads</span><em>No downloads</em></div></div>    <div class="card my-0 metadata-license-card"><div class="flex flex-col gap-3"><span class="info_label">Source &amp; License</span><span class="flex flex-wrap gap-3"><i class="fas fa-feather-pointed text-gray-200 self-center" title="Author"></i><span>William Zhao</span></span><span class="flex gap-3">CodeSprint LA 2026</span><span class="flex gap-3"><a rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/" style="vertical-align: middle;"><img class="problem-license" alt="Creative Commons License (cc by-sa)" src="https://licensebuttons.net/l/by-sa/3.0/80x15.png" /></a></span></div></div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                                            <div id="submissions-tab" class="book-page static-fixed-content-no-expand is-hidden" data-tabs-container="#editor-container" data-bookmark-label="Submissions">
+                            <p align="center">
+                                You haven&#039;t made any submissions on this problem yet.                            </P>
+                        </div>
+                                                                                
+            </div>
+        </div>
+        <div id="bookmark-editor" class="book-bookmark is-hidden">
+            <div class="book-bookmark-text" data-cy="editor-bookmark">
+                Editor: <span id="editor-bookmark-label" class="book-bookmark-text-subtext" data-intro-text="Intro"></span><i class="fas fa-chevron-right book-bookmark-text-icon"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        </main>
+
+        
+
+
+
+    <footer class="l-footer ">
+        <span class="text-center text-sm divider-separated-list">
+            <a href="/contact">Contact</a>
+            <a href="https://status.kattis.com">System Status</a>
+            <a rel="terms-of-service" href="/contracts/current/tos">Terms of Service</a>
+            <a rel="privacy-policy" href="/contracts/current/privacy_policy">Privacy Policy</a>
+        </span>
+    </footer>
+
+    </div>
+
+
+    <script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/pages/contest/header.js"></script>
+<script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" src="/assets/af09957458029929306917fcfc6e05c3/moment/min/moment.min.js"></script>
+<script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" src="/assets/af09957458029929306917fcfc6e05c3/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" src="/assets/af09957458029929306917fcfc6e05c3/select2/dist/js/select2.full.min.js"></script>
+
+
+
+        <script defer nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" src="https://status.kattis.com/embed/script.js"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" nonce="03eac833dc5b9b6f62565988a513740d5c2f4ed5f9396133921e376260791681" data-cf-beacon='{"version":"2024.11.0","token":"6651308a007d4d459b12876077322bfb","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

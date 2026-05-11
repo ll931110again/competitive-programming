@@ -4,6 +4,13 @@
 // Seat k is at complex ζ^k with ζ = exp(2πi/N). A balanced arrangement of M
 // distinct seats has ∑ ζ^{k_i} = 0.
 //
+// Full proof (complement + Lam–Leung necessity + Sivek sufficiency + even‑N
+// appendix): balancingthecouncil_proof.md in this directory.
+//
+// Primary reference: Gary Sivek, “On Vanishing Sums of Distinct Roots of Unity”,
+// Integers 10 (3) (2010), 365–368. DOI: 10.1515/integ.2010.031
+// https://doi.org/10.1515/integ.2010.031
+//
 // - M = 1 or M = N−1: impossible (N−1 complement is a single nonzero root).
 // - M even, 2 ≤ M ≤ N: use M/2 disjoint opposite pairs; each pair sums to 0.
 // - M odd, 1 < M < N−1: let p be the smallest odd prime dividing N. If N is a

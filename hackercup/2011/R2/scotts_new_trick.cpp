@@ -2,8 +2,8 @@
 //
 // Count pairs (i,j) with (a_i * b_j) mod P < L.
 // Let c_a[x], c_b[y] be frequencies mod P. Zeros: product 0.
-// For nonzero values, write x = g^k (g primitive root). Then x*y = g^{k+l mod (P-1)}.
-// Cyclic convolution of exponent histograms gives counts per product residue.
+// For nonzero values, write x = g^k (g primitive root), and y = g^l.
+// Then x*y = g^{k+l mod (P-1)}. Cyclic convolution of exponent histograms gives counts per product residue.
 // Sum conv[m] for all m with (g^m mod P) < L.
 
 #include <algorithm>

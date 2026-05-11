@@ -37,7 +37,7 @@ vector<string> split() {
   vector<string> tokens;
   string current_token = "";
 
-  for (int i = 0; i < strlen(s); i++) {
+  for (size_t i = 0; s[i] != '\0'; ++i) {
     if (s[i] == ' ') {
       if (!current_token.empty()) {
         tokens.push_back(current_token);
@@ -56,30 +56,35 @@ vector<string> split() {
 }
 
 vector<string> align(vector<vector<string>> texts) {
-  int m = texts.size();
+  const size_t m = texts.size();
   vector<string> output(m);
 
-  for (int j = 0;; j++) {
-    int max_alignment = 0;
-    for (int i = 0; i < m; i++)
+  for (size_t j = 0;; ++j) {
+    size_t max_alignment = 0;
+    for (size_t i = 0; i < m; ++i) {
       if (texts[i].size() > j) {
         max_alignment = max(max_alignment, texts[i][j].size());
       }
+    }
 
     if (max_alignment == 0) {
       break;
     }
 
-    for (int i = 0; i < m; i++)
+    for (size_t i = 0; i < m; ++i) {
       if (texts[i].size() > j) {
         if (j > 0) {
           output[i] += ' ';
         }
         output[i] += texts[i][j];
-        for (int k = texts[i][j].size(); k < max_alignment; k++) {
-          output[i] += ' ';
+        // No trailing spaces on a line: only pad column j when this line has word j+1.
+        if (j + 1 < texts[i].size()) {
+          for (size_t k = texts[i][j].size(); k < max_alignment; ++k) {
+            output[i] += ' ';
+          }
         }
       }
+    }
   }
 
   return output;
@@ -92,7 +97,11 @@ int main() {
   freopen("alignment.in", "r", stdin);
   freopen("alignment.out", "w", stdout);
 
-  while (gets(s)) {
+  while (fgets(s, maxn, stdin)) {
+    size_t L = strlen(s);
+    while (L > 0 && (s[L - 1] == '\n' || s[L - 1] == '\r')) {
+      s[--L] = '\0';
+    }
     texts.push_back(split());
   }
 

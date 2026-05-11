@@ -32,6 +32,8 @@ Stable problem URLs use **`open.kattis.com`** (same statements as the contest hu
 - **`hextechordnance.cpp`:** Samples and correctness via sliding window per \(k\); worst-case \(O(n^2)\) — may TLE at \(n=10^6\) until a faster characterization is added.
 - **Hard / open here:** pursuit–evasion (**F**), interactive (**G**, **N**), counting trees from two distance arrays (**K**), microwave state machine (**P**), game theory (**R**), OK maps construction (**M**), etc.
 
+**Problem statements (offline):** see [`statements/INDEX.md`](statements/INDEX.md) (`*.md` = extracted `problembody` + link; `*.html.full` = full page). Refresh with `python3 codesprintla/tools/fetch_kattis_statements.py`.
+
 Build with the repo’s `bits/stdc++.h`:
 
 ```bash

@@ -1,61 +1,76 @@
 // I – Hextech Ordnance
 // https://open.kattis.com/problems/hextechordnance
 //
-// For each k ∈ [1, n], count subarrays of length ≥ 2 with (max − min) ≤ k.
-// Stable iff every count ≥ k.
+// Stable iff for every k ∈ [1, n], there are ≥ k subarrays [i, j] with i < j,
+// length ≥ 2, and max(a[i..j]) − min(a[i..j]) ≤ k.
 //
-// Each count is O(n) via monotone deques + two pointers; overall O(n^2) worst case.
-// Full constraints (n = 10^6) may require a tighter characterization — not implemented here.
+// Monotone deques count F(k) in O(n). If k ≥ D = max(a) − min(a), every
+// subarray qualifies: F(k) = n(n−1)/2.
+//
+// Early stop: if F(k) ≥ n, then for any k' ∈ (k, n], F(k') ≥ F(k) ≥ n ≥ k',
+// so remaining checks are automatic once k ≤ n.
 
 #include <bits/stdc++.h>
+#include <cassert>
 using namespace std;
 
-static long long count_range_le(const vector<int> &a, int K) {
+static long long count_at_most_K(const vector<int> &a, long long K) {
   const int n = (int)a.size();
-  long long cnt = 0;
-  deque<int> maxq, minq;
-  int j = 0;
-  for (int i = 0; i < n; ++i) {
-    while (j < n) {
-      while (!maxq.empty() && a[maxq.back()] <= a[j])
-        maxq.pop_back();
-      maxq.push_back(j);
-      while (!minq.empty() && a[minq.back()] >= a[j])
-        minq.pop_back();
-      minq.push_back(j);
-      int mx = a[maxq.front()], mn = a[minq.front()];
-      if (mx - mn <= K)
-        ++j;
-      else
-        break;
+  deque<int> dq_min, dq_max;
+  long long ans = 0;
+  int l = 0;
+  for (int r = 0; r < n; ++r) {
+    while (!dq_min.empty() && a[dq_min.back()] >= a[r])
+      dq_min.pop_back();
+    dq_min.push_back(r);
+    while (!dq_max.empty() && a[dq_max.back()] <= a[r])
+      dq_max.pop_back();
+    dq_max.push_back(r);
+
+    while (!dq_min.empty() && !dq_max.empty() &&
+           (long long)a[dq_max.front()] - (long long)a[dq_min.front()] > K) {
+      if (dq_min.front() == l)
+        dq_min.pop_front();
+      if (dq_max.front() == l)
+        dq_max.pop_front();
+      ++l;
     }
-    long long len = j - i;
+    const int len = r - l + 1;
     if (len >= 2)
-      cnt += len - 1;
-    if (!maxq.empty() && maxq.front() == i)
-      maxq.pop_front();
-    if (!minq.empty() && minq.front() == i)
-      minq.pop_front();
+      ans += (long long)(len - 1);
   }
-  return cnt;
+  return ans;
 }
 
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
+
   int n;
   if (!(cin >> n))
     return 0;
   vector<int> a(n);
-  for (int i = 0; i < n; ++i)
+  int mn = INT_MAX, mx = INT_MIN;
+  for (int i = 0; i < n; ++i) {
     cin >> a[i];
+    mn = min(mn, a[i]);
+    mx = max(mx, a[i]);
+  }
 
-  for (int k = 1; k <= n; ++k) {
-    if (count_range_le(a, k) < (long long)k) {
+  const long long D = (long long)mx - (long long)mn;
+  const long long total_pairs = 1LL * n * (n - 1) / 2;
+
+  for (long long k = 1; k <= n; ++k) {
+    long long cnt = (k >= D) ? total_pairs : count_at_most_K(a, k);
+    if (cnt < k) {
       cout << "unstable\n";
       return 0;
     }
+    if (cnt >= n) {
+      cout << "stable\n";
+      return 0;
+    }
   }
-  cout << "stable\n";
+  assert(false);
   return 0;
 }

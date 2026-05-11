@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html class="" lang="en">
+<head>
+    <!-- Load sentry as early as possible -->
+            <script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" src="https://js.sentry-cdn.com/1ad5e9767ad243d396a93ef40135e743.min.js" crossorigin="anonymous" data-lazy="no"></script>
+
+    <script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" type="module">
+        Sentry.onLoad(function() {
+            Sentry.init({
+                dsn: "https://1ad5e9767ad243d396a93ef40135e743:0f66eac85d88443baa349f5bc2497f28@sentry.io/271015",
+                release: "928a0f0d57f51a63ecafed2d37fa2c422f3ec122",
+                environment: "production",
+                whitelistUrls: [
+                    /https?:\/\/open\.kattis\.com/                 ],
+                ignoreErrors: [
+                    "Non-Error exception captured",                     "Non-Error promise rejection captured",                    'ResizeObserver loop limit exceeded',                    'Can\'t find variable: zaloJSV2'                ],
+                denyUrls: ['/static\.cloudflareinsights\.com/'],                 autoSessionTracking: false,
+                integrations: [                    new Sentry.BrowserTracing(),
+                ],
+                tracesSampleRate: 0,
+                profilesSampleRate: 1.0,
+                replaysSessionSampleRate: 0,                 replaysOnErrorSampleRate: 0,                 tracePropagationTargets: ["localhost", /https?:\/\/open\.kattis\.com/],             });
+                        Sentry.configureScope((scope) => scope.setTransactionName("problems_view"));         })
+    </script>
+
+    <meta charset="UTF-8" >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Popcorn Button &ndash; Kattis, Kattis</title>
+
+    <!-- Jquery and Jquery-ui -->
+    <link href="/assets/af09957458029929306917fcfc6e05c3/jquery-ui-dist/jquery-ui.theme.min.css" rel="stylesheet">
+    <script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" src="/assets/af09957458029929306917fcfc6e05c3/jquery/dist/jquery.min.js"></script>
+    <script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" src="/assets/af09957458029929306917fcfc6e05c3/jquery-ui-dist/jquery-ui.min.js"></script>
+
+    <!-- Timezone Cookie -->
+    <script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/modules/timezone.js"></script>
+
+    <!-- Fonts/Icons -->
+    <link href="/assets/af09957458029929306917fcfc6e05c3/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+
+            <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/merriweather/300.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/merriweather/300-italic.css" rel="stylesheet">
+            <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/merriweather/400.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/merriweather/400-italic.css" rel="stylesheet">
+            <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/merriweather/700.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/merriweather/700-italic.css" rel="stylesheet">
+                <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/300.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/300-italic.css" rel="stylesheet">
+            <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/400.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/400-italic.css" rel="stylesheet">
+            <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/500.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/500-italic.css" rel="stylesheet">
+            <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/700.css" rel="stylesheet">
+        <link href="/assets/af09957458029929306917fcfc6e05c3/@fontsource/ubuntu/700-italic.css" rel="stylesheet">
+    
+    <!-- DateRangePicker CSS -->
+    <link href="/assets/af09957458029929306917fcfc6e05c3/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
+    <!-- Editable and Select2 -->
+    <link href="/assets/af09957458029929306917fcfc6e05c3/select2/dist/css/select2.css" rel="stylesheet">
+
+            <link rel="apple-touch-icon-precomposed" sizes="57x57"   href="/images/favicon/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/favicon/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72"   href="/images/favicon/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/favicon/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon-precomposed" sizes="60x60"   href="/images/favicon/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/images/favicon/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon-precomposed" sizes="76x76"   href="/images/favicon/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/images/favicon/apple-touch-icon-152x152.png">
+        <link rel="icon" type="image/png" href="/images/favicon/favicon-196x196.png" sizes="196x196">
+        <link rel="icon" type="image/png" href="/images/favicon/favicon-96x96.png"   sizes="96x96">
+        <link rel="icon" type="image/png" href="/images/favicon/favicon-32x32.png"   sizes="32x32">
+        <link rel="icon" type="image/png" href="/images/favicon/favicon-16x16.png"   sizes="16x16">
+        <link rel="icon" type="image/png" href="/images/favicon/favicon-128.png"     sizes="128x128">
+        <link rel="shortcut icon"         href="/images/favicon/favicon.ico">
+        <meta name="application-name"                content="Kattis, Kattis">
+        <meta name="msapplication-TileColor"         content="#FFFFFF">
+        <meta name="msapplication-TileImage"         content="/images/favicon/mstile-144x144.png">
+        <meta name="msapplication-square70x70logo"   content="/images/favicon/mstile-70x70.png">
+        <meta name="msapplication-square150x150logo" content="/images/favicon/mstile-150x150.png">
+        <meta name="msapplication-wide310x150logo"   content="/images/favicon/mstile-310x150.png">
+        <meta name="msapplication-square310x310logo" content="/images/favicon/mstile-310x310.png">
+    
+    <!-- Own CSS -->
+    <link rel="stylesheet" href="/css/5c201b1cc07aece6b2d5377eae27226a/style.css">
+    <style type="text/css">           .logo {
+         background-color: ;
+     }
+          :root {
+                      --branding-border: linear-gradient(rgb(240,176,52), rgb(240,176,52));
+              }
+
+          div.page-content.clearfix.above-everything.alert.alert-danger { color: #31708f; background: #d9edf7; border-color: #bce8f1; }
+div.page-content.clearfix.above-everything.alert.alert-danger div.main-content { padding-bottom: 0; }
+
+         </style>
+
+    <script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" type="text/javascript">
+        window.page_loaded_at = new Date();
+        jQuery.noConflict();
+    </script>
+
+    
+    <meta name="robots" content="noindex">
+    <script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/non-es6/mathjax_conf.js" defer></script>
+<script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" src="/assets/af09957458029929306917fcfc6e05c3/mathjax/es5/tex-mml-chtml.js" defer id="MathJax-script"></script>
+    <script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" defer src="/assets/af09957458029929306917fcfc6e05c3/ace-builds/src-min-noconflict/ace.js"></script>
+
+</head>
+
+<body class=" l-body_grid"  >
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="l-page_header">
+    <div class="page_header-arrow_expand_collapse">
+        <i class="page_header-arrow_expand_collapse-arrow"></i>
+    </div>
+    <div class="page_header-wrapper">
+        <div class="logo-container">
+            <a class="logo-link" href="/" title="Kattis">
+                <img class="logo" src="/images/site-logo?v=0a3f6018aacf449381741e45cf0ff6ba" alt="Kattis logo" />
+            </a>
+            <h4 class="logo-container-text">Kattis</h4>
+            <button class="menu_mobile_link" >
+                <i class="fas fa-bars menu_mobile_link_icon"></i>
+            </button>
+            <script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/pages/master/nav.js"></script>
+        </div>
+        <div class="branding_border"></div>
+        <div class="page_header-content">
+            <nav>
+                <ul class="main_menu">
+                                                                    <li>
+                            <a  href="/problems" class="main_menu-item main_menu-item_link  is-main_menu-item-active" title="Problems">
+                                                                    <i class="fas fa-puzzle-piece main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name ">Problems</span>
+                                                            </a>
+                        </li>
+                                                                    <li>
+                            <a  href="/contests" class="main_menu-item main_menu-item_link  " title="Contests">
+                                                                    <i class="fas fa-award main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name ">Contests</span>
+                                                            </a>
+                        </li>
+                                                                    <li>
+                            <a  href="/challenge" class="main_menu-item main_menu-item_link  " title="Challenge">
+                                                                    <i class="fas fa-star main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name beta_label">Challenge</span>
+                                                            </a>
+                        </li>
+                                                                    <li>
+                            <a  href="/ranklist" class="main_menu-item main_menu-item_link  " title="Ranklists">
+                                                                    <i class="fas fa-trophy main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name ">Ranklists</span>
+                                                            </a>
+                        </li>
+                                                                    <li>
+                            <a  href="/jobs" class="main_menu-item main_menu-item_link  " title="Jobs">
+                                                                    <i class="fas fa-suitcase main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name ">Jobs</span>
+                                                            </a>
+                        </li>
+                                                                    <li>
+                            <a  href="/languages" class="main_menu-item main_menu-item_link  " title="Languages">
+                                                                    <i class="fas fa-code main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name ">Languages</span>
+                                                            </a>
+                        </li>
+                                                                    <li>
+                            <a  href="/info" class="main_menu-item main_menu-item_link  " title="Info">
+                                                                    <i class="fas fa-info main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name ">Info</span>
+                                                            </a>
+                        </li>
+                                                                    <li>
+                            <a  href="https://support.kattis.com" class="main_menu-item main_menu-item_link  " title="Help">
+                                                                    <i class="fas fa-question main_menu-item_icon"></i>
+                                                                <span class="main_menu-item_name ">Help</span>
+                                                            </a>
+                        </li>
+                                    </ul>
+            </nav>
+                            <div class="header_item_margin search-lower">
+                    <label for="search_input" class="search-label search-label-right">Search</label>
+                    <form id="search_form" method="GET" action="/search" class="search">
+                                                    <img src="/images/site/header/logo-empty.png?0bb770=" alt="Kattis Cat" class="search-mascot" />
+                                                <input id="search_input" type="search" name="q" class="search-input" placeholder="Search Kattis" />
+                        <i id="search_submit" class="fas fa-search search-icon"></i>
+                    </form>
+                </div>
+                    </div>
+    </div>
+</header>
+
+    <div class="l-main_area">
+        
+
+        
+        <main class="flex flex-col grow content_padding">
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="top_bar ">
+    <script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/pages/master/top_bar.js"></script>
+    <div class="branding_border"></div>
+            <div class="top_bar-content-wrapper">
+            <div class="top_bar-section top_bar-section-large">
+                <div class="breadcrumb top_bar-item">
+                                                                        <a href="/problems" class="breadcrumb-link">Problems</a><span class="breadcrumb-divider">/</span>
+                                                                                    <span class="breadcrumb-current">
+                                                    Popcorn Button
+                                            </span>
+                </div>
+
+                            </div>
+
+            <div class="top_bar-section collapsible-menu-group-right top_bar-section-small items-center">
+                
+                
+
+                                    <a href="/login" class="button button-primary button-small">Log in</a>
+                            </div>
+        </div>
+    
+    
+
+    </div>
+
+            
+            
+
+            
+            
+            
+
+<script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" defer src="/assets/af09957458029929306917fcfc6e05c3/ace-builds/src-min-noconflict/ace.js"></script>
+<script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/modules/highlight.js"></script>
+<script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/modules/mobile_tabs.js"></script>
+<script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/modules/load_select.js"></script>
+<script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" type="module" src="/js/e5c31ed9d7fd95744071a03f9397ed4b/pages/problems/view.js"></script>
+<script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" type="application/json" id="javascript-translations">
+    { "copy_msg": "Copied to clipboard!" }
+</script>
+
+<div class="l-book">
+    <div class="book-container">
+        <div id="bookmark" class="book-bookmark is-hidden">
+            <div class="book-bookmark-text" data-cy="instruction-bookmark">
+                View problem statement: <span class="book-bookmark-text-subtext">Popcorn Button</span><i class="fas fa-chevron-left book-bookmark-text-icon"></i>
+            </div>
+        </div>
+        <div id="instructions-container" class="book-page-container grow book-page-fixed_width h-max-content">
+            <article class="book-page">
+                <div class="book-page-fixed_width">
+                    <div id="instructions-close" class="book-close"><i class="fas fa-chevron-left book-close-icon"></i>Hide</div>
+                                        <h1 class="book-page-heading">Popcorn Button</h1>
+                                                                                                                            
+  <div class="problembody">
+    <p>Caitlyn is optimizing her morning routine. First thing each
+    morning, she heats up her breakfast in her new hextech
+    microwave oven. Caitlyn is a very precise person. <b class=
+    "bfseries">When she presses a button, she releases the button
+    at exactly the end of the second. The button takes effect
+    exactly at the end of this second.</b></p>
+    <p>Initially, the microwave is <i class="itshape">idle</i> and
+    has no time entered or remaining. When the microwave is
+    <i class="itshape">idle</i>, Caitlyn can start the microwave by
+    entering a time with the <tt class="ttfamily">Set Time</tt>
+    button. To select a time, Caitlyn must press the <tt class=
+    "ttfamily">Set Time</tt> button on the microwave, then enter
+    the time into the microwave’s keypad, then press the <tt class=
+    "ttfamily">Start</tt> button. Caitlyn can enter a one, two or
+    three digit time. If Caitlyn enters a one or two digit time,
+    the microwave will run for this many seconds. If Caitlyn enters
+    a three digit time, the microwave will interpret the first
+    digit as minutes and the last two digits as seconds. There are
+    no restrictions on which digits Caitlyn can enter. For example,
+    if Caitlyn enters <tt class="ttfamily">Set Time-9-3-Start</tt>,
+    the microwave will run for 93 seconds. If Caitlyn enters
+    <tt class="ttfamily">Set Time-6-9-3-Start</tt>, the microwave
+    will run for 6 minutes and 93 seconds, for a total of
+    <span class="tex2jax_process">$360 + 93 = 453$</span> seconds.
+    If Caitlyn enters <tt class="ttfamily">Set
+    Time-0-0-0-Start</tt>, the microwave will run for 0 seconds and
+    stop instantly. Caitlyn cannot enter more than 3 digits.</p>
+    <p>Additionally, the microwave has several <i class=
+    "itshape">preset buttons</i> that Caitlyn can use to
+    immediately start the microwave while the microwave is
+    <i class="itshape">idle</i>.</p>
+    <ul class="itemize">
+      <li>
+        <p>If Caitlyn presses any digit <tt class="ttfamily">1</tt>
+        through <tt class="ttfamily">7</tt> while the microwave is
+        <i class="itshape">idle</i> (and <tt class="ttfamily">Set
+        Time</tt> has not been pressed), the microwave will run for
+        that many minutes, without Caitlyn pressing <tt class=
+        "ttfamily">Set Time</tt> or <tt class=
+        "ttfamily">Start</tt>. Pressing <tt class=
+        "ttfamily">8</tt>, <tt class="ttfamily">9</tt> or
+        <tt class="ttfamily">0</tt> before pressing <tt class=
+        "ttfamily">Set Time</tt> has no effect.</p>
+      </li>
+      <li>
+        <p>If Caitlyn presses the <tt class="ttfamily">Popcorn</tt>
+        button, at the end of the second, the microwave will begin
+        running for 2 minutes and 30 seconds.</p>
+      </li>
+      <li>
+        <p>If Caitlyn presses the <tt class="ttfamily">Reheat</tt>
+        button, the microwave will begin running for 50
+        seconds.</p>
+      </li>
+      <li>
+        <p>If Caitlyn presses the <tt class="ttfamily">Potato</tt>
+        button, the microwave will begin running for 5 minutes and
+        15 seconds.</p>
+      </li>
+      <li>
+        <p>If Caitlyn presses the <tt class="ttfamily">Add 30
+        Seconds</tt> button before pressing any other buttons, the
+        microwave will begin running for 30 seconds.</p>
+      </li>
+    </ul>
+    <p>No <i class="itshape">preset button</i> except the
+    <tt class="ttfamily">Add 30 Seconds</tt> button has any effect
+    when the microwave is <i class="itshape">running</i> or
+    <i class="itshape">paused</i>. No <i class="itshape">preset
+    button</i> except the digits has any effect when Caitlyn is
+    entering a time with the <tt class="ttfamily">Set Time</tt>
+    button.</p>
+    <p>Caitlyn can also press the <tt class="ttfamily">Stop</tt>
+    button to pause the microwave while it is <i class=
+    "itshape">running</i>. While <i class="itshape">paused</i>, the
+    microwave will not run, and the time will not reset.</p>
+    <ul class="itemize">
+      <li>
+        <p>If Caitlyn presses the <tt class="ttfamily">Stop</tt>
+        button while the microwave is <i class=
+        "itshape">running</i>, it will stop cooking at the end of
+        the second.</p>
+      </li>
+      <li>
+        <p>While the microwave is <i class="itshape">paused</i>,
+        only the <tt class="ttfamily">Start</tt>, <tt class=
+        "ttfamily">Add 30 Seconds</tt> and <tt class=
+        "ttfamily">Stop</tt> buttons have any effect: pressing the
+        <tt class="ttfamily">Stop</tt> button resets the time to 0
+        seconds and cancels the cooking operation. Pressing the
+        <tt class="ttfamily">Start</tt> button resumes cooking with
+        the remaining time.</p>
+      </li>
+      <li>
+        <p>Caitlyn can run the hextech microwave without her food
+        in it. When the microwave is not <i class=
+        "itshape">running</i>, she can instantly insert or remove
+        food into the microwave. She cannot insert or remove food
+        while the microwave is <i class="itshape">running</i>.</p>
+      </li>
+    </ul>
+    <p>When the microwave is <i class="itshape">running</i>, only
+    the <tt class="ttfamily">Stop</tt> and <tt class="ttfamily">Add
+    30 Seconds</tt> buttons have any effect. If Caitlyn presses the
+    <tt class="ttfamily">Stop</tt> button when the microwave is
+    <i class="itshape">running</i> with <span class=
+    "tex2jax_process">$t$</span> seconds remaining, at the end of
+    the second, the microwave will stop cooking with <span class=
+    "tex2jax_process">$t - 1$</span> seconds remaining. If Caitlyn
+    presses the <tt class="ttfamily">Stop</tt> button when the
+    microwave has only one second left, this second will tick down,
+    and the microwave will become <i class="itshape">idle</i>
+    instead of remaining <i class="itshape">paused</i> with
+    <span class="tex2jax_process">$0$</span> seconds. If
+    <span class="tex2jax_process">$t &gt; 1$</span>, the microwave
+    will remain <i class="itshape">paused</i> with <span class=
+    "tex2jax_process">$t - 1$</span> seconds remaining.</p>
+    <p>Caitlyn can use the <tt class="ttfamily">Add 30 Seconds</tt>
+    whenever the microwave is <i class="itshape">running</i>,
+    <i class="itshape">paused</i> or <i class="itshape">idle</i>,
+    but not when a time is being entered with the <tt class=
+    "ttfamily">Set Time</tt> button. If Caitlyn presses the
+    <tt class="ttfamily">Add 30 Seconds</tt> button when the
+    microwave is <i class="itshape">running</i> with <span class=
+    "tex2jax_process">$t \leq 610$</span> seconds remaining, the
+    microwave will run for this second, and at the end of the
+    second, the microwave will have <span class=
+    "tex2jax_process">$t + 29$</span> seconds remaining. If Caitlyn
+    presses the <tt class="ttfamily">Add 30 Seconds</tt> when the
+    microwave is <i class="itshape">running</i> with 1 second
+    remaining, the microwave will continue running and read
+    <span class="tex2jax_process">$t + 29 = 30$</span> seconds
+    remaining at the end of this second. If Caitlyn presses the
+    <tt class="ttfamily">Add 30 Seconds</tt> button when the
+    microwave is <i class="itshape">paused</i> with <span class=
+    "tex2jax_process">$t \leq 609$</span> seconds remaining, the
+    microwave will remain <i class="itshape">paused</i> with
+    <span class="tex2jax_process">$t + 30$</span> seconds
+    remaining. If Caitlyn presses the <tt class="ttfamily">Add 30
+    Seconds</tt> button when the microwave is <i class=
+    "itshape">idle</i>, the microwave will begin running for 30
+    seconds.</p>
+    <p>The microwave can only display 3 digits. When Caitlyn
+    presses the <tt class="ttfamily">Add 30 Seconds</tt> button,
+    the microwave will automatically normalize the time to 3
+    digits. If the resulting time would be too large to display
+    with only 3 digits, the <tt class="ttfamily">Add 30
+    Seconds</tt> button will have no effect for that second. For
+    example, if Caitlyn hits <tt class="ttfamily">Add 30
+    Seconds</tt> when the microwave is <i class=
+    "itshape">running</i> and reads <tt class="ttfamily">0:99</tt>,
+    the resulting cook time will be <span class=
+    "tex2jax_process">$99 + 29 = 128$</span> seconds. The microwave
+    will display this as <tt class="ttfamily">2:08</tt> (2 minutes
+    and 8 seconds). If Caitlyn presses the <tt class="ttfamily">Add
+    30 Seconds</tt> button when the microwave has 9 minutes and 71
+    seconds remaining or longer, the resulting time is too large to
+    display, and the button has no effect. If Caitlyn presses the
+    <tt class="ttfamily">Add 30 Seconds</tt> button when the
+    microwave is <i class="itshape">running</i> and reads
+    <tt class="ttfamily">9:70</tt>, the resulting cook time will be
+    <span class="tex2jax_process">$9 \times 60 + 70 + 29 =
+    639$</span> seconds, and the microwave will display this as
+    <tt class="ttfamily">9:99</tt> (9 minutes and 99 seconds).</p>
+    <p>For example, to heat her food 90 seconds, Caitlyn use any
+    one of the following strategies:</p>
+    <ul class="itemize">
+      <li>
+        <p><tt class="ttfamily">Set Time-9-0-Start</tt> (4 seconds
+        spent pressing buttons)</p>
+      </li>
+      <li>
+        <p><tt class="ttfamily">Set Time-1-3-0-Start</tt> (5
+        seconds)</p>
+      </li>
+      <li>
+        <p><tt class="ttfamily">1-Add30</tt> (2 seconds)</p>
+      </li>
+      <li>
+        <p><tt class="ttfamily">Set Time-1-0-0-Start-Add30</tt> (6
+        seconds)</p>
+      </li>
+      <li>
+        <p><tt class="ttfamily">Add30-Add30-Add30</tt> (3
+        seconds)</p>
+      </li>
+      <li>
+        <p><tt class="ttfamily">Reheat (without food)-Add30-(Wait
+        19 seconds for microwave to count down)<br>
+        -Stop-Add30-(Put food in instantly)-Start</tt> (24
+        seconds)</p>
+      </li>
+    </ul>
+    <p>Making Caitlyn’s life more difficult, Vi always presses the
+    buttons too hard and breaks them. A lot of the buttons aren’t
+    even working right now. Caitlyn can’t use any of the broken
+    buttons to enter the time.</p>
+    <p>Caitlyn needs to heat her food today for exactly
+    <span class="tex2jax_process">$x$</span> seconds. What is the
+    minimum number of seconds for Caitlyn to enter this time into
+    the microwave? Her time starts when she presses the first
+    button, and ends when she presses the last button, regardless
+    of how long the food has left.</p>
+    <h2>Input</h2>
+    <p>The first line contains two space-separated integers:
+    <span class="tex2jax_process">$n$</span>, the number of buttons
+    that are broken (<span class="tex2jax_process">$0 \leq n \leq
+    15$</span>), and <span class="tex2jax_process">$q$</span>, the
+    number of times Caitlyn wants to heat her food (<span class=
+    "tex2jax_process">$1 \leq q \leq 639$</span>).</p>
+    <p>The next line contains <span class=
+    "tex2jax_process">$n$</span> space-separated strings,
+    representing the button that is broken. The digit buttons are
+    represented by a single character, <tt class=
+    "ttfamily">0-9</tt>, the digit of the button that is broken.
+    This line will be empty if <span class="tex2jax_process">$n =
+    0$</span>. The remaining buttons are represented by the
+    following strings:</p>
+    <ul class="itemize">
+      <li>
+        <p><tt class="ttfamily">settime</tt></p>
+      </li>
+      <li>
+        <p><tt class="ttfamily">popcorn</tt></p>
+      </li>
+      <li>
+        <p><tt class="ttfamily">reheat</tt></p>
+      </li>
+      <li>
+        <p><tt class="ttfamily">potato</tt></p>
+      </li>
+      <li>
+        <p><tt class="ttfamily">add30</tt></p>
+      </li>
+    </ul>
+    <p>The <tt class="ttfamily">Stop</tt> and <tt class=
+    "ttfamily">Start</tt> buttons are never broken.</p>
+    <p>The next line contains <span class=
+    "tex2jax_process">$q$</span> space-separated integers,
+    <span class="tex2jax_process">$x_1, x_2, \ldots , x_q$</span>
+    (<span class="tex2jax_process">$1 \leq x_i \leq 639$</span>),
+    the times Caitlyn wants to heat her food for over the next
+    <span class="tex2jax_process">$q$</span> days.</p>
+    <h2>Output</h2>
+    <p>For each query, output one line containing a single number,
+    the minimum number of seconds Caitlyn needs to enter the time
+    into the microwave to cook her food <i class=
+    "itshape">exactly</i> <span class=
+    "tex2jax_process">$x_i$</span> seconds. This is defined as the
+    final time when Caitlyn presses the last button, regardless of
+    how long the food has left to cook. If Caitlyn cannot cook her
+    food for exactly <span class="tex2jax_process">$x_i$</span>
+    seconds, output <tt class="ttfamily">-1</tt>.</p>
+    <h2>Explanation</h2>
+    <p>Unless otherwise specified, in the below explanations, if
+    Caitlyn starts the microwave, her food is assumed to be in the
+    microwave.</p>
+    <p>To cook her food for <tt class="ttfamily">60</tt> seconds,
+    Caitlyn could use any of the three following strategies in the
+    sample inputs:</p>
+    <ul class="itemize">
+      <li>
+        <p><tt class="ttfamily">1</tt> (1 second)</p>
+      </li>
+      <li>
+        <p><tt class="ttfamily">Popcorn-(wait 9
+        seconds)-Stop-Stop-Reheat</tt> (13 seconds)</p>
+      </li>
+      <li>
+        <p><tt class="ttfamily">2-(wait 59 seconds)-Stop</tt> (61
+        seconds)</p>
+      </li>
+    </ul>
+    <p>To cook her food for <tt class="ttfamily">1</tt> second,
+    Caitlyn can press any preset button during the first second and
+    then hit <tt class="ttfamily">Stop</tt> during the second
+    second. The microwave will remain <i class="itshape">paused</i>
+    and her food will have cooked for 1 second.</p>
+    <p>To cook her food for <tt class="ttfamily">23</tt> seconds,
+    Caitlyn could use any of the three following strategies in the
+    sample inputs:</p>
+    <ul class="itemize">
+      <li>
+        <p><tt class="ttfamily">Set Time-2-3-Start</tt> (4
+        seconds)</p>
+      </li>
+      <li>
+        <p><tt class="ttfamily">Add30 (without food)-(wait 6
+        seconds)-Stop-Start (with food)</tt> (9 seconds)</p>
+      </li>
+      <li>
+        <p><tt class="ttfamily">Potato-Wait 22 seconds-Stop</tt>
+        (24 seconds)</p>
+      </li>
+    </ul>
+    <p>To cook her food for <tt class="ttfamily">80</tt> seconds,
+    Caitlyn could use any of the three following strategies in the
+    sample inputs:</p>
+    <ul class="itemize">
+      <li>
+        <p><tt class="ttfamily">Reheat-Add30</tt> (2 seconds)</p>
+      </li>
+      <li>
+        <p><tt class="ttfamily">4-(wait 29
+        seconds)-Stop-Stop-Reheat</tt> (33 seconds)</p>
+      </li>
+      <li>
+        <p><tt class="ttfamily">2 (without food)-(wait 39
+        seconds)-Stop-Start (with food)</tt> (42 seconds)</p>
+      </li>
+    </ul>
+    <table class="sample" summary="sample data">
+      <tr>
+        <th>Sample Input 1</th>
+        <th>Sample Output 1</th>
+      </tr>
+      <tr>
+        <td>
+          <pre>0 8
+
+60 1 23 80 30 90 120 180
+</pre>
+        </td>
+        <td>
+          <pre>1
+2
+4
+2
+1
+2
+1
+1
+</pre>
+        </td>
+      </tr>
+    </table>
+    <table class="sample" summary="sample data">
+      <tr>
+        <th>Sample Input 2</th>
+        <th>Sample Output 2</th>
+      </tr>
+      <tr>
+        <td>
+          <pre>3 8
+1 settime add30
+60 1 23 80 30 90 120 180
+</pre>
+        </td>
+        <td>
+          <pre>13
+2
+24
+33
+22
+32
+1
+1
+</pre>
+        </td>
+      </tr>
+    </table>
+    <table class="sample" summary="sample data">
+      <tr>
+        <th>Sample Input 3</th>
+        <th>Sample Output 3</th>
+      </tr>
+      <tr>
+        <td>
+          <pre>4 8
+1 settime add30 reheat
+60 1 23 80 30 90 120 180
+</pre>
+        </td>
+        <td>
+          <pre>61
+2
+24
+42
+31
+32
+1
+1
+</pre>
+        </td>
+      </tr>
+    </table>
+    <table class="sample" summary="sample data">
+      <tr>
+        <th>Sample Input 4</th>
+        <th>Sample Output 4</th>
+      </tr>
+      <tr>
+        <td>
+          <pre>2 8
+2 3
+60 1 23 80 30 90 120 180
+</pre>
+        </td>
+        <td>
+          <pre>1
+2
+9
+2
+1
+2
+3
+2
+</pre>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+                                                        </div>
+            </article>
+        </div>
+
+        <div id="editor-container" class="book-page-container grow static-fixed-parent" data-problem-name="popcornbutton"
+                                                                                        data-submit-url="/problems/popcornbutton/submit"
+                                                                                        data-sourcelim="131072"
+                                                                                        data-may-submit="false"
+                                                                                                                                                                                data-csrf-token="7604657391674374652285176663082959668521"
+                                                                                                                                                                                data-current-tab="edit-and-submit-tab"
+                                                                                        data-default-tab="edit-and-submit-tab">
+            <div class="tab static-fixed-content l-strip_list-flex">
+                    <div class="strip-item-plain problem-view-tab-nav-container"><nav class="tab-nav problem-view-tab-nav" data-mobile-select-classes="is-hidden@md tab-select-js" data-active-page="edit-and-submit-tab"><a id="edit-and-submit-tab-link" class="tab-nav-item tab-nav-js active" title="Edit &amp; Submit" data-tab-id-to-open="edit-and-submit-tab">Edit &amp; Submit</a><a id="metadata-tab-link" class="tab-nav-item tab-nav-js " title="Metadata" data-tab-id-to-open="metadata-tab">Metadata</a><a id="submissions-tab-link" class="tab-nav-item tab-nav-js " title="My Submissions" data-tab-id-to-open="submissions-tab">My Submissions</a></nav><div class="tabs-close book-close-tabs">Hide <i class="fas fa-chevron-right book-close-icon"></i></div></div>
+                    <div id="edit-and-submit-tab" class="overflow-y-auto grow " data-tabs-container="#editor-container">
+                                                    <div id="editor-container-intro" class="editor-container-content">
+                                <div class="editor-container-intro-half">
+                                    <div class="editor-container-intro-half-content">
+                                        <div class="editor-container-intro-content">
+                                            <p class="editor-container-intro-text">
+                                                                                                    Please log in to submit a solution to this problem                                                                                            </p>
+                                                                                            <a href="/login" class="button button-primary button-medium editor-container-intro-button">Log in</a>
+                                                                                    </div>
+                                    </div>
+                                </div>
+                                <div class="editor-drag_highlight is-hidden">
+                                </div>
+                            </div>
+                                            </div>
+                    <div id="metadata-tab" class="is-hidden scrollable-container" data-tabs-container="#editor-container" data-bookmark-label="Metadata">
+                                                <div class="overflow-y-auto metadata-grid-container">
+                            <div class="metadata-grid">
+                                <div class="card my-0 gap-3 metadata-cpu-card"><i class="fas fa-tachometer-alt text-3xl self-center" style="color: #ced5e4;"></i><div class="flex flex-col gap-2 self-center"><span class="info_label">CPU Time limit</span><span class="text-lg font-bold text-blue-200">1 second</span></div></div> <div class="card my-0 gap-3 metadata-memory-card"><i class="fas fa-memory text-3xl self-center" style="color: #ced5e4;"></i><div class="flex flex-col gap-2 self-center"><span class="info_label">Memory limit</span><span class="text-lg font-bold text-blue-200">1024 MB</span></div></div> <div class="card my-0 gap-3 metadata-difficulty-card"><span class="self-center whitespace-nowrap difficulty_number difficulty_number-problem_view difficulty_hard">6.9</span><div class="flex flex-col gap-2 self-center"><span class="info_label">Difficulty</span><span class="text-lg font-bold text-blue-200">Hard</span></div></div>
+                                <div class="card my-0 metadata-links-card"><div class="flex flex-col gap-3"><span class="info_label">Links</span><a href="/problems/popcornbutton/statistics" class="flex gap-3"><i class="fas fa-chart-column text-blue-100 self-center"></i>Statistics</a></div></div>     <div class="card my-0 metadata-downloads-card"><div class="flex flex-col gap-3"><span class="info_label">Downloads</span><a href="/problems/popcornbutton/file/statement/samples.zip" class="flex gap-3" download="popcornbutton.zip"}><i class="fas fa-file-arrow-down text-blue-100 self-center"></i>Sample data files</a></div></div>    <div class="card my-0 metadata-license-card"><div class="flex flex-col gap-3"><span class="info_label">Source &amp; License</span><span class="flex flex-wrap gap-3"><i class="fas fa-feather-pointed text-gray-200 self-center" title="Author"></i><a href="/problem-authors/Andy%20Polizzotto">Andy Polizzotto</a></span><span class="flex gap-3"><a href="/problem-sources/CodeSprint%20LA%202025">CodeSprint LA 2025</a></span><span class="flex gap-3"><a rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/" style="vertical-align: middle;"><img class="problem-license" alt="Creative Commons License (cc by-sa)" src="https://licensebuttons.net/l/by-sa/3.0/80x15.png" /></a></span></div></div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                                            <div id="submissions-tab" class="book-page static-fixed-content-no-expand is-hidden" data-tabs-container="#editor-container" data-bookmark-label="Submissions">
+                            <p align="center">
+                                You haven&#039;t made any submissions on this problem yet.                            </P>
+                        </div>
+                                                                                
+            </div>
+        </div>
+        <div id="bookmark-editor" class="book-bookmark is-hidden">
+            <div class="book-bookmark-text" data-cy="editor-bookmark">
+                Editor: <span id="editor-bookmark-label" class="book-bookmark-text-subtext" data-intro-text="Intro"></span><i class="fas fa-chevron-right book-bookmark-text-icon"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        </main>
+
+        
+
+
+
+    <footer class="l-footer ">
+        <span class="text-center text-sm divider-separated-list">
+            <a href="/contact">Contact</a>
+            <a href="https://status.kattis.com">System Status</a>
+            <a rel="terms-of-service" href="/contracts/current/tos">Terms of Service</a>
+            <a rel="privacy-policy" href="/contracts/current/privacy_policy">Privacy Policy</a>
+        </span>
+    </footer>
+
+    </div>
+
+
+<script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" src="/assets/af09957458029929306917fcfc6e05c3/moment/min/moment.min.js"></script>
+<script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" src="/assets/af09957458029929306917fcfc6e05c3/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" src="/assets/af09957458029929306917fcfc6e05c3/select2/dist/js/select2.full.min.js"></script>
+
+
+
+        <script defer nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" src="https://status.kattis.com/embed/script.js"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" nonce="d2c0b5c7b2715083781774c387bfb13e65d0f9b1d852ac47d686bfa3fc139dac" data-cf-beacon='{"version":"2024.11.0","token":"6651308a007d4d459b12876077322bfb","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
