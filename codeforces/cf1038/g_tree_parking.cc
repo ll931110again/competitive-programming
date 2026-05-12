@@ -1,3 +1,17 @@
+// CF 2122G - Tree Parking: https://codeforces.com/contest/2122/problem/G
+//
+// Model: rooted tree at 1. Car i enters at time l_i, travels root -> i, parks at
+// i until it leaves at r_i (same path back). A parked car blocks its vertex for
+// others. The tree is "valid" for schedules (l, r) if every car can follow its
+// route without conflict. Count valid (l, r) over all labeled trees on n
+// vertices with exactly k leaves (mod 998244353).
+//
+// Combinatorial closed form (see editorial / writeups):
+//   answer = A(n-1, k-1) * (2n)! / (n * 2^n),
+// where A(n, k) is the Eulerian number: permutations of [n] with exactly k
+// ascents (equivalently k descents of the reverse). One inclusion-exclusion form
+// is  sum_{i=0}^{k} (-1)^i * C(n+1, i) * (k+1-i)^n  (Wikipedia: Eulerian number).
+
 #ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
 #endif
@@ -23,6 +37,7 @@ Mint fact[maxn], inv[maxn];
 
 Mint binom(int x, int y) { return fact[x] * inv[y] * inv[x - y]; }
 
+// Eulerian number A(n, k): sum_{i=0}^{k} (-1)^i * C(n+1,i) * (k+1-i)^n.
 Mint A(int n, int k) {
   Mint ans = Mint(0);
   for (int i = 0; i <= k; i++) {
@@ -35,6 +50,7 @@ Mint A(int n, int k) {
   return ans;
 }
 
+// Total valid (l, r) over all labeled n-vertex trees with k leaves.
 Mint solve(int n, int k) {
   Mint ans = A(n - 1, k - 1);
   ans *= fact[2 * n];
