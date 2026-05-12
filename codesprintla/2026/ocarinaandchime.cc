@@ -1,8 +1,11 @@
 /**
  * Ocarina and Chime — harmonious starts.
  *
- * The solution is that, for a distribution to be uniform
- * we need to check that sum w^j (mel[i] + ch[s+i]) is 0 for j = 1..k-1.
+ * The idea is that, for a distribution to be uniform
+ * we need to check that sum w^j (melody[i] + chime[s+i]) = 0 for j = 1..k-1.
+ *
+ * By conjugation, it suffices to check that sum w^j (melody[i] + chime[s+i]) = 0 for j = 1..k/2
+ * To check it for a single j, we can use FFT to compute the convolution of melody and chime
  */
 
 #ifdef ONLINE_JUDGE
@@ -99,9 +102,9 @@ int main() {
 
     int M, N, k;
     cin >> M >> N >> k;
-    vector<int> ch(M), mel(N);
-    for (int i = 0; i < M; i++) cin >> ch[i];
-    for (int i = 0; i < N; i++) cin >> mel[i];
+    vector<int> chime(M), melody(N);
+    for (int i = 0; i < M; i++) cin >> chime[i];
+    for (int i = 0; i < N; i++) cin >> melody[i];
 
     if (N > M) {
         cout << "0\n\n";
@@ -124,8 +127,8 @@ int main() {
         return 0;
     }
 
-    for (int& x : mel) x = mod_k(x, k);
-    for (int& x : ch) x = mod_k(x, k);
+    for (int& x : melody) x = mod_k(x, k);
+    for (int& x : chime) x = mod_k(x, k);
 
     // Precomputed ω^{jr} (one 16-byte load per fill).
     vector<vector<cd>> W(k, vector<cd>(k));
@@ -156,7 +159,7 @@ int main() {
     const int J = k / 2;
     const int off = N - 1;
 
-    // FFT over j: coefficient s + (N-1) is sum_i ω^{j(mel[i]+ch[s+i])}; uniform iff all vanish.
+    // FFT over j: coefficient s + (N-1) is sum_i ω^{j(melody[i]+chime[s+i])}; uniform iff all vanish.
     vector<char> cand(S, 1);
     int alive = S;
     vector<cd> a_fft(fft_len), b_fft(fft_len);
@@ -167,8 +170,8 @@ int main() {
         // FFT scrambles whole buffers; full reset each round (memset is fine: all-zero bits = 0.0).
         memset(ap, 0, sizeof(cd) * (size_t)fft_len);
         memset(bp, 0, sizeof(cd) * (size_t)fft_len);
-        for (int i = 0; i < N; ++i) ap[i] = W[j][mel[N - 1 - i]];
-        for (int t = 0; t < M; ++t) bp[t] = W[j][ch[t]];
+        for (int i = 0; i < N; ++i) ap[i] = W[j][melody[N - 1 - i]];
+        for (int t = 0; t < M; ++t) bp[t] = W[j][chime[t]];
 
         convolution_complex(fft_len, ap, bp);
 
