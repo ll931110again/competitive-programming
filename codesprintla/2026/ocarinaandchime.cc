@@ -10,27 +10,39 @@
 #else
 #include <algorithm>
 #include <cmath>
-#include <complex>
+#include <cstring>
 #include <iostream>
 #include <vector>
 #endif
 
 #ifdef __GNUC__
-#pragma GCC optimize("O3")
+// Ofast enables -fcx-limited-range, which inlines `_Complex double` multiplication as the naive
+// (ac-bd, ad+bc) — without this flag, GCC emits a call to libgcc's __muldc3 (NaN/inf fixup) and
+// the inner FFT butterfly stays un-inlined / un-vectorized.
+#pragma GCC optimize("Ofast,unroll-loops")
 #endif
 
 using namespace std;
 
-using cf = complex<float>;
-using cd = complex<double>;
-static const float PI = acosf(-1.0f);
+// GCC/Clang C99 complex type. With -fcx-limited-range (from Ofast) the compiler inlines a*b as
+// the four-mul/two-add formula; without it, the same call goes through __muldc3 like std::complex.
+using cd = _Complex double;
+
+static inline cd make_cd(double r, double i) {
+    cd z;
+    __real__ z = r;
+    __imag__ z = i;
+    return z;
+}
+
+static const double PI = acos(-1.0);
 
 static inline int mod_k(int x, int k) {
     x %= k;
     return x < 0 ? x + k : x;
 }
 
-static vector<vector<cf>> tw_fwd, tw_inv;
+static vector<vector<cd>> tw_fwd, tw_inv;
 
 static void build_twiddles(int n) {
     tw_fwd.assign(n + 1, {});
@@ -40,29 +52,28 @@ static void build_twiddles(int n) {
         tw_fwd[len].resize(half);
         tw_inv[len].resize(half);
         for (int j = 0; j < half; ++j) {
-            float ang = 2 * PI * (float)j / (float)len;
-            tw_fwd[len][j] = cf(cosf(ang), sinf(ang));
-            ang = -ang;
-            tw_inv[len][j] = cf(cosf(ang), sinf(ang));
+            double ang = 2 * PI * (double)j / (double)len;
+            const double c = cos(ang), s = sin(ang);
+            tw_fwd[len][j] = make_cd(c, s);
+            tw_inv[len][j] = make_cd(c, -s);
         }
     }
 }
 
 static vector<int> rev_perm;
 
-static void fft_inplace(vector<cf>& a, bool invert) {
-    const int n = (int)a.size();
+static void fft_inplace(cd* a, int n, bool invert) {
     for (int i = 0; i < n; ++i)
         if (i < rev_perm[i]) swap(a[i], a[rev_perm[i]]);
 
     for (int len = 2; len <= n; len <<= 1) {
         const int half = len / 2;
-        const cf* tw = invert ? tw_inv[len].data() : tw_fwd[len].data();
+        const cd* tw = invert ? tw_inv[len].data() : tw_fwd[len].data();
         for (int i = 0; i < n; i += len) {
-            cf* ai = a.data() + i;
+            cd* ai = a + i;
             for (int j = 0; j < half; ++j) {
-                cf u = ai[j];
-                cf v = ai[j + half] * tw[j];
+                cd u = ai[j];
+                cd v = ai[j + half] * tw[j];
                 ai[j] = u + v;
                 ai[j + half] = u - v;
             }
@@ -70,16 +81,16 @@ static void fft_inplace(vector<cf>& a, bool invert) {
     }
 
     if (invert) {
-        const float inv_n = 1.0f / (float)n;
-        for (cf& x : a) x *= inv_n;
+        const double inv_n = 1.0 / (double)n;
+        for (int i = 0; i < n; ++i) a[i] *= inv_n;
     }
 }
 
-static void convolution_complex(int n, vector<cf>& a, vector<cf>& b) {
-    fft_inplace(a, false);
-    fft_inplace(b, false);
+static void convolution_complex(int n, cd* a, cd* b) {
+    fft_inplace(a, n, false);
+    fft_inplace(b, n, false);
     for (int i = 0; i < n; ++i) a[i] *= b[i];
-    fft_inplace(a, true);
+    fft_inplace(a, n, true);
 }
 
 int main() {
@@ -116,24 +127,22 @@ int main() {
     for (int& x : mel) x = mod_k(x, k);
     for (int& x : ch) x = mod_k(x, k);
 
-    // Filter threshold for float FFT. Must be large enough to avoid false negatives
-    // (true harmonious => 0, but numerical error can be nontrivial at size ~1e6).
-    // We use an uncertainty band: if |S| is medium, recompute exactly (double) before eliminating.
-    const float FILTER_BAD_HI = 0.08f;
-    const float FILTER_BAD_LO = 0.02f;
-
-    vector<vector<cf>> W(k, vector<cf>(k));
-    vector<vector<cd>> Wd(k, vector<cd>(k));
+    // Precomputed ω^{jr} (one 16-byte load per fill).
+    vector<vector<cd>> W(k, vector<cd>(k));
     for (int j = 1; j < k; ++j) {
         for (int r = 0; r < k; ++r) {
-            float ang = 2 * PI * (float)j * (float)r / (float)k;
-            W[j][r] = cf(cosf(ang), sinf(ang));
-            Wd[j][r] = cd((double)W[j][r].real(), (double)W[j][r].imag());
+            const double ang = 2 * PI * (double)j * (double)r / (double)k;
+            W[j][r] = make_cd(cos(ang), sin(ang));
         }
     }
 
     int fft_len = 1;
     while (fft_len < M + N) fft_len <<= 1;
+
+    // Double FFT: reject shift if |coeff|^2 > conv_tol2 (compare squared to skip sqrt).
+    const double conv_tol =
+        max(1e-7, 5e-13 * (double)N * max(1.0, log2((double)fft_len)));
+    const double conv_tol2 = conv_tol * conv_tol;
 
     build_twiddles(fft_len);
     {
@@ -147,58 +156,37 @@ int main() {
     const int J = k / 2;
     const int off = N - 1;
 
-    // 1) FFT filter over j, eliminate only when clearly nonzero.
+    // FFT over j: coefficient s + (N-1) is sum_i ω^{j(mel[i]+ch[s+i])}; uniform iff all vanish.
     vector<char> cand(S, 1);
     int alive = S;
-    vector<cf> a_fft(fft_len), b_fft(fft_len);
+    vector<cd> a_fft(fft_len), b_fft(fft_len);
+    cd* ap = a_fft.data();
+    cd* bp = b_fft.data();
 
     for (int j = 1; j <= J && alive > 0; ++j) {
-        fill(a_fft.begin(), a_fft.end(), cf(0.0f, 0.0f));
-        fill(b_fft.begin(), b_fft.end(), cf(0.0f, 0.0f));
-        for (int i = 0; i < N; ++i) a_fft[i] = W[j][mel[N - 1 - i]];
-        for (int t = 0; t < M; ++t) b_fft[t] = W[j][ch[t]];
-        convolution_complex(fft_len, a_fft, b_fft);
+        // FFT scrambles whole buffers; full reset each round (memset is fine: all-zero bits = 0.0).
+        memset(ap, 0, sizeof(cd) * (size_t)fft_len);
+        memset(bp, 0, sizeof(cd) * (size_t)fft_len);
+        for (int i = 0; i < N; ++i) ap[i] = W[j][mel[N - 1 - i]];
+        for (int t = 0; t < M; ++t) bp[t] = W[j][ch[t]];
+
+        convolution_complex(fft_len, ap, bp);
+
         for (int s = 0; s < S && alive > 0; ++s) {
             if (!cand[s]) continue;
-            float mag = abs(a_fft[s + off]);
-            if (mag <= FILTER_BAD_LO) continue; // definitely keep
-            if (mag > FILTER_BAD_HI) {
-                cand[s] = 0;
-                --alive;
-                continue;
-            }
-            // Uncertain: verify this single (s,j) sum exactly in double before eliminating.
-            cd sum(0.0, 0.0);
-            for (int i = 0; i < N; ++i) {
-                int r = mel[i] + ch[s + i];
-                if (r >= k) r -= k;
-                sum += Wd[j][r];
-            }
-            if (abs(sum) > 1e-5) {
+            const cd z = ap[s + off];
+            const double zr = __real__ z, zi = __imag__ z;
+            if (zr * zr + zi * zi > conv_tol2) {
                 cand[s] = 0;
                 --alive;
             }
         }
     }
 
-    // 2) Exact verification for survivors.
     vector<int> ans;
     ans.reserve(alive);
-    const int need = N / k;
-    vector<int> cnt(k);
     for (int s = 0; s < S; ++s) {
-        if (!cand[s]) continue;
-        fill(cnt.begin(), cnt.end(), 0);
-        for (int i = 0; i < N; ++i) {
-            int r = mel[i] + ch[s + i];
-            if (r >= k) r -= k;
-            cnt[r]++;
-        }
-        bool ok = true;
-        for (int r = 0; r < k; ++r) {
-            if (cnt[r] != need) { ok = false; break; }
-        }
-        if (ok) ans.push_back(s + 1);
+        if (cand[s]) ans.push_back(s + 1);
     }
 
     cout << ans.size() << '\n';
