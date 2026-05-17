@@ -9,8 +9,8 @@ fun nextInts() = next().split(" ").map { it.toInt() }
 
 fun main() {
 	var (n, m, k) = nextInts()
-	var maxSteps = Array(n + 1){-1}
-	var lastTouch = Array(n + 1){0}
+	var maxSteps = Array(n + 1) { -1 }
+	var lastTouch = Array(n + 1) { 0 }
 	maxSteps[k] = 0
 
 	for (i in 1..m) {

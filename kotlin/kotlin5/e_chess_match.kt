@@ -17,23 +17,23 @@ fun solve() {
 
 	// match the first k elements of A to the last k elements of B
 	for (k in 0..(n - 1)) {
-		var value = -1;
+		var value = -1
 		for (i in 0..(k - 1)) {
-			var x = abs(a[i] - b[n - k + i]);
+			var x = abs(a[i] - b[n - k + i])
 			if (value < 0 || value > x) {
 				value = x
 			}
 		}
 		for (i in k..(n - 1)) {
-			var x = abs(a[i] - b[i - k]);
+			var x = abs(a[i] - b[i - k])
 			if (value < 0 || value > x) {
 				value = x
 			}
 		}
 
 		if (ret < value) {
-			ret = value;
-			var ans = ArrayList<Int>();
+			ret = value
+			var ans = ArrayList<Int>()
 			for (i in 0..(k - 1)) {
 				ans.add(n + 1 - k + i)
 			}
@@ -41,7 +41,7 @@ fun solve() {
 				ans.add(i - k + 1)
 			}
 
-			perms = ans;
+			perms = ans
 		}
 	}
 
@@ -51,11 +51,11 @@ fun solve() {
 	}
 	println()
 }
- 
+
 fun main() {
 	var T = nextInt()
 	while (T > 0) {
-		T -= 1;
-		solve();
+		T -= 1
+		solve()
 	}
 }

@@ -5,17 +5,17 @@ fun next() = readLine()!!
 fun nextInt() = next().toInt()
 fun nextInts() = next().split(" ").map { it.toInt() }
 fun nextLongs() = next().split(" ").map { it.toLong() }
- 
+
 fun main() {
 	var (n, m, q) = nextInts()
 	var s = Array(n) { readLine()!! }
 
-	var c = Array(m + 1) { IntArray(n) { 0 }}
-	var rc = Array(m + 1) { IntArray(n) { 0 }}
+	var c = Array(m + 1) { IntArray(n) { 0 } }
+	var rc = Array(m + 1) { IntArray(n) { 0 } }
 
 	for (j in m - 1 downTo 0) {
 		var cur = Array(n) { intArrayOf(s[it][j].code, c[j + 1][it], it) }
-		cur.sortWith(compareBy({it[0]}, {it[1]}))
+		cur.sortWith(compareBy({ it[0] }, { it[1] }))
 		for (i in 0 until n) {
 			rc[j][i] = cur[i][2]
 		}

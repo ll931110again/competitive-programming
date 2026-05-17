@@ -26,7 +26,9 @@ fun main() {
 			if (j > 1) {
 				gap -= q[j - 1]
 			}
-			var low = nxt; var high = n - 1; var pos = nxt - 1
+			var low = nxt
+			var high = n - 1
+			var pos = nxt - 1
 			while (low <= high) {
 				val mid = (low + high) / 2
 				var mygap = s[mid]

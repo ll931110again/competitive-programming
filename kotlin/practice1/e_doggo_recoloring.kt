@@ -1,7 +1,10 @@
 // Codeforces 1171 (Kotlin Heroes: Practice 1) — E. Doggo Recoloring
 // Submission: https://codeforces.com/contest/1171/submission/54505656
 
-fun solve(s: String, n: Int): Boolean {
+fun solve(
+	s: String,
+	n: Int,
+): Boolean {
 	if (n == 1) {
 		return true
 	}

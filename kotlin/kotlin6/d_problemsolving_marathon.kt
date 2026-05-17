@@ -8,47 +8,50 @@ fun nextInt() = next().toInt()
 fun nextInts() = next().split(" ").map { it.toInt() }
 fun nextLongs() = next().split(" ").map { it.toLong() }
 
-fun solve(n: Long, s: Long): Long {
+fun solve(
+	n: Long,
+	s: Long,
+): Long {
 	if (n == 1L) {
-		return s;
+		return s
 	}
 
-	var low = s/n;
+	var low = s / n
 	if (s % n > 0) {
-		low++;
+		low++
 	}
-	var high = s;
-	var ans = low;
+	var high = s
+	var ans = low
 
 	while (low <= high) {
-		var mid = (low + high) / 2;
+		var mid = (low + high) / 2
 
-		var sumValue = mid;
-		var curValue = mid;
+		var sumValue = mid
+		var curValue = mid
 		for (i in 1L until n) {
-			curValue = (curValue + 1L) / 2L;
-			sumValue += curValue;
+			curValue = (curValue + 1L) / 2L
+			sumValue += curValue
 			if (curValue == 1L) {
-				sumValue += (n - i - 1);				
-				break;
+				sumValue += (n - i - 1)
+				break
 			}
 		}
 
 		if (sumValue <= s) {
-			ans = mid;
-			low = mid + 1;
+			ans = mid
+			low = mid + 1
 		} else {
-			high = mid - 1;
+			high = mid - 1
 		}
 	}
 
-	return ans;
+	return ans
 }
 
 fun main() {
-	var T = nextInt();
+	var T = nextInt()
 	for (it in 0 until T) {
-		var (n, s) = nextLongs();
-		println(solve(n, s));
+		var (n, s) = nextLongs()
+		println(solve(n, s))
 	}
 }

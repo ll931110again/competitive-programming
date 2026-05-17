@@ -9,63 +9,65 @@ fun nextInts() = next().split(" ").map { it.toInt() }
 fun nextLongs() = next().split(" ").map { it.toLong() }
 
 fun solve(): Int {
-	var n = nextInt();
-	var a = nextInts();
+	var n = nextInt()
+	var a = nextInts()
 
-	var opposite = ArrayList<Int>();
-	var pos = ArrayList<Int>();
+	var opposite = ArrayList<Int>()
+	var pos = ArrayList<Int>()
 
 	for (i in 0 until n + 1) {
-		opposite.add(-1);
-		pos.add(-1);
+		opposite.add(-1)
+		pos.add(-1)
 	}
 
 	for (i in n - 1 downTo 0) {
 		if (pos[a[i]] >= 0) {
-			opposite[i] = pos[a[i]];
+			opposite[i] = pos[a[i]]
 		}
-		pos[a[i]] = i;
+		pos[a[i]] = i
 	}
 
-	var maxIdx = ArrayList<Int>();
+	var maxIdx = ArrayList<Int>()
 	for (i in 0 until n + 1) {
-		maxIdx.add(-1);
+		maxIdx.add(-1)
 	}
-	maxIdx[0] = n + 1;
+	maxIdx[0] = n + 1
 
-	var maxLen = 0;
-	var ans = 1;
-	for (i in 0 until n + 1) if (opposite[i] >= 0) {
-		var low = 0;
-		var high = maxLen;
+	var maxLen = 0
+	var ans = 1
+	for (i in 0 until n + 1) {
+		if (opposite[i] >= 0) {
+			var low = 0
+			var high = maxLen
 
-		var len = 0;
-		while (low <= high) {
-			var mid = (low + high) / 2;
-			if (opposite[i] < maxIdx[mid]) {
-				len = mid;
-				low = mid + 1;
-			} else {
-				high = mid - 1;
+			var len = 0
+			while (low <= high) {
+				var mid = (low + high) / 2
+				if (opposite[i] < maxIdx[mid]) {
+					len = mid
+					low = mid + 1
+				} else {
+					high = mid - 1
+				}
+			}
+
+			len += 1
+			maxLen = maxOf(maxLen, len)
+			maxIdx[len] = maxOf(maxIdx[len], opposite[i])
+
+			ans = maxOf(ans, 2 * len)
+			if (i + 1 < opposite[i]) {
+				ans = maxOf(ans, 2 * len + 1)
 			}
 		}
-
-		len += 1;
-		maxLen = maxOf(maxLen, len);
-		maxIdx[len] = maxOf(maxIdx[len], opposite[i]);
-
-		ans = maxOf(ans, 2 * len);
-		if (i + 1 < opposite[i]) {
-			ans = maxOf(ans, 2 * len + 1);
-		}
 	}
 
-	return ans;
+	return ans
 }
 
 fun main() {
-	var T = nextInt();
+	var T = nextInt()
 	for (it in 0 until T) {
-		println(solve());
+		println(solve())
 	}
 }

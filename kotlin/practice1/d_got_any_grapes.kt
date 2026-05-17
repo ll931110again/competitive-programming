@@ -1,7 +1,14 @@
 // Codeforces 1171 (Kotlin Heroes: Practice 1) — D. Got Any Grapes?
 // Submission: https://codeforces.com/contest/1171/submission/54505528
 
-fun solve(x: Int, y: Int, z: Int, a: Int, b: Int, c: Int): Boolean {
+fun solve(
+	x: Int,
+	y: Int,
+	z: Int,
+	a: Int,
+	b: Int,
+	c: Int,
+): Boolean {
 	if (a < x) {
 		return false
 	}

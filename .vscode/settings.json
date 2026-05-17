@@ -8,6 +8,12 @@
   },
   "C_Cpp.clang_format_style": "file",
   "C_Cpp.clang_format_fallbackStyle": "LLVM",
+  "[kotlin]": {
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": false
+  },
+  "ktlint.enabled": true,
   "files.associations": {
     "*.cc": "cpp",
     "*.hpp": "cpp"

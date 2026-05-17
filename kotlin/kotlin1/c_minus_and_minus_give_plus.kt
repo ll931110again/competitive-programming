@@ -4,7 +4,10 @@
 fun next() = readLine()!!
 fun nextInt() = next().toInt()
 
-fun solve(s: String, t: String): Boolean {
+fun solve(
+	s: String,
+	t: String,
+): Boolean {
 	var i = 0
 	var j = 0
 	var m = s.length

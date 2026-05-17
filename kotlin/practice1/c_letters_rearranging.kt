@@ -24,7 +24,7 @@ fun solve(x: String): String {
 			break
 		}
 	}
-	return chars.joinToString(prefix = "", postfix = "", separator="")
+	return chars.joinToString(prefix = "", postfix = "", separator = "")
 }
 
 fun main() {

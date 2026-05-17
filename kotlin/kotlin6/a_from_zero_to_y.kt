@@ -4,28 +4,28 @@
 fun next() = readLine()!!
 fun nextInt() = next().toInt()
 fun nextInts() = next().split(" ").map { it.toInt() }
- 
+
 fun main() {
-	var T = nextInt();
+	var T = nextInt()
 	for (it in 0 until T) {
-		var (x, y) = nextInts();
-		var ops = 0;
+		var (x, y) = nextInts()
+		var ops = 0
 
-		var tx = x;
+		var tx = x
 		while (y / 10 >= tx) {
-			tx *= 10;
+			tx *= 10
 		}
 
-		var k = 0;
+		var k = 0
 		while (tx >= x) {
-			var newOps = (y - k) / tx;
-			ops += newOps;
-			k += newOps * tx;
-			tx /= 10;			
+			var newOps = (y - k) / tx
+			ops += newOps
+			k += newOps * tx
+			tx /= 10
 		}
 
-		ops += (y - k);
+		ops += (y - k)
 
-		println(ops);
+		println(ops)
 	}
 }

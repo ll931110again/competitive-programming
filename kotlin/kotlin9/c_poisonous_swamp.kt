@@ -6,35 +6,35 @@ fun nextInt() = next().toInt()
 fun nextInts() = next().split(" ").map { it.toInt() }
 
 fun solve(s: String): Int {
-	var n = s.length;
-	var i = 0;
-	var j = 0;
-	var ans = 0;
+	var n = s.length
+	var i = 0
+	var j = 0
+	var ans = 0
 	
 	while (i < n) {
 		if (s[i] == '.') {
-			i += 1;
-			continue;
+			i += 1
+			continue
 		}
-		var j = i;
+		var j = i
 		while (j < n && s[j] == '*') {
-			j += 1;
+			j += 1
 		}
 		// Skip one lily pad
-		ans += j - i - 1;
-		i = j + 1;
+		ans += j - i - 1
+		i = j + 1
 	}
 
-	return ans;
+	return ans
 }
- 
+
 fun main() {
-	var T = nextInt();
+	var T = nextInt()
 	for (it in 0 until T) {
-		var n = nextInt();
-		var s1 = readLine()!!;
-		var s2 = readLine()!!;
-		var ans = solve(s1) + solve(s2);
-		println(ans);
+		var n = nextInt()
+		var s1 = readLine()!!
+		var s2 = readLine()!!
+		var ans = solve(s1) + solve(s2)
+		println(ans)
 	}
 }

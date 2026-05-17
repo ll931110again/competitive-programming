@@ -1,4 +1,4 @@
-name: clang-format
+name: format-check
 
 on:
   push:
@@ -8,24 +8,36 @@ on:
       - '**.cpp'
       - '**.h'
       - '**.hpp'
+      - '**.kt'
+      - '**.kts'
       - '.clang-format'
+      - '.editorconfig'
       - '.pre-commit-config.yaml'
-      - '.github/workflows/clang-format.yml'
+      - '.github/workflows/format-check.yml'
   pull_request:
     paths:
       - '**.cc'
       - '**.cpp'
       - '**.h'
       - '**.hpp'
+      - '**.kt'
+      - '**.kts'
       - '.clang-format'
+      - '.editorconfig'
       - '.pre-commit-config.yaml'
-      - '.github/workflows/clang-format.yml'
+      - '.github/workflows/format-check.yml'
 
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install ktlint
+        run: |
+          curl -sSL "https://github.com/pinterest/ktlint/releases/download/1.8.0/ktlint" -o /tmp/ktlint
+          chmod +x /tmp/ktlint
+          sudo mv /tmp/ktlint /usr/local/bin/ktlint
 
       - uses: actions/setup-python@v5
         with:
@@ -36,3 +48,6 @@ jobs:
 
       - name: Run clang-format
         run: pre-commit run clang-format --all-files --show-diff-on-failure
+
+      - name: Run ktlint
+        run: pre-commit run ktlint --all-files --show-diff-on-failure

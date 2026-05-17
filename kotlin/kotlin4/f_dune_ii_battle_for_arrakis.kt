@@ -9,9 +9,9 @@ fun nextInts() = next().split(" ").map { it.toInt() }
 
 fun main() {
 	var (m, n, q) = nextInts()
-	var arr = Array(m) {Array(n) {0}}
-	var rows: Array<Long> = Array(m){0L}
-	var cols: Array<Long> = Array(n){0L}
+	var arr = Array(m) { Array(n) { 0 } }
+	var rows: Array<Long> = Array(m) { 0L }
+	var cols: Array<Long> = Array(n) { 0L }
 
 	for (i in 0..m - 1) {
 		var r = nextInts()
@@ -71,7 +71,7 @@ fun main() {
 			y -= 1
 			rows[x] += 1L * (z - arr[x][y])
 			cols[y] += 1L * (z - arr[x][y])
-			arr[x][y] = z			
+			arr[x][y] = z
 		}
 	}
 	print("\n")

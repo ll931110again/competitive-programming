@@ -8,9 +8,9 @@ fun nextInt() = next().toInt()
 fun nextInts() = next().split(" ").map { it.toInt() }
 fun nextLongs() = next().split(" ").map { it.toLong() }
 
-fun main () {
+fun main() {
 	var (m, n) = nextInts()
-	var arr = Array<String>(m) {""}
+	var arr = Array<String>(m) { "" }
 	for (i in 0 until m) {
 		arr[i] = next()
 	}

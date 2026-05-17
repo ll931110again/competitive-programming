@@ -5,6 +5,6 @@ fun main(args: Array<String>) {
 	var T = readLine()!!.toInt()
 	for (i in 1..T) {
 		var n = readLine()!!.toInt()
-		println(n/2)
+		println(n / 2)
 	}
 }

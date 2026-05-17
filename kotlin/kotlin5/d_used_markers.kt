@@ -6,7 +6,7 @@ fun nextInt() = next().toInt()
 fun nextInts() = next().split(" ").map { it.toInt() }
 fun nextLongs() = next().split(" ").map { it.toLong() }
 
-fun main () {
+fun main() {
 	var T = nextInt()
 	for (it in 0..T - 1) {
 		var n = nextInt()
@@ -19,7 +19,7 @@ fun main () {
 		for (i in 0..n - 1) {
 			for (j in i + 1..n - 1) {
 				if (a[pos[i]] > a[pos[j]]) {
-					pos[i] = pos[j].also { pos[j] = pos[i]}
+					pos[i] = pos[j].also { pos[j] = pos[i] }
 				}
 			}
 		}
@@ -51,6 +51,6 @@ fun main () {
 		for (i in 0..n - 1) {
 			orders[i] += 1
 		}
-		println(orders.joinToString(separator=" "))
+		println(orders.joinToString(separator = " "))
 	}
 }

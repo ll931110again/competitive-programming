@@ -55,6 +55,6 @@ fun main() {
 	println(pcount)
 	for (i in 0..pcount - 1) {
 		print("${ret[i].size} ")
-		println(ret[i].joinToString(prefix = "", postfix = "", separator=" "))
+		println(ret[i].joinToString(prefix = "", postfix = "", separator = " "))
 	}
 }

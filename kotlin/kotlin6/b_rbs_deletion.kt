@@ -7,27 +7,31 @@ fun next() = readLine()!!
 fun nextInt() = next().toInt()
 fun nextInts() = next().split(" ").map { it.toInt() }
 
-fun solve(n: Int, K: Int, s: String): Int {
-	var numPartitions = 0;
-	var delta = 0;
+fun solve(
+	n: Int,
+	K: Int,
+	s: String,
+): Int {
+	var numPartitions = 0
+	var delta = 0
 	for (i in 0 until n) {
 		if (s[i] == '(') {
-			delta++;
+			delta++
 		} else {
-			delta--;
+			delta--
 			if (delta == 0) {
-				numPartitions++;
+				numPartitions++
 			}
 		}
 	}
-	return minOf(numPartitions + K, n/2);
+	return minOf(numPartitions + K, n / 2)
 }
 
 fun main() {
-	var T = nextInt();
+	var T = nextInt()
 	for (it in 0 until T) {
-		var (n, K) = nextInts();
-		var s = readLine()!!;
-		println(solve(n, K, s));
+		var (n, K) = nextInts()
+		var s = readLine()!!
+		println(solve(n, K, s))
 	}
 }

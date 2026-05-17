@@ -14,7 +14,7 @@ fun solve() {
 		a.add(x)
 	}
 
-	a.sortBy{ it.get(0) }
+	a.sortBy { it.get(0) }
 	var mx = -1
 
 	for (i in 0..n - 2) {

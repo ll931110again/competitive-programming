@@ -13,8 +13,8 @@ fun main() {
 	s -= 1
 
 	var initial = nextInts()
-	var adj = Array(n){ArrayList<Int>()}
-	var d = Array(n){Array(n){n + 3}}
+	var adj = Array(n) { ArrayList<Int>() }
+	var d = Array(n) { Array(n) { n + 3 } }
 
 	for (i in 0..m - 1) {
 		var (u, v) = nextInts()
@@ -33,18 +33,20 @@ fun main() {
 	}
 
 	var INF = 1e18.toLong()
-	var dp = Array(n) {Array(n) {Array(60) {INF}}}
-	var cost = Array(n) {Array(n * n){-1L}}
+	var dp = Array(n) { Array(n) { Array(60) { INF } } }
+	var cost = Array(n) { Array(n * n) { -1L } }
 
 	for (u in 0..n - 1) {
-		var minPath = Array(n) {Array(1 shl n){INF}}
+		var minPath = Array(n) { Array(1 shl n) { INF } }
 		minPath[u][1 shl u] = 0L
 
 		for (mask in 0..(1 shl n) - 1) {
-			for (a in 0..n - 1) if (minPath[a][mask] < INF) {
-				for (b in 0..n - 1) {
-					var tb = mask or (1 shl b)
-					minPath[b][tb] = minOf(minPath[b][tb], minPath[a][mask] + d[a][b])
+			for (a in 0..n - 1) {
+				if (minPath[a][mask] < INF) {
+					for (b in 0..n - 1) {
+						var tb = mask or (1 shl b)
+						minPath[b][tb] = minOf(minPath[b][tb], minPath[a][mask] + d[a][b])
+					}
 				}
 			}
 		}
@@ -55,12 +57,16 @@ fun main() {
 
 		for (mask in 0..(1 shl n) - 1) {
 			var tval = 0L
-			for (i in 0..n - 1) if ((mask and (1 shl i)) > 0) {
-				tval += 1L * initial[i]
+			for (i in 0..n - 1) {
+				if ((mask and (1 shl i)) > 0) {
+					tval += 1L * initial[i]
+				}
 			}
-			for (v in 0..n - 1) if (minPath[v][mask] < INF) {
-				var path = minPath[v][mask].toInt()
-				cost[u][path] = maxOf(cost[u][path], tval)
+			for (v in 0..n - 1) {
+				if (minPath[v][mask] < INF) {
+					var path = minPath[v][mask].toInt()
+					cost[u][path] = maxOf(cost[u][path], tval)
+				}
 			}
 		}
 	}
@@ -86,24 +92,30 @@ fun main() {
 		var cyc = query / P
 		var rem = query % P
 
-		var prev = Array(n){INF}
+		var prev = Array(n) { INF }
 		prev[s] = 0L
-		for (i in 0..60 - 1) if ((cyc and (1L shl i)) > 0) {
-			var nxt = Array(n){INF}
-			for (u in 0..n - 1) {
-				for (v in 0..n - 1) {
-					nxt[v] = minOf(nxt[v], prev[u] + dp[u][v][i])
+		for (i in 0..60 - 1) {
+			if ((cyc and (1L shl i)) > 0) {
+				var nxt = Array(n) { INF }
+				for (u in 0..n - 1) {
+					for (v in 0..n - 1) {
+						nxt[v] = minOf(nxt[v], prev[u] + dp[u][v][i])
+					}
 				}
-			}
-			for (u in 0..n - 1) {
-				prev[u] = nxt[u]
+				for (u in 0..n - 1) {
+					prev[u] = nxt[u]
+				}
 			}
 		}
 
 		var ret = INF
-		for (v in 0..n - 1) if (prev[v] < INF) {
-			for (i in 0..n * n - 1) if (cost[v][i] >= rem) {
-				ret = minOf(ret, prev[v] + i)
+		for (v in 0..n - 1) {
+			if (prev[v] < INF) {
+				for (i in 0..n * n - 1) {
+					if (cost[v][i] >= rem) {
+						ret = minOf(ret, prev[v] + i)
+					}
+				}
 			}
 		}
 		println(ret)

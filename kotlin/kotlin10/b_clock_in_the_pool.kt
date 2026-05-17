@@ -4,7 +4,7 @@
 fun next() = readLine()!!
 fun nextInt() = next().toInt()
 fun nextInts() = next().split(" ").map { it.toInt() }
- 
+
 fun main() {
 	val T = nextInt()
 	for (i in 1..T) {

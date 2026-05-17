@@ -6,7 +6,7 @@ fun nextInt() = next().toInt()
 fun nextInts() = next().split(" ").map { it.toInt() }
 fun nextLongs() = next().split(" ").map { it.toLong() }
 
-fun main () {
+fun main() {
 	var s = next()
 	var n = s.length
 

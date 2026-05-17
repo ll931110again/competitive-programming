@@ -1,5 +1,7 @@
 # Install: pre-commit install
 # Run on all files: pre-commit run --all-files
+#
+# Requires on PATH: clang-format (C++), ktlint (Kotlin under kotlin/)
 
 repos:
   - repo: https://github.com/pre-commit/mirrors-clang-format
@@ -8,3 +10,11 @@ repos:
       - id: clang-format
         types_or: [c++, c, objective-c++]
         exclude: ^(third_party|vendor)/
+
+  - repo: local
+    hooks:
+      - id: ktlint
+        name: ktlint (Kotlin)
+        entry: bash -c 'ktlint --format "$@"' --
+        language: system
+        files: ^kotlin/.*\.kt$

@@ -6,7 +6,6 @@ fun nextInt() = next().toInt()
 fun nextInts() = next().split(" ").map { it.toInt() }
 fun nextLongs() = next().split(" ").map { it.toLong() }
 
- 
 fun main() {
 	val T = nextInt()
 	for (it in 1..T) {
@@ -28,14 +27,14 @@ fun main() {
 				j += 1
 			}
 
-			var pos = -1;
+			var pos = -1
 			if ((j - i) % 2 > 0) {
-				var k = i;
+				var k = i
 				while (k < j) {
 					if (pos < 0 || a[pos] < a[k]) {
-						pos = k;
+						pos = k
 					}
-					k += 2;
+					k += 2
 				}
 			}
 

@@ -6,114 +6,118 @@ fun nextInt() = next().toInt()
 fun nextInts() = next().split(" ").map { it.toInt() }
 
 fun solve(s: String): String {
-    var n = s.length;
-    
-    var dp = ArrayList<ArrayList<String>>();
-    var trace = ArrayList<ArrayList<Int>>();
+	var n = s.length
 
-    for (i in 0 until n + 2) {
-        var row = ArrayList<String>();
-        for (j in 0 until n + 2) {
-            if (i + j == 0) {
-                row.add("");
-            } else {
-                var sb = StringBuilder("");
-                sb.append(('z'.code + 1).toChar());
-                row.add(sb.toString());
-            }
-        }
-        dp.add(row);
+	var dp = ArrayList<ArrayList<String>>()
+	var trace = ArrayList<ArrayList<Int>>()
 
-        var traceRow = ArrayList<Int>();
-        for (j in 0 until n + 1) {
-            traceRow.add(-1);
-        }
-        trace.add(traceRow);
-    }
-    trace[0][0] = 0;
+	for (i in 0 until n + 2) {
+		var row = ArrayList<String>()
+		for (j in 0 until n + 2) {
+			if (i + j == 0) {
+				row.add("")
+			} else {
+				var sb = StringBuilder("")
+				sb.append(('z'.code + 1).toChar())
+				row.add(sb.toString())
+			}
+		}
+		dp.add(row)
 
-    var ans = "";
-    var configuration = "";
+		var traceRow = ArrayList<Int>()
+		for (j in 0 until n + 1) {
+			traceRow.add(-1)
+		}
+		trace.add(traceRow)
+	}
+	trace[0][0] = 0
 
-    fun buildState(xi: Int, xj: Int, appendChar: Char) {
-        var choice = dp[xi][xj];
-        if (ans.isNotEmpty() && ans <= choice) {
-            return;
-        }
+	var ans = ""
+	var configuration = ""
 
-        var i = xi;
-        var j = xj;
-        var myConfig = StringBuilder("");
-        while (i + j > 0) {
-            if (trace[i][j] == 0) {
-                myConfig.append('R');
-                i--;
-            } else {
-                myConfig.append('B');
-                j--;
-            }
-        }
+	fun buildState(
+		xi: Int,
+		xj: Int,
+		appendChar: Char,
+	) {
+		var choice = dp[xi][xj]
+		if (ans.isNotEmpty() && ans <= choice) {
+			return
+		}
 
-        myConfig.reverse();
-        while (myConfig.length < n) {
-            myConfig.append(appendChar);
-        }
+		var i = xi
+		var j = xj
+		var myConfig = StringBuilder("")
+		while (i + j > 0) {
+			if (trace[i][j] == 0) {
+				myConfig.append('R')
+				i--
+			} else {
+				myConfig.append('B')
+				j--
+			}
+		}
 
-        ans = choice;
-        configuration = myConfig.toString();
-    }
+		myConfig.reverse()
+		while (myConfig.length < n) {
+			myConfig.append(appendChar)
+		}
 
-    for (i in 0 until n + 1) {
-        for (j in 0 until i + 1) {
-            if (trace[i][j] < 0 || i + j >= n) {
-                continue;
-            }
+		ans = choice
+		configuration = myConfig.toString()
+	}
 
-            if (i + j > 0 && (dp[i][j].isEmpty() || dp[i][j][0] > 'z')) {
-                continue;
-            }
+	for (i in 0 until n + 1) {
+		for (j in 0 until i + 1) {
+			if (trace[i][j] < 0 || i + j >= n) {
+				continue
+			}
 
-            if (i + j == 0) {
-                var tmp = StringBuilder(dp[i][j]);
-                tmp.append(s[0]);
-                dp[1][0] = tmp.toString();
-                trace[1][0] = 0;
-                continue;
-            }
+			if (i + j > 0 && (dp[i][j].isEmpty() || dp[i][j][0] > 'z')) {
+				continue
+			}
 
-            if (i > j && s[i + j] < dp[i][j][j]) {
-                buildState(i, j, 'B');
-            } else {
-                var tmp = StringBuilder(dp[i][j]).append(s[i + j]).toString();
-                if (dp[i + 1][j] > tmp) {
-                    dp[i + 1][j] = tmp;
-                    trace[i + 1][j] = 0;
-                }
+			if (i + j == 0) {
+				var tmp = StringBuilder(dp[i][j])
+				tmp.append(s[0])
+				dp[1][0] = tmp.toString()
+				trace[1][0] = 0
+				continue
+			}
 
-                if (i > j && s[i + j] == dp[i][j][j]) {
-                    if (dp[i][j + 1] > dp[i][j]) {
-                        dp[i][j + 1] = dp[i][j];
-                        trace[i][j + 1] = 1;
-                    }
-                }
-            }
-        }
-    }
+			if (i > j && s[i + j] < dp[i][j][j]) {
+				buildState(i, j, 'B')
+			} else {
+				var tmp = StringBuilder(dp[i][j]).append(s[i + j]).toString()
+				if (dp[i + 1][j] > tmp) {
+					dp[i + 1][j] = tmp
+					trace[i + 1][j] = 0
+				}
 
-    for (i in 0 until (n + 1)) {
-        var j = n - i;
-        if (i >= j && trace[i][j] >= 0) {
-            buildState(i, j, 'B');
-        }
-    }
+				if (i > j && s[i + j] == dp[i][j][j]) {
+					if (dp[i][j + 1] > dp[i][j]) {
+						dp[i][j + 1] = dp[i][j]
+						trace[i][j + 1] = 1
+					}
+				}
+			}
+		}
+	}
 
-    return configuration;
-} 
+	for (i in 0 until (n + 1)) {
+		var j = n - i
+		if (i >= j && trace[i][j] >= 0) {
+			buildState(i, j, 'B')
+		}
+	}
+
+	return configuration
+}
 
 fun main() {
-	var T = nextInt();
-    for (it in 0 until T) {
-        var s = readLine()!!;
-        println(solve(s));
-    }
+	var T = nextInt()
+	for (it in 0 until T) {
+		var s = readLine()!!
+		println(solve(s))
+	}
 }

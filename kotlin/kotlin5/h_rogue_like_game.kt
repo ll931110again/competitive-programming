@@ -5,20 +5,21 @@ fun next() = readLine()!!
 fun nextInt() = next().toInt()
 fun nextInts() = next().split(" ").map { it.toInt() }
 fun nextLongs() = next().split(" ").map { it.toLong() }
- 
+
 fun main() {
 	var (m, n, k) = nextInts()
 	var a = nextLongs()
 	var b = nextLongs()
 	var c = Array(m) { nextLongs() }
 
-	var events = Array(m + n) {
-		if ( it < m ) {
-			longArrayOf(a[it], 0L, it.toLong())
-		} else {
-			longArrayOf(b[it - m], 1L, (it - m).toLong())
+	var events =
+		Array(m + n) {
+			if (it < m) {
+				longArrayOf(a[it], 0L, it.toLong())
+			} else {
+				longArrayOf(b[it - m], 1L, (it - m).toLong())
+			}
 		}
-	}
 
 	events.sortWith(compareBy({ it[0] }))
 	var vals = LongArray(m + n) { 0L }
@@ -26,10 +27,18 @@ fun main() {
 	for (e in 0 until m + n) {
 		if (events[e][1] == 0L) {
 			var idx = events[e][2].toInt()
-			vals[e] = b.indices.filter { b[it] <= events[e][0] }.map { c[idx][it] }.max()!!
+			vals[e] =
+				b.indices
+					.filter { b[it] <= events[e][0] }
+					.map { c[idx][it] }
+					.max()!!
 		} else {
 			var idx = events[e][2].toInt()
-			vals[e] = a.indices.filter { a[it] <= events[e][0] }.map { c[it][idx] }.max()!!
+			vals[e] =
+				a.indices
+					.filter { a[it] <= events[e][0] }
+					.map { c[it][idx] }
+					.max()!!
 		}
 	}
 

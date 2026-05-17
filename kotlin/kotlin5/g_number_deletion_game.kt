@@ -4,7 +4,7 @@
 fun next() = readLine()!!
 fun nextInt() = next().toInt()
 fun nextInts() = next().split(" ").map { it.toInt() }
- 
+
 fun main() {
 	var (n, k) = nextInts()
 	var a = nextInts()
@@ -28,16 +28,16 @@ fun main() {
 	dp.add(row)
 
 	for (i in 1..n) {
-		row = ArrayList<Int>();
+		row = ArrayList<Int>()
 		for (j in 0..k) {
-			var x = dp[i - 1][j];
+			var x = dp[i - 1][j]
 			for (t in 1..j) {
 				if (i - 2 * t < 0) {
 					break
 				}
-				var y = dp[i - 2 * t][j - t];
-				y += (ss[i] - ss[i - t]);
-				y -= (ss[i - t] - ss[i - 2 * t]);
+				var y = dp[i - 2 * t][j - t]
+				y += (ss[i] - ss[i - t])
+				y -= (ss[i - t] - ss[i - 2 * t])
 				if (x < y) {
 					x = y
 				}

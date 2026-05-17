@@ -8,20 +8,24 @@ fun nextInt() = next().toInt()
 fun nextInts() = next().split(" ").map { it.toInt() }
 fun nextLongs() = next().split(" ").map { it.toLong() }
 
-fun get_power(x: Long, p: Long, mod: Long): Long {
+fun get_power(
+	x: Long,
+	p: Long,
+	mod: Long,
+): Long {
 	if (p == 0L) {
-		return 1L;
+		return 1L
 	}
 
-	var q = get_power(x, p / 2L, mod);
-	q = (q * q) % mod;
+	var q = get_power(x, p / 2L, mod)
+	q = (q * q) % mod
 	if (p % 2L > 0L) {
-		q = (q * x) % mod;
+		q = (q * x) % mod
 	}
 
-	return q;
+	return q
 }
- 
+
 fun main() {
 	val (n, k) = nextInts()
 	val mod = 1000000007L
@@ -54,36 +58,36 @@ fun main() {
 		for (i in 1..(n - 1)) {
 			// (n - i - 1) choose (k - 1)
 			if (n - i - 1 >= k - 1) {
-				var up = fact[n - i - 1];
-				var down = inv[k - 1] * inv[(n - i - 1)- (k - 1)] % mod;
-				up = up * down % mod;
-				up = up * 2L % mod;
-				ans[i] = up;
+				var up = fact[n - i - 1]
+				var down = inv[k - 1] * inv[(n - i - 1) - (k - 1)] % mod
+				up = up * down % mod
+				up = up * 2L % mod
+				ans[i] = up
 			}
 			if (n >= i + 2 && n - i - 2 >= k - 2) {
-				var up = fact[n - i - 2];
-				var down = inv[k - 2] * inv[(n - i - 2) - (k - 2)] % mod;
-				up = up * down % mod;
-				up = up * 1L * (n - i - 1) % mod;
-				ans[i] = (ans[i] + up) % mod;
+				var up = fact[n - i - 2]
+				var down = inv[k - 2] * inv[(n - i - 2) - (k - 2)] % mod
+				up = up * down % mod
+				up = up * 1L * (n - i - 1) % mod
+				ans[i] = (ans[i] + up) % mod
 			}
 		}
 
 		for (i in 1..(n - 1)) {
 			// (2n - 2 - (i - 1)) choose (k - 1)
 			if (2 * n - 3 - (i - 1) >= k - 1) {
-				var up = fact[2 * n - 3 - (i - 1)];
-				var down = inv[k - 1] * inv[2 * n - 3 - (i - 1) - (k - 1)] % mod;
-				up = up * down % mod;
-				ans[0] = (ans[0] + up) % mod;
+				var up = fact[2 * n - 3 - (i - 1)]
+				var down = inv[k - 1] * inv[2 * n - 3 - (i - 1) - (k - 1)] % mod
+				up = up * down % mod
+				ans[0] = (ans[0] + up) % mod
 			}
 
 			// minus n - 1 choose k - 1
 			if (n - 2 >= k - 1) {
-				var up = fact[n - 2];
-				var down = inv[k - 1] * inv[n - 2 - (k - 1)] % mod;
-				up = up * down % mod;
-				ans[0] = (ans[0] + mod - up) % mod;
+				var up = fact[n - 2]
+				var down = inv[k - 1] * inv[n - 2 - (k - 1)] % mod
+				up = up * down % mod
+				ans[0] = (ans[0] + mod - up) % mod
 			}
 		}
 	}

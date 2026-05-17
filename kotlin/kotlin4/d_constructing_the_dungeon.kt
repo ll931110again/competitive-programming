@@ -11,10 +11,10 @@ fun main() {
 	var T = nextInt()
 	for (it in 0..T - 1) {
 		var (n, m) = nextInts()
-		var weight = Array(n + 1){0}
-		var arrX = Array(m){0}
-		var arrY = Array(m){0}
-		var arrW = Array(m){0}
+		var weight = Array(n + 1) { 0 }
+		var arrX = Array(m) { 0 }
+		var arrY = Array(m) { 0 }
+		var arrW = Array(m) { 0 }
 
 		for (i in 0..m - 1) {
 			var (x, y, w) = nextInts()

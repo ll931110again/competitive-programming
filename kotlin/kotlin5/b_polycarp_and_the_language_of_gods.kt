@@ -4,7 +4,7 @@
 fun next() = readLine()!!
 fun nextInt() = next().toInt()
 
-fun main () {
+fun main() {
 	var T = nextInt()
 	for (it in 0..T - 1) {
 		var s = next()
