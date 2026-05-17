@@ -64,8 +64,7 @@ int main() {
       R = L;
     }
     if (R >= 0) {
-      while ((R + 1) % n != L &&
-             good(posB[a[L]], posB[a[R]], posB[a[(R + 1) % n]])) {
+      while ((R + 1) % n != L && good(posB[a[L]], posB[a[R]], posB[a[(R + 1) % n]])) {
         R = (R + 1) % n;
       }
       ans = max(ans, length(L, R));

@@ -12,7 +12,7 @@ using Mint = ModInt<MOD>;
 int rec(int x, int y, int z) {
   if (x < 0 || y < 0)
     return z;
-  int &ans = f[x][y][z];
+  int& ans = f[x][y][z];
   if (ans >= 0)
     return ans;
   Mint v = z;

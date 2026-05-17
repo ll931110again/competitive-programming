@@ -27,25 +27,29 @@ template <unsigned M> struct ModInt {
   ModInt(long long v)
       : x(((v %= static_cast<long long>(M)) < 0) ? (v + static_cast<long long>(M)) : v) {}
 
-  ModInt &operator+=(ModInt a) {
+  ModInt& operator+=(ModInt a) {
     x = ((x += a.x) >= M) ? (x - M) : x;
     return *this;
   }
-  ModInt &operator-=(ModInt a) {
+  ModInt& operator-=(ModInt a) {
     x = ((x -= a.x) >= M) ? (x + M) : x;
     return *this;
   }
-  ModInt &operator*=(ModInt a) {
+  ModInt& operator*=(ModInt a) {
     x = unsigned((unsigned long long)x * a.x % M);
     return *this;
   }
-  ModInt &operator/=(ModInt a) { return *this *= a.inv(); }
+  ModInt& operator/=(ModInt a) {
+    return *this *= a.inv();
+  }
 
   ModInt pow(long long e) const {
-    if (e < 0) return inv().pow(-e);
+    if (e < 0)
+      return inv().pow(-e);
     ModInt a = *this, b = 1;
     for (; e; e >>= 1) {
-      if (e & 1) b *= a;
+      if (e & 1)
+        b *= a;
       a *= a;
     }
     return b;
@@ -66,10 +70,18 @@ template <unsigned M> struct ModInt {
     return ModInt(y);
   }
 
-  ModInt operator+(ModInt a) const { return ModInt(*this) += a; }
-  ModInt operator-(ModInt a) const { return ModInt(*this) -= a; }
-  ModInt operator*(ModInt a) const { return ModInt(*this) *= a; }
-  ModInt operator/(ModInt a) const { return ModInt(*this) /= a; }
+  ModInt operator+(ModInt a) const {
+    return ModInt(*this) += a;
+  }
+  ModInt operator-(ModInt a) const {
+    return ModInt(*this) -= a;
+  }
+  ModInt operator*(ModInt a) const {
+    return ModInt(*this) *= a;
+  }
+  ModInt operator/(ModInt a) const {
+    return ModInt(*this) /= a;
+  }
 };
 
 using Mint = ModInt<MOD>;
@@ -81,7 +93,8 @@ int main() {
   cin >> n >> m >> alphabet;
 
   vector<int> b(m);
-  for (int i = 0; i < m; i++) cin >> b[i];
+  for (int i = 0; i < m; i++)
+    cin >> b[i];
 
   const Mint A(alphabet);
   Mint p = 1, r = 1;

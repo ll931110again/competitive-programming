@@ -12,7 +12,7 @@ struct Pt {
   double x, y;
 };
 
-static double dist(const Pt &a, const Pt &b) {
+static double dist(const Pt& a, const Pt& b) {
   double dx = a.x - b.x;
   double dy = a.y - b.y;
   return sqrt(dx * dx + dy * dy);
@@ -164,8 +164,7 @@ int main() {
     for (int i = (int)ret.size() - 1; i >= 0; i--)
       tour.push_back(ret[i]);
 
-    cout << "Case " << caseNum++ << ": " << fixed << setprecision(2) << best
-         << "\n";
+    cout << "Case " << caseNum++ << ": " << fixed << setprecision(2) << best << "\n";
     for (int i = 0; i < (int)tour.size(); i++) {
       if (i)
         cout << " ";

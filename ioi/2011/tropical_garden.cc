@@ -13,7 +13,9 @@
 
 #ifdef TROPICAL_GARDEN_LOCAL_MAIN
 static std::vector<long long> garden_local_answers;
-static inline void answer(long long X) { garden_local_answers.push_back(X); }
+static inline void answer(long long X) {
+  garden_local_answers.push_back(X);
+}
 #endif
 
 #include "garden.h"

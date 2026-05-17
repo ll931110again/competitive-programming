@@ -65,10 +65,9 @@ long long solve(long long n) {
   }
 
   long long ans = n - 1;
-  vector<vector<int>> polynomials = {{1, 0, 0},    {1, 0, 1},    {1, 1, 0},
-                                     {1, 1, 1},    {1, 0, 0, 0}, {1, 0, 0, 1},
-                                     {1, 0, 1, 0}, {1, 0, 1, 1}, {1, 1, 0, 0},
-                                     {1, 1, 0, 1}, {1, 1, 1, 0}, {1, 1, 1, 1}};
+  vector<vector<int>> polynomials = {{1, 0, 0},    {1, 0, 1},    {1, 1, 0},    {1, 1, 1},
+                                     {1, 0, 0, 0}, {1, 0, 0, 1}, {1, 0, 1, 0}, {1, 0, 1, 1},
+                                     {1, 1, 0, 0}, {1, 1, 0, 1}, {1, 1, 1, 0}, {1, 1, 1, 1}};
   for (const auto polynomial : polynomials) {
     auto value = solve_polynomial(n, polynomial);
     if (value > 2 && value < ans) {

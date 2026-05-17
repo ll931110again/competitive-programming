@@ -34,7 +34,9 @@ void link(int u, int v) {
   par[v] = u;
 }
 
-int min3(int x, int y, int z) { return min(min(x, y), z); }
+int min3(int x, int y, int z) {
+  return min(min(x, y), z);
+}
 
 int main() {
   ios_base::sync_with_stdio(false);
@@ -63,8 +65,7 @@ int main() {
 
     for (int i = 1; i <= n; i++) {
       for (int j = 1; j <= m; j++) {
-        value[i][j] =
-            min3(value[i - 1][j], value[i][j - 1], value[i - 1][j - 1]);
+        value[i][j] = min3(value[i - 1][j], value[i][j - 1], value[i - 1][j - 1]);
         if (value[i][j] % 2 != parity[i][j]) {
           value[i][j]++;
         }
@@ -83,8 +84,7 @@ int main() {
           can_same = true;
         }
 
-        if (value[i][j] ==
-            min3(value[i - 1][j], value[i][j - 1], value[i - 1][j - 1]) + 1) {
+        if (value[i][j] == min3(value[i - 1][j], value[i][j - 1], value[i - 1][j - 1]) + 1) {
           can_diff = true;
         }
 

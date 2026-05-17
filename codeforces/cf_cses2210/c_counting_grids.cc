@@ -15,26 +15,30 @@ template <unsigned M> struct ModInt {
   ModInt(unsigned long long v) : x(unsigned(v % M)) {}
   ModInt(int v) : x(((v %= int(M)) < 0) ? (v + int(M)) : v) {}
 
-  ModInt &operator+=(ModInt a) {
+  ModInt& operator+=(ModInt a) {
     x = ((x += a.x) >= M) ? (x - M) : x;
     return *this;
   }
-  ModInt &operator-=(ModInt a) {
+  ModInt& operator-=(ModInt a) {
     x = ((x -= a.x) >= M) ? (x + M) : x;
     return *this;
   }
-  ModInt &operator*=(ModInt a) {
+  ModInt& operator*=(ModInt a) {
     x = unsigned((unsigned long long)x * a.x % M);
     return *this;
   }
-  ModInt &operator/=(ModInt a) { return *this *= a.inv(); }
+  ModInt& operator/=(ModInt a) {
+    return *this *= a.inv();
+  }
 
   ModInt pow(long long e) const {
-    e %= (M - 1);  // Fermat, MOD prime
-    if (e < 0) e += (M - 1);
+    e %= (M - 1); // Fermat, MOD prime
+    if (e < 0)
+      e += (M - 1);
     ModInt a = *this, b = 1;
     for (; e; e >>= 1) {
-      if (e & 1) b *= a;
+      if (e & 1)
+        b *= a;
       a *= a;
     }
     return b;
@@ -55,10 +59,18 @@ template <unsigned M> struct ModInt {
     return ModInt(y);
   }
 
-  ModInt operator+(ModInt a) const { return ModInt(*this) += a; }
-  ModInt operator-(ModInt a) const { return ModInt(*this) -= a; }
-  ModInt operator*(ModInt a) const { return ModInt(*this) *= a; }
-  ModInt operator/(ModInt a) const { return ModInt(*this) /= a; }
+  ModInt operator+(ModInt a) const {
+    return ModInt(*this) += a;
+  }
+  ModInt operator-(ModInt a) const {
+    return ModInt(*this) -= a;
+  }
+  ModInt operator*(ModInt a) const {
+    return ModInt(*this) *= a;
+  }
+  ModInt operator/(ModInt a) const {
+    return ModInt(*this) /= a;
+  }
 };
 
 using Mint = ModInt<MOD>;

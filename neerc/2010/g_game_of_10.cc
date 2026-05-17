@@ -67,8 +67,7 @@ Move check_for_next_move(Move last_move) {
         sum_value += board[i][j];
       }
 
-    if (remains.size() == 1 && total_sum - sum_value > 0 &&
-        total_sum - sum_value <= N) {
+    if (remains.size() == 1 && total_sum - sum_value > 0 && total_sum - sum_value <= N) {
       is_won = true;
       return {.x = i, .y = *remains.begin(), .score = total_sum - sum_value};
     }
@@ -87,16 +86,13 @@ Move check_for_next_move(Move last_move) {
         sum_value += board[i][j];
       }
 
-    if (remains.size() == 1 && total_sum - sum_value > 0 &&
-        total_sum - sum_value <= N) {
+    if (remains.size() == 1 && total_sum - sum_value > 0 && total_sum - sum_value <= N) {
       is_won = true;
       return {.x = *remains.begin(), .y = j, .score = total_sum - sum_value};
     }
   }
 
-  return {.x = last_move.x,
-          .y = N + 1 - last_move.y,
-          .score = N + 1 - last_move.score};
+  return {.x = last_move.x, .y = N + 1 - last_move.y, .score = N + 1 - last_move.score};
 }
 
 int main() {

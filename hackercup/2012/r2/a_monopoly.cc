@@ -26,7 +26,9 @@ pair<int, int> order[maxn], newOrder[maxn];
 int pos[maxn];
 vector<int> bucket[maxn];
 
-bool cmp(int x, int y) { return order[x] < order[y]; }
+bool cmp(int x, int y) {
+  return order[x] < order[y];
+}
 
 vector<int> refine(vector<int> mu) {
   vector<int> _mu;

@@ -16,37 +16,39 @@ using namespace std;
 int T, n, a[maxn];
 
 bool solve() {
-	sort(a, a + n);
-	bool found1 = false;
-	for (int i = 0; i < n; i++) if (a[i] == 1) {
-		found1 = true;
-		break;
-	}
+  sort(a, a + n);
+  bool found1 = false;
+  for (int i = 0; i < n; i++)
+    if (a[i] == 1) {
+      found1 = true;
+      break;
+    }
 
-	if (!found1) {
-		return true;
-	}
+  if (!found1) {
+    return true;
+  }
 
-	// Bad if found any consecutive pair
-	for (int i = 0; i + 1 < n; i++) if (a[i + 1] - a[i] == 1) {
-		return false;
-	}
+  // Bad if found any consecutive pair
+  for (int i = 0; i + 1 < n; i++)
+    if (a[i + 1] - a[i] == 1) {
+      return false;
+    }
 
-	return true;
+  return true;
 }
 
 int main() {
-	scanf("%d", &T);
-	while (T--) {
-		scanf("%d", &n);
-		for (int i = 0; i < n; i++) {
-			scanf("%d", &a[i]);
-		}
-		if (solve()) {
-			printf("YES\n");
-		} else {
-			printf("NO\n");
-		}
-	}
-	return 0;
+  scanf("%d", &T);
+  while (T--) {
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++) {
+      scanf("%d", &a[i]);
+    }
+    if (solve()) {
+      printf("YES\n");
+    } else {
+      printf("NO\n");
+    }
+  }
+  return 0;
 }

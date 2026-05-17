@@ -19,24 +19,24 @@ long long K;
 unordered_set<long long> elems;
 
 int main() {
-	scanf("%d", &T);
-	while (T--) {
-		bool ok = false;
-		elems.clear();
-		scanf("%d %lld", &n, &K);
-		for (int i = 0; i < n; i++) {
-			long long x;
-			scanf("%lld", &x);
-			if (elems.count(x + K) || elems.count(x - K)) {
-				ok = true;
-			}
-			elems.insert(x);
-		}
-		if (ok) {
-			printf("YES\n");
-		} else {
-			printf("NO\n");
-		}
-	}
-	return 0;
+  scanf("%d", &T);
+  while (T--) {
+    bool ok = false;
+    elems.clear();
+    scanf("%d %lld", &n, &K);
+    for (int i = 0; i < n; i++) {
+      long long x;
+      scanf("%lld", &x);
+      if (elems.count(x + K) || elems.count(x - K)) {
+        ok = true;
+      }
+      elems.insert(x);
+    }
+    if (ok) {
+      printf("YES\n");
+    } else {
+      printf("NO\n");
+    }
+  }
+  return 0;
 }

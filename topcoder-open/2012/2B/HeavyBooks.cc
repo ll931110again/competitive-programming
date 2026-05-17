@@ -75,8 +75,7 @@ public:
           if (whose[j] == 0)
             nextOwn += a[i];
 
-          if (diff[i][j] > nextDiff ||
-              (diff[i][j] == nextDiff && own[i][j] < nextOwn)) {
+          if (diff[i][j] > nextDiff || (diff[i][j] == nextDiff && own[i][j] < nextOwn)) {
             diff[i][j] = nextDiff;
             own[i][j] = nextOwn;
           }

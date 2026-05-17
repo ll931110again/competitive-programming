@@ -78,7 +78,7 @@ static int primitive_root(int p) {
   return -1;
 }
 
-static void ntt(vector<int64> &a, bool invert, int64 mod, int64 root) {
+static void ntt(vector<int64>& a, bool invert, int64 mod, int64 root) {
   int n = (int)a.size();
   for (int i = 1, j = 0; i < n; ++i) {
     int bit = n >> 1;
@@ -111,7 +111,7 @@ static void ntt(vector<int64> &a, bool invert, int64 mod, int64 root) {
   }
   if (invert) {
     int64 inv_n = mod_inv(n, mod);
-    for (int64 &x : a)
+    for (int64& x : a)
       x = (i128)x * inv_n % mod;
   }
 }
@@ -120,7 +120,7 @@ static void ntt(vector<int64> &a, bool invert, int64 mod, int64 root) {
 static const int64 MOD = 40026243073LL;
 static const int64 ROOT = 5;
 
-static vector<int64> convolution_ll(const vector<int64> &aa, const vector<int64> &bb) {
+static vector<int64> convolution_ll(const vector<int64>& aa, const vector<int64>& bb) {
   int need = (int)aa.size() + (int)bb.size() - 1;
   int n = 1;
   while (n < need)
@@ -141,7 +141,7 @@ static vector<int64> convolution_ll(const vector<int64> &aa, const vector<int64>
   return res;
 }
 
-static vector<int64> cyclic_convolution(const vector<int64> &A, const vector<int64> &B, int L) {
+static vector<int64> cyclic_convolution(const vector<int64>& A, const vector<int64>& B, int L) {
   int pad = 1;
   while (pad < 2 * L)
     pad <<= 1;

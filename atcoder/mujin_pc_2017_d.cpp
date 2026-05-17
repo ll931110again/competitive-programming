@@ -24,7 +24,7 @@ struct BFSResult {
   int far{};
 };
 
-static BFSResult bfs(const vector<vector<int>> &adj, int src, int n) {
+static BFSResult bfs(const vector<vector<int>>& adj, int src, int n) {
   BFSResult res;
   res.dist.assign(n + 1, -1);
   res.parent.assign(n + 1, -1);
@@ -50,7 +50,7 @@ static BFSResult bfs(const vector<vector<int>> &adj, int src, int n) {
 }
 
 // Second BFS started from u; parent[] walks toward u. Walking v→u gives u … v.
-static vector<int> diameter_path_from_parent(int v, const vector<int> &parent) {
+static vector<int> diameter_path_from_parent(int v, const vector<int>& parent) {
   vector<int> path;
   for (int x = v; x != -1; x = parent[x])
     path.push_back(x);
@@ -83,7 +83,7 @@ int main() {
   long long answer = 0;
 
   auto combine_children = [&](int v, int p, int hv,
-                               const function<long long(int, int, int)> &dfs) -> long long {
+                              const function<long long(int, int, int)>& dfs) -> long long {
     long long prod = 1;
     for (int c : adj[v]) {
       if (c == p)
@@ -97,14 +97,14 @@ int main() {
   if (diam % 2 == 0) {
     int r = path[diam / 2];
     auto dd = bfs(adj, r, N);
-    const vector<int> &dist_r = dd.dist;
+    const vector<int>& dist_r = dd.dist;
     int half = diam / 2;
 
     vector<vector<long long>> memo(N + 1, vector<long long>(2 * N + 5, -1));
 
     function<long long(int, int, int)> dfs = [&](int v, int p, int hv) -> long long {
       int idx = hv + N + 2;
-      long long &mem = memo[v][idx];
+      long long& mem = memo[v][idx];
       if (mem != -1)
         return mem;
 
@@ -122,8 +122,8 @@ int main() {
     int t = path[diam / 2 + 1];
     auto ds = bfs(adj, s, N);
     auto dt = bfs(adj, t, N);
-    const vector<int> &d_s = ds.dist;
-    const vector<int> &d_t = dt.dist;
+    const vector<int>& d_s = ds.dist;
+    const vector<int>& d_t = dt.dist;
 
     vector<int> ec(N + 1);
     vector<char> black(N + 1);
@@ -153,7 +153,7 @@ int main() {
 
       function<long long(int, int, int)> dfs = [&](int v, int p, int hv) -> long long {
         int idx = hv + N + 2;
-        long long &mem = memo[v][idx];
+        long long& mem = memo[v][idx];
         if (mem != -1)
           return mem;
         if (!ok(v, hv))

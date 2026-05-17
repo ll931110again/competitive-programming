@@ -37,8 +37,8 @@ point P[1202];
 
 class LineSegments {
 public:
-  long long intersections(int N, int xFirst, int xAdd, int xProd, int xMod,
-                          int yFirst, int yAdd, int yProd, int yMod) {
+  long long intersections(int N, int xFirst, int xAdd, int xProd, int xMod, int yFirst, int yAdd,
+                          int yProd, int yMod) {
     P[0] = make_pair(xFirst, yFirst);
     for (int i = 1; i < N; i++) {
       P[i].first = (P[i - 1].first * xProd + xAdd) % xMod;
@@ -50,8 +50,8 @@ public:
       vector<double> store;
       for (int i = 0; i < N; i++)
         if (i != center) {
-          double angular = atan2(1.0 * (P[i].second - P[center].second),
-                                 1.0 * (P[i].first - P[center].first));
+          double angular =
+              atan2(1.0 * (P[i].second - P[center].second), 1.0 * (P[i].first - P[center].first));
           store.push_back(angular);
           store.push_back(angular + 2 * PI);
         }

@@ -147,31 +147,22 @@ struct ColorfulJewelry {
     adjust(xc, yc, xd, yd, 1);
     adjust(xe, ye, xf, yf, -1);
 
-    maxGreen[totalRed][totalBlue] =
-        max(maxGreen[totalRed][totalBlue], totalGreen);
+    maxGreen[totalRed][totalBlue] = max(maxGreen[totalRed][totalBlue], totalGreen);
   }
 
   long long compute(int R, int B) {
     int G = maxGreen[R][B];
     long long ans = (1LL * c[R + B][R] * sumDelta[R + B][G]) % mod;
     if (R % 2 && B % 2 == 0)
-      ans = (ans +
-             1LL * c[R / 2 + B / 2][R / 2] * sumDelta[R / 2 + B / 2][G / 2]) %
-            mod;
+      ans = (ans + 1LL * c[R / 2 + B / 2][R / 2] * sumDelta[R / 2 + B / 2][G / 2]) % mod;
     if (R % 2 == 0 && B % 2)
-      ans = (ans +
-             1LL * c[R / 2 + B / 2][R / 2] * sumDelta[R / 2 + B / 2][G / 2]) %
-            mod;
+      ans = (ans + 1LL * c[R / 2 + B / 2][R / 2] * sumDelta[R / 2 + B / 2][G / 2]) % mod;
     if (R % 2 == 0 && B % 2 == 0) {
-      ans = (ans +
-             1LL * c[R / 2 + B / 2][R / 2] * sumDelta[R / 2 + B / 2][G / 2]) %
-            mod;
+      ans = (ans + 1LL * c[R / 2 + B / 2][R / 2] * sumDelta[R / 2 + B / 2][G / 2]) % mod;
       if (G % 2 == 0)
         G--;
       if (G >= 0)
-        ans = (ans +
-               1LL * c[R / 2 + B / 2][R / 2] * sumDelta[R / 2 + B / 2][G / 2]) %
-              mod;
+        ans = (ans + 1LL * c[R / 2 + B / 2][R / 2] * sumDelta[R / 2 + B / 2][G / 2]) % mod;
     }
     return (ans * inv) % mod;
   }

@@ -10,46 +10,60 @@
 using namespace std;
 
 static constexpr int MOD = 998244353;
-static constexpr int INV24 = 291154603;  // 24^{-1} mod MOD
+static constexpr int INV24 = 291154603; // 24^{-1} mod MOD
 static constexpr int MAX_PREFIX = 600;
 
 template <int P> struct ModInt {
   int x;
   ModInt(long long v = 0) : x(int((v % P + P) % P)) {}
-  ModInt &operator+=(ModInt o) {
+  ModInt& operator+=(ModInt o) {
     x += o.x;
-    if (x >= P) x -= P;
+    if (x >= P)
+      x -= P;
     return *this;
   }
-  ModInt &operator-=(ModInt o) {
+  ModInt& operator-=(ModInt o) {
     x -= o.x;
-    if (x < 0) x += P;
+    if (x < 0)
+      x += P;
     return *this;
   }
-  ModInt &operator*=(ModInt o) {
+  ModInt& operator*=(ModInt o) {
     x = int((long long)x * o.x % P);
     return *this;
   }
-  friend ModInt operator+(ModInt a, ModInt b) { return a += b; }
-  friend ModInt operator-(ModInt a, ModInt b) { return a -= b; }
-  friend ModInt operator*(ModInt a, ModInt b) { return a *= b; }
-  friend ModInt operator/(ModInt a, ModInt b) { return a * mod_pow(b, P - 2); }
-  bool operator==(ModInt o) const { return x == o.x; }
-  bool operator!=(ModInt o) const { return x != o.x; }
+  friend ModInt operator+(ModInt a, ModInt b) {
+    return a += b;
+  }
+  friend ModInt operator-(ModInt a, ModInt b) {
+    return a -= b;
+  }
+  friend ModInt operator*(ModInt a, ModInt b) {
+    return a *= b;
+  }
+  friend ModInt operator/(ModInt a, ModInt b) {
+    return a * mod_pow(b, P - 2);
+  }
+  bool operator==(ModInt o) const {
+    return x == o.x;
+  }
+  bool operator!=(ModInt o) const {
+    return x != o.x;
+  }
 };
 
 template <int P> ModInt<P> mod_pow(ModInt<P> a, long long e) {
   ModInt<P> r(1);
   while (e > 0) {
-    if (e & 1) r *= a;
+    if (e & 1)
+      r *= a;
     a *= a;
     e >>= 1;
   }
   return r;
 }
 
-template <int P>
-vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>> &s) {
+template <int P> vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>>& s) {
   const int n = (int)s.size();
   vector<ModInt<P>> C(n), B(n);
   C[0] = B[0] = ModInt<P>(1);
@@ -57,14 +71,16 @@ vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>> &s) {
   int L = 0;
   for (int i = 0, m = 1; i < n; ++i) {
     ModInt<P> d = s[i];
-    for (int j = 1; j <= L; ++j) d += C[j] * s[i - j];
+    for (int j = 1; j <= L; ++j)
+      d += C[j] * s[i - j];
     if (d == ModInt<P>(0)) {
       ++m;
       continue;
     }
     vector<ModInt<P>> T = C;
     ModInt<P> coef = d / b;
-    for (int j = m; j < n; ++j) C[j] = C[j] - coef * B[j - m];
+    for (int j = m; j < n; ++j)
+      C[j] = C[j] - coef * B[j - m];
     if (2 * L > i) {
       ++m;
       continue;
@@ -75,47 +91,55 @@ vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>> &s) {
     m = 1;
   }
   vector<ModInt<P>> res(L);
-  for (int j = 0; j < L; ++j) res[j] = ModInt<P>(0) - C[j + 1];
+  for (int j = 0; j < L; ++j)
+    res[j] = ModInt<P>(0) - C[j + 1];
   return res;
 }
 
 template <int P>
-ModInt<P> kth_linear_recurrence(vector<ModInt<P>> init, const vector<ModInt<P>> &trans,
+ModInt<P> kth_linear_recurrence(vector<ModInt<P>> init, const vector<ModInt<P>>& trans,
                                 long long k) {
   const int n = (int)trans.size();
-  if (k < n) return init[(int)k];
+  if (k < n)
+    return init[(int)k];
 
   using M = vector<vector<ModInt<P>>>;
   M base(n, vector<ModInt<P>>(n));
-  for (int i = 0; i < n; ++i) base[0][i] = trans[i];
-  for (int i = 1; i < n; ++i) base[i][i - 1] = ModInt<P>(1);
+  for (int i = 0; i < n; ++i)
+    base[0][i] = trans[i];
+  for (int i = 1; i < n; ++i)
+    base[i][i - 1] = ModInt<P>(1);
 
-  auto mat_mul = [&](const M &A, const M &B) {
+  auto mat_mul = [&](const M& A, const M& B) {
     M C(n, vector<ModInt<P>>(n));
     for (int i = 0; i < n; ++i)
       for (int j = 0; j < n; ++j)
-        for (int t = 0; t < n; ++t) C[i][j] += A[i][t] * B[t][j];
+        for (int t = 0; t < n; ++t)
+          C[i][j] += A[i][t] * B[t][j];
     return C;
   };
 
   M res(n, vector<ModInt<P>>(n));
-  for (int i = 0; i < n; ++i) res[i][i] = ModInt<P>(1);
+  for (int i = 0; i < n; ++i)
+    res[i][i] = ModInt<P>(1);
   long long e = k - n + 1;
   M powM = base;
   while (e > 0) {
-    if (e & 1) res = mat_mul(res, powM);
+    if (e & 1)
+      res = mat_mul(res, powM);
     powM = mat_mul(powM, powM);
     e >>= 1;
   }
 
   ModInt<P> ans(0);
-  for (int i = 0; i < n; ++i) ans += res[0][i] * init[n - 1 - i];
+  for (int i = 0; i < n; ++i)
+    ans += res[0][i] * init[n - 1 - i];
   return ans;
 }
 
 using Mint = ModInt<MOD>;
 
-static Mint count_fixed(long long S, const vector<int> &cycles) {
+static Mint count_fixed(long long S, const vector<int>& cycles) {
   const int k = (int)cycles.size();
   const int cap = (int)min<long long>(S, MAX_PREFIX + 50);
   vector<Mint> dp(cap + 1), ndp(cap + 1);
@@ -123,7 +147,8 @@ static Mint count_fixed(long long S, const vector<int> &cycles) {
   for (int ci : cycles) {
     fill(ndp.begin(), ndp.end(), Mint(0));
     for (int r = 0; r <= cap; ++r) {
-      if (dp[r] == Mint(0)) continue;
+      if (dp[r] == Mint(0))
+        continue;
       for (int a = 1, nr = r + ci; nr <= cap; ++a, nr += ci) {
         ndp[nr] += dp[r];
       }
@@ -133,8 +158,9 @@ static Mint count_fixed(long long S, const vector<int> &cycles) {
   return S <= cap ? dp[(int)S] : Mint(0);
 }
 
-static Mint eval_type(long long S, const vector<int> &cycles) {
-  if (S <= MAX_PREFIX) return count_fixed(S, cycles);
+static Mint eval_type(long long S, const vector<int>& cycles) {
+  if (S <= MAX_PREFIX)
+    return count_fixed(S, cycles);
   vector<Mint> seq;
   seq.reserve(MAX_PREFIX);
   for (int s = 0; s < MAX_PREFIX; ++s) {

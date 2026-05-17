@@ -67,12 +67,10 @@ long long solve() {
 
     if (x_value >= 0) {
       zeroes[i].cnt += zeroes[x_value].cnt;
-      zeroes[i].sum +=
-          zeroes[x_value].sum + 1LL * (x_value - i - 1) * zeroes[x_value].cnt;
+      zeroes[i].sum += zeroes[x_value].sum + 1LL * (x_value - i - 1) * zeroes[x_value].cnt;
 
       nonzeroes[i].cnt += nonzeroes[x_value].cnt;
-      nonzeroes[i].sum +=
-          nonzeroes[x_value].sum + 1LL * (x_value - i) * nonzeroes[x_value].cnt;
+      nonzeroes[i].sum += nonzeroes[x_value].sum + 1LL * (x_value - i) * nonzeroes[x_value].cnt;
     }
 
     ans += zeroes[i].sum;

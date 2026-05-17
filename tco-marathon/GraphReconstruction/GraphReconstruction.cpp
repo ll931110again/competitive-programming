@@ -21,7 +21,7 @@ struct Path {
 
   Path(int from_, int to_, int len_) : from(from_), to(to_), len(len_) {}
 
-  Path(string &input) {
+  Path(string& input) {
     stringstream ss;
     ss << input;
     ss >> from >> to >> len;
@@ -56,8 +56,8 @@ public:
     }
 
     for (int i = 0; i < N_; i++) {
-      for (auto &p : adj_[i]) {
-        for (auto &q : adj_[i]) {
+      for (auto& p : adj_[i]) {
+        for (auto& q : adj_[i]) {
           // If length difference is > 1, there's no edge between u and v
           if (abs(p.second - q.second) > 1) {
             int u = p.first, v = p.first;
@@ -149,7 +149,7 @@ private:
   vector<vector<int>> edges_;
   vector<vector<pair<int, int>>> adj_;
 
-  bool check(vector<vector<int>> &adjGraph) {
+  bool check(vector<vector<int>>& adjGraph) {
     vector<vector<int>> dist(N_);
     for (int i = 0; i < N_; i++) {
       dist[i].resize(N_);
@@ -172,7 +172,7 @@ private:
       }
     }
 
-    for (auto &path : paths_) {
+    for (auto& path : paths_) {
       if (path.len && N_ && dist[path.from][path.to] != path.len) {
         return false;
       }
@@ -228,7 +228,7 @@ public:
           int u = q.front();
           q.pop();
 
-          for (auto &path : myPaths) {
+          for (auto& path : myPaths) {
             if (path.len < 0) {
               continue;
             }
@@ -250,7 +250,7 @@ public:
         }
 
         vector<Path> cpaths;
-        for (auto &path : myPaths) {
+        for (auto& path : myPaths) {
           if (path.len < 0) {
             continue;
           }

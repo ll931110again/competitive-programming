@@ -4,11 +4,15 @@ using namespace std;
 
 struct Pt {
   long long x = 0, y = 0;
-  bool operator<(const Pt &o) const { return x != o.x ? x < o.x : y < o.y; }
-  bool operator==(const Pt &o) const { return x == o.x && y == o.y; }
+  bool operator<(const Pt& o) const {
+    return x != o.x ? x < o.x : y < o.y;
+  }
+  bool operator==(const Pt& o) const {
+    return x == o.x && y == o.y;
+  }
 };
 
-static inline long long crossLL(const Pt &a, const Pt &b, const Pt &c) {
+static inline long long crossLL(const Pt& a, const Pt& b, const Pt& c) {
   // cross((b-a),(c-a))
   return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
 }
@@ -25,8 +29,7 @@ static vector<Pt> convexHull(vector<Pt> pts) {
 
   // lower hull
   for (int i = 0; i < n; i++) {
-    while ((int)h.size() >= 2 &&
-           crossLL(h[h.size() - 2], h[h.size() - 1], pts[i]) <= 0)
+    while ((int)h.size() >= 2 && crossLL(h[h.size() - 2], h[h.size() - 1], pts[i]) <= 0)
       h.pop_back();
     h.push_back(pts[i]);
   }
@@ -34,8 +37,7 @@ static vector<Pt> convexHull(vector<Pt> pts) {
   // upper hull
   int lowerSize = (int)h.size();
   for (int i = n - 2; i >= 0; i--) {
-    while ((int)h.size() > lowerSize &&
-           crossLL(h[h.size() - 2], h[h.size() - 1], pts[i]) <= 0)
+    while ((int)h.size() > lowerSize && crossLL(h[h.size() - 2], h[h.size() - 1], pts[i]) <= 0)
       h.pop_back();
     h.push_back(pts[i]);
   }
@@ -44,7 +46,7 @@ static vector<Pt> convexHull(vector<Pt> pts) {
   return h;     // CCW, no collinear points on edges
 }
 
-static inline long double distToLine(const Pt &a, const Pt &b, const Pt &p) {
+static inline long double distToLine(const Pt& a, const Pt& b, const Pt& p) {
   // distance from p to line through a->b, using area / |ab|
   long double dx = (long double)(b.x - a.x);
   long double dy = (long double)(b.y - a.y);
@@ -53,7 +55,7 @@ static inline long double distToLine(const Pt &a, const Pt &b, const Pt &p) {
   return num / den;
 }
 
-static long double minWidthConvexPolygon(const vector<Pt> &h) {
+static long double minWidthConvexPolygon(const vector<Pt>& h) {
   int m = (int)h.size();
   if (m <= 2)
     return 0.0L;

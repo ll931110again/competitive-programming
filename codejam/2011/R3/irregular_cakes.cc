@@ -21,7 +21,8 @@ static vector<long double> y_at_xs(const vector<Pt>& poly, const vector<long dou
   int j = 0;
   for (int i = 0; i < (int)xs.size(); i++) {
     long double x = xs[i];
-    while (j + 1 < (int)poly.size() && poly[j + 1].x < x) j++;
+    while (j + 1 < (int)poly.size() && poly[j + 1].x < x)
+      j++;
     if (poly[j].x == x) {
       y[i] = poly[j].y;
     } else if (j + 1 < (int)poly.size() && poly[j + 1].x == x) {
@@ -61,20 +62,25 @@ int main() {
 
     vector<long double> xs;
     xs.reserve(L + U);
-    for (auto& p : low) xs.push_back(p.x);
-    for (auto& p : up) xs.push_back(p.x);
+    for (auto& p : low)
+      xs.push_back(p.x);
+    for (auto& p : up)
+      xs.push_back(p.x);
     sort(xs.begin(), xs.end());
-    xs.erase(unique(xs.begin(), xs.end(), [](long double a, long double b) { return fabsl(a - b) < 1e-18L; }),
+    xs.erase(unique(xs.begin(), xs.end(),
+                    [](long double a, long double b) { return fabsl(a - b) < 1e-18L; }),
              xs.end());
 
     // Ensure boundaries
-    if (xs.front() != 0) xs.insert(xs.begin(), 0);
-    if (xs.back() != (long double)W) xs.push_back((long double)W);
+    if (xs.front() != 0)
+      xs.insert(xs.begin(), 0);
+    if (xs.back() != (long double)W)
+      xs.push_back((long double)W);
 
     vector<long double> yl = y_at_xs(low, xs);
     vector<long double> yu = y_at_xs(up, xs);
 
-    int m = (int)xs.size() - 1;  // number of intervals
+    int m = (int)xs.size() - 1; // number of intervals
     vector<long double> pref(m + 1, 0.0L);
     for (int i = 0; i < m; i++) {
       long double dx = xs[i + 1] - xs[i];
@@ -90,12 +96,16 @@ int main() {
       long double target = total * (long double)slice / (long double)G;
 
       int idx = (int)(lower_bound(pref.begin(), pref.end(), target) - pref.begin()) - 1;
-      if (idx < 0) idx = 0;
-      if (idx >= m) idx = m - 1;
+      if (idx < 0)
+        idx = 0;
+      if (idx >= m)
+        idx = m - 1;
 
       // Move idx to correct interval if needed due to precision.
-      while (idx + 1 <= m && pref[idx + 1] < target) idx++;
-      while (idx > 0 && pref[idx] > target) idx--;
+      while (idx + 1 <= m && pref[idx + 1] < target)
+        idx++;
+      while (idx > 0 && pref[idx] > target)
+        idx--;
 
       long double need = target - pref[idx];
       long double x0 = xs[idx];
@@ -104,7 +114,7 @@ int main() {
 
       long double d0 = yu[idx] - yl[idx];
       long double d1 = yu[idx + 1] - yl[idx + 1];
-      long double k = (d1 - d0) / dx;  // d(t) = d0 + k*t, t in [0,dx]
+      long double k = (d1 - d0) / dx; // d(t) = d0 + k*t, t in [0,dx]
 
       long double t;
       if (fabsl(k) < 1e-18L) {
@@ -112,12 +122,15 @@ int main() {
       } else {
         // Solve: d0*t + 0.5*k*t^2 = need, t>=0
         long double disc = d0 * d0 + 2.0L * k * need;
-        if (disc < 0) disc = 0;
+        if (disc < 0)
+          disc = 0;
         t = (-d0 + sqrt(disc)) / k;
       }
 
-      if (t < 0) t = 0;
-      if (t > dx) t = dx;
+      if (t < 0)
+        t = 0;
+      if (t > dx)
+        t = dx;
 
       long double cutx = x0 + t;
       cout << (double)cutx << "\n";
@@ -126,4 +139,3 @@ int main() {
 
   return 0;
 }
-

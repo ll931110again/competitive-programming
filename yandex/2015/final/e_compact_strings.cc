@@ -12,7 +12,7 @@ Mint dp[maxn][alphabet + 1][2];
 int fill_value[maxn];
 int first_pos[alphabet], last_pos[alphabet], nxt_non_empty[maxn];
 
-static int solve(const string &s) {
+static int solve(const string& s) {
   int n = s.size();
   memset(fill_value, -1, sizeof fill_value);
   memset(first_pos, -1, sizeof first_pos);

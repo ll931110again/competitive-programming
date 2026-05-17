@@ -35,7 +35,9 @@ using Mint = ModInt<MOD>;
 
 Mint fact[maxn], inv[maxn];
 
-Mint binom(int x, int y) { return fact[x] * inv[y] * inv[x - y]; }
+Mint binom(int x, int y) {
+  return fact[x] * inv[y] * inv[x - y];
+}
 
 // Eulerian number A(n, k): sum_{i=0}^{k} (-1)^i * C(n+1,i) * (k+1-i)^n.
 Mint A(int n, int k) {

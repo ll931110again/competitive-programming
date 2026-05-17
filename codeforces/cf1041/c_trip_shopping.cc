@@ -23,8 +23,7 @@ long long delta(pair<int, int> x, pair<int, int> y) {
   long long old_value = x.second - x.first + y.second - y.first;
   vector<int> new_values = {x.first, x.second, y.first, y.second};
   sort(new_values.begin(), new_values.end());
-  long long new_value =
-      new_values[2] - new_values[0] + new_values[3] - new_values[1];
+  long long new_value = new_values[2] - new_values[0] + new_values[3] - new_values[1];
 
   return new_value - old_value;
 }

@@ -32,8 +32,7 @@ Mint solve() {
     if (h - a <= m1) {
       for (int b = 0; a + b <= h; b++)
         if (h - b <= m2) {
-          Mint arrangement =
-              binom(h, a) * binom(h - a, b) * Mint(sigma - 2).pow(h - a - b);
+          Mint arrangement = binom(h, a) * binom(h - a, b) * Mint(sigma - 2).pow(h - a - b);
           int bound = min(m1 - (h - a), m2 - (h - b));
           arrangement *= prefixes[bound];
 

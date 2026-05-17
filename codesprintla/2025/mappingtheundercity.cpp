@@ -101,7 +101,7 @@ int main() {
       return 0;
     }
     int max_h = 0;
-    for (const auto &pr : lvl_cnt)
+    for (const auto& pr : lvl_cnt)
       max_h = max(max_h, pr.first);
     for (int k = 1; k <= max_h; ++k) {
       int cnt_k = lvl_cnt.count(k) ? lvl_cnt[k] : 0;

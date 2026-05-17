@@ -13,7 +13,7 @@ struct V2 {
   double x, y;
 };
 
-static double dist2(const V2 &a, const V2 &b) {
+static double dist2(const V2& a, const V2& b) {
   double dx = a.x - b.x;
   double dy = a.y - b.y;
   return sqrt(dx * dx + dy * dy);
@@ -91,7 +91,7 @@ int main() {
 
     auto addEdge = [&](int u, int v, int thirdH) {
       uint64_t k = edgeKey(u, v);
-      EdgeInfo &ei = edgeMap[k];
+      EdgeInfo& ei = edgeMap[k];
       if (ei.len == 0)
         ei.len = dist2(P[u], P[v]);
       if (ei.t1_third == -1)
@@ -101,8 +101,8 @@ int main() {
     };
 
     for (int i = 0; i + 1 < s; i++) {
-      const vector<int> &A = idx[i];
-      const vector<int> &B = idx[i + 1];
+      const vector<int>& A = idx[i];
+      const vector<int>& B = idx[i + 1];
       if ((int)A.size() == p && (int)B.size() == p + 1) {
         // A shorter (p), B longer (p+1)
         // triangles: (A[k], B[k], B[k+1]) for k=0..p-1
@@ -145,8 +145,7 @@ int main() {
     double totalLen = 0.0;
 
     // Edge-on-contour contributions
-    for (map<uint64_t, EdgeInfo>::const_iterator it = edgeMap.begin();
-         it != edgeMap.end(); ++it) {
+    for (map<uint64_t, EdgeInfo>::const_iterator it = edgeMap.begin(); it != edgeMap.end(); ++it) {
       uint64_t k = it->first;
       int u = (int)(k >> 32);
       int v = (int)(k & 0xffffffffu);
@@ -155,7 +154,7 @@ int main() {
         continue;
       if (hu % hInc != 0)
         continue;
-      const EdgeInfo &ei = it->second;
+      const EdgeInfo& ei = it->second;
       // If the whole region around the edge is level at this height, do not
       // draw it (contours are shown only for plateau boundaries).
       bool flat1 = (ei.t1_third != -1 && ei.t1_third == hu);
@@ -228,8 +227,7 @@ int main() {
       // At L=h1, segment connects 'mid' to intersection on edge (lo,hi).
       {
         double t = (double)(h1 - h0) / (double)(h2 - h0);
-        V2 pc = {P[lo].x + t * (P[hi].x - P[lo].x),
-                 P[lo].y + t * (P[hi].y - P[lo].y)};
+        V2 pc = {P[lo].x + t * (P[hi].x - P[lo].x), P[lo].y + t * (P[hi].y - P[lo].y)};
         double Lmax = dist2(P[mid], pc);
 
         // (h0, h1): len = (L - h0)/(h1 - h0) * Lmax

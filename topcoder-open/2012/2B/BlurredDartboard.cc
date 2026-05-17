@@ -56,8 +56,7 @@ public:
       int score = 0;
       for (int i = 0; i < remain; i++)
         score += hidden[i];
-      ret = min(
-          ret, remain + minDart(maxExist, sumHidden, hidden.size(), P - score));
+      ret = min(ret, remain + minDart(maxExist, sumHidden, hidden.size(), P - score));
     }
     return ret;
   }

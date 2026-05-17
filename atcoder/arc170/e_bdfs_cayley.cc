@@ -14,40 +14,54 @@ static constexpr int MOD = 998244353;
 template <int P> struct ModInt {
   int x;
   ModInt(long long v = 0) : x(int((v % P + P) % P)) {}
-  ModInt &operator+=(ModInt o) {
+  ModInt& operator+=(ModInt o) {
     x += o.x;
-    if (x >= P) x -= P;
+    if (x >= P)
+      x -= P;
     return *this;
   }
-  ModInt &operator-=(ModInt o) {
+  ModInt& operator-=(ModInt o) {
     x -= o.x;
-    if (x < 0) x += P;
+    if (x < 0)
+      x += P;
     return *this;
   }
-  ModInt &operator*=(ModInt o) {
+  ModInt& operator*=(ModInt o) {
     x = int((long long)x * o.x % P);
     return *this;
   }
-  friend ModInt operator+(ModInt a, ModInt b) { return a += b; }
-  friend ModInt operator-(ModInt a, ModInt b) { return a -= b; }
-  friend ModInt operator*(ModInt a, ModInt b) { return a *= b; }
-  friend ModInt operator/(ModInt a, ModInt b) { return a * mod_pow(b, P - 2); }
-  bool operator==(ModInt o) const { return x == o.x; }
-  bool operator!=(ModInt o) const { return x != o.x; }
+  friend ModInt operator+(ModInt a, ModInt b) {
+    return a += b;
+  }
+  friend ModInt operator-(ModInt a, ModInt b) {
+    return a -= b;
+  }
+  friend ModInt operator*(ModInt a, ModInt b) {
+    return a *= b;
+  }
+  friend ModInt operator/(ModInt a, ModInt b) {
+    return a * mod_pow(b, P - 2);
+  }
+  bool operator==(ModInt o) const {
+    return x == o.x;
+  }
+  bool operator!=(ModInt o) const {
+    return x != o.x;
+  }
 };
 
 template <int P> ModInt<P> mod_pow(ModInt<P> a, long long e) {
   ModInt<P> r(1);
   while (e > 0) {
-    if (e & 1) r *= a;
+    if (e & 1)
+      r *= a;
     a *= a;
     e >>= 1;
   }
   return r;
 }
 
-template <int P>
-vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>> &s) {
+template <int P> vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>>& s) {
   const int n = (int)s.size();
   vector<ModInt<P>> C(n), B(n);
   C[0] = B[0] = ModInt<P>(1);
@@ -55,14 +69,16 @@ vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>> &s) {
   int L = 0;
   for (int i = 0, m = 1; i < n; ++i) {
     ModInt<P> d = s[i];
-    for (int j = 1; j <= L; ++j) d += C[j] * s[i - j];
+    for (int j = 1; j <= L; ++j)
+      d += C[j] * s[i - j];
     if (d == ModInt<P>(0)) {
       ++m;
       continue;
     }
     vector<ModInt<P>> T = C;
     ModInt<P> coef = d / b;
-    for (int j = m; j < n; ++j) C[j] = C[j] - coef * B[j - m];
+    for (int j = m; j < n; ++j)
+      C[j] = C[j] - coef * B[j - m];
     if (2 * L > i) {
       ++m;
       continue;
@@ -73,47 +89,57 @@ vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>> &s) {
     m = 1;
   }
   vector<ModInt<P>> res(L);
-  for (int j = 0; j < L; ++j) res[j] = ModInt<P>(0) - C[j + 1];
+  for (int j = 0; j < L; ++j)
+    res[j] = ModInt<P>(0) - C[j + 1];
   return res;
 }
 
 template <int P>
-ModInt<P> kth_linear_recurrence(vector<ModInt<P>> init, const vector<ModInt<P>> &trans,
+ModInt<P> kth_linear_recurrence(vector<ModInt<P>> init, const vector<ModInt<P>>& trans,
                                 long long k) {
   const int n = (int)trans.size();
-  if (k < n) return init[(int)k];
+  if (k < n)
+    return init[(int)k];
 
   using M = vector<vector<ModInt<P>>>;
   M base(n, vector<ModInt<P>>(n));
-  for (int i = 0; i < n; ++i) base[0][i] = trans[i];
-  for (int i = 1; i < n; ++i) base[i][i - 1] = ModInt<P>(1);
+  for (int i = 0; i < n; ++i)
+    base[0][i] = trans[i];
+  for (int i = 1; i < n; ++i)
+    base[i][i - 1] = ModInt<P>(1);
 
-  auto mat_mul = [&](const M &A, const M &B) {
+  auto mat_mul = [&](const M& A, const M& B) {
     M C(n, vector<ModInt<P>>(n));
     for (int i = 0; i < n; ++i)
       for (int j = 0; j < n; ++j)
-        for (int t = 0; t < n; ++t) C[i][j] += A[i][t] * B[t][j];
+        for (int t = 0; t < n; ++t)
+          C[i][j] += A[i][t] * B[t][j];
     return C;
   };
 
   M res(n, vector<ModInt<P>>(n));
-  for (int i = 0; i < n; ++i) res[i][i] = ModInt<P>(1);
+  for (int i = 0; i < n; ++i)
+    res[i][i] = ModInt<P>(1);
   long long e = k - n + 1;
   M powM = base;
   while (e > 0) {
-    if (e & 1) res = mat_mul(res, powM);
+    if (e & 1)
+      res = mat_mul(res, powM);
     powM = mat_mul(powM, powM);
     e >>= 1;
   }
 
   ModInt<P> ans(0);
-  for (int i = 0; i < n; ++i) ans += res[0][i] * init[n - 1 - i];
+  for (int i = 0; i < n; ++i)
+    ans += res[0][i] * init[n - 1 - i];
   return ans;
 }
 
 using Mint = ModInt<MOD>;
 
-static Mint mod_inv(Mint a) { return mod_pow(a, MOD - 2); }
+static Mint mod_inv(Mint a) {
+  return mod_pow(a, MOD - 2);
+}
 
 // Closed form for a_N (valid for all N); used to build the BM prefix quickly.
 static Mint prefix_term(long long N, int P) {
@@ -147,24 +173,29 @@ static Mint brute_expected(int N, int P) {
       [&](vector<int> D, deque<pair<int, int>> Q) -> pair<Mint, Mint> {
     if (Q.empty()) {
       Mint sum(0);
-      for (int v : D) sum += Mint(v);
+      for (int v : D)
+        sum += Mint(v);
       return {sum, Mint(1)};
     }
     int v = Q.front().first, d = Q.front().second;
     Q.pop_front();
-    if (D[v] != -1) return dfs(std::move(D), std::move(Q));
+    if (D[v] != -1)
+      return dfs(std::move(D), std::move(Q));
     D[v] = d;
     vector<int> nbrs;
     for (int dx : {-1, 1}) {
       int x = v + dx;
-      if (x < 0) x += N;
-      if (x >= N) x -= N;
-      if (D[x] == -1) nbrs.push_back(x);
+      if (x < 0)
+        x += N;
+      if (x >= N)
+        x -= N;
+      if (D[x] == -1)
+        nbrs.push_back(x);
     }
     sort(nbrs.begin(), nbrs.end());
     Mint sum_exp(0);
-    function<void(int, deque<pair<int, int>>, Mint)> gen =
-        [&](int i, deque<pair<int, int>> curQ, Mint prob) {
+    function<void(int, deque<pair<int, int>>, Mint)> gen = [&](int i, deque<pair<int, int>> curQ,
+                                                               Mint prob) {
       if (i == (int)nbrs.size()) {
         sum_exp += dfs(D, std::move(curQ)).first * prob;
         return;
@@ -190,7 +221,7 @@ static Mint brute_expected(int N, int P) {
 
 static Mint solve_bm(long long N, int P) {
   static unordered_map<int, pair<vector<Mint>, vector<Mint>>> cache;
-  auto &entry = cache[P];
+  auto& entry = cache[P];
   if (entry.first.empty()) {
     constexpr int PREFIX = 64;
     entry.first.reserve(PREFIX);

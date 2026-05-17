@@ -2,8 +2,8 @@
 using namespace std;
 
 struct BagsOfNumbers {
-  long long wonByAlice(int n, vector<long long> a, vector<long long> b,
-                       vector<long long> c, vector<long long> d) {
+  long long wonByAlice(int n, vector<long long> a, vector<long long> b, vector<long long> c,
+                       vector<long long> d) {
     long long nimber[55];
     for (int i = 0; i < n; i++) {
       nimber[i] = getNimber(a[i], b[i], c[i], d[i]);

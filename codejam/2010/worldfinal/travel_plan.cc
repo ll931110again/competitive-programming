@@ -14,7 +14,8 @@ static void dfs_left(const vector<long long>& d, int pivot, int i, int prev_t, l
   static const int delta[3] = {-2, 0, 2};
   for (int dd : delta) {
     int t = prev_t + dd;
-    if (t <= 0) continue;
+    if (t <= 0)
+      continue;
     dfs_left(d, pivot, i + 1, t, sum + (long long)t * d[i], out);
   }
 }
@@ -27,14 +28,16 @@ static void dfs_right(const vector<long long>& d, int pivot, int i, int cur_t, l
     // choose t_pivot consistent with t_{pivot+1}=cur_t
     for (int dd : delta) {
       int tp = cur_t + dd;
-      if (tp <= 0) continue;
+      if (tp <= 0)
+        continue;
       out[tp].push_back(sum);
     }
     return;
   }
   for (int dd : delta) {
     int tprev = cur_t + dd;
-    if (tprev <= 0) continue;
+    if (tprev <= 0)
+      continue;
     dfs_right(d, pivot, i - 1, tprev, sum + (long long)tprev * d[i - 1], out);
   }
 }
@@ -49,15 +52,17 @@ int main() {
     int N;
     cin >> N;
     vector<long long> X(N);
-    for (int i = 0; i < N; i++) cin >> X[i];
+    for (int i = 0; i < N; i++)
+      cin >> X[i];
     long long F;
     cin >> F;
 
     sort(X.begin(), X.end());
 
-    const int m = N - 1;  // number of intervals
+    const int m = N - 1; // number of intervals
     vector<long long> d(m);
-    for (int i = 0; i < m; i++) d[i] = X[i + 1] - X[i];
+    for (int i = 0; i < m; i++)
+      d[i] = X[i + 1] - X[i];
 
     // Special case: N==2 (one interval, must have t=2).
     if (m == 1) {
@@ -70,7 +75,7 @@ int main() {
       continue;
     }
 
-    const int pivot = m / 2;  // 0-based interval index included in the left half
+    const int pivot = m / 2; // 0-based interval index included in the left half
 
     map<int, vector<long long>> left, right;
 
@@ -83,13 +88,14 @@ int main() {
       // No right half (shouldn't happen for m>1 with pivot=m/2), but keep safe.
       right[2].push_back(0);
     } else if (pivot == m - 2) {
-      // Right half is just the last interval (index m-1 is fixed to 2), so no t_pivot constraint beyond diff.
-      // Here pivot+1 == m-1, so we can directly set based on t_{m-1}=2.
+      // Right half is just the last interval (index m-1 is fixed to 2), so no t_pivot constraint
+      // beyond diff. Here pivot+1 == m-1, so we can directly set based on t_{m-1}=2.
       static const int delta[3] = {-2, 0, 2};
       long long sum = 2LL * d[m - 1];
       for (int dd : delta) {
         int tp = 2 + dd;
-        if (tp <= 0) continue;
+        if (tp <= 0)
+          continue;
         right[tp].push_back(sum);
       }
     } else {
@@ -100,15 +106,18 @@ int main() {
     long long best = -1;
     for (auto& [tp, A] : left) {
       auto it = right.find(tp);
-      if (it == right.end()) continue;
+      if (it == right.end())
+        continue;
       auto& B = it->second;
 
       sort(B.begin(), B.end());
       for (long long a : A) {
-        if (a > F) continue;
+        if (a > F)
+          continue;
         long long rem = F - a;
         auto ub = upper_bound(B.begin(), B.end(), rem);
-        if (ub == B.begin()) continue;
+        if (ub == B.begin())
+          continue;
         --ub;
         best = max(best, a + *ub);
       }
@@ -122,4 +131,3 @@ int main() {
   }
   return 0;
 }
-

@@ -7,9 +7,10 @@
 using namespace std;
 
 static bool feasible_min_len(const map<int, int>& cnt, int k) {
-  if (k <= 1) return true;
+  if (k <= 1)
+    return true;
 
-  priority_queue<int, vector<int>, greater<int>> heap;  // lengths ending at prev value
+  priority_queue<int, vector<int>, greater<int>> heap; // lengths ending at prev value
   int prev = 0;
   bool has_prev = false;
 
@@ -19,7 +20,8 @@ static bool feasible_min_len(const map<int, int>& cnt, int k) {
     } else if (v != prev + 1) {
       // Gap: all existing sequences must be complete.
       while (!heap.empty()) {
-        if (heap.top() < k) return false;
+        if (heap.top() < k)
+          return false;
         heap.pop();
       }
     }
@@ -36,13 +38,15 @@ static bool feasible_min_len(const map<int, int>& cnt, int k) {
 
     // Any sequences that couldn't be extended end at prev; must be complete.
     while (!heap.empty()) {
-      if (heap.top() < k) return false;
+      if (heap.top() < k)
+        return false;
       heap.pop();
     }
 
     // Start new sequences with remaining cards.
     int rem = c - extend;
-    for (int i = 0; i < rem; i++) next_heap.push(1);
+    for (int i = 0; i < rem; i++)
+      next_heap.push(1);
 
     heap.swap(next_heap);
     prev = v;
@@ -50,7 +54,8 @@ static bool feasible_min_len(const map<int, int>& cnt, int k) {
 
   // All remaining sequences must be complete.
   while (!heap.empty()) {
-    if (heap.top() < k) return false;
+    if (heap.top() < k)
+      return false;
     heap.pop();
   }
   return true;
@@ -90,4 +95,3 @@ int main() {
   }
   return 0;
 }
-

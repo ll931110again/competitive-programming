@@ -26,7 +26,8 @@ static inline unsigned mul_mod(unsigned a, unsigned b) {
 
 static inline unsigned pow_mod_factor(long long e) {
   long long v = (e + 1) % (long long)MOD;
-  if (v < 0) v += MOD;
+  if (v < 0)
+    v += MOD;
   return unsigned(v);
 }
 
@@ -48,24 +49,29 @@ int main() {
   static char comp[PMAX + 1];
   memset(comp, 0, sizeof comp);
   for (int i = 2; i <= PMAX; i++) {
-    if (comp[i]) continue;
+    if (comp[i])
+      continue;
     primes[pc++] = i;
-    for (int j = i + i; j <= PMAX; j += i) comp[j] = 1;
+    for (int j = i + i; j <= PMAX; j += i)
+      comp[j] = 1;
   }
 
   static int cnt[PMAX + 1];
   memset(cnt, 0, sizeof cnt);
 
   static int den[PMAX + 1];
-  for (int i = 1; i <= K; i++) den[i] = i;
+  for (int i = 1; i <= K; i++)
+    den[i] = i;
 
   const long long L = N - K + 1;
   vector<long long> num(K);
-  for (int i = 0; i < K; i++) num[i] = L + i;
+  for (int i = 0; i < K; i++)
+    num[i] = L + i;
 
   for (int pi = 0; pi < pc; pi++) {
     const int p = primes[pi];
-    if (p > N) break;
+    if (p > N)
+      break;
 
     if (p <= K) {
       for (int i = p; i <= K; i += p) {
@@ -88,13 +94,15 @@ int main() {
   vector<long long> big;
   big.reserve(70000);
   for (int i = 0; i < K; i++) {
-    if (num[i] > 1) big.push_back(num[i]);
+    if (num[i] > 1)
+      big.push_back(num[i]);
   }
 
   unsigned ans = 1;
   for (int pi = 0; pi < pc; pi++) {
     const int p = primes[pi];
-    if (cnt[p] > 0) ans = mul_mod(ans, pow_mod_factor(cnt[p]));
+    if (cnt[p] > 0)
+      ans = mul_mod(ans, pow_mod_factor(cnt[p]));
   }
 
   if (!big.empty()) {
@@ -103,7 +111,8 @@ int main() {
     const long long M = N - K;
     for (long long p : big) {
       const long long e = N / p - K / p - M / p;
-      if (e > 0) ans = mul_mod(ans, pow_mod_factor(e));
+      if (e > 0)
+        ans = mul_mod(ans, pow_mod_factor(e));
     }
   }
 

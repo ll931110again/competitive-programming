@@ -37,8 +37,7 @@ double solve(double p) {
   for (int i = 1; i < maxl; i++) {
     for (int j = 0; j <= N; j++) {
       for (int k = 0; k <= j; k++) {
-        dp[i][j] +=
-            dp[i - 1][k] * pin[j - k] * pout[N - j] * binom[N - k][j - k];
+        dp[i][j] += dp[i - 1][k] * pin[j - k] * pout[N - j] * binom[N - k][j - k];
       }
     }
   }
@@ -65,8 +64,7 @@ int main() {
   cin >> T;
   for (int it = 1; it <= T; it++) {
     cin >> p;
-    cout << fixed << setprecision(9) << "Case #" << it << ": " << solve(p)
-         << '\n';
+    cout << fixed << setprecision(9) << "Case #" << it << ": " << solve(p) << '\n';
   }
 
   return 0;

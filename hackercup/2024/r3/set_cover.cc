@@ -17,7 +17,7 @@ using namespace std;
 int T, n, K;
 vector<string> grid;
 
-int solve_top_left(vector<string> &grid) {
+int solve_top_left(vector<string>& grid) {
   int minX = n, maxX = -1, minY = n, maxY = -1;
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < n; j++)

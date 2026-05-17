@@ -42,8 +42,7 @@ public:
     for (int i = 0; i <= N * D; i++) {
       total_ways += ways[N][i];
     }
-    double pa = 1.0 * ways[N][A] / total_ways,
-           pb = 1.0 * ways[N][B] / total_ways;
+    double pa = 1.0 * ways[N][A] / total_ways, pb = 1.0 * ways[N][B] / total_ways;
 
     double pbad = pb * pb / (pa + pb * (pa + pb));
     return 1. - pbad;

@@ -16,7 +16,7 @@ static constexpr int MAXV = 300;
 static constexpr int NEG = -1e9;
 
 // Editorial pruned DP: returns maximal team size S reachable under bounds (may be < optimum).
-static int solve_one_order(const vector<int> &ord, int J, int Sbd) {
+static int solve_one_order(const vector<int>& ord, int J, int Sbd) {
   const int Jdim = 2 * J + 1;
   const int Sdim = 2 * Sbd + 1;
   const int oj = J;
@@ -85,7 +85,7 @@ static int editorial_shuffle_pipeline(vector<int> a) {
   return best;
 }
 
-static int solve_exact_bitset(const vector<int> &a) {
+static int solve_exact_bitset(const vector<int>& a) {
   constexpr int BSZ = 2 * MAXV * MAXV + 1;
   constexpr int OFF = MAXV * MAXV;
 
@@ -106,7 +106,7 @@ static int solve_exact_bitset(const vector<int> &a) {
       vector<vector<bitset<BSZ>>> ndp(Smax + 1, vector<bitset<BSZ>>(Smax + 1));
       for (int ca = 0; ca <= Smax; ++ca) {
         for (int cb = 0; cb <= Smax; ++cb) {
-          const auto &bset = dp[ca][cb];
+          const auto& bset = dp[ca][cb];
           if (!bset.any())
             continue;
           ndp[ca][cb] |= bset;

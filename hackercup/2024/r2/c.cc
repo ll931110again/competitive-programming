@@ -40,8 +40,8 @@ long long get(int x, int y, int mid) {
   int rx = min(m, x + mid);
   int ry = min(n, y + mid);
 
-  long long ans = get_single(rx, ry) - get_single(lx - 1, ry) -
-                  get_single(rx, ly - 1) + get_single(lx - 1, ly - 1);
+  long long ans = get_single(rx, ry) - get_single(lx - 1, ry) - get_single(rx, ly - 1) +
+                  get_single(lx - 1, ly - 1);
   return (rx - lx + 1) * (ry - ly + 1) - ans;
 }
 

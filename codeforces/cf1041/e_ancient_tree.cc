@@ -35,7 +35,9 @@ void DFS(int u, int p) {
   outs[u] = cnt++;
 }
 
-bool is_parent(int u, int v) { return ins[u] < ins[v] && outs[v] < outs[u]; }
+bool is_parent(int u, int v) {
+  return ins[u] < ins[v] && outs[v] < outs[u];
+}
 
 int lca(int u, int v) {
   if (is_parent(u, v)) {
@@ -103,8 +105,7 @@ void solve() {
   for (auto it : orders) {
     int c = it.first;
     auto nodes = it.second;
-    sort(nodes.begin(), nodes.end(),
-         [&](int u, int v) { return ins[u] < ins[v]; });
+    sort(nodes.begin(), nodes.end(), [&](int u, int v) { return ins[u] < ins[v]; });
 
     for (int i = 0; i < nodes.size(); i++) {
       color_set[nodes[i]].insert(c);

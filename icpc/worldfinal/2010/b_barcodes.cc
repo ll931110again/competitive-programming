@@ -26,7 +26,7 @@ static char weightToChar(int w) {
   return '?';
 }
 
-static int computeC(const string &msg) {
+static int computeC(const string& msg) {
   int n = (int)msg.size();
   long long s = 0;
   for (int i = 0; i < n; i++) {
@@ -37,7 +37,7 @@ static int computeC(const string &msg) {
   return int(s % 11);
 }
 
-static int computeK(const string &msg, char Cch) {
+static int computeK(const string& msg, char Cch) {
   int n = (int)msg.size();
   long long s = 0;
   for (int i = 0; i < n; i++) {
@@ -54,8 +54,7 @@ struct Interval {
   double lo, hi;
 };
 
-static vector<Interval> intersectSets(const vector<Interval> &set,
-                                      const vector<Interval> &add) {
+static vector<Interval> intersectSets(const vector<Interval>& set, const vector<Interval>& add) {
   vector<Interval> out;
   for (auto a : set) {
     for (auto b : add) {
@@ -65,8 +64,7 @@ static vector<Interval> intersectSets(const vector<Interval> &set,
         out.push_back({lo, hi});
     }
   }
-  sort(out.begin(), out.end(),
-       [](const Interval &x, const Interval &y) { return x.lo < y.lo; });
+  sort(out.begin(), out.end(), [](const Interval& x, const Interval& y) { return x.lo < y.lo; });
   // merge
   vector<Interval> merged;
   for (auto iv : out) {
@@ -78,7 +76,7 @@ static vector<Interval> intersectSets(const vector<Interval> &set,
   return merged;
 }
 
-static vector<Interval> feasibleUnitIntervals(const vector<int> &d) {
+static vector<Interval> feasibleUnitIntervals(const vector<int>& d) {
   // Unit width u must satisfy each di in union of:
   // narrow: di in [0.95u,1.05u] => u in [di/1.05, di/0.95]
   // wide  : di in [1.9u,2.1u]  => u in [di/2.1,  di/1.9]
@@ -87,8 +85,7 @@ static vector<Interval> feasibleUnitIntervals(const vector<int> &d) {
     vector<Interval> uni;
     uni.push_back({di / (1.0 + TOL), di / (1.0 - TOL)});
     uni.push_back(
-        {di / (2.0 + 2.0 * TOL),
-         di / (2.0 - 2.0 * TOL)}); // 2u with +/-5% => factor 2*(1±TOL)
+        {di / (2.0 + 2.0 * TOL), di / (2.0 - 2.0 * TOL)}); // 2u with +/-5% => factor 2*(1±TOL)
     cur = intersectSets(cur, uni);
     if (cur.empty())
       return {};
@@ -100,13 +97,12 @@ static bool fitsNarrow(int di, double u) {
   return di >= (1.0 - TOL) * u - 1e-9 && di <= (1.0 + TOL) * u + 1e-9;
 }
 static bool fitsWide(int di, double u) {
-  return di >= (2.0 - 2.0 * TOL) * u - 1e-9 &&
-         di <= (2.0 + 2.0 * TOL) * u + 1e-9;
+  return di >= (2.0 - 2.0 * TOL) * u - 1e-9 && di <= (2.0 + 2.0 * TOL) * u + 1e-9;
 }
 
 static unordered_map<int, char> buildPatternMap() {
   unordered_map<int, char> mp;
-  auto add = [&](char ch, const string &bits) {
+  auto add = [&](char ch, const string& bits) {
     int x = 0;
     for (char b : bits)
       x = (x << 1) | (b == '1');
@@ -131,10 +127,10 @@ struct DecodeRes {
   bool ok;
   vector<char> chars;
   DecodeRes() : ok(false), chars() {}
-  explicit DecodeRes(const vector<char> &v) : ok(true), chars(v) {}
+  explicit DecodeRes(const vector<char>& v) : ok(true), chars(v) {}
 };
 
-static DecodeRes tryDecodeWithUnit(const vector<int> &d, double u) {
+static DecodeRes tryDecodeWithUnit(const vector<int>& d, double u) {
   static unordered_map<int, char> pat = buildPatternMap();
 
   int m = (int)d.size();
@@ -180,11 +176,11 @@ static DecodeRes tryDecodeWithUnit(const vector<int> &d, double u) {
   return DecodeRes(chars);
 }
 
-static DecodeRes decodeEitherDirection(const vector<int> &d) {
+static DecodeRes decodeEitherDirection(const vector<int>& d) {
   struct TryOneDir {
-    static DecodeRes run(const vector<int> &dd) {
+    static DecodeRes run(const vector<int>& dd) {
       auto intervals = feasibleUnitIntervals(dd);
-      for (const auto &iv : intervals) {
+      for (const auto& iv : intervals) {
         // Use midpoint unit; if that causes ambiguity, try endpoints-ish too.
         vector<double> candidates;
         candidates.push_back((iv.lo + iv.hi) * 0.5);
@@ -231,7 +227,7 @@ int main() {
     if (!decoded.ok) {
       result = "bad code";
     } else {
-      const vector<char> &seq = decoded.chars; // S + msg + C + K + S
+      const vector<char>& seq = decoded.chars; // S + msg + C + K + S
       int t = (int)seq.size();
       if (t < 5) {
         result = "bad code";

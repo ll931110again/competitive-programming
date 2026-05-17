@@ -21,8 +21,7 @@ bool is_winning(vector<int> v, char ch) {
         int _i = i, _j = j;
         bool ok = true;
         for (int k = 0; k < 4; k++) {
-          if (_i < 0 || _i >= M || _j < 0 || _j >= N || _i < v[_j] ||
-              input[_i][_j] != ch) {
+          if (_i < 0 || _i >= M || _j < 0 || _j >= N || _i < v[_j] || input[_i][_j] != ch) {
             ok = false;
             break;
           }

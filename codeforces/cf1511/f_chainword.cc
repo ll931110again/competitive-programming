@@ -15,40 +15,54 @@ static constexpr int AL = 26;
 template <int P> struct ModInt {
   int x;
   ModInt(long long v = 0) : x(int((v % P + P) % P)) {}
-  ModInt &operator+=(ModInt o) {
+  ModInt& operator+=(ModInt o) {
     x += o.x;
-    if (x >= P) x -= P;
+    if (x >= P)
+      x -= P;
     return *this;
   }
-  ModInt &operator-=(ModInt o) {
+  ModInt& operator-=(ModInt o) {
     x -= o.x;
-    if (x < 0) x += P;
+    if (x < 0)
+      x += P;
     return *this;
   }
-  ModInt &operator*=(ModInt o) {
+  ModInt& operator*=(ModInt o) {
     x = int((long long)x * o.x % P);
     return *this;
   }
-  friend ModInt operator+(ModInt a, ModInt b) { return a += b; }
-  friend ModInt operator-(ModInt a, ModInt b) { return a -= b; }
-  friend ModInt operator*(ModInt a, ModInt b) { return a *= b; }
-  friend ModInt operator/(ModInt a, ModInt b) { return a * mod_pow(b, P - 2); }
-  bool operator==(ModInt o) const { return x == o.x; }
-  bool operator!=(ModInt o) const { return x != o.x; }
+  friend ModInt operator+(ModInt a, ModInt b) {
+    return a += b;
+  }
+  friend ModInt operator-(ModInt a, ModInt b) {
+    return a -= b;
+  }
+  friend ModInt operator*(ModInt a, ModInt b) {
+    return a *= b;
+  }
+  friend ModInt operator/(ModInt a, ModInt b) {
+    return a * mod_pow(b, P - 2);
+  }
+  bool operator==(ModInt o) const {
+    return x == o.x;
+  }
+  bool operator!=(ModInt o) const {
+    return x != o.x;
+  }
 };
 
 template <int P> ModInt<P> mod_pow(ModInt<P> a, long long e) {
   ModInt<P> r(1);
   while (e > 0) {
-    if (e & 1) r *= a;
+    if (e & 1)
+      r *= a;
     a *= a;
     e >>= 1;
   }
   return r;
 }
 
-template <int P>
-vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>> &s) {
+template <int P> vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>>& s) {
   const int n = (int)s.size();
   vector<ModInt<P>> C(n), B(n);
   C[0] = B[0] = ModInt<P>(1);
@@ -56,14 +70,16 @@ vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>> &s) {
   int L = 0;
   for (int i = 0, m = 1; i < n; ++i) {
     ModInt<P> d = s[i];
-    for (int j = 1; j <= L; ++j) d += C[j] * s[i - j];
+    for (int j = 1; j <= L; ++j)
+      d += C[j] * s[i - j];
     if (d == ModInt<P>(0)) {
       ++m;
       continue;
     }
     vector<ModInt<P>> T = C;
     ModInt<P> coef = d / b;
-    for (int j = m; j < n; ++j) C[j] = C[j] - coef * B[j - m];
+    for (int j = m; j < n; ++j)
+      C[j] = C[j] - coef * B[j - m];
     if (2 * L > i) {
       ++m;
       continue;
@@ -74,41 +90,49 @@ vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>> &s) {
     m = 1;
   }
   vector<ModInt<P>> res(L);
-  for (int j = 0; j < L; ++j) res[j] = ModInt<P>(0) - C[j + 1];
+  for (int j = 0; j < L; ++j)
+    res[j] = ModInt<P>(0) - C[j + 1];
   return res;
 }
 
 template <int P>
-ModInt<P> kth_linear_recurrence(vector<ModInt<P>> init, const vector<ModInt<P>> &trans,
+ModInt<P> kth_linear_recurrence(vector<ModInt<P>> init, const vector<ModInt<P>>& trans,
                                 long long k) {
   const int n = (int)trans.size();
-  if (k < n) return init[(int)k];
+  if (k < n)
+    return init[(int)k];
 
   using M = vector<vector<ModInt<P>>>;
   M base(n, vector<ModInt<P>>(n));
-  for (int i = 0; i < n; ++i) base[0][i] = trans[i];
-  for (int i = 1; i < n; ++i) base[i][i - 1] = ModInt<P>(1);
+  for (int i = 0; i < n; ++i)
+    base[0][i] = trans[i];
+  for (int i = 1; i < n; ++i)
+    base[i][i - 1] = ModInt<P>(1);
 
-  auto mat_mul = [&](const M &A, const M &B) {
+  auto mat_mul = [&](const M& A, const M& B) {
     M C(n, vector<ModInt<P>>(n));
     for (int i = 0; i < n; ++i)
       for (int j = 0; j < n; ++j)
-        for (int t = 0; t < n; ++t) C[i][j] += A[i][t] * B[t][j];
+        for (int t = 0; t < n; ++t)
+          C[i][j] += A[i][t] * B[t][j];
     return C;
   };
 
   M res(n, vector<ModInt<P>>(n));
-  for (int i = 0; i < n; ++i) res[i][i] = ModInt<P>(1);
+  for (int i = 0; i < n; ++i)
+    res[i][i] = ModInt<P>(1);
   long long e = k - n + 1;
   M powM = base;
   while (e > 0) {
-    if (e & 1) res = mat_mul(res, powM);
+    if (e & 1)
+      res = mat_mul(res, powM);
     powM = mat_mul(powM, powM);
     e >>= 1;
   }
 
   ModInt<P> ans(0);
-  for (int i = 0; i < n; ++i) ans += res[0][i] * init[n - 1 - i];
+  for (int i = 0; i < n; ++i)
+    ans += res[0][i] * init[n - 1 - i];
   return ans;
 }
 
@@ -117,15 +141,18 @@ using Mint = ModInt<MOD>;
 struct TrieNode {
   int nxt[AL];
   bool term;
-  TrieNode() : term(false) { memset(nxt, -1, sizeof(nxt)); }
+  TrieNode() : term(false) {
+    memset(nxt, -1, sizeof(nxt));
+  }
 };
 
-static int get_id(map<pair<int, int>, int> &num, vector<pair<int, int>> &order, int v,
-                int u) {
-  if (v > u) swap(v, u);
+static int get_id(map<pair<int, int>, int>& num, vector<pair<int, int>>& order, int v, int u) {
+  if (v > u)
+    swap(v, u);
   const pair<int, int> key{v, u};
   auto it = num.find(key);
-  if (it != num.end()) return it->second;
+  if (it != num.end())
+    return it->second;
   const int id = (int)order.size();
   num[key] = id;
   order.push_back(key);
@@ -168,12 +195,16 @@ int main() {
     for (int c = 0; c < AL; ++c) {
       const int tov = trie[v].nxt[c];
       const int tou = trie[u].nxt[c];
-      if (tov == -1 || tou == -1) continue;
+      if (tov == -1 || tou == -1)
+        continue;
       const int id = get_id(num, order, tov, tou);
       trans[x][id]++;
-      if (trie[tov].term) trans[x][get_id(num, order, 0, tou)]++;
-      if (trie[tou].term) trans[x][get_id(num, order, tov, 0)]++;
-      if (trie[tov].term && trie[tou].term) trans[x][0]++;
+      if (trie[tov].term)
+        trans[x][get_id(num, order, 0, tou)]++;
+      if (trie[tou].term)
+        trans[x][get_id(num, order, tov, 0)]++;
+      if (trie[tov].term && trie[tou].term)
+        trans[x][0]++;
     }
   }
 
@@ -188,9 +219,11 @@ int main() {
     seq.push_back(vec[0]);
     fill(nxt.begin(), nxt.end(), Mint(0));
     for (int i = 0; i < dim; ++i) {
-      if (vec[i] == Mint(0)) continue;
+      if (vec[i] == Mint(0))
+        continue;
       for (int j = 0; j < dim; ++j) {
-        if (trans[i][j]) nxt[j] += vec[i] * Mint(trans[i][j]);
+        if (trans[i][j])
+          nxt[j] += vec[i] * Mint(trans[i][j]);
       }
     }
     vec.swap(nxt);

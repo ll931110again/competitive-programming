@@ -16,25 +16,29 @@ template <unsigned M> struct ModInt {
   ModInt(unsigned long long v) : x(unsigned(v % M)) {}
   ModInt(int v) : x(((v %= int(M)) < 0) ? (v + int(M)) : v) {}
 
-  ModInt &operator+=(ModInt a) {
+  ModInt& operator+=(ModInt a) {
     x = ((x += a.x) >= M) ? (x - M) : x;
     return *this;
   }
-  ModInt &operator-=(ModInt a) {
+  ModInt& operator-=(ModInt a) {
     x = ((x -= a.x) >= M) ? (x + M) : x;
     return *this;
   }
-  ModInt &operator*=(ModInt a) {
+  ModInt& operator*=(ModInt a) {
     x = unsigned((unsigned long long)x * a.x % M);
     return *this;
   }
-  ModInt &operator/=(ModInt a) { return *this *= a.inv(); }
+  ModInt& operator/=(ModInt a) {
+    return *this *= a.inv();
+  }
 
   ModInt pow(long long e) const {
-    if (e < 0) return inv().pow(-e);
+    if (e < 0)
+      return inv().pow(-e);
     ModInt a = *this, b = 1;
     for (; e; e >>= 1) {
-      if (e & 1) b *= a;
+      if (e & 1)
+        b *= a;
       a *= a;
     }
     return b;
@@ -55,10 +59,18 @@ template <unsigned M> struct ModInt {
     return ModInt(y);
   }
 
-  ModInt operator+(ModInt a) const { return ModInt(*this) += a; }
-  ModInt operator-(ModInt a) const { return ModInt(*this) -= a; }
-  ModInt operator*(ModInt a) const { return ModInt(*this) *= a; }
-  ModInt operator/(ModInt a) const { return ModInt(*this) /= a; }
+  ModInt operator+(ModInt a) const {
+    return ModInt(*this) += a;
+  }
+  ModInt operator-(ModInt a) const {
+    return ModInt(*this) -= a;
+  }
+  ModInt operator*(ModInt a) const {
+    return ModInt(*this) *= a;
+  }
+  ModInt operator/(ModInt a) const {
+    return ModInt(*this) /= a;
+  }
 };
 
 using Mint = ModInt<MOD>;
@@ -73,17 +85,21 @@ int main() {
   auto euler_phi = [](long long x) {
     long long r = x;
     for (long long p = 2; p * p <= x; p++) {
-      if (x % p) continue;
-      while (x % p == 0) x /= p;
+      if (x % p)
+        continue;
+      while (x % p == 0)
+        x /= p;
       r -= r / p;
     }
-    if (x > 1) r -= r / x;
+    if (x > 1)
+      r -= r / x;
     return r;
   };
 
   Mint sum = 0;
   for (long long d = 1; d * d <= n; d++) {
-    if (n % d) continue;
+    if (n % d)
+      continue;
     const long long d1 = d;
     const long long d2 = n / d;
     sum += Mint((unsigned long long)euler_phi(d1)) * Mint((unsigned long long)m).pow(d2);

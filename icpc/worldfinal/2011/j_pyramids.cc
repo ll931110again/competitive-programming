@@ -88,8 +88,7 @@ int main() {
 
   for (int i = 1; i < maxn; i++) {
     max_height[i] = max_height[i - 1];
-    while (max_height[i] < pyramids.size() &&
-           pyramids[max_height[i]].first <= i) {
+    while (max_height[i] < pyramids.size() && pyramids[max_height[i]].first <= i) {
       max_height[i]++;
     }
     max_height[i]--;

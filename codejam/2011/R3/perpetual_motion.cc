@@ -11,14 +11,19 @@ static const int MOD = 1000003;
 struct DSU {
   vector<int> p, sz;
   explicit DSU(int n) : p(n), sz(n, 1) {
-    for (int i = 0; i < n; i++) p[i] = i;
+    for (int i = 0; i < n; i++)
+      p[i] = i;
   }
-  int find(int x) { return p[x] == x ? x : (p[x] = find(p[x])); }
+  int find(int x) {
+    return p[x] == x ? x : (p[x] = find(p[x]));
+  }
   void unite(int a, int b) {
     a = find(a);
     b = find(b);
-    if (a == b) return;
-    if (sz[a] < sz[b]) swap(a, b);
+    if (a == b)
+      return;
+    if (sz[a] < sz[b])
+      swap(a, b);
     p[b] = a;
     sz[a] += sz[b];
   }
@@ -27,7 +32,8 @@ struct DSU {
 static int mod_pow2(int e) {
   long long r = 1, a = 2;
   while (e > 0) {
-    if (e & 1) r = (r * a) % MOD;
+    if (e & 1)
+      r = (r * a) % MOD;
     a = (a * a) % MOD;
     e >>= 1;
   }
@@ -44,7 +50,8 @@ int main() {
     int R, C;
     cin >> R >> C;
     vector<string> g(R);
-    for (int i = 0; i < R; i++) cin >> g[i];
+    for (int i = 0; i < R; i++)
+      cin >> g[i];
 
     int n = R * C;
     DSU dsu(n);
@@ -53,10 +60,14 @@ int main() {
 
     auto id = [&](int r, int c) { return r * C + c; };
     auto wrap = [&](int r, int c) {
-      if (r < 0) r += R;
-      if (r >= R) r -= R;
-      if (c < 0) c += C;
-      if (c >= C) c -= C;
+      if (r < 0)
+        r += R;
+      if (r >= R)
+        r -= R;
+      if (c < 0)
+        c += C;
+      if (c >= C)
+        c -= C;
       return pair<int, int>(r, c);
     };
 
@@ -67,23 +78,31 @@ int main() {
         if (ch == '|') {
           auto a = wrap(r - 1, c);
           auto b = wrap(r + 1, c);
-          r1 = a.first; c1 = a.second;
-          r2 = b.first; c2 = b.second;
+          r1 = a.first;
+          c1 = a.second;
+          r2 = b.first;
+          c2 = b.second;
         } else if (ch == '-') {
           auto a = wrap(r, c - 1);
           auto b = wrap(r, c + 1);
-          r1 = a.first; c1 = a.second;
-          r2 = b.first; c2 = b.second;
+          r1 = a.first;
+          c1 = a.second;
+          r2 = b.first;
+          c2 = b.second;
         } else if (ch == '/') {
           auto a = wrap(r - 1, c + 1);
           auto b = wrap(r + 1, c - 1);
-          r1 = a.first; c1 = a.second;
-          r2 = b.first; c2 = b.second;
-        } else {  // '\\'
+          r1 = a.first;
+          c1 = a.second;
+          r2 = b.first;
+          c2 = b.second;
+        } else { // '\\'
           auto a = wrap(r - 1, c - 1);
           auto b = wrap(r + 1, c + 1);
-          r1 = a.first; c1 = a.second;
-          r2 = b.first; c2 = b.second;
+          r1 = a.first;
+          c1 = a.second;
+          r2 = b.first;
+          c2 = b.second;
         }
 
         int u = id(r1, c1);
@@ -104,7 +123,8 @@ int main() {
     int comps = 0;
     bool ok = true;
     for (int i = 0; i < n; i++) {
-      if (dsu.find(i) != i) continue;
+      if (dsu.find(i) != i)
+        continue;
       comps++;
       int Vc = dsu.sz[i];
       int Ec = comp_edges[i];
@@ -119,4 +139,3 @@ int main() {
   }
   return 0;
 }
-

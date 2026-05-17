@@ -23,8 +23,10 @@ static double ang(const Pt& from, const Pt& to) {
 
 static double norm_angle(double a) {
   const double TWO = 2.0 * M_PI;
-  while (a < 0) a += TWO;
-  while (a >= TWO) a -= TWO;
+  while (a < 0)
+    a += TWO;
+  while (a >= TWO)
+    a -= TWO;
   return a;
 }
 
@@ -33,13 +35,14 @@ static double ccw_delta(double a, double b) {
   a = norm_angle(a);
   b = norm_angle(b);
   double d = b - a;
-  if (d < 0) d += 2.0 * M_PI;
+  if (d < 0)
+    d += 2.0 * M_PI;
   return d;
 }
 
 static int simulate(const vector<Pt>& pts, double r0) {
   const double EPS = 1e-10;
-  const double MIN_DEL = 1e-7;  // require a non-trivial rotation to count/move
+  const double MIN_DEL = 1e-7; // require a non-trivial rotation to count/move
   const int N = (int)pts.size();
   int bends = 0;
 
@@ -66,7 +69,8 @@ static int simulate(const vector<Pt>& pts, double r0) {
       auto key = make_tuple((qx << 20) ^ qy, ql, qt);
       // linear scan is fine for heuristic; keep it cheap by limiting.
       for (int i = max(0, (int)seen.size() - 200); i < (int)seen.size(); i++) {
-        if (seen[i] == key) return bends;
+        if (seen[i] == key)
+          return bends;
       }
       seen.push_back(key);
     }
@@ -77,12 +81,15 @@ static int simulate(const vector<Pt>& pts, double r0) {
     double best_abs_angle = 0.0;
 
     for (int i = 0; i < N; i++) {
-      if (same_pt(pivot, pts[i])) continue;
+      if (same_pt(pivot, pts[i]))
+        continue;
       double d = dist(pivot, pts[i]);
-      if (d + 1e-9 > L) continue;
+      if (d + 1e-9 > L)
+        continue;
       double a = ang(pivot, pts[i]);
       double del = ccw_delta(theta, a);
-      if (del < MIN_DEL) continue;
+      if (del < MIN_DEL)
+        continue;
 
       // Prefer the first encountered by CCW rotation.
       // If multiple points are collinear (same del), choose the farthest (closest to moving end).
@@ -100,12 +107,14 @@ static int simulate(const vector<Pt>& pts, double r0) {
       }
     }
 
-    if (best == -1) break;
+    if (best == -1)
+      break;
 
     // If we're repeatedly hitting the same target with nearly the same state,
     // assume we are essentially orbiting and further bends are not meaningful.
     if (best == prev_hit && best_d < 1e-4) {
-      if (++repeats >= 3) break;
+      if (++repeats >= 3)
+        break;
     } else {
       repeats = 0;
     }
@@ -115,7 +124,8 @@ static int simulate(const vector<Pt>& pts, double r0) {
     Pt next = pts[best];
     double used = dist(pivot, next);
     L -= used;
-    if (L <= 1e-9) break;
+    if (L <= 1e-9)
+      break;
 
     // After wrapping around 'next', we now rotate around 'next'. At the moment
     // of contact, the moving end is further along the same ray, so the new
@@ -154,13 +164,17 @@ int main() {
     // Dense sampling close to R (often optimal is "cut a tiny bit").
     for (int i = 0; i <= 2000; i++) {
       double r = R - i * 1e-3;
-      if (r > 0) cand.push_back(r);
-      else break;
+      if (r > 0)
+        cand.push_back(r);
+      else
+        break;
     }
     for (int i = 0; i <= 400; i++) {
       double r = R - i * 0.1;
-      if (r > 0) cand.push_back(r);
-      else break;
+      if (r > 0)
+        cand.push_back(r);
+      else
+        break;
     }
     for (int i = 1; i < N; i++) {
       double d0 = dist(pts[0], pts[i]);
@@ -184,15 +198,18 @@ int main() {
     }
 
     sort(cand.begin(), cand.end());
-    cand.erase(unique(cand.begin(), cand.end(), [](double a, double b) { return fabs(a - b) < 1e-9; }),
-               cand.end());
+    cand.erase(
+        unique(cand.begin(), cand.end(), [](double a, double b) { return fabs(a - b) < 1e-9; }),
+        cand.end());
 
     int best = 0;
     int evals = 0;
     for (double r : cand) {
-      if (r <= 0) continue;
+      if (r <= 0)
+        continue;
       best = max(best, simulate(pts, r));
-      if (++evals >= 8000) break;  // cap work
+      if (++evals >= 8000)
+        break; // cap work
     }
 
     cout << "Case #" << tc << ": " << best << "\n";

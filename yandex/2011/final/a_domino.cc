@@ -7,16 +7,18 @@ using namespace std;
 using int64 = long long;
 
 static int dominoIndex(int a, int b) {
-  if (a > b) swap(a, b);
+  if (a > b)
+    swap(a, b);
   int idx = 0;
-  for (int i = 0; i < a; i++) idx += (7 - i);
+  for (int i = 0; i < a; i++)
+    idx += (7 - i);
   idx += (b - a);
   return idx;
 }
 
-static void enumerateTilings(int n, int m, const vector<string> &grid, vector<vector<int>> &cellRegion,
-                             vector<array<int, 2>> &squaresStack,
-                             vector<vector<array<int, 2>>> &outSquares) {
+static void enumerateTilings(int n, int m, const vector<string>& grid,
+                             vector<vector<int>>& cellRegion, vector<array<int, 2>>& squaresStack,
+                             vector<vector<array<int, 2>>>& outSquares) {
   int si = -1, sj = -1;
   for (int i = 0; i < n && si < 0; i++) {
     for (int j = 0; j < m && si < 0; j++) {
@@ -32,11 +34,13 @@ static void enumerateTilings(int n, int m, const vector<string> &grid, vector<ve
   }
 
   auto canPlace = [&](int ti, int tj) -> bool {
-    if (ti + 1 >= n || tj + 1 >= m) return false;
+    if (ti + 1 >= n || tj + 1 >= m)
+      return false;
     for (int di = 0; di < 2; di++) {
       for (int dj = 0; dj < 2; dj++) {
         int i = ti + di, j = tj + dj;
-        if (grid[i][j] == '.' || cellRegion[i][j] >= 0) return false;
+        if (grid[i][j] == '.' || cellRegion[i][j] >= 0)
+          return false;
       }
     }
     return true;
@@ -45,8 +49,10 @@ static void enumerateTilings(int n, int m, const vector<string> &grid, vector<ve
   // Try every 2x2 whose top-left is one of the four corners covering (si,sj).
   for (int ti : {si - 1, si}) {
     for (int tj : {sj - 1, sj}) {
-      if (ti < 0 || tj < 0) continue;
-      if (!canPlace(ti, tj)) continue;
+      if (ti < 0 || tj < 0)
+        continue;
+      if (!canPlace(ti, tj))
+        continue;
 
       int sid = (int)squaresStack.size();
       for (int di = 0; di < 2; di++) {
@@ -73,13 +79,15 @@ int main() {
   int n, m;
   cin >> n >> m;
   vector<string> grid(n);
-  for (int i = 0; i < n; i++) cin >> grid[i];
+  for (int i = 0; i < n; i++)
+    cin >> grid[i];
 
   map<char, vector<pair<int, int>>> chipsCells;
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < m; j++) {
       char ch = grid[i][j];
-      if (ch != '.') chipsCells[ch].push_back({i, j});
+      if (ch != '.')
+        chipsCells[ch].push_back({i, j});
     }
   }
 
@@ -95,7 +103,8 @@ int main() {
   vector<vector<array<int, 2>>> tilings;
   enumerateTilings(n, m, grid, cellRegion, stack, tilings);
 
-  for (auto &t : tilings) sort(t.begin(), t.end());
+  for (auto& t : tilings)
+    sort(t.begin(), t.end());
   sort(tilings.begin(), tilings.end());
   tilings.erase(unique(tilings.begin(), tilings.end()), tilings.end());
 
@@ -104,7 +113,7 @@ int main() {
   int64 totalWays = 0;
   vector<string> answerGrid;
 
-  for (const auto &squaresTopLeft : tilings) {
+  for (const auto& squaresTopLeft : tilings) {
     int R = (int)squaresTopLeft.size();
 
     vector<vector<int>> reg(n, vector<int>(m, -1));
@@ -119,8 +128,8 @@ int main() {
 
     vector<pair<int, int>> chips;
     chips.reserve(chipsCells.size());
-    for (const auto &kv : chipsCells) {
-      const auto &cells = kv.second;
+    for (const auto& kv : chipsCells) {
+      const auto& cells = kv.second;
       assert((int)cells.size() == 2);
       int r0 = reg[cells[0].first][cells[0].second];
       int r1 = reg[cells[1].first][cells[1].second];
@@ -138,7 +147,7 @@ int main() {
     vector<int> assign(R, -1);
     int64 ways = 0;
 
-    auto dfs = [&](auto &&self, int k, uint32_t usedMask) -> void {
+    auto dfs = [&](auto&& self, int k, uint32_t usedMask) -> void {
       if (k == R) {
         if (usedMask == FULL_DOMINO_MASK) {
           ways++;
@@ -158,7 +167,8 @@ int main() {
       }
 
       for (int d = 0; d <= 6; d++) {
-        if (cnt[d] >= 2) continue;
+        if (cnt[d] >= 2)
+          continue;
         cnt[d]++;
         assign[k] = d;
 
@@ -175,7 +185,8 @@ int main() {
           mask |= (1u << idx);
         }
 
-        if (!bad) self(self, k + 1, mask);
+        if (!bad)
+          self(self, k + 1, mask);
 
         cnt[d]--;
         assign[k] = -1;
@@ -187,7 +198,8 @@ int main() {
   }
 
   cout << totalWays << "\n";
-  for (const auto &row : answerGrid) cout << row << "\n";
+  for (const auto& row : answerGrid)
+    cout << row << "\n";
 
   return 0;
 }

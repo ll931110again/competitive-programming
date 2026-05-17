@@ -15,15 +15,15 @@ using namespace std;
 
 struct Score {
   array<int, 6> t{};
-  bool operator<(const Score &o) const {
+  bool operator<(const Score& o) const {
     return t < o.t;
   }
-  bool operator==(const Score &o) const {
+  bool operator==(const Score& o) const {
     return t == o.t;
   }
 };
 
-static Score eval_hand(const array<int, 5> &ix) {
+static Score eval_hand(const array<int, 5>& ix) {
   int rnk[5], sut[5];
   for (int i = 0; i < 5; ++i) {
     rnk[i] = ix[i] % 13;
@@ -57,7 +57,7 @@ static Score eval_hand(const array<int, 5> &ix) {
   for (int v = 0; v < 13; ++v)
     if (cnt[v])
       freq[fn++] = {cnt[v], v};
-  sort(freq, freq + fn, [](const pair<int, int> &a, const pair<int, int> &b) {
+  sort(freq, freq + fn, [](const pair<int, int>& a, const pair<int, int>& b) {
     if (a.first != b.first)
       return a.first > b.first;
     return a.second > b.second;
@@ -123,14 +123,14 @@ static Score eval_hand(const array<int, 5> &ix) {
 static vector<Score> all_scores;
 
 // Stable LSD radix on t[5]..t[0]; keys fit in [0,15] for our Score encoding.
-static void radix_sort_scores(vector<Score> &v) {
+static void radix_sort_scores(vector<Score>& v) {
   const int W = 16;
   vector<Score> tmp(v.size());
   int cnt[W];
   for (int pos = 5; pos >= 0; --pos) {
     for (int i = 0; i < W; ++i)
       cnt[i] = 0;
-    for (const auto &s : v) {
+    for (const auto& s : v) {
       int k = s.t[pos];
       if (k < 0 || k >= W)
         k = W - 1;
@@ -167,7 +167,7 @@ static void build_table() {
 }
 
 static int card_index(char rk, char st) {
-  const char *R = "23456789TJQKA";
+  const char* R = "23456789TJQKA";
   int r = strchr(R, rk) - R;
   int s = strchr("CDHS", st) - "CDHS";
   return s * 13 + r;

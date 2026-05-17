@@ -17,24 +17,27 @@ static const ull B2 = 972663749ULL;
 
 struct H2 {
   ull h1, h2;
-  bool operator==(const H2 &o) const { return h1 == o.h1 && h2 == o.h2; }
+  bool operator==(const H2& o) const {
+    return h1 == o.h1 && h2 == o.h2;
+  }
 };
 
 struct H2Hash {
-  size_t operator()(const H2 &x) const {
+  size_t operator()(const H2& x) const {
     return x.h1 ^ (x.h2 + 0x9e3779b97f4a7c15ULL + (x.h1 << 6) + (x.h1 >> 2));
   }
 };
 
-static inline int code(char ch) { return (int)(unsigned char)ch + 1; }
+static inline int code(char ch) {
+  return (int)(unsigned char)ch + 1;
+}
 
-static int count_row_substr(const vector<string> &g, int R, int C, int L,
-                            const string &t) {
+static int count_row_substr(const vector<string>& g, int R, int C, int L, const string& t) {
   if ((int)t.size() != L)
     return -1;
   int cnt = 0;
   for (int r = 0; r < R; ++r) {
-    const string &s = g[r];
+    const string& s = g[r];
     for (int c = 0; c + L <= C; ++c) {
       if (s.compare(c, L, t) == 0) {
         ++cnt;
@@ -45,8 +48,7 @@ static int count_row_substr(const vector<string> &g, int R, int C, int L,
   return cnt;
 }
 
-static int count_col_substr(const vector<string> &g, int R, int C, int L,
-                            const string &t) {
+static int count_col_substr(const vector<string>& g, int R, int C, int L, const string& t) {
   if ((int)t.size() != L)
     return -1;
   int cnt = 0;
@@ -68,10 +70,9 @@ static int count_col_substr(const vector<string> &g, int R, int C, int L,
   return cnt;
 }
 
-static bool ok_counts(const vector<string> &g, int R, int C, int L, int x,
-                      int y, const string &sub) {
-  return count_row_substr(g, R, C, L, sub) == x &&
-         count_col_substr(g, R, C, L, sub) == y;
+static bool ok_counts(const vector<string>& g, int R, int C, int L, int x, int y,
+                      const string& sub) {
+  return count_row_substr(g, R, C, L, sub) == x && count_col_substr(g, R, C, L, sub) == y;
 }
 
 int main() {
@@ -96,7 +97,7 @@ int main() {
     unordered_map<H2, int, H2Hash> row_cover;
     unordered_map<H2, int, H2Hash> last_row;
 
-    auto touch_row = [&](const H2 &key, int r) {
+    auto touch_row = [&](const H2& key, int r) {
       int tag = r + 1;
       auto it = last_row.find(key);
       if (it == last_row.end() || it->second != tag) {
@@ -106,7 +107,7 @@ int main() {
     };
 
     for (int r = 0; r < R; ++r) {
-      const string &s = g[r];
+      const string& s = g[r];
       if ((int)s.size() < L)
         continue;
       vector<ull> p1(C + 1), p2(C + 1);
@@ -125,7 +126,7 @@ int main() {
     unordered_map<H2, int, H2Hash> col_cover;
     unordered_map<H2, int, H2Hash> last_col;
 
-    auto touch_col = [&](const H2 &key, int c) {
+    auto touch_col = [&](const H2& key, int c) {
       int tag = c + 1;
       auto it = last_col.find(key);
       if (it == last_col.end() || it->second != tag) {
@@ -149,7 +150,7 @@ int main() {
     }
 
     unordered_set<H2, H2Hash> cand;
-    for (const auto &kv : row_cover) {
+    for (const auto& kv : row_cover) {
       if (kv.second != x)
         continue;
       auto itc = col_cover.find(kv.first);
@@ -163,7 +164,7 @@ int main() {
     string best;
     bool got = false;
     for (int r = 0; r < R; ++r) {
-      const string &s = g[r];
+      const string& s = g[r];
       if ((int)s.size() < L)
         continue;
       vector<ull> p1(C + 1), p2(C + 1);
@@ -196,7 +197,7 @@ int main() {
     unordered_set<string> seen;
     pool.reserve(R * max(0, C - L + 1));
     for (int r = 0; r < R; ++r) {
-      const string &s = g[r];
+      const string& s = g[r];
       if ((int)s.size() < L)
         continue;
       vector<ull> p1(C + 1), p2(C + 1);
@@ -216,7 +217,7 @@ int main() {
       }
     }
     sort(pool.begin(), pool.end());
-    for (const string &sub : pool) {
+    for (const string& sub : pool) {
       if (ok_counts(g, R, C, L, x, y, sub)) {
         cout << sub << '\n';
         return 0;

@@ -65,8 +65,7 @@ double solve() {
     long long lo = 0, hi = N;
     while (lo + 1 < hi) {
       long long mid = (lo + hi) / 2;
-      double val =
-          (M - 1) / ((M - 2) * p + (1 - (M - 2) * p) * (float)(N - mid) / N);
+      double val = (M - 1) / ((M - 2) * p + (1 - (M - 2) * p) * (float)(N - mid) / N);
       if (val > M) {
         hi = mid;
       } else if (val < M) {
@@ -101,10 +100,8 @@ double solve() {
   while (left < B2) {
     long long right = min(left + chunkSize - 1, B2 - 1);
     double size = right - left + 1;
-    double leftval =
-        (M - 1) / ((M - 2) * p + (1 - (M - 2) * p) * (float)(N - left) / N);
-    double rightval =
-        (M - 1) / ((M - 2) * p + (1 - (M - 2) * p) * (float)(N - right) / N);
+    double leftval = (M - 1) / ((M - 2) * p + (1 - (M - 2) * p) * (float)(N - left) / N);
+    double rightval = (M - 1) / ((M - 2) * p + (1 - (M - 2) * p) * (float)(N - right) / N);
     double midval = (leftval + rightval) / 2;
     ans += midval * size;
     left = right + 1;

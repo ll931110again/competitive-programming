@@ -56,9 +56,7 @@ Mint solve(long long R) {
 
   auto fives = Mint(R + 1) * (n - 1);
   // subtract 2^4 + .. + n^4
-  sums = Mint(n) * Mint(n + 1) * Mint(n * 2 + 1) *
-             Mint(n * n * 3 + n * 3 - 1) / 30 -
-         1;
+  sums = Mint(n) * Mint(n + 1) * Mint(n * 2 + 1) * Mint(n * n * 3 + n * 3 - 1) / 30 - 1;
   fives -= sums;
   ans += fives;
 

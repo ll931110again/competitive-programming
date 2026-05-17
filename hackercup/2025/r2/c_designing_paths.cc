@@ -62,8 +62,7 @@ long long solve() {
       // regular node
       for (auto it : positions[u[1]]) {
         int tram_idx = it.first, offset = it.second;
-        update(tram_idx, 0, trams[tram_idx].size() - 1, offset + 1, offset + k,
-               1 + dist[u]);
+        update(tram_idx, 0, trams[tram_idx].size() - 1, offset + 1, offset + k, 1 + dist[u]);
       }
     } else {
       // interval node

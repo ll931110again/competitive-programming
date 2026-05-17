@@ -76,32 +76,47 @@ static Mint mod_pow(Mint a, long long e);
 struct Mint {
   int x;
   Mint(long long v = 0) : x(int((v % MOD + MOD) % MOD)) {}
-  Mint &operator+=(Mint o) {
+  Mint& operator+=(Mint o) {
     x += o.x;
-    if (x >= MOD) x -= MOD;
+    if (x >= MOD)
+      x -= MOD;
     return *this;
   }
-  Mint &operator-=(Mint o) {
+  Mint& operator-=(Mint o) {
     x -= o.x;
-    if (x < 0) x += MOD;
+    if (x < 0)
+      x += MOD;
     return *this;
   }
-  Mint &operator*=(Mint o) {
+  Mint& operator*=(Mint o) {
     x = int((long long)x * o.x % MOD);
     return *this;
   }
-  friend Mint operator+(Mint a, Mint b) { return a += b; }
-  friend Mint operator-(Mint a, Mint b) { return a -= b; }
-  friend Mint operator*(Mint a, Mint b) { return a *= b; }
-  friend Mint operator/(Mint a, Mint b) { return a * mod_pow(b, MOD - 2); }
-  bool operator==(Mint o) const { return x == o.x; }
-  bool operator!=(Mint o) const { return x != o.x; }
+  friend Mint operator+(Mint a, Mint b) {
+    return a += b;
+  }
+  friend Mint operator-(Mint a, Mint b) {
+    return a -= b;
+  }
+  friend Mint operator*(Mint a, Mint b) {
+    return a *= b;
+  }
+  friend Mint operator/(Mint a, Mint b) {
+    return a * mod_pow(b, MOD - 2);
+  }
+  bool operator==(Mint o) const {
+    return x == o.x;
+  }
+  bool operator!=(Mint o) const {
+    return x != o.x;
+  }
 };
 
 static Mint mod_pow(Mint a, long long e) {
   Mint r(1);
   while (e > 0) {
-    if (e & 1) r *= a;
+    if (e & 1)
+      r *= a;
     a *= a;
     e >>= 1;
   }
@@ -109,7 +124,7 @@ static Mint mod_pow(Mint a, long long e) {
 }
 
 // s_i = sum_{j=0}^{L-1} trans[j] * s_{i-j-1}
-static vector<Mint> berlekamp_massey(const vector<Mint> &s) {
+static vector<Mint> berlekamp_massey(const vector<Mint>& s) {
   const int n = (int)s.size();
   vector<Mint> C(n), B(n);
   C[0] = B[0] = Mint(1);
@@ -117,14 +132,16 @@ static vector<Mint> berlekamp_massey(const vector<Mint> &s) {
   int L = 0;
   for (int i = 0, m = 1; i < n; ++i) {
     Mint d = s[i];
-    for (int j = 1; j <= L; ++j) d = d + C[j] * s[i - j];
+    for (int j = 1; j <= L; ++j)
+      d = d + C[j] * s[i - j];
     if (d == Mint(0)) {
       ++m;
       continue;
     }
     vector<Mint> T = C;
     Mint coef = d / b;
-    for (int j = m; j < n; ++j) C[j] = C[j] - coef * B[j - m];
+    for (int j = m; j < n; ++j)
+      C[j] = C[j] - coef * B[j - m];
     if (2 * L > i) {
       ++m;
       continue;
@@ -135,31 +152,38 @@ static vector<Mint> berlekamp_massey(const vector<Mint> &s) {
     m = 1;
   }
   vector<Mint> res(L);
-  for (int j = 0; j < L; ++j) res[j] = Mint(0) - C[j + 1];
+  for (int j = 0; j < L; ++j)
+    res[j] = Mint(0) - C[j + 1];
   return res;
 }
 
-static void mat_mul_dense_int(int n, vector<vector<int>> &A, vector<vector<int>> &B,
-                              vector<vector<int>> &C) {
+static void mat_mul_dense_int(int n, vector<vector<int>>& A, vector<vector<int>>& B,
+                              vector<vector<int>>& C) {
   for (int i = 0; i < n; ++i) {
     for (int j = 0; j < n; ++j) {
       long long sum = 0;
-      for (int t = 0; t < n; ++t) sum += (long long)A[i][t] * B[t][j];
+      for (int t = 0; t < n; ++t)
+        sum += (long long)A[i][t] * B[t][j];
       C[i][j] = (int)(sum % MOD);
     }
   }
 }
 
-static int kth_linear_recurrence_int(const vector<int> &init, const vector<int> &trans,
+static int kth_linear_recurrence_int(const vector<int>& init, const vector<int>& trans,
                                      long long k) {
   const int n = (int)trans.size();
-  if (k < n) return init[(int)k];
-  if (n == 0) return 0;
+  if (k < n)
+    return init[(int)k];
+  if (n == 0)
+    return 0;
 
   vector<vector<int>> base(n, vector<int>(n)), res(n, vector<int>(n)), tmp(n, vector<int>(n));
-  for (int j = 0; j < n; ++j) base[0][j] = trans[j];
-  for (int i = 1; i < n; ++i) base[i][i - 1] = 1;
-  for (int i = 0; i < n; ++i) res[i][i] = 1;
+  for (int j = 0; j < n; ++j)
+    base[0][j] = trans[j];
+  for (int i = 1; i < n; ++i)
+    base[i][i - 1] = 1;
+  for (int i = 0; i < n; ++i)
+    res[i][i] = 1;
 
   long long e = k - n + 1;
   while (e > 0) {
@@ -173,17 +197,20 @@ static int kth_linear_recurrence_int(const vector<int> &init, const vector<int> 
   }
 
   long long ans = 0;
-  for (int i = 0; i < n; ++i) ans += (long long)res[0][i] * init[n - 1 - i];
+  for (int i = 0; i < n; ++i)
+    ans += (long long)res[0][i] * init[n - 1 - i];
   return (int)(ans % MOD);
 }
 
 static constexpr int MAXN = 202;
 
 static int mod_pow_int(int x, int n) {
-  if (n <= 1) return n ? x : 1;
+  if (n <= 1)
+    return n ? x : 1;
   int t = mod_pow_int(x, n / 2);
   t = (int)((long long)t * t % MOD);
-  if (n & 1) t = (int)((long long)t * x % MOD);
+  if (n & 1)
+    t = (int)((long long)t * x % MOD);
   return t;
 }
 
@@ -193,44 +220,49 @@ struct Mat {
 };
 
 // One step v' = M v on the fixed automaton M (banded except row 0).
-static void mat_vec_auto(const Mat &p, const vector<Mint> &in, vector<Mint> &out) {
+static void mat_vec_auto(const Mat& p, const vector<Mint>& in, vector<Mint>& out) {
   const int dim = p.n;
   Mint s0(0);
   for (int k = 0; k < dim; ++k) {
-    if (p.a[0][k]) s0 = s0 + Mint(p.a[0][k]) * in[k];
+    if (p.a[0][k])
+      s0 = s0 + Mint(p.a[0][k]) * in[k];
   }
   out[0] = s0;
   for (int i = 1; i < dim; ++i) {
     out[i] = Mint(0);
-    if (p.a[i][i]) out[i] = out[i] + Mint(p.a[i][i]) * in[i];
-    if (p.a[i][i - 1]) out[i] = out[i] + Mint(p.a[i][i - 1]) * in[i - 1];
+    if (p.a[i][i])
+      out[i] = out[i] + Mint(p.a[i][i]) * in[i];
+    if (p.a[i][i - 1])
+      out[i] = out[i] + Mint(p.a[i][i - 1]) * in[i - 1];
   }
 }
 
-static void mat_mul_int(const Mat &A, const Mat &B, Mat &R) {
+static void mat_mul_int(const Mat& A, const Mat& B, Mat& R) {
   const int dim = A.n;
   for (int i = 0; i < dim; ++i) {
     for (int j = 0; j < dim; ++j) {
       long long sum = 0;
-      for (int t = 0; t < dim; ++t) sum += (long long)A.a[i][t] * B.a[t][j];
+      for (int t = 0; t < dim; ++t)
+        sum += (long long)A.a[i][t] * B.a[t][j];
       R.a[i][j] = (int)(sum % MOD);
     }
   }
 }
 
-static void mat_vec_int(const Mat &A, const vector<int> &in, vector<int> &out) {
+static void mat_vec_int(const Mat& A, const vector<int>& in, vector<int>& out) {
   const int dim = A.n;
   for (int i = 0; i < dim; ++i) {
     long long sum = 0;
     for (int j = 0; j < dim; ++j) {
-      if (A.a[i][j]) sum += (long long)A.a[i][j] * in[j];
+      if (A.a[i][j])
+        sum += (long long)A.a[i][j] * in[j];
     }
     out[i] = (int)(sum % MOD);
   }
 }
 
 // Used in main: binary exponentiation on the automaton.
-static int getnum_bm(const Mat &p, int st, int ed, long long K) {
+static int getnum_bm(const Mat& p, int st, int ed, long long K) {
   const int dim = p.n;
   vector<int> vec(dim), nxt(dim);
   vec[st] = 1;
@@ -250,7 +282,7 @@ static int getnum_bm(const Mat &p, int st, int ed, long long K) {
 }
 
 // Explicit BM pipeline (correct; slower than getnum_bm on large dim).
-static int getnum_via_berlekamp_massey(const Mat &p, int st, int ed, long long K) {
+static int getnum_via_berlekamp_massey(const Mat& p, int st, int ed, long long K) {
   const int dim = p.n;
   vector<Mint> cur(dim), nxt(dim);
   cur[st] = Mint(1);
@@ -260,13 +292,16 @@ static int getnum_via_berlekamp_massey(const Mat &p, int st, int ed, long long K
   seq_m.reserve(samples);
   for (int k = 0; k < samples; ++k) {
     seq_m.push_back(cur[ed]);
-    if (k + 1 < samples) mat_vec_auto(p, cur, nxt), cur.swap(nxt);
+    if (k + 1 < samples)
+      mat_vec_auto(p, cur, nxt), cur.swap(nxt);
   }
 
   const vector<Mint> trans_m = berlekamp_massey(seq_m);
   vector<int> seq(samples), trans(trans_m.size());
-  for (int i = 0; i < samples; ++i) seq[i] = seq_m[i].x;
-  for (int i = 0; i < (int)trans.size(); ++i) trans[i] = trans_m[i].x;
+  for (int i = 0; i < samples; ++i)
+    seq[i] = seq_m[i].x;
+  for (int i = 0; i < (int)trans.size(); ++i)
+    trans[i] = trans_m[i].x;
   return kth_linear_recurrence_int(seq, trans, K);
 }
 
@@ -274,10 +309,11 @@ static char s[MAXN];
 static int dp[MAXN][MAXN][MAXN];
 static int t[MAXN][MAXN];
 
-static int solve(int *d, int n, long long K, int type) {
+static int solve(int* d, int n, long long K, int type) {
   memset(t, 0, sizeof(t));
   const int ha = (n + 1) / 2;
-  for (int i = 0; i <= n; ++i) t[i][(n - i + 1) / 2] = d[i];
+  for (int i = 0; i <= n; ++i)
+    t[i][(n - i + 1) / 2] = d[i];
   for (int i = 0; i < n; ++i) {
     for (int j = 1; j <= ha; ++j) {
       t[i + 1][j] = (t[i + 1][j] + t[i][j]) % MOD;
@@ -289,8 +325,10 @@ static int solve(int *d, int n, long long K, int type) {
   static constexpr int GOAL = 0;
   Mat p{};
   p.n = n + ha + 1;
-  for (int i = 2; i <= n + ha; ++i) p.a[i][i - 1] = 1;
-  for (int i = 1; i <= n + ha; ++i) p.a[i][i] = (i <= n ? 24 : 25);
+  for (int i = 2; i <= n + ha; ++i)
+    p.a[i][i - 1] = 1;
+  for (int i = 1; i <= n + ha; ++i)
+    p.a[i][i] = (i <= n ? 24 : 25);
   for (int i = ha; i <= n + ha; ++i) {
     p.a[GOAL][i] = (i <= n ? t[i][0] : t[n][i - n]);
   }
@@ -308,15 +346,18 @@ static void palindrome_dp(int n, int type) {
           continue;
         }
       } else {
-        if (i == j) continue;
+        if (i == j)
+          continue;
         if (j == i + 1) {
           dp[i][j][0] = (s[i] == s[j] ? 1 : 0);
           continue;
         }
       }
       if (s[i] == s[j]) {
-        for (int k = 0; k <= n; ++k) dp[i][j][k] = dp[i + 1][j - 1][k];
-        if (j == i + 1) dp[i][j][0] = 1;
+        for (int k = 0; k <= n; ++k)
+          dp[i][j][k] = dp[i + 1][j - 1][k];
+        if (j == i + 1)
+          dp[i][j][0] = 1;
       } else {
         dp[i][j][0] = 0;
         for (int k = 1; k <= n; ++k) {
@@ -335,7 +376,8 @@ int main() {
   long long m_add;
   cin >> input >> m_add;
   const int n = (int)input.size();
-  for (int i = 1; i <= n; ++i) s[i] = input[i - 1];
+  for (int i = 1; i <= n; ++i)
+    s[i] = input[i - 1];
 
   palindrome_dp(n, 1);
   const long long K = (n + m_add + 1) / 2;

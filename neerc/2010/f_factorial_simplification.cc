@@ -54,7 +54,7 @@ static long long vp_fact(int p, int n) {
   return s;
 }
 
-static void add_factorial(vector<long long> &exp, int n, int sign) {
+static void add_factorial(vector<long long>& exp, int n, int sign) {
   for (int p : primes) {
     if (p > n)
       break;
@@ -135,7 +135,7 @@ int main() {
   }
 
   cout << (int)out.size() << '\n';
-  for (auto &e : out)
+  for (auto& e : out)
     cout << e.first << ' ' << e.second << '\n';
   return 0;
 }

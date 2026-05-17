@@ -9,7 +9,8 @@ using namespace std;
 using u128 = unsigned __int128;
 
 static string to_binary_u128(u128 x) {
-  if (x == 0) return "0";
+  if (x == 0)
+    return "0";
   string s;
   while (x > 0) {
     s.push_back((x & 1) ? '1' : '0');
@@ -20,9 +21,11 @@ static string to_binary_u128(u128 x) {
 }
 
 static bool matches_pattern(const string& pat, const string& full) {
-  if (pat.size() != full.size()) return false;
+  if (pat.size() != full.size())
+    return false;
   for (int i = 0; i < (int)pat.size(); i++) {
-    if (pat[i] != '?' && pat[i] != full[i]) return false;
+    if (pat[i] != '?' && pat[i] != full[i])
+      return false;
   }
   return true;
 }
@@ -37,7 +40,8 @@ int main() {
     string S;
     cin >> S;
     // Pad to even length for pairwise (base-4) sqrt algorithm.
-    if ((S.size() & 1) == 1) S = "0" + S;
+    if ((S.size() & 1) == 1)
+      S = "0" + S;
     int L = (int)S.size();
     int pairs = L / 2;
 
@@ -49,8 +53,10 @@ int main() {
       for (int v = 0; v < 4; v++) {
         char aa = (v & 2) ? '1' : '0';
         char bb = (v & 1) ? '1' : '0';
-        if (a != '?' && a != aa) continue;
-        if (b != '?' && b != bb) continue;
+        if (a != '?' && a != aa)
+          continue;
+        if (b != '?' && b != bb)
+          continue;
         allowed[i].push_back(v);
       }
     }
@@ -64,16 +70,20 @@ int main() {
     // if rem >= cand: rem-=cand, root=(root<<1)+1 else root<<=1
     // This constructs floor(sqrt(N)); for perfect squares remainder ends at 0.
     auto dfs = [&](int i, u128 rem, unsigned long long root) {
-      if (!answer.empty()) return;
+      if (!answer.empty())
+        return;
       if (i == pairs) {
-        if (rem != 0) return;
+        if (rem != 0)
+          return;
         u128 sq = (u128)root * (u128)root;
         string out = to_binary_u128(sq);
         // Remove potential leading zeros introduced by padding.
-        if ((int)out.size() < L) out = string(L - out.size(), '0') + out;
+        if ((int)out.size() < L)
+          out = string(L - out.size(), '0') + out;
         if (matches_pattern(S, out)) {
           // Strip the padding if we added it.
-          if (out.size() >= 2 && out[0] == '0') out.erase(out.begin());
+          if (out.size() >= 2 && out[0] == '0')
+            out.erase(out.begin());
           answer = out;
         }
         return;
@@ -87,7 +97,8 @@ int main() {
         } else {
           dfs(i + 1, rem2, (root << 1));
         }
-        if (!answer.empty()) return;
+        if (!answer.empty())
+          return;
       }
     };
 
@@ -97,4 +108,3 @@ int main() {
   }
   return 0;
 }
-

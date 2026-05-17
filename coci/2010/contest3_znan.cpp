@@ -23,7 +23,9 @@ struct rec {
   int pos;
 } a[1010];
 
-bool cmp(rec A, rec B) { return A.v < B.v; }
+bool cmp(rec A, rec B) {
+  return A.v < B.v;
+}
 
 string s[1010];
 int m, n;

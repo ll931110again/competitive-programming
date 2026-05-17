@@ -32,11 +32,13 @@ using namespace std;
 static constexpr int MOD = 998244353;
 
 static long long power(long long x, long long p) {
-  if (p < 0) return power(power(x, MOD - 2), -p);
+  if (p < 0)
+    return power(power(x, MOD - 2), -p);
   long long ans = 1;
   x %= MOD;
   while (p > 0) {
-    if (p & 1) ans = ans * x % MOD;
+    if (p & 1)
+      ans = ans * x % MOD;
     x = x * x % MOD;
     p >>= 1;
   }
@@ -66,7 +68,8 @@ static void solve_one(long long n) {
       P.push_back(((MOD - Q[i] * k % MOD * inv) % MOD + MOD) % MOD);
     }
     P[0] = (P[0] + (MOD - n0) * power(k, r + 1)) % MOD;
-    for (auto &x : P) x %= MOD;
+    for (auto& x : P)
+      x %= MOD;
     Q = std::move(P);
     n0 += 2;
   }

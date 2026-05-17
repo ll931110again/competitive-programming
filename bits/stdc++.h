@@ -51,4 +51,3 @@
 #include <utility>
 #include <valarray>
 #include <vector>
-

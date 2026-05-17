@@ -99,8 +99,7 @@ int main() {
       idx_value[idx_pos] = breakpoint[i][j];
       idx_chain[idx_pos] = i;
       sum_chain[idx_pos] = sum_chain[idx_pos - 1] +
-                           1LL * (idx_chain[idx_pos] - idx_chain[idx_pos - 1]) *
-                               idx_value[idx_pos];
+                           1LL * (idx_chain[idx_pos] - idx_chain[idx_pos - 1]) * idx_value[idx_pos];
       idx_pos++;
     }
   }

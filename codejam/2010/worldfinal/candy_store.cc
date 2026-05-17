@@ -17,7 +17,7 @@ int main() {
     long long boxes = 0;
 
     while (sum < target) {
-      __int128 next = sum / k + 1;  // floor(sum/k) + 1
+      __int128 next = sum / k + 1; // floor(sum/k) + 1
       sum += next;
       boxes++;
     }
@@ -26,4 +26,3 @@ int main() {
   }
   return 0;
 }
-

@@ -9,31 +9,31 @@ int T, n, m;
 int a[maxn], b[maxn];
 
 int main() {
-	cin >> T;
-	while (T--) {
-		cin >> n >> m;
-		for (int i = 0; i < n; i++) {
-			cin >> a[i];
-		}
-		for (int i = 0; i < m; i++) {
-			cin >> b[i];
-		}
+  cin >> T;
+  while (T--) {
+    cin >> n >> m;
+    for (int i = 0; i < n; i++) {
+      cin >> a[i];
+    }
+    for (int i = 0; i < m; i++) {
+      cin >> b[i];
+    }
 
-		long long ans = 0;
-		for (int i = 0; i < n; i++) {
-			ans += a[i];
-		}
-		for (int i = 0; i < m; i++) {
-			ans -= b[i];
-		}
+    long long ans = 0;
+    for (int i = 0; i < n; i++) {
+      ans += a[i];
+    }
+    for (int i = 0; i < m; i++) {
+      ans -= b[i];
+    }
 
-		if (ans > 0) {
-			cout << "Tsondu" << endl;
-		} else if (ans < 0) {
-			cout << "Tenzing" << endl;
-		} else {
-			cout << "Draw" << endl;
-		}
-	}
-	return 0;
+    if (ans > 0) {
+      cout << "Tsondu" << endl;
+    } else if (ans < 0) {
+      cout << "Tenzing" << endl;
+    } else {
+      cout << "Draw" << endl;
+    }
+  }
+  return 0;
 }

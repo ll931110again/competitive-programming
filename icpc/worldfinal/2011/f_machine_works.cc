@@ -12,8 +12,7 @@ struct Line {
   long long slope = 0;
   long long intercept = -(1LL << 60);
   Line() = default;
-  Line(long long slope_, long long intercept_)
-      : slope(slope_), intercept(intercept_) {}
+  Line(long long slope_, long long intercept_) : slope(slope_), intercept(intercept_) {}
   inline long long value(long long x) const {
     __int128 v = (__int128)slope * (__int128)x + (__int128)intercept;
     if (v < (__int128)LLONG_MIN)
@@ -27,20 +26,21 @@ struct Line {
 struct LiChaoMax {
   struct Node {
     Line line;
-    Node *left = nullptr;
-    Node *right = nullptr;
+    Node* left = nullptr;
+    Node* right = nullptr;
     explicit Node(Line line_) : line(line_) {}
   };
 
   long long minX, maxX;
-  Node *root = nullptr;
+  Node* root = nullptr;
 
   LiChaoMax(long long minX_, long long maxX_) : minX(minX_), maxX(maxX_) {}
 
-  void addLine(Line newLine) { addLineRec(root, minX, maxX, newLine); }
+  void addLine(Line newLine) {
+    addLineRec(root, minX, maxX, newLine);
+  }
 
-  void addLineRec(Node *&node, long long segLeft, long long segRight,
-                  Line newLine) {
+  void addLineRec(Node*& node, long long segLeft, long long segRight, Line newLine) {
     if (!node) {
       node = new Node(newLine);
       return;
@@ -60,10 +60,11 @@ struct LiChaoMax {
       addLineRec(node->right, mid + 1, segRight, newLine);
   }
 
-  long long query(long long x) const { return queryRec(root, minX, maxX, x); }
+  long long query(long long x) const {
+    return queryRec(root, minX, maxX, x);
+  }
 
-  long long queryRec(Node *node, long long segLeft, long long segRight,
-                     long long x) const {
+  long long queryRec(Node* node, long long segLeft, long long segRight, long long x) const {
     if (!node)
       return LLONG_MIN;
     long long best = node->line.value(x);
@@ -92,16 +93,14 @@ int main() {
     machines.reserve(machineCount);
     for (int i = 0; i < machineCount; i++) {
       Machine machine;
-      cin >> machine.dayAvailable >> machine.buyPrice >> machine.resalePrice >>
-          machine.dailyProfit;
+      cin >> machine.dayAvailable >> machine.buyPrice >> machine.resalePrice >> machine.dailyProfit;
       machines.push_back(machine);
     }
-    sort(machines.begin(), machines.end(),
-         [](const Machine &a, const Machine &b) {
-           if (a.dayAvailable != b.dayAvailable)
-             return a.dayAvailable < b.dayAvailable;
-           return a.buyPrice < b.buyPrice;
-         });
+    sort(machines.begin(), machines.end(), [](const Machine& a, const Machine& b) {
+      if (a.dayAvailable != b.dayAvailable)
+        return a.dayAvailable < b.dayAvailable;
+      return a.buyPrice < b.buyPrice;
+    });
 
     LiChaoMax cashAtDay(1, lastDay + 1);
     cashAtDay.addLine(Line(0, initialCash)); // keep cash, no machine
@@ -112,19 +111,18 @@ int main() {
 
       vector<Line> toAdd;
       for (; i < machineCount && machines[i].dayAvailable == day; i++) {
-        const auto &machine = machines[i];
+        const auto& machine = machines[i];
         if (cashToday < machine.buyPrice)
           continue;
         // If we buy this machine on 'day' using 'money' cash, then selling on
         // day x yields: money - p + r + g*(x - day - 1) = g*x + (money - p + r
         // - g*(day+1))
-        long long intercept = cashToday - machine.buyPrice +
-                              machine.resalePrice -
-                              machine.dailyProfit * (day + 1);
+        long long intercept =
+            cashToday - machine.buyPrice + machine.resalePrice - machine.dailyProfit * (day + 1);
         toAdd.push_back(Line(machine.dailyProfit, intercept));
       }
 
-      for (const auto &line : toAdd)
+      for (const auto& line : toAdd)
         cashAtDay.addLine(line);
     }
 

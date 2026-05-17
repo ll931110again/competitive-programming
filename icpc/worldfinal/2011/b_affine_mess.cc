@@ -15,19 +15,20 @@ using namespace std;
 
 using int64 = long long;
 
-static inline int64 javaRound(double a) { return (int64)floor(a + 0.5); }
+static inline int64 javaRound(double a) {
+  return (int64)floor(a + 0.5);
+}
 
 struct Aff2 {
   double m00, m01, m02, m10, m11, m12;
-  bool equals(const Aff2 &o) const {
+  bool equals(const Aff2& o) const {
     const double eps = 1e-9;
-    return fabs(m00 - o.m00) < eps && fabs(m01 - o.m01) < eps &&
-           fabs(m02 - o.m02) < eps && fabs(m10 - o.m10) < eps &&
-           fabs(m11 - o.m11) < eps && fabs(m12 - o.m12) < eps;
+    return fabs(m00 - o.m00) < eps && fabs(m01 - o.m01) < eps && fabs(m02 - o.m02) < eps &&
+           fabs(m10 - o.m10) < eps && fabs(m11 - o.m11) < eps && fabs(m12 - o.m12) < eps;
   }
 };
 
-static Aff2 multiply(const Aff2 &A, const Aff2 &B) {
+static Aff2 multiply(const Aff2& A, const Aff2& B) {
   Aff2 R{};
   R.m00 = A.m00 * B.m00 + A.m01 * B.m10;
   R.m01 = A.m00 * B.m01 + A.m01 * B.m11;
@@ -76,15 +77,16 @@ struct Pt {
 struct ST1D {
   int scale;
   int translate;
-  bool operator==(const ST1D &o) const {
+  bool operator==(const ST1D& o) const {
     return scale == o.scale && translate == o.translate;
   }
-  bool operator!=(const ST1D &o) const { return !(*this == o); }
+  bool operator!=(const ST1D& o) const {
+    return !(*this == o);
+  }
 };
 
 /* Inner derive(x00,x01,x10,x11): throws if diff0==0 && diff1==0 */
-static optional<ST1D> derivePair(int x00, int x01, int x10, int x11,
-                                 bool &nu_exc) {
+static optional<ST1D> derivePair(int x00, int x01, int x10, int x11, bool& nu_exc) {
   nu_exc = false;
   int diff0 = x01 - x00;
   int diff1 = x11 - x10;
@@ -104,7 +106,7 @@ static optional<ST1D> derivePair(int x00, int x01, int x10, int x11,
  * Matches Java derive(int[] x0, int[] x1): any tmp==null => return null;
  * mismatch => return null; else all pairs agree; if !unique throw NU at end.
  */
-static optional<ST1D> derive1d(const int x0[3], const int x1[3], bool &nu_end) {
+static optional<ST1D> derive1d(const int x0[3], const int x1[3], bool& nu_end) {
   nu_end = false;
   bool unique = false;
   optional<ST1D> ans;
@@ -133,7 +135,7 @@ static optional<ST1D> derive1d(const int x0[3], const int x1[3], bool &nu_end) {
   return {};
 }
 
-static optional<Aff2> deriveST(const Pt p0[3], const Pt p1[3], bool &nu1d) {
+static optional<Aff2> deriveST(const Pt p0[3], const Pt p1[3], bool& nu1d) {
   nu1d = false;
   int xs0[3] = {p0[0].x, p0[1].x, p0[2].x};
   int ys0[3] = {p0[0].y, p0[1].y, p0[2].y};
@@ -148,13 +150,12 @@ static optional<Aff2> deriveST(const Pt p0[3], const Pt p1[3], bool &nu1d) {
     return {};
   }
   if (xt.has_value() && yt.has_value()) {
-    return scaleThenTranslate(xt->scale, yt->scale, xt->translate,
-                              yt->translate);
+    return scaleThenTranslate(xt->scale, yt->scale, xt->translate, yt->translate);
   }
   return {};
 }
 
-static optional<Aff2> derivePerm(Pt p0r[3], const Pt p1[3], bool &nu_perm) {
+static optional<Aff2> derivePerm(Pt p0r[3], const Pt p1[3], bool& nu_perm) {
   nu_perm = false;
   optional<Aff2> ans;
 
@@ -195,12 +196,12 @@ static vector<Aff2> buildRotations() {
   return rot;
 }
 
-static optional<Aff2> deriveFull(const Pt p0[3], const Pt p1[3], bool &nu_full) {
+static optional<Aff2> deriveFull(const Pt p0[3], const Pt p1[3], bool& nu_full) {
   static const vector<Aff2> ROT = buildRotations();
   nu_full = false;
   optional<Aff2> answer;
 
-  for (const Aff2 &R : ROT) {
+  for (const Aff2& R : ROT) {
     Pt p0p[3];
     for (int i = 0; i < 3; ++i) {
       double xr = R.m00 * p0[i].x + R.m01 * p0[i].y;
@@ -238,8 +239,8 @@ int main() {
     Pt p0[3], p1[3];
     for (int i = 0; i < 3; ++i)
       cin >> p0[i].x >> p0[i].y;
-    if (p0[0].x == 0 && p0[0].y == 0 && p0[1].x == 0 && p0[1].y == 0 &&
-        p0[2].x == 0 && p0[2].y == 0)
+    if (p0[0].x == 0 && p0[0].y == 0 && p0[1].x == 0 && p0[1].y == 0 && p0[2].x == 0 &&
+        p0[2].y == 0)
       break;
     for (int i = 0; i < 3; ++i)
       cin >> p1[i].x >> p1[i].y;

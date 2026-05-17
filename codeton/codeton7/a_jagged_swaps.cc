@@ -2,7 +2,7 @@
 // Submission: https://codeforces.com/contest/1896/submission/336566355
 
 #ifdef ONLINE_JUDGE
-    #include <bits/stdc++.h>
+#include <bits/stdc++.h>
 #endif
 
 #include <algorithm>
@@ -20,22 +20,22 @@ int T, n;
 int a[maxn];
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
 
-    cin >> T;
-    while (T--) {
-        cin >> n;
-        for (int i = 1; i <= n; i++) {
-            cin >> a[i];
-        }
-
-        if (a[1] == 1) {
-            cout << "Yes" << endl;
-        } else {
-            cout << "No" << endl;
-        }
+  cin >> T;
+  while (T--) {
+    cin >> n;
+    for (int i = 1; i <= n; i++) {
+      cin >> a[i];
     }
-    
-    return 0;
+
+    if (a[1] == 1) {
+      cout << "Yes" << endl;
+    } else {
+      cout << "No" << endl;
+    }
+  }
+
+  return 0;
 }

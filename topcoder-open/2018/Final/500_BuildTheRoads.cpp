@@ -29,8 +29,7 @@ public:
     n = x.size();
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < n; j++) {
-        d[i][j] =
-            sqrt((x[i] - x[j]) * (x[i] - x[j]) + (y[i] - y[j]) * (y[i] - y[j]));
+        d[i][j] = sqrt((x[i] - x[j]) * (x[i] - x[j]) + (y[i] - y[j]) * (y[i] - y[j]));
       }
     }
 

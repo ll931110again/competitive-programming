@@ -32,8 +32,7 @@ using namespace std;
 
 class BankLottery {
 public:
-  double expectedAmount(vector<int> accountBalance, int weeklyJackpot,
-                        int weekCount) {
+  double expectedAmount(vector<int> accountBalance, int weeklyJackpot, int weekCount) {
     int total = 0, mine = accountBalance[0];
     for (int i = 0; i < accountBalance.size(); i++)
       total += accountBalance[i];

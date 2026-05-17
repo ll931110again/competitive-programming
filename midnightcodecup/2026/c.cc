@@ -106,8 +106,8 @@ static vector<pair<int, int>> all_passable() {
   return out;
 }
 
-static vector<pair<int, int>> filter_by_distance(const vector<pair<int, int>> &cand, int qr,
-                                               int qc, int dist_need) {
+static vector<pair<int, int>> filter_by_distance(const vector<pair<int, int>>& cand, int qr, int qc,
+                                                 int dist_need) {
   auto dm = bfs_dist_map(qr, qc);
   vector<pair<int, int>> out;
   out.reserve(cand.size());
@@ -119,7 +119,7 @@ static vector<pair<int, int>> filter_by_distance(const vector<pair<int, int>> &c
   return out;
 }
 
-static pair<int, int> pick_splitting_query(const vector<pair<int, int>> &cand, mt19937 &rng) {
+static pair<int, int> pick_splitting_query(const vector<pair<int, int>>& cand, mt19937& rng) {
   const int n = (int)cand.size();
   if (n == 1) {
     return cand[0];
@@ -208,7 +208,7 @@ static void exploration_phase() {
   }
 }
 
-static void localize_one(mt19937 &rng) {
+static void localize_one(mt19937& rng) {
   const vector<pair<int, int>> landmarks = build_landmarks();
   vector<pair<int, int>> cand = all_passable();
   size_t li = 0;

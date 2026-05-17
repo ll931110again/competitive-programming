@@ -44,8 +44,7 @@ int main() {
       g[b].push_back({a, i});
     }
 
-    vector<int> disc(V + 1, 0), low(V + 1, 0), parent(V + 1, 0),
-        parentEdge(V + 1, -1);
+    vector<int> disc(V + 1, 0), low(V + 1, 0), parent(V + 1, 0), parentEdge(V + 1, -1);
     vector<int> childCnt(V + 1, 0);
     vector<char> isArt(V + 1, 0);
     int timer = 0;
@@ -61,7 +60,7 @@ int main() {
     vector<int> seen(V + 1, 0);
     int seenToken = 1;
 
-    auto addVertex = [&](vector<int> &verts, int v) {
+    auto addVertex = [&](vector<int>& verts, int v) {
       if (seen[v] != seenToken) {
         seen[v] = seenToken;
         verts.push_back(v);
@@ -81,7 +80,7 @@ int main() {
       disc[start] = low[start] = ++timer;
 
       while (!st.empty()) {
-        Frame &fr = st.back();
+        Frame& fr = st.back();
         int u = fr.u;
         if (fr.it < (int)g[u].size()) {
           auto [v, eid] = g[u][fr.it++];
@@ -189,7 +188,7 @@ int main() {
       disc[start] = low[start] = ++timer;
 
       while (!st.empty()) {
-        Frame &fr = st.back();
+        Frame& fr = st.back();
         int u = fr.u;
         if (fr.it < (int)g[u].size()) {
           auto [v, eid] = g[u][fr.it++];
@@ -233,7 +232,7 @@ int main() {
       }
     }
 
-    for (const auto &verts : comps) {
+    for (const auto& verts : comps) {
       int ac = 0;
       for (int v : verts)
         if (isArt[v])

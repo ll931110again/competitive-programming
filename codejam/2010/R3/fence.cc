@@ -21,10 +21,12 @@ int main() {
     int N;
     cin >> L >> N;
     vector<int64> B(N);
-    for (int i = 0; i < N; i++) cin >> B[i];
+    for (int i = 0; i < N; i++)
+      cin >> B[i];
 
     int64 g = 0;
-    for (int64 x : B) g = std::gcd(g, x);
+    for (int64 x : B)
+      g = std::gcd(g, x);
     if (L % g != 0) {
       cout << "Case #" << tc << ": IMPOSSIBLE\n";
       continue;
@@ -33,7 +35,8 @@ int main() {
     int64 A = *max_element(B.begin(), B.end());
     vector<int> shorter;
     for (int64 x : B)
-      if (x < A) shorter.push_back((int)x);
+      if (x < A)
+        shorter.push_back((int)x);
 
     int64 p = L / A;
     int64 q = L % A;

@@ -17,7 +17,7 @@ static vector<int64> water_levels(int H, int W, const vector<int64>& h) {
   const int64 INF = numeric_limits<int64>::max() / 4;
 
   vector<int64> wl(N, INF);
-  using Node = pair<int64, int>;  // (wl, idx)
+  using Node = pair<int64, int>; // (wl, idx)
   priority_queue<Node, vector<Node>, greater<Node>> pq;
 
   auto id = [&](int r, int c) { return r * W + c; };
@@ -37,11 +37,13 @@ static vector<int64> water_levels(int H, int W, const vector<int64>& h) {
   while (!pq.empty()) {
     auto [cur, v] = pq.top();
     pq.pop();
-    if (cur != wl[v]) continue;
+    if (cur != wl[v])
+      continue;
     int r = v / W, c = v % W;
     for (int dir = 0; dir < 4; dir++) {
       int nr = r + DX[dir], nc = c + DY[dir];
-      if (nr < 0 || nr >= H || nc < 0 || nc >= W) continue;
+      if (nr < 0 || nr >= H || nc < 0 || nc >= W)
+        continue;
       int u = id(nr, nc);
       int64 cand = max(h[u], cur);
       if (cand < wl[u]) {
@@ -74,7 +76,8 @@ int main() {
 
     auto all_zero = [&]() {
       for (int i = 0; i < N; i++)
-        if (h[i] > 0) return false;
+        if (h[i] > 0)
+          return false;
       return true;
     };
 
@@ -87,7 +90,8 @@ int main() {
         int64 best = (r == 0 || r == H - 1 || c == 0 || c == W - 1) ? 0 : (int64)4e18;
         for (int dir = 0; dir < 4; dir++) {
           int nr = r + DX[dir], nc = c + DY[dir];
-          if (nr < 0 || nr >= H || nc < 0 || nc >= W) continue;
+          if (nr < 0 || nr >= H || nc < 0 || nc >= W)
+            continue;
           best = min(best, wl[nr * W + nc]);
         }
         return best;
@@ -104,11 +108,12 @@ int main() {
           int64 down = min_adj_wl(r, c);
           int64 drop = wl[v] - down;
           if (wl[v] == h[v]) {
-            if (h[v] > 0 && drop < M) can_batch = false;
+            if (h[v] > 0 && drop < M)
+              can_batch = false;
           } else {
             // submerged: wl decreases by M per day in a batch, height stays fixed.
             int64 water = wl[v] - h[v];
-            int64 t = (water + M - 1) / M;  // first day when wl' <= h
+            int64 t = (water + M - 1) / M; // first day when wl' <= h
             batch_t = min(batch_t, t);
           }
         }
@@ -137,7 +142,8 @@ int main() {
       for (int r = 0; r < H; r++) {
         for (int c = 0; c < W; c++) {
           int v = r * W + c;
-          if (h[v] == 0 && wl[v] == 0) continue;
+          if (h[v] == 0 && wl[v] == 0)
+            continue;
           int64 down = min_adj_wl(r, c);
           int64 drop = wl[v] - down;
           int64 dec = min(drop, M);

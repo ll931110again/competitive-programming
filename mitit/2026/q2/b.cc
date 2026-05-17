@@ -13,7 +13,9 @@ Mint dp[maxn];
 int sz[maxn];
 Mint fact[maxn], inv[maxn], p2[maxn];
 
-Mint binom(int x, int y) { return fact[x] * inv[y] * inv[x - y]; }
+Mint binom(int x, int y) {
+  return fact[x] * inv[y] * inv[x - y];
+}
 
 Mint rec(int u, int p) {
   sz[u] = 1;

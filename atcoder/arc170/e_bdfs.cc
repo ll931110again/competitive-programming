@@ -12,14 +12,17 @@ static int mod_pow(long long a, long long e) {
   long long r = 1;
   a %= MOD;
   while (e > 0) {
-    if (e & 1) r = r * a % MOD;
+    if (e & 1)
+      r = r * a % MOD;
     a = a * a % MOD;
     e >>= 1;
   }
   return (int)r;
 }
 
-static int mod_inv(int a) { return mod_pow(a, MOD - 2); }
+static int mod_inv(int a) {
+  return mod_pow(a, MOD - 2);
+}
 
 static int solve(long long N, int P) {
   long long n = N - 1;

@@ -16,21 +16,25 @@ template <unsigned M> struct ModInt {
   ModInt(long long v) : x(unsigned(((v %= (long long)M) < 0) ? (v + (long long)M) : v)) {}
   ModInt(int v) : x(((v %= int(M)) < 0) ? (v + int(M)) : v) {}
 
-  ModInt &operator+=(ModInt a) {
+  ModInt& operator+=(ModInt a) {
     x = ((x += a.x) >= M) ? (x - M) : x;
     return *this;
   }
-  ModInt &operator-=(ModInt a) {
+  ModInt& operator-=(ModInt a) {
     x = ((x -= a.x) >= M) ? (x + M) : x;
     return *this;
   }
-  ModInt &operator*=(ModInt a) {
+  ModInt& operator*=(ModInt a) {
     x = unsigned((unsigned long long)x * a.x % M);
     return *this;
   }
 
-  ModInt operator+(ModInt a) const { return ModInt(*this) += a; }
-  ModInt operator*(ModInt a) const { return ModInt(*this) *= a; }
+  ModInt operator+(ModInt a) const {
+    return ModInt(*this) += a;
+  }
+  ModInt operator*(ModInt a) const {
+    return ModInt(*this) *= a;
+  }
 };
 
 using Mint = ModInt<MOD>;
@@ -46,11 +50,13 @@ int main() {
   cin >> p >> alpha >> s;
   const int n = (int)s.size();
   vector<int> a(MAXD + 1);
-  for (int i = 1; i <= n; i++) a[i] = s[n - i] - '0';
+  for (int i = 1; i <= n; i++)
+    a[i] = s[n - i] - '0';
 
   vector<long long> b(MAXD + 1);
   for (int i = n; i >= 1; i--) {
-    for (int j = 1; j < MAXD; j++) b[j] *= 10;
+    for (int j = 1; j < MAXD; j++)
+      b[j] *= 10;
     b[1] += a[i];
     for (int j = 1; j < MAXD - 1; j++) {
       if (b[j] >= p) {
@@ -59,9 +65,11 @@ int main() {
       }
     }
   }
-  for (int i = 1; i <= MAXD; i++) a[i] = (int)b[i];
+  for (int i = 1; i <= MAXD; i++)
+    a[i] = (int)b[i];
   int len = MAXD - 1;
-  while (len > 0 && !a[len]) --len;
+  while (len > 0 && !a[len])
+    --len;
   if (!len) {
     cout << 0 << '\n';
     return 0;
@@ -96,7 +104,8 @@ int main() {
   }
 
   Mint ans;
-  for (int i = alpha; i <= len; i++) ans += f[0][0][i] + f[1][0][i];
+  for (int i = alpha; i <= len; i++)
+    ans += f[0][0][i] + f[1][0][i];
   cout << ans.x << '\n';
   return 0;
 }

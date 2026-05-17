@@ -18,13 +18,13 @@ struct Key {
   int mask;
   int w;
   int h;
-  bool operator==(Key const &other) const {
+  bool operator==(Key const& other) const {
     return mask == other.mask && w == other.w && h == other.h;
   }
 };
 
 struct KeyHash {
-  size_t operator()(Key const &k) const noexcept {
+  size_t operator()(Key const& k) const noexcept {
     // Mix three integers.
     size_t x = std::hash<int>{}(k.mask);
     x ^= (std::hash<int>{}(k.w) + 0x9e3779b97f4a7c15ULL + (x << 6) + (x >> 2));
@@ -83,7 +83,7 @@ static bool canFill(int mask, int w, int h) {
   return memo[key] = false;
 }
 
-static bool solveCase(int x, int y, const vector<int> &parts) {
+static bool solveCase(int x, int y, const vector<int>& parts) {
   int n = (int)parts.size();
   long long total = 0;
   for (int a : parts)

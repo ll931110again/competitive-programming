@@ -15,7 +15,8 @@ static long long mod_pow(long long a, long long e) {
   long long r = 1 % MOD;
   a %= MOD;
   while (e > 0) {
-    if (e & 1) r = (__int128)r * a % MOD;
+    if (e & 1)
+      r = (__int128)r * a % MOD;
     a = (__int128)a * a % MOD;
     e >>= 1;
   }
@@ -28,10 +29,11 @@ struct Mat {
 
   Mat(int n, bool ident = false) : n(n), a(n, vector<long long>(n, 0)) {
     if (ident)
-      for (int i = 0; i < n; ++i) a[i][i] = 1;
+      for (int i = 0; i < n; ++i)
+        a[i][i] = 1;
   }
 
-  static Mat mul(const Mat &x, const Mat &y) {
+  static Mat mul(const Mat& x, const Mat& y) {
     Mat z(x.n);
     for (int i = 0; i < x.n; ++i)
       for (int k = 0; k < x.n; ++k)
@@ -44,14 +46,15 @@ struct Mat {
   static Mat pow(Mat base, long long e) {
     Mat res(base.n, true);
     while (e > 0) {
-      if (e & 1) res = mul(res, base);
+      if (e & 1)
+        res = mul(res, base);
       base = mul(base, base);
       e >>= 1;
     }
     return res;
   }
 
-  vector<long long> apply(const vector<long long> &v) const {
+  vector<long long> apply(const vector<long long>& v) const {
     vector<long long> r(n);
     for (int i = 0; i < n; ++i)
       for (int j = 0; j < n; ++j)
@@ -73,11 +76,7 @@ int main() {
 
   Mat baseB(5);
   baseB.a = {
-      {1, 1, 1, 1, 1},
-      {1, 0, 0, 0, 0},
-      {0, 1, 0, 0, 0},
-      {0, 0, 0, 1, 1},
-      {0, 0, 0, 0, 1},
+      {1, 1, 1, 1, 1}, {1, 0, 0, 0, 0}, {0, 1, 0, 0, 0}, {0, 0, 0, 1, 1}, {0, 0, 0, 0, 1},
   };
   vector<long long> vw = {0, 0, 0, 0, 2};
 

@@ -15,7 +15,9 @@ static vector<int> nbr[64];
 static uint64_t visited;
 static long long ways;
 
-static inline int id(int r, int c) { return r * N + c; }
+static inline int id(int r, int c) {
+  return r * N + c;
+}
 
 static bool connectivityOk(int cur) {
   // All unvisited squares must be reachable from cur via unvisited squares.

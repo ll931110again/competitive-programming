@@ -14,7 +14,7 @@
 #include <cassert>
 using namespace std;
 
-static long long count_at_most_K(const vector<int> &a, long long K) {
+static long long count_at_most_K(const vector<int>& a, long long K) {
   const int n = (int)a.size();
   deque<int> dq_min, dq_max;
   long long ans = 0;

@@ -26,7 +26,7 @@ struct Dinic {
     while (!q.empty()) {
       int v = q.front();
       q.pop();
-      for (const Edge &e : g[v]) {
+      for (const Edge& e : g[v]) {
         if (e.cap > 0 && level[e.to] < 0) {
           level[e.to] = level[v] + 1;
           q.push(e.to);
@@ -38,8 +38,8 @@ struct Dinic {
   int dfs(int v, int f) {
     if (v == t)
       return f;
-    for (int &i = it[v]; i < (int)g[v].size(); ++i) {
-      Edge &e = g[v][i];
+    for (int& i = it[v]; i < (int)g[v].size(); ++i) {
+      Edge& e = g[v][i];
       if (e.cap > 0 && level[v] < level[e.to]) {
         int ret = dfs(e.to, min(f, e.cap));
         if (ret > 0) {
@@ -71,9 +71,7 @@ int main() {
   const int V = 2 * N;
   auto vid_north = [&](int i) { return i; };
   auto vid_south = [&](int j) { return N + j; };
-  auto color = [&](int v) -> int {
-    return v < N ? (v % 2) : (1 - ((v - N) % 2));
-  };
+  auto color = [&](int v) -> int { return v < N ? (v % 2) : (1 - ((v - N) % 2)); };
 
   vector<vector<int>> adj(V);
   auto add_edge = [&](int u, int v) {
@@ -141,7 +139,7 @@ int main() {
 
   vector<int> matchL(nL, -1), matchR(nR, -1);
   for (int li = 0; li < nL; ++li) {
-    for (const auto &e : dc.g[li]) {
+    for (const auto& e : dc.g[li]) {
       if (e.to >= nL && e.to < nL + nR && e.cap == 0) {
         int rj = e.to - nL;
         matchL[li] = rj;

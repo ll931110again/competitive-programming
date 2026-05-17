@@ -20,15 +20,17 @@ static int floor_log2_u64(unsigned long long x) {
 struct Points {
   // strict all-in points, increasing, always includes 1, all <= V/2
   vector<int64> xs;
-  vector<long double> P;  // probability to reach V from xs[i]
-  vector<int64> all_in;   // strict + optional all-in points (subset of inflections)
+  vector<long double> P; // probability to reach V from xs[i]
+  vector<int64> all_in;  // strict + optional all-in points (subset of inflections)
 };
 
 static int max_doubles_k(int64 x, int64 M) {
   // Maximum k >= 1 such that x * 2^(k-1) <= M.
-  if (x <= 0) return 0;
+  if (x <= 0)
+    return 0;
   unsigned long long t = (unsigned long long)(M / x);
-  if (t == 0) return 0;
+  if (t == 0)
+    return 0;
   return floor_log2_u64(t) + 1;
 }
 
@@ -40,18 +42,22 @@ static long double lose_value_ld(int64 x, int64 M) {
   return -((two_k - 2.0L) * (long double)x);
 }
 
-static long double interp(long double x, long double x0, long double y0, long double x1, long double y1) {
-  if (x1 == x0) return y0;
+static long double interp(long double x, long double x0, long double y0, long double x1,
+                          long double y1) {
+  if (x1 == x0)
+    return y0;
   return y0 + (x - x0) * (y1 - y0) / (x1 - x0);
 }
 
-static long double eval_P(const vector<int64>& strictX, const vector<long double>& strictP, int from_idx,
-                          int64 V, int64 x) {
-  if (x <= 0) return 0.0L;
-  if (x >= V) return 1.0L;
+static long double eval_P(const vector<int64>& strictX, const vector<long double>& strictP,
+                          int from_idx, int64 V, int64 x) {
+  if (x <= 0)
+    return 0.0L;
+  if (x >= V)
+    return 1.0L;
   // find segment in [strictX[from_idx], ..., V]
   int n = (int)strictX.size();
-  int lo = from_idx, hi = n;  // hi==n means endpoint V
+  int lo = from_idx, hi = n; // hi==n means endpoint V
   // upper_bound on strictX to find first > x
   int ub = (int)(upper_bound(strictX.begin() + from_idx, strictX.end(), x) - strictX.begin());
   if (ub == from_idx) {
@@ -78,8 +84,10 @@ static Points build_strategy(int64 M, int64 V) {
   inf.reserve(128);
   for (int i = 0;; i++) {
     int64 x = (i >= 63) ? 0 : (M >> i);
-    if (x <= 0) break;
-    if (x <= V / 2) inf.push_back(x);
+    if (x <= 0)
+      break;
+    if (x <= V / 2)
+      inf.push_back(x);
   }
   inf.push_back(1);
   sort(inf.begin(), inf.end());
@@ -89,9 +97,10 @@ static Points build_strategy(int64 M, int64 V) {
   res.xs.clear();
   res.all_in.clear();
 
-  long double bestLose = 0.0L;  // "lowest total yet" (most negative) seen among strict points
+  long double bestLose = 0.0L; // "lowest total yet" (most negative) seen among strict points
   for (int64 x : inf) {
-    if (x < 1) continue;
+    if (x < 1)
+      continue;
     long double lv = lose_value_ld(x, M);
     if (res.xs.empty()) {
       res.xs.push_back(1);
@@ -99,7 +108,7 @@ static Points build_strategy(int64 M, int64 V) {
       res.all_in.push_back(1);
       continue;
     }
-    if (lv + 1e-18L < bestLose) {  // strictly lower
+    if (lv + 1e-18L < bestLose) { // strictly lower
       res.xs.push_back(x);
       bestLose = lv;
       res.all_in.push_back(x);
@@ -122,7 +131,7 @@ static Points build_strategy(int64 M, int64 V) {
     int64 y = res.xs[idx];
     int64 z = (idx + 1 < n) ? res.xs[idx + 1] : V;
     int k = max_doubles_k(y, M);
-    long double q = ldexpl(1.0L, -k);  // 2^{-k}
+    long double q = ldexpl(1.0L, -k); // 2^{-k}
     long double p = 1.0L - q;
 
     if (2 * y >= z) {
@@ -142,8 +151,10 @@ static Points build_strategy(int64 M, int64 V) {
 }
 
 static long double probability_from(int64 A, int64 M, int64 V, const Points& st) {
-  if (A <= 0) return 0.0L;
-  if (A >= V) return 1.0L;
+  if (A <= 0)
+    return 0.0L;
+  if (A >= V)
+    return 1.0L;
   // If A is strict, return it.
   auto it = lower_bound(st.xs.begin(), st.xs.end(), A);
   if (it != st.xs.end() && *it == A) {
@@ -160,10 +171,12 @@ static long double probability_from(int64 A, int64 M, int64 V, const Points& st)
 
 static int64 max_first_bet(int64 A, int64 M, int64 V, const Points& st) {
   int64 cap = min<int64>({A, M, V - A});
-  if (cap <= 0) return 0;
+  if (cap <= 0)
+    return 0;
   // If A is an all-in point (strict or optional), bet all.
   auto ita = lower_bound(st.all_in.begin(), st.all_in.end(), A);
-  if (ita != st.all_in.end() && *ita == A) return cap;
+  if (ita != st.all_in.end() && *ita == A)
+    return cap;
 
   // Otherwise, between strict points the probability is linear, so we can bet
   // until we hit a strict point on either side.
@@ -196,4 +209,3 @@ int main() {
   }
   return 0;
 }
-

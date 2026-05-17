@@ -30,9 +30,9 @@ using namespace std;
 
 struct Passenger {
   int u, v, t_ap;
-  int city = -1;      // waiting city while not done / not on train
-  int train = 0;      // 0 if not onboard
-  int rides = 0;      // completed ride segments (increment on pick)
+  int city = -1; // waiting city while not done / not on train
+  int train = 0; // 0 if not onboard
+  int rides = 0; // completed ride segments (increment on pick)
   bool done = false;
 };
 
@@ -84,7 +84,7 @@ struct RationalCandidate {
   int city{};
 };
 
-static bool rat_lt(const RationalCandidate &a, const RationalCandidate &b) {
+static bool rat_lt(const RationalCandidate& a, const RationalCandidate& b) {
   return (__int128)a.num * b.den < (__int128)b.num * a.den;
 }
 
@@ -92,7 +92,7 @@ static bool rat_lt(const RationalCandidate &a, const RationalCandidate &b) {
 // appearance for future passengers; slack=0 for cities that already have waiting passengers.
 // Returns ranked list of distinct goal cities (best first) for diversification across trains.
 static vector<int> staging_goals_ranked(int from, long long tick,
-                                      const vector<vector<int>> &waiting_at) {
+                                        const vector<vector<int>>& waiting_at) {
   vector<RationalCandidate> cand;
   cand.reserve((size_t)V + (size_t)N);
 
@@ -126,21 +126,20 @@ static vector<int> staging_goals_ranked(int from, long long tick,
     push_city(c, d, slack + 1);
   }
 
-  sort(cand.begin(), cand.end(),
-       [](const RationalCandidate &a, const RationalCandidate &b) {
-         if (rat_lt(a, b)) {
-           return true;
-         }
-         if (rat_lt(b, a)) {
-           return false;
-         }
-         return a.city < b.city;
-       });
+  sort(cand.begin(), cand.end(), [](const RationalCandidate& a, const RationalCandidate& b) {
+    if (rat_lt(a, b)) {
+      return true;
+    }
+    if (rat_lt(b, a)) {
+      return false;
+    }
+    return a.city < b.city;
+  });
 
   vector<int> out;
   out.reserve(cand.size());
   int last = -1;
-  for (const RationalCandidate &r : cand) {
+  for (const RationalCandidate& r : cand) {
     if (r.city == last) {
       continue;
     }
@@ -150,7 +149,7 @@ static vector<int> staging_goals_ranked(int from, long long tick,
   return out;
 }
 
-static int pick_staging_goal(const vector<int> &ranked, int rank) {
+static int pick_staging_goal(const vector<int>& ranked, int rank) {
   if (ranked.empty()) {
     return -1;
   }
@@ -218,15 +217,14 @@ int main() {
       if (waiting_at[city].empty()) {
         continue;
       }
-      sort(waiting_at[city].begin(), waiting_at[city].end(),
-           [&](int a, int b) {
-             int da = dist_mat[city][pass[a].v];
-             int db = dist_mat[city][pass[b].v];
-             if (da != db) {
-               return da < db;
-             }
-             return a < b;
-           });
+      sort(waiting_at[city].begin(), waiting_at[city].end(), [&](int a, int b) {
+        int da = dist_mat[city][pass[a].v];
+        int db = dist_mat[city][pass[b].v];
+        if (da != db) {
+          return da < db;
+        }
+        return a < b;
+      });
     }
 
     Tick cur;
@@ -246,8 +244,9 @@ int main() {
       onboard[j].swap(stay);
     }
 
-    // --- picks: FIFO by appearance order already in waiting_at if we always push_back by tick order ---
-    // Process cities 1..V; at each city, assign waiting passengers to trains there (by train id).
+    // --- picks: FIFO by appearance order already in waiting_at if we always push_back by tick
+    // order --- Process cities 1..V; at each city, assign waiting passengers to trains there (by
+    // train id).
     for (int city = 1; city <= V; ++city) {
       if (waiting_at[city].empty()) {
         continue;
@@ -261,8 +260,7 @@ int main() {
       sort(trains_here.begin(), trains_here.end());
       size_t wi = 0;
       for (int j : trains_here) {
-        while (wi < waiting_at[city].size() &&
-               (int)onboard[j].size() < C) {
+        while (wi < waiting_at[city].size() && (int)onboard[j].size() < C) {
           int pid = waiting_at[city][wi++];
           if (pass[pid].done) {
             continue;
@@ -274,8 +272,7 @@ int main() {
           onboard[j].push_back(pid);
         }
       }
-      vector<int> rest(waiting_at[city].begin() + (ptrdiff_t)wi,
-                         waiting_at[city].end());
+      vector<int> rest(waiting_at[city].begin() + (ptrdiff_t)wi, waiting_at[city].end());
       waiting_at[city].swap(rest);
     }
 
@@ -331,13 +328,11 @@ int main() {
     }
 
     sort(want.begin(), want.end(),
-         [](const pair<int, int> &a, const pair<int, int> &b) {
-           return a.first < b.first;
-         });
+         [](const pair<int, int>& a, const pair<int, int>& b) { return a.first < b.first; });
 
     vector<vector<char>> seen_edge(V + 1, vector<char>(V + 1, 0));
 
-    for (auto &pr : want) {
+    for (auto& pr : want) {
       int j = pr.first;
       int nxt = pr.second;
       int u = train_pos[j];
@@ -390,13 +385,13 @@ int main() {
 
   // --- output ---
   cout << plan.size() << "\n";
-  for (const Tick &tk : plan) {
+  for (const Tick& tk : plan) {
     cout << tk.cmds.size() << "\n";
-    for (const string &s : tk.cmds) {
+    for (const string& s : tk.cmds) {
       cout << s << "\n";
     }
     cout << tk.moves.size() << "\n";
-    for (auto &mv : tk.moves) {
+    for (auto& mv : tk.moves) {
       cout << mv.first << " " << mv.second << "\n";
     }
   }

@@ -9,31 +9,31 @@ int T;
 int n, k, x;
 
 int solve(int n, int k, int x) {
-	if (k > n || k > x + 1) {
-		return -1;
-	}
+  if (k > n || k > x + 1) {
+    return -1;
+  }
 
-	int ss = 0;
-	int ns = n;
+  int ss = 0;
+  int ns = n;
 
-	for (int i = 0; i < k; i++) {
-		ss += i;
-		ns--;
-	}
+  for (int i = 0; i < k; i++) {
+    ss += i;
+    ns--;
+  }
 
-	int xs = (x == k) ? (x - 1) : x;
-	for (int i = 0; i < ns; i++) {
-		ss += xs;
-	}
+  int xs = (x == k) ? (x - 1) : x;
+  for (int i = 0; i < ns; i++) {
+    ss += xs;
+  }
 
-	return ss;
+  return ss;
 }
 
 int main() {
-	cin >> T;
-	while (T--) {
-		cin >> n >> k >> x;
-		cout << solve(n, k , x) << endl;
-	}
-	return 0;
+  cin >> T;
+  while (T--) {
+    cin >> n >> k >> x;
+    cout << solve(n, k, x) << endl;
+  }
+  return 0;
 }

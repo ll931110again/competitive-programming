@@ -16,7 +16,7 @@ int mod_pow(ll a, ll e) {
   return int(r);
 }
 
-void ntt(vector<int> &a, bool invert) {
+void ntt(vector<int>& a, bool invert) {
   int n = a.size();
   static vector<int> rev;
   if ((int)rev.size() != n) {
@@ -53,12 +53,12 @@ void ntt(vector<int> &a, bool invert) {
 
   if (invert) {
     int inv_n = mod_pow(n, MOD - 2);
-    for (int &x : a)
+    for (int& x : a)
       x = (int)(1LL * x * inv_n % MOD);
   }
 }
 
-vector<int> convolution(const vector<int> &a, const vector<int> &b) {
+vector<int> convolution(const vector<int>& a, const vector<int>& b) {
   int need = (int)a.size() + (int)b.size() - 1;
   int n = 1;
   while (n < need)

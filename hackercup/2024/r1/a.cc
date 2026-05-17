@@ -33,8 +33,7 @@ double solve() {
 int main() {
   cin >> T;
   for (int it = 1; it <= T; it++) {
-    cout << fixed << setprecision(9) << "Case #" << it << ": " << solve()
-         << '\n';
+    cout << fixed << setprecision(9) << "Case #" << it << ": " << solve() << '\n';
   }
   return 0;
 }

@@ -10,7 +10,9 @@ struct SegTreeCoverLen {
 
   SegTreeCoverLen() = default;
 
-  explicit SegTreeCoverLen(vector<long long> ys_) { init(std::move(ys_)); }
+  explicit SegTreeCoverLen(vector<long long> ys_) {
+    init(std::move(ys_));
+  }
 
   void init(vector<long long> ys_) {
     ys = std::move(ys_);
@@ -67,12 +69,10 @@ static inline vector<long long> sortedUnique(vector<long long> v) {
   return v;
 }
 
-static bool coveredAtX(const vector<pair<long long, long long>> &mummies,
-                       long long X) {
+static bool coveredAtX(const vector<pair<long long, long long>>& mummies, long long X) {
   const long long L = -X;
   const long long R = X;
-  const long long targetYLen =
-      (R + 1) - L; // = 2X+1, in half-open representation
+  const long long targetYLen = (R + 1) - L; // = 2X+1, in half-open representation
 
   vector<Event> events;
   events.reserve(mummies.size() * 2);
@@ -114,7 +114,7 @@ static bool coveredAtX(const vector<pair<long long, long long>> &mummies,
   if (xs.size() < 2 || ys.size() < 2)
     return false;
 
-  sort(events.begin(), events.end(), [](const Event &a, const Event &b) {
+  sort(events.begin(), events.end(), [](const Event& a, const Event& b) {
     if (a.x != b.x)
       return a.x < b.x;
     return a.delta > b.delta;
@@ -128,10 +128,8 @@ static bool coveredAtX(const vector<pair<long long, long long>> &mummies,
     const long long nx = xs[xi + 1];
 
     while (ei < events.size() && events[ei].x == x) {
-      int l =
-          (int)(lower_bound(ys.begin(), ys.end(), events[ei].y1) - ys.begin());
-      int r =
-          (int)(lower_bound(ys.begin(), ys.end(), events[ei].y2) - ys.begin());
+      int l = (int)(lower_bound(ys.begin(), ys.end(), events[ei].y1) - ys.begin());
+      int r = (int)(lower_bound(ys.begin(), ys.end(), events[ei].y2) - ys.begin());
       // segments are [idx, idx+1), so apply on [l, r-1]
       st.addRange(l, r - 1, events[ei].delta);
       ++ei;

@@ -53,8 +53,7 @@ struct BigInt {
 
 class NumberCreator {
 public:
-  vector<string> solutionWithNegativeBase(int Num0, int Num1, string T,
-                                          int base) {
+  vector<string> solutionWithNegativeBase(int Num0, int Num1, string T, int base) {
     numToIdx.clear();
     moves.clear();
 

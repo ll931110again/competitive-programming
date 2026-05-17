@@ -12,4 +12,6 @@ int HC(int N) {
   return N;
 }
 
-int main() { return 0; }
+int main() {
+  return 0;
+}

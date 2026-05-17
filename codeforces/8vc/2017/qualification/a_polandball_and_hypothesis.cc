@@ -9,21 +9,22 @@ bool is_prime[MAXK + 2];
 int n;
 
 int main() {
-	memset(is_prime, true, sizeof is_prime);
-	is_prime[0] = is_prime[1] = false;
+  memset(is_prime, true, sizeof is_prime);
+  is_prime[0] = is_prime[1] = false;
 
-	for (int i = 2; i <= MAXK; i++) if (is_prime[i]) {
-		for (int j = i + i; j <= MAXK; j += i) {
-			is_prime[j] = false;
-		}
-	}
+  for (int i = 2; i <= MAXK; i++)
+    if (is_prime[i]) {
+      for (int j = i + i; j <= MAXK; j += i) {
+        is_prime[j] = false;
+      }
+    }
 
-	scanf("%d", &n);
-	for (int m = 1; m <= 1000; m++) {
-		if (!is_prime[n * m + 1]) {
-			printf("%d\n", m);
-			return 0;
-		}
-	}
-	return 0;
+  scanf("%d", &n);
+  for (int m = 1; m <= 1000; m++) {
+    if (!is_prime[n * m + 1]) {
+      printf("%d\n", m);
+      return 0;
+    }
+  }
+  return 0;
 }

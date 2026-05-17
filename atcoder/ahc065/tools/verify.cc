@@ -17,7 +17,8 @@ int main() {
   const int NN = N * N;
   vector<vector<int>> init(N, vector<int>(N));
   for (int i = 0; i < N; i++) {
-    for (int j = 0; j < N; j++) cin >> init[i][j];
+    for (int j = 0; j < N; j++)
+      cin >> init[i][j];
   }
 
   vector<vector<int>> grid = init;
@@ -62,7 +63,7 @@ int main() {
   }
 
   auto rotate = [&](int m, int d) {
-    const auto &cells = belts[m].cells;
+    const auto& cells = belts[m].cells;
     const int L = (int)cells.size();
     vector<int> vals(L);
     for (int i = 0; i < L; i++) {

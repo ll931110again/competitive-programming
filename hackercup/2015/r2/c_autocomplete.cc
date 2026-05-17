@@ -59,8 +59,7 @@ int solve() {
           if (cur[k1] >= 0) {
             for (int k2 = 0; k1 + k2 <= K; k2++)
               if (dp[nxt_node][k2] >= 0) {
-                if (nxt[k1 + k2] < 0 ||
-                    nxt[k1 + k2] > cur[k1] + dp[nxt_node][k2]) {
+                if (nxt[k1 + k2] < 0 || nxt[k1 + k2] > cur[k1] + dp[nxt_node][k2]) {
                   nxt[k1 + k2] = cur[k1] + dp[nxt_node][k2];
                 }
               }

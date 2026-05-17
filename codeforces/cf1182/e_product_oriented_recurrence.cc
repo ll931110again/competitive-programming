@@ -17,7 +17,8 @@ static long long mod_pow(long long a, long long e, long long mod = MOD) {
   long long r = 1 % mod;
   a %= mod;
   while (e > 0) {
-    if (e & 1) r = (__int128)r * a % mod;
+    if (e & 1)
+      r = (__int128)r * a % mod;
     a = (__int128)a * a % mod;
     e >>= 1;
   }
@@ -30,29 +31,32 @@ struct Mat {
 
   Mat(int n, bool ident = false) : n(n), a(n, vector<long long>(n, 0)) {
     if (ident)
-      for (int i = 0; i < n; ++i) a[i][i] = 1;
+      for (int i = 0; i < n; ++i)
+        a[i][i] = 1;
   }
 
-  static Mat mul(const Mat &x, const Mat &y) {
+  static Mat mul(const Mat& x, const Mat& y) {
     Mat z(x.n);
     for (int i = 0; i < x.n; ++i)
-      for (int k = 0; k < x.n; ++k) if (x.a[i][k])
-        for (int j = 0; j < x.n; ++j)
-          z.a[i][j] = (z.a[i][j] + x.a[i][k] * y.a[k][j]) % PHI;
+      for (int k = 0; k < x.n; ++k)
+        if (x.a[i][k])
+          for (int j = 0; j < x.n; ++j)
+            z.a[i][j] = (z.a[i][j] + x.a[i][k] * y.a[k][j]) % PHI;
     return z;
   }
 
   static Mat pow(Mat base, long long e) {
     Mat res(base.n, true);
     while (e > 0) {
-      if (e & 1) res = mul(res, base);
+      if (e & 1)
+        res = mul(res, base);
       base = mul(base, base);
       e >>= 1;
     }
     return res;
   }
 
-  vector<long long> apply(const vector<long long> &v) const {
+  vector<long long> apply(const vector<long long>& v) const {
     vector<long long> r(n);
     for (int i = 0; i < n; ++i)
       for (int j = 0; j < n; ++j)
@@ -71,16 +75,12 @@ int main() {
   // x, y, z: tribonacci on exponents. Companion state at i = 3 is (s_i, s_{i-1}, s_{i-2}).
   Mat baseA(3);
   baseA.a = {{1, 1, 1}, {1, 0, 0}, {0, 1, 0}};
-  vector<long long> vx = {0, 0, 1}, vy = {0, 1, 0}, vz = {1, 0, 0};  // (x_3,x_2,x_1), (y_3,...)
+  vector<long long> vx = {0, 0, 1}, vy = {0, 1, 0}, vz = {1, 0, 0}; // (x_3,x_2,x_1), (y_3,...)
 
   // w_i = w_{i-1} + w_{i-2} + w_{i-3} + 2i - 6; augmented with (2i-6).
   Mat baseB(5);
   baseB.a = {
-      {1, 1, 1, 1, 1},
-      {1, 0, 0, 0, 0},
-      {0, 1, 0, 0, 0},
-      {0, 0, 0, 1, 1},
-      {0, 0, 0, 0, 1},
+      {1, 1, 1, 1, 1}, {1, 0, 0, 0, 0}, {0, 1, 0, 0, 0}, {0, 0, 0, 1, 1}, {0, 0, 0, 0, 1},
   };
   vector<long long> vw = {0, 0, 0, 0, 2};
 

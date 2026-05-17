@@ -49,9 +49,8 @@ int main() {
     for (int i = 0; i < H; ++i) {
       for (int j = 0; j < W; ++j) {
         int position = 3;
-        int digit = (matrix[i][j] >= '0' && matrix[i][j] <= '9')
-                        ? matrix[i][j] - '0'
-                        : matrix[i][j] - 'a' + 10;
+        int digit = (matrix[i][j] >= '0' && matrix[i][j] <= '9') ? matrix[i][j] - '0'
+                                                                 : matrix[i][j] - 'a' + 10;
         while (digit) {
           grid[i][(j << 2) + position] = (digit & 1);
           digit >>= 1;

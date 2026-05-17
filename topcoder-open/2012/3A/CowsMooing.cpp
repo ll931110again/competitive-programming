@@ -33,7 +33,9 @@ struct CowsMooing {
     return ret;
   }
 
-  int inverse(int x) { return power(x, mod - 2); }
+  int inverse(int x) {
+    return power(x, mod - 2);
+  }
 
   int gcd(int x, int y) {
     if (!x)
@@ -80,8 +82,7 @@ struct CowsMooing {
             }
 
       int product = 1;
-      int prop[n +
-               1]; // how many seconds that i cows are mooing at the same time
+      int prop[n + 1]; // how many seconds that i cows are mooing at the same time
       memset(prop, 0, sizeof(prop));
       prop[0] = 1;
       for (int i = 0; i < n; i++)

@@ -16,25 +16,25 @@ int T;
 long long n;
 
 long long solve(long long n) {
-	long long even = 2, odd = n;
-	while (odd % 2 == 0) {
-		even *= 2;
-		odd /= 2;
-	}
-	if (odd == 1) {
-		return -1;
-	}
-	if (n * 2 / even >= even + 1) {
-		return even;
-	}
-	return odd;
+  long long even = 2, odd = n;
+  while (odd % 2 == 0) {
+    even *= 2;
+    odd /= 2;
+  }
+  if (odd == 1) {
+    return -1;
+  }
+  if (n * 2 / even >= even + 1) {
+    return even;
+  }
+  return odd;
 }
 
 int main() {
-	scanf("%d", &T);
-	while (T--) {
-		scanf("%lld\n", &n);
-		printf("%lld\n", solve(n));
-	}
-	return 0;
+  scanf("%d", &T);
+  while (T--) {
+    scanf("%lld\n", &n);
+    printf("%lld\n", solve(n));
+  }
+  return 0;
 }

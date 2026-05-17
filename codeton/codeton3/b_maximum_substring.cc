@@ -9,31 +9,31 @@ int T, n;
 string s;
 
 int main() {
-	cin >> T;
-	while (T--) {
-		cin >> n;
-		cin >> s;
+  cin >> T;
+  while (T--) {
+    cin >> n;
+    cin >> s;
 
-		int c0 = 0, c1 = 0, maxGap = 0, gap = 0, last = -1;
-		for (auto c : s) {
-			if (c == '0') {
-				c0++;
-			} else {
-				c1++;
-			}
+    int c0 = 0, c1 = 0, maxGap = 0, gap = 0, last = -1;
+    for (auto c : s) {
+      if (c == '0') {
+        c0++;
+      } else {
+        c1++;
+      }
 
-			if (last != c) {
-				last = c;
-				gap = 1;
-			} else {
-				gap++;
-			}
+      if (last != c) {
+        last = c;
+        gap = 1;
+      } else {
+        gap++;
+      }
 
-			maxGap = max(maxGap, gap);
-		}
+      maxGap = max(maxGap, gap);
+    }
 
-		long long ret = max(1LL * c0 * c1, 1LL * maxGap * maxGap);
-		cout << ret << endl;
-	}
-	return 0;
+    long long ret = max(1LL * c0 * c1, 1LL * maxGap * maxGap);
+    cout << ret << endl;
+  }
+  return 0;
 }

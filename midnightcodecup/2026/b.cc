@@ -23,7 +23,7 @@ static bool is_black(int r, int c) {
   return x == '1' || x == '#';
 }
 
-static void step(int &r, int &c, char ch) {
+static void step(int& r, int& c, char ch) {
   if (ch == 'U')
     r = max(0, r - 1);
   else if (ch == 'D')
@@ -35,7 +35,7 @@ static void step(int &r, int &c, char ch) {
 }
 
 // 0: a^k b^k, 1: b^k a^k, 2: (ab)^k, 3: (ba)^k — each has k of each axis move.
-static string sync_corner_variant(const string &corner, int variant) {
+static string sync_corner_variant(const string& corner, int variant) {
   int k = n - 1;
   char a = 'U', b = 'L';
   if (corner == "TL") {
@@ -73,7 +73,7 @@ static string sync_corner_variant(const string &corner, int variant) {
   return s;
 }
 
-static pair<int, int> corner_rc(const string &corner) {
+static pair<int, int> corner_rc(const string& corner) {
   if (corner == "TL")
     return {0, 0};
   if (corner == "TR")
@@ -119,8 +119,8 @@ static string manhattan_path(int r, int c, int tr, int tc, bool row_first) {
   return out;
 }
 
-static string build_candidate(const string &corner, int sync_variant,
-                              bool row_first_manhattan, int br, int bc) {
+static string build_candidate(const string& corner, int sync_variant, bool row_first_manhattan,
+                              int br, int bc) {
   auto [cr, cc] = corner_rc(corner);
   string s = sync_corner_variant(corner, sync_variant);
   int r = cr, c = cc;
@@ -132,7 +132,7 @@ static string build_candidate(const string &corner, int sync_variant,
 // effective length (max consumed over whites).
 // If max_eff_cap < INT_MAX, abandons when effective length would exceed
 // max_eff_cap (cannot beat current best strict length; ties handled by caller).
-static optional<int> analyze(const string &moves, int max_eff_cap = INT_MAX) {
+static optional<int> analyze(const string& moves, int max_eff_cap = INT_MAX) {
   int global_need = 0;
   for (auto [r0, c0] : whites) {
     int r = r0, c = c0;
@@ -156,7 +156,7 @@ static optional<int> analyze(const string &moves, int max_eff_cap = INT_MAX) {
   return global_need;
 }
 
-static string truncate_to(const string &moves, int t) {
+static string truncate_to(const string& moves, int t) {
   if (t <= 0)
     return "";
   return moves.substr(0, min(t, (int)moves.size()));
@@ -191,13 +191,12 @@ int main() {
   string best_out;
   int best_eff = INT_MAX;
 
-  for (const string &cor : corners) {
+  for (const string& cor : corners) {
     pair<int, int> crc = corner_rc(cor);
     int cr = crc.first;
     int cc = crc.second;
     vector<pair<int, int>> ranked = blacks;
-    sort(ranked.begin(), ranked.end(), [&](const pair<int, int> &a,
-                                           const pair<int, int> &b) {
+    sort(ranked.begin(), ranked.end(), [&](const pair<int, int>& a, const pair<int, int>& b) {
       int da = abs(a.first - cr) + abs(a.second - cc);
       int db = abs(b.first - cr) + abs(b.second - cc);
       return da < db;
@@ -209,8 +208,7 @@ int main() {
           if (tried >= kProbeBlacks)
             break;
           ++tried;
-          string cand =
-              build_candidate(cor, sync_variant, row_first, br, bc);
+          string cand = build_candidate(cor, sync_variant, row_first, br, bc);
           if ((int)cand.size() > kMaxLen)
             continue;
           auto eff_opt = analyze(cand, best_eff);

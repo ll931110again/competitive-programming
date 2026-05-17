@@ -26,7 +26,7 @@ inline int mod_sub(int a, int b) {
 const int INV2 = 499122177;
 
 // Implement Fast Walsh Hadamard Transform
-void fwht(vector<int> &a, bool invert) {
+void fwht(vector<int>& a, bool invert) {
   int n = a.size();
   for (int len = 1; 2 * len <= n; len <<= 1) {
     for (int i = 0; i < n; i += 2 * len) {
@@ -62,7 +62,9 @@ vector<int> xor_convolution(vector<int> a, vector<int> b) {
 int T, n;
 pair<int, int> a[maxn];
 
-int solve() { return 0; }
+int solve() {
+  return 0;
+}
 
 int main() {
   cin >> T;

@@ -42,9 +42,7 @@ int main() {
   };
   dfs(1, 1);
 
-  auto anc = [&](int u, int v) -> bool {
-    return tin[u] <= tin[v] && tin[v] <= tout[u];
-  };
+  auto anc = [&](int u, int v) -> bool { return tin[u] <= tin[v] && tin[v] <= tout[u]; };
 
   auto lca = [&](int u, int v) -> int {
     if (anc(u, v))

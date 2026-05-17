@@ -2,7 +2,9 @@
 
 using namespace std;
 
-static inline int idx2(int i, int j, int stride) { return i * stride + j; }
+static inline int idx2(int i, int j, int stride) {
+  return i * stride + j;
+}
 
 int main() {
   ios::sync_with_stdio(false);
@@ -61,9 +63,7 @@ int main() {
       int c = (vL - Vmin) + 1;
       int d = (vR - Vmin) + 1;
       int stride = Vsize + 1;
-      auto at = [&](int ui, int vi) -> int {
-        return cnt[idx2(ui, vi, stride)];
-      };
+      auto at = [&](int ui, int vi) -> int { return cnt[idx2(ui, vi, stride)]; };
       return at(b, d) - at(a - 1, d) - at(b, c - 1) + at(a - 1, c - 1);
     };
 

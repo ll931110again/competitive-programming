@@ -10,7 +10,7 @@ struct Wall {
   int x1, y, x2;
 };
 
-static int findBlockIndex(const vector<int> &coords, int v) {
+static int findBlockIndex(const vector<int>& coords, int v) {
   // returns i such that coords[i] <= v < coords[i+1]
   int lo = 0, hi = (int)coords.size() - 2;
   while (lo <= hi) {
@@ -72,7 +72,7 @@ int main() {
     vector<uint8_t> blocked((size_t)X * (size_t)Y, 0);
     auto id = [&](int ix, int iy) -> int { return iy * X + ix; };
 
-    for (const auto &ww : walls) {
+    for (const auto& ww : walls) {
       int iy = findBlockIndex(ys, ww.y);
       int ix1 = findBlockIndex(xs, ww.x1);
       int ix2 = findBlockIndex(xs, ww.x2);

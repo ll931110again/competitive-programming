@@ -1,0 +1,38 @@
+name: clang-format
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.cc'
+      - '**.cpp'
+      - '**.h'
+      - '**.hpp'
+      - '.clang-format'
+      - '.pre-commit-config.yaml'
+      - '.github/workflows/clang-format.yml'
+  pull_request:
+    paths:
+      - '**.cc'
+      - '**.cpp'
+      - '**.h'
+      - '**.hpp'
+      - '.clang-format'
+      - '.pre-commit-config.yaml'
+      - '.github/workflows/clang-format.yml'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      - name: Run clang-format
+        run: pre-commit run clang-format --all-files --show-diff-on-failure

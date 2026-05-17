@@ -16,11 +16,11 @@ struct Task {
   long long cost; // soldiers lost after conquering this subtree
 };
 
-static long long minInitialForTasks(vector<Task> &tasks) {
+static long long minInitialForTasks(vector<Task>& tasks) {
   // Given tasks where each requires current >= req and then reduces by cost,
   // the minimal starting value is minimized by sorting by (req - cost)
   // descending.
-  sort(tasks.begin(), tasks.end(), [](const Task &x, const Task &y) {
+  sort(tasks.begin(), tasks.end(), [](const Task& x, const Task& y) {
     long long dx = x.req - x.cost;
     long long dy = y.req - y.cost;
     if (dx != dy)
@@ -29,7 +29,7 @@ static long long minInitialForTasks(vector<Task> &tasks) {
   });
   long long need = 0;
   long long spent = 0;
-  for (const auto &t : tasks) {
+  for (const auto& t : tasks) {
     need = max(need, t.req + spent);
     spent += t.cost;
   }
@@ -42,8 +42,8 @@ struct DpRes {
   long long loss; // total soldiers removed in this subtree (deaths+garrisons)
 };
 
-static DpRes dfsSolve(int u, int parent, const vector<Castle> &castles,
-                      const vector<vector<int>> &adj) {
+static DpRes dfsSolve(int u, int parent, const vector<Castle>& castles,
+                      const vector<vector<int>>& adj) {
   vector<Task> tasks;
   long long lossSum = 0;
 
@@ -57,8 +57,7 @@ static DpRes dfsSolve(int u, int parent, const vector<Castle> &castles,
 
   long long selfCost = (long long)castles[u].m + (long long)castles[u].g;
   long long needAfterCapture = minInitialForTasks(tasks);
-  long long needBeforeAttack =
-      max<long long>(castles[u].a, selfCost + needAfterCapture);
+  long long needBeforeAttack = max<long long>(castles[u].a, selfCost + needAfterCapture);
   long long totalLoss = selfCost + lossSum;
   return DpRes{needBeforeAttack, totalLoss};
 }

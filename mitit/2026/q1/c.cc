@@ -29,9 +29,8 @@ void init(int i, int low, int high) {
   init(2 * i, low, mid);
   init(2 * i + 1, mid + 1, high);
   tx[i] = tx[2 * i] + tx[2 * i + 1];
-  min_index[i] = (a[min_index[2 * i]] <= a[min_index[2 * i + 1]])
-                     ? min_index[2 * i]
-                     : min_index[2 * i + 1];
+  min_index[i] =
+      (a[min_index[2 * i]] <= a[min_index[2 * i + 1]]) ? min_index[2 * i] : min_index[2 * i + 1];
 }
 
 void update(int i, int low, int high, int pos) {
@@ -49,9 +48,8 @@ void update(int i, int low, int high, int pos) {
   }
 
   tx[i] = tx[2 * i] + tx[2 * i + 1];
-  min_index[i] = (a[min_index[2 * i]] <= a[min_index[2 * i + 1]])
-                     ? min_index[2 * i]
-                     : min_index[2 * i + 1];
+  min_index[i] =
+      (a[min_index[2 * i]] <= a[min_index[2 * i + 1]]) ? min_index[2 * i] : min_index[2 * i + 1];
 }
 
 long long get_sum(int i, int low, int high, int u, int v) {
@@ -62,8 +60,7 @@ long long get_sum(int i, int low, int high, int u, int v) {
     return tx[i];
   }
   int mid = (low + high) / 2;
-  return get_sum(2 * i, low, mid, u, v) +
-         get_sum(2 * i + 1, mid + 1, high, u, v);
+  return get_sum(2 * i, low, mid, u, v) + get_sum(2 * i + 1, mid + 1, high, u, v);
 }
 
 int get_min_index(int i, int low, int high, int u, int v) {

@@ -22,8 +22,7 @@ using namespace std;
 
 map<long long, pair<long long, long long>> mp_a, mp_b;
 
-void build(vector<int> values,
-           map<long long, pair<long long, long long>> &ans) {
+void build(vector<int> values, map<long long, pair<long long, long long>>& ans) {
   ans.clear();
   int N = values.size();
 

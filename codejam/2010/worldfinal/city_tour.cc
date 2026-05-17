@@ -7,21 +7,24 @@
 using namespace std;
 
 static inline long long edge_key(int a, int b) {
-  if (a > b) swap(a, b);
+  if (a > b)
+    swap(a, b);
   return (static_cast<long long>(a) << 32) ^ static_cast<unsigned int>(b);
 }
 
 struct Solver {
   int n = 0;
-  unordered_map<long long, vector<int>> children;  // edge -> nodes added on that edge
-  unordered_map<long long, int> memo;              // edge -> best downward cycle length
+  unordered_map<long long, vector<int>> children; // edge -> nodes added on that edge
+  unordered_map<long long, int> memo;             // edge -> best downward cycle length
   int best_cycle = 0;
 
   int best_edge(int x, int y) {
-    if (x > y) swap(x, y);
+    if (x > y)
+      swap(x, y);
     long long key = edge_key(x, y);
     auto it = memo.find(key);
-    if (it != memo.end()) return it->second;
+    if (it != memo.end())
+      return it->second;
 
     int max_len = 2;
     int second_max_len = -1;
@@ -31,7 +34,8 @@ struct Solver {
       for (int z : ch_it->second) {
         // Critical: the recurrence only uses nodes with z > max(x,y)=y,
         // otherwise the recursion graph can become cyclic.
-        if (z <= y) continue;
+        if (z <= y)
+          continue;
         int len = best_edge(x, z) + best_edge(y, z) - 1;
         if (len > max_len) {
           second_max_len = max_len;
@@ -42,8 +46,10 @@ struct Solver {
       }
     }
 
-    if (max_len >= 3) best_cycle = max(best_cycle, max_len);
-    if (second_max_len >= 3) best_cycle = max(best_cycle, max_len + second_max_len - 2);
+    if (max_len >= 3)
+      best_cycle = max(best_cycle, max_len);
+    if (second_max_len >= 3)
+      best_cycle = max(best_cycle, max_len + second_max_len - 2);
 
     memo.emplace(key, max_len);
     return max_len;
@@ -84,4 +90,3 @@ int main() {
   }
   return 0;
 }
-

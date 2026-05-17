@@ -32,7 +32,7 @@ int main() {
       flags[i] = 0;
     }
 
-    sort(a, a + n, [&](const auto &u, const auto &v) { return u.x < v.x; });
+    sort(a, a + n, [&](const auto& u, const auto& v) { return u.x < v.x; });
 
     for (int i = 0; i < n; i++) {
       if (i < n / 2) {
@@ -42,7 +42,7 @@ int main() {
       }
     }
 
-    sort(a, a + n, [&](const auto &u, const auto &v) { return u.y < v.y; });
+    sort(a, a + n, [&](const auto& u, const auto& v) { return u.y < v.y; });
 
     for (int i = 0; i < n; i++) {
       if (i < n / 2) {

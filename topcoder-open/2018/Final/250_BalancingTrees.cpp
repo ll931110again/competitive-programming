@@ -68,8 +68,7 @@ public:
 
   void dfs(int u) {
     for (auto v : adj[u]) {
-      a[v] = make_pair(a[u].first / adj[u].size(),
-                       (a[u].second - weight[u]) / adj[u].size());
+      a[v] = make_pair(a[u].first / adj[u].size(), (a[u].second - weight[u]) / adj[u].size());
       dfs(v);
     }
   }

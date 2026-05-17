@@ -21,8 +21,7 @@
 using namespace std;
 
 struct CrossingTheRiver {
-  string isItEvenPossible(int waterWidth, int landWidth,
-                          vector<int> blockHeight, int depth) {
+  string isItEvenPossible(int waterWidth, int landWidth, vector<int> blockHeight, int depth) {
     vector<int> cnt(101);
     for (int i = 0; i < blockHeight.size(); i++) {
       cnt[blockHeight[i]]++;
@@ -46,8 +45,7 @@ struct CrossingTheRiver {
     return "IMPOSSIBLE";
   };
 
-  bool solved(int wl, int wr, int ll, int lr, vector<int> cnt, int waterWidth,
-              int landWidth) {
+  bool solved(int wl, int wr, int ll, int lr, vector<int> cnt, int waterWidth, int landWidth) {
     for (int i = wl; i <= wr; i++) {
       if (!cnt[i]) {
         return false;
@@ -61,8 +59,7 @@ struct CrossingTheRiver {
       cnt[i]--;
     }
 
-    int waterOnly = 0, landOnly = 0, both = 0,
-        waterRem = waterWidth - (wr - wl + 1),
+    int waterOnly = 0, landOnly = 0, both = 0, waterRem = waterWidth - (wr - wl + 1),
         landRem = landWidth - (lr - ll + 1);
     for (int i = 1; i <= 100; i++) {
       if (wl <= i && i <= wr && ll <= i && i <= lr) {

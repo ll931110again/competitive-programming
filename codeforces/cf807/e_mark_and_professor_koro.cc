@@ -30,9 +30,8 @@ void set_value(int i, int mid) {
 
   msb[i] = (msb[2 * i + 1] >= 0) ? msb[2 * i + 1] : msb[2 * i];
   for (int j = 0; j < 2; j++) {
-    strips[i][j] = (strips[2 * i][j] >= mid)
-                       ? max(strips[2 * i][j], strips[2 * i + 1][j])
-                       : strips[2 * i][j];
+    strips[i][j] =
+        (strips[2 * i][j] >= mid) ? max(strips[2 * i][j], strips[2 * i + 1][j]) : strips[2 * i][j];
   }
 }
 
@@ -74,8 +73,7 @@ int get(int i, int low, int high, int pos) {
 
   int mid = (low + high) / 2;
   flag(i, low, high, mid);
-  return (pos <= mid) ? get(2 * i, low, mid, pos)
-                      : get(2 * i + 1, mid + 1, high, pos);
+  return (pos <= mid) ? get(2 * i, low, mid, pos) : get(2 * i + 1, mid + 1, high, pos);
 }
 
 void update(int i, int low, int high, int u, int v, int val) {

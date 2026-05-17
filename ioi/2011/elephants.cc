@@ -155,8 +155,7 @@ int update(int idx, int new_value) {
 
   // delete the old value from the bucket
   for (int i = 0; i < num_buckets; i++) {
-    if (buckets[i].elements.front() <= old_value &&
-        old_value <= buckets[i].elements.back()) {
+    if (buckets[i].elements.front() <= old_value && old_value <= buckets[i].elements.back()) {
       buckets[i].remove(old_value);
 
       // delete empty buckets
@@ -189,8 +188,7 @@ int update(int idx, int new_value) {
       break;
     }
 
-    if (buckets[i].elements.front() <= new_value &&
-        new_value <= buckets[i + 1].elements.front()) {
+    if (buckets[i].elements.front() <= new_value && new_value <= buckets[i + 1].elements.front()) {
       buckets[i].add(new_value);
       break;
     }
@@ -202,8 +200,7 @@ int update(int idx, int new_value) {
     auto q = buckets[bucket_idx].query(end_cover);
     steps += q.first;
     end_cover = q.second;
-    while (bucket_idx < num_buckets &&
-           buckets[bucket_idx].elements.back() < end_cover) {
+    while (bucket_idx < num_buckets && buckets[bucket_idx].elements.back() < end_cover) {
       bucket_idx++;
     }
   }

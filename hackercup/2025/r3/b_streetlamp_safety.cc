@@ -97,8 +97,7 @@ long long solve() {
           if (k == 0) {
             if (j == 0) {
               if (len[i + 1] <= 1) {
-                dp[i + 1][1][1] =
-                    min(dp[i + 1][1][1], dp[i][j][k] + cost[i + 1]);
+                dp[i + 1][1][1] = min(dp[i + 1][1][1], dp[i][j][k] + cost[i + 1]);
               }
             } else {
               int _i = min(n, i + j);
@@ -108,8 +107,7 @@ long long solve() {
             }
           } else {
             if (len[i + 1] <= j + 1) {
-              dp[i + 1][j + 1][1] =
-                  min(dp[i + 1][j + 1][1], dp[i][j][k] + cost[i + 1]);
+              dp[i + 1][j + 1][1] = min(dp[i + 1][j + 1][1], dp[i][j][k] + cost[i + 1]);
             }
           }
         }

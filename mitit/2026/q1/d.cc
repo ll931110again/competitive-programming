@@ -33,8 +33,7 @@ void rec(int idx, long long x, int i, int delta) {
     int branch = (x & (1LL << i)) ? 1 : 0;
     if (nodes[idx].nxt[branch] < 0) {
       if (unallocated.empty()) {
-        nodes.push_back(
-            {.cnt = 0, .max_sum = 0, .is_full = true, .is_leaf = true});
+        nodes.push_back({.cnt = 0, .max_sum = 0, .is_full = true, .is_leaf = true});
         nodes[nodes.size() - 1].nxt[0] = nodes[nodes.size() - 1].nxt[1] = -1;
         nodes[idx].nxt[branch] = nodes.size() - 1;
       } else {
@@ -77,8 +76,7 @@ void rec(int idx, long long x, int i, int delta) {
         nodes[idx].is_full = false;
         break;
       }
-      if (!nodes[nodes[idx].nxt[branch]].is_full &&
-          !nodes[nodes[idx].nxt[branch]].is_leaf) {
+      if (!nodes[nodes[idx].nxt[branch]].is_full && !nodes[nodes[idx].nxt[branch]].is_leaf) {
         nodes[idx].is_full = false;
         break;
       }
@@ -89,8 +87,7 @@ void rec(int idx, long long x, int i, int delta) {
   for (int branch = 0; branch < 2; branch++) {
     if (nodes[idx].nxt[branch] >= 0 && !nodes[nodes[idx].nxt[branch]].is_full &&
         !nodes[nodes[idx].nxt[branch]].is_leaf) {
-      nodes[idx].max_sum =
-          max(nodes[idx].max_sum, nodes[nodes[idx].nxt[branch]].max_sum);
+      nodes[idx].max_sum = max(nodes[idx].max_sum, nodes[nodes[idx].nxt[branch]].max_sum);
     }
   }
   if (idx > 0) {
@@ -98,9 +95,13 @@ void rec(int idx, long long x, int i, int delta) {
   }
 }
 
-void add(long long x) { rec(0, x, 0, 1); }
+void add(long long x) {
+  rec(0, x, 0, 1);
+}
 
-void remove(long long x) { rec(0, x, 0, -1); }
+void remove(long long x) {
+  rec(0, x, 0, -1);
+}
 
 void solve() {
   nodes.clear();
