@@ -68,10 +68,10 @@ int main() {
   long long n, f1, f2, f3, c;
   cin >> n >> f1 >> f2 >> f3 >> c;
 
-  // x, y, z: x_i = x_{i-1} + x_{i-2} + x_{i-3}; start (1,0,0), (0,1,0), (0,0,1).
+  // x, y, z: tribonacci on exponents. Companion state at i = 3 is (s_i, s_{i-1}, s_{i-2}).
   Mat baseA(3);
   baseA.a = {{1, 1, 1}, {1, 0, 0}, {0, 1, 0}};
-  vector<long long> vx = {1, 0, 0}, vy = {0, 1, 0}, vz = {0, 0, 1};
+  vector<long long> vx = {0, 0, 1}, vy = {0, 1, 0}, vz = {1, 0, 0};  // (x_3,x_2,x_1), (y_3,...)
 
   // w_i = w_{i-1} + w_{i-2} + w_{i-3} + 2i - 6; augmented with (2i-6).
   Mat baseB(5);

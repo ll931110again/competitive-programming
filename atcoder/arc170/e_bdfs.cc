@@ -1,10 +1,7 @@
 // ARC170 E - BDFS: https://atcoder.jp/contests/arc170/tasks/arc170_e
 //
-// Official editorial: expected sum is a linear combination of entries of A^N, hence (by
-// Cayley–Hamilton) a constant-coefficient linear recurrence in N; recover with
-// Berlekamp–Massey + k-th term. This implementation uses the equivalent closed form
-//   sum_{1<=i<=j<N} (1 + r^{j-i}),  r = 2P/100 - 1,
-// which is O(log N) per test case.
+// Equivalent O(log N) closed form from the pair decomposition (editorial also gives
+// Cayley–Hamilton / Berlekamp–Massey on the linear recurrence in N).
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -22,13 +19,10 @@ static int mod_pow(long long a, long long e) {
   return (int)r;
 }
 
-static int mod_inv(int a) {
-  return mod_pow(a, MOD - 2);
-}
+static int mod_inv(int a) { return mod_pow(a, MOD - 2); }
 
-// Expected sum for cycle length N (original variable) and front-push probability P (1..99).
 static int solve(long long N, int P) {
-  long long n = N - 1; // pairs use 0..n-1 offset; constant term is n(n+1)/2
+  long long n = N - 1;
   int inv2 = (MOD + 1) / 2;
   int inv100 = mod_inv(100);
 

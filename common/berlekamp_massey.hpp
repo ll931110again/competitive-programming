@@ -27,8 +27,8 @@ template <int MOD> struct ModInt {
   friend ModInt operator-(ModInt a, ModInt b) { return a -= b; }
   friend ModInt operator*(ModInt a, ModInt b) { return a *= b; }
   friend ModInt operator/(ModInt a, ModInt b) { return a * mod_pow(b, MOD - 2); }
-  bool operator==(ModInt o) const { return x == o.x; }
-  bool operator!=(ModInt o) const { return x != o.x; }
+  bool operator==(const ModInt &o) const { return x == o.x; }
+  bool operator!=(const ModInt &o) const { return x != o.x; }
 };
 
 template <int MOD> ModInt<MOD> mod_pow(ModInt<MOD> a, long long e) {
@@ -68,8 +68,10 @@ std::vector<ModInt<MOD>> berlekamp_massey(const std::vector<ModInt<MOD>> &s) {
     b = d;
     m = 1;
   }
-  C.resize(L);
-  return C;
+  // Relation: s[i] + sum_{j=1}^{L} C[j] * s[i-j] = 0  =>  s[i] = sum_{j=0}^{L-1} (-C[j+1]) * s[i-j-1].
+  std::vector<ModInt<MOD>> res(L);
+  for (int j = 0; j < L; ++j) res[j] = ModInt<MOD>(0) - C[j + 1];
+  return res;
 }
 
 template <int MOD>
