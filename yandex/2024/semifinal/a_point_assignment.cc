@@ -1,10 +1,4 @@
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <set>
-#include <vector>
+#include <bits/stdc++.h>
 #define maxn 100005
 using namespace std;
 

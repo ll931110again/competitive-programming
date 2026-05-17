@@ -1,18 +1,4 @@
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <random>
-#include <set>
-#include <stack>
-#include <unordered_map>
-#include <vector>
 #define maxn 1005
 using namespace std;
 

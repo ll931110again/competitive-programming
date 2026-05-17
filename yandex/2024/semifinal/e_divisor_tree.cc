@@ -1,11 +1,4 @@
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <set>
-#include <unordered_map>
-#include <vector>
+#include <bits/stdc++.h>
 #define maxn 200005
 #define maxk 20
 #define maxd 10000005
