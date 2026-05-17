@@ -74,39 +74,38 @@ std::vector<ModInt<MOD>> berlekamp_massey(const std::vector<ModInt<MOD>> &s) {
   return res;
 }
 
+// s_k = sum_{j=0}^{n-1} trans[j] * s_{k-j-1}; init holds s_0 .. s_{n-1} at minimum.
 template <int MOD>
 ModInt<MOD> kth_linear_recurrence(std::vector<ModInt<MOD>> init,
                                   const std::vector<ModInt<MOD>> &trans, long long k) {
   const int n = (int)trans.size();
   assert((int)init.size() >= n);
-  if (k < (int)init.size()) return init[(int)k];
+  if (k < n) return init[(int)k];
 
-  using Poly = std::vector<ModInt<MOD>>;
-  Poly r(n + 1), b(n + 2);
-  r[0] = ModInt<MOD>(1);
-  b[1] = ModInt<MOD>(1);
+  using M = std::vector<std::vector<ModInt<MOD>>>;
+  M base(n, std::vector<ModInt<MOD>>(n));
+  for (int i = 0; i < n; ++i) base[0][i] = trans[i];
+  for (int i = 1; i < n; ++i) base[i][i - 1] = ModInt<MOD>(1);
 
-  auto combine = [&](const Poly &a, const Poly &bb) {
-    Poly res(2 * n + 1);
-    for (int i = 0; i <= n; ++i)
-      for (int j = 0; j <= n; ++j)
-        if (a[i] != ModInt<MOD>(0) && bb[j] != ModInt<MOD>(0)) res[i + j] += a[i] * bb[j];
-    for (int i = 2 * n; i > n; --i) {
-      if (res[i] == ModInt<MOD>(0)) continue;
-      for (int j = 0; j < n; ++j) res[i - 1 - j] += res[i] * trans[j];
-    }
-    res.resize(n + 1);
-    return res;
+  auto mat_mul = [&](const M &A, const M &B) {
+    M C(n, std::vector<ModInt<MOD>>(n));
+    for (int i = 0; i < n; ++i)
+      for (int j = 0; j < n; ++j)
+        for (int t = 0; t < n; ++t) C[i][j] += A[i][t] * B[t][j];
+    return C;
   };
 
-  ++k;
-  while (k > 0) {
-    if (k & 1) r = combine(r, b);
-    b = combine(b, b);
-    k >>= 1;
+  M res(n, std::vector<ModInt<MOD>>(n));
+  for (int i = 0; i < n; ++i) res[i][i] = ModInt<MOD>(1);
+  long long e = k - n + 1;
+  M powM = base;
+  while (e > 0) {
+    if (e & 1) res = mat_mul(res, powM);
+    powM = mat_mul(powM, powM);
+    e >>= 1;
   }
 
   ModInt<MOD> ans(0);
-  for (int i = 0; i < n; ++i) ans += r[i + 1] * init[n - 1 - i];
+  for (int i = 0; i < n; ++i) ans += res[0][i] * init[n - 1 - i];
   return ans;
 }

@@ -1,7 +1,7 @@
 // ARC170 E - BDFS: https://atcoder.jp/contests/arc170/tasks/arc170_e
 //
-// Equivalent O(log N) closed form from the pair decomposition (editorial also gives
-// Cayley–Hamilton / Berlekamp–Massey on the linear recurrence in N).
+// Equivalent O(log N) closed form from the pair decomposition.
+// Cayley–Hamilton / Berlekamp–Massey route: e_bdfs_cayley.cc
 
 #include <bits/stdc++.h>
 using namespace std;
