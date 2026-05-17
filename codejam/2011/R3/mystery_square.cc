@@ -63,7 +63,7 @@ int main() {
     // cand = (root<<2) + 1
     // if rem >= cand: rem-=cand, root=(root<<1)+1 else root<<=1
     // This constructs floor(sqrt(N)); for perfect squares remainder ends at 0.
-    function<void(int, u128, unsigned long long)> dfs = [&](int i, u128 rem, unsigned long long root) {
+    auto dfs = [&](int i, u128 rem, unsigned long long root) {
       if (!answer.empty()) return;
       if (i == pairs) {
         if (rem != 0) return;
