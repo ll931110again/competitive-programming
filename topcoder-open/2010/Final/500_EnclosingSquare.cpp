@@ -1,21 +1,4 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <utility>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
 struct EnclosingSquare {

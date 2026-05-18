@@ -1,23 +1,7 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <utility>
-#include <vector>
-#define mod 1000000009
+#include <bits/stdc++.h>
 using namespace std;
+
+#define mod 1000000009
 
 int sum[2002], next[2002];
 
