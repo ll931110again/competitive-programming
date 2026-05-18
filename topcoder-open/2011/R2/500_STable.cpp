@@ -3,169 +3,105 @@ using namespace std;
 
 class STable {
   string s, t;
-  int n, m;
-  vector<vector<unsigned long long>> cellLen;
-  int lessLR[31][31];
-  int cmpMemo[31][31][31][31];
 
-  char baseChar(int i, int j) {
-    if (i == 0)
-      return t[j - 1];
-    return s[i - 1];
+  bool lessS(const string& a, const string& b) const {
+    if (a == b)
+      return false;
+    if (a.size() < b.size() && a == b.substr(0, a.size()))
+      return true;
+    for (int i = 0; i < (int)min(a.size(), b.size()); i++) {
+      if (a[i] != b[i])
+        return a[i] < b[i];
+    }
+    return a.size() < b.size();
   }
 
-  unsigned long long getLen(int i, int j) {
-    if (i == 0 || j == 0)
-      return 1;
-    return cellLen[i - 1][j] + cellLen[i][j - 1];
+  string combine(const string& a, const string& b) const {
+    if (lessS(a, b))
+      return a + b;
+    if (lessS(b, a))
+      return b + a;
+    return a + b;
   }
 
-  char charAt(int i, int j, unsigned long long pos) {
-    if (i == 0)
-      return t[j - 1];
-    if (j == 0)
-      return s[i - 1];
-    unsigned long long la = cellLen[i - 1][j], lb = cellLen[i][j - 1];
-    if (lessLR[i][j]) {
-      if (pos < la)
-        return charAt(i - 1, j, pos);
-      return charAt(i, j - 1, pos - la);
-    }
-    if (pos < lb)
-      return charAt(i, j - 1, pos);
-    return charAt(i - 1, j, pos - lb);
+  struct Mat {
+    string a, b;
+  };
+
+  Mat mul(const Mat& x, const Mat& y) const {
+    Mat r;
+    r.a = combine(x.a, y.a);
+    r.b = combine(x.b, y.b);
+    return r;
   }
 
-  int cmpCells(int i1, int j1, int i2, int j2) {
-    if (i1 < 0 || j1 < 0 || i2 < 0 || j2 < 0)
-      return 0;
-    int& res = cmpMemo[i1][j1][i2][j2];
-    if (res != -2)
-      return res;
+  Mat step(const Mat& cur, char ch) const {
+    Mat r;
+    string one(1, ch);
+    r.a = combine(cur.a, one);
+    r.b = combine(cur.b, one);
+    return r;
+  }
 
-    if (i1 == 0 && j1 > 0) {
-      char a = t[j1 - 1];
-      if (i2 == 0 && j2 > 0) {
-        char b = t[j2 - 1];
-        res = (a == b) ? 0 : (a < b ? -1 : 1);
-        return res;
-      }
-      char b = charAt(i2, j2, 0);
-      if (a != b) {
-        res = a < b ? -1 : 1;
-        return res;
-      }
-      if (getLen(i2, j2) == 1) {
-        res = 0;
-        return res;
-      }
-      res = -1;
-      return res;
+  Mat power(Mat base, long long exp) const {
+    Mat res;
+    res.a = s;
+    res.b = t;
+    while (exp > 0) {
+      if (exp & 1)
+        res = mul(res, base);
+      base = mul(base, base);
+      exp >>= 1;
     }
-    if (j1 == 0 && i1 > 0) {
-      res = -cmpCells(i2, j2, i1, j1);
-      return res;
-    }
-    if (i2 == 0 || j2 == 0) {
-      res = -cmpCells(i2, j2, i1, j1);
-      return res;
-    }
-
-    char c1 = charAt(i1, j1, 0);
-    char c2 = charAt(i2, j2, 0);
-    if (c1 != c2) {
-      res = c1 < c2 ? -1 : 1;
-      return res;
-    }
-    if (getLen(i1, j1) == 1 && getLen(i2, j2) == 1) {
-      res = 0;
-      return res;
-    }
-    if (getLen(i1, j1) == 1) {
-      res = -1;
-      return res;
-    }
-    if (getLen(i2, j2) == 1) {
-      res = 1;
-      return res;
-    }
-
-    res = cmpAtOffset(i1, j1, 1, i2, j2, 1);
     return res;
   }
 
-  int cmpAtOffset(int i1, int j1, unsigned long long o1, int i2, int j2, unsigned long long o2) {
-    while (true) {
-      if (o1 >= getLen(i1, j1)) {
-        if (o2 >= getLen(i2, j2))
-          return 0;
-        return -1;
-      }
-      if (o2 >= getLen(i2, j2))
-        return 1;
-
-      if (i1 == 0) {
-        char a = t[j1 - 1];
-        char b = charAt(i2, j2, o2);
-        if (a != b)
-          return a < b ? -1 : 1;
-        return 0;
-      }
-      if (j1 == 0) {
-        char a = s[i1 - 1];
-        char b = charAt(i2, j2, o2);
-        if (a != b)
-          return a < b ? -1 : 1;
-        return 0;
-      }
-      if (i2 == 0 || j2 == 0)
-        return -cmpAtOffset(i2, j2, o2, i1, j1, o1);
-
-      unsigned long long la = cellLen[i1 - 1][j1], lb = cellLen[i1][j1 - 1];
-      if (lessLR[i1][j1]) {
-        if (o1 < la)
-          return cmpAtOffset(i1 - 1, j1, o1, i2, j2, o2);
-        return cmpAtOffset(i1, j1 - 1, o1 - la, i2, j2, o2);
-      }
-      if (o1 < lb)
-        return cmpAtOffset(i1, j1 - 1, o1, i2, j2, o2);
-      return cmpAtOffset(i1 - 1, j1, o1 - lb, i2, j2, o2);
-    }
+  long long len(long long n, long long m) const {
+    if (n == 0)
+      return m;
+    if (m == 0)
+      return n;
+    return len(n - 1, m) + len(n, m - 1) + 1;
   }
 
-  void buildLess() {
-    memset(lessLR, 0, sizeof(lessLR));
-    for (int sum = 2; sum <= n + m; sum++) {
-      for (int i = 1; i <= n; i++) {
-        int j = sum - i;
-        if (j < 1 || j > m)
-          continue;
-        lessLR[i][j] = cmpCells(i - 1, j, i, j - 1) < 0;
-      }
+  string build(long long n, long long m, long long pos, long long lim) const {
+    if (n == 0) {
+      string r;
+      for (long long i = 0; i < m && (int)r.size() < lim; i++)
+        r.push_back(t[i]);
+      return r.substr(pos, lim);
     }
+    if (m == 0) {
+      string r;
+      for (long long i = 0; i < n && (int)r.size() < lim; i++)
+        r.push_back(s[i]);
+      return r.substr(pos, lim);
+    }
+    long long l1 = len(n - 1, m);
+    long long l2 = len(n, m - 1);
+    long long l3 = 1;
+    long long total = l1 + l2 + l3;
+    if (pos < l1)
+      return build(n - 1, m, pos, lim);
+    pos -= l1;
+    if (pos < l2)
+      return build(n, m - 1, pos, lim);
+    pos -= l2;
+    string a = build(n - 1, m, len(n - 1, m) - 1, 1);
+    string b = build(n, m - 1, len(n, m - 1) - 1, 1);
+    string c = combine(a, b);
+    if (pos == 0)
+      return c.substr(0, lim);
+    return "";
   }
 
 public:
   string getString(string s_, string t_, long long pos) {
     s = s_;
     t = t_;
-    n = s.size();
-    m = t.size();
-    cellLen.assign(n + 1, vector<unsigned long long>(m + 1, 1));
-    memset(cmpMemo, -2, sizeof(cmpMemo));
-
-    for (int i = 1; i <= n; i++) {
-      for (int j = 1; j <= m; j++) {
-        cellLen[i][j] = cellLen[i - 1][j] + cellLen[i][j - 1];
-      }
-    }
-
-    buildLess();
-
-    string ans;
-    unsigned long long L = cellLen[n][m];
-    for (int k = 0; k < 50 && pos + k < L; k++)
-      ans.push_back(charAt(n, m, pos + k));
-    return ans;
+    long long n = s.size(), m = t.size();
+    long long L = len(n, m);
+    long long take = min(50LL, L - pos);
+    return build(n, m, pos, take);
   }
 };

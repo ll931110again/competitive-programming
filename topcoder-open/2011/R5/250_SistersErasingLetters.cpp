@@ -2,46 +2,38 @@
 using namespace std;
 
 class SistersErasingLetters {
-  string s;
-  map<string, int> memo;
+  string w;
+  map<pair<unsigned long long, int>, int> memo;
 
-  // 0 = Camomile wins, 1 = Romashka wins
-  int solve(const string& t, int turn, int minPos) {
-    if ((int)t.size() == 1) {
-      if (t > s)
-        return 0;
-      return 1;
+  int solve(unsigned long long mask, int minPos, bool camiTurn) {
+    if (__builtin_popcountll(mask) == 1) {
+      int pos = __builtin_ctzll(mask);
+      string fin(1, w[pos]);
+      return fin > w ? 1 : 0;
     }
-    string key;
-    key.reserve(t.size() + 4);
-    key.push_back(char('0' + turn));
-    key.push_back(char('0' + minPos));
-    key += t;
+    auto key = make_pair(mask, minPos * 2 + camiTurn);
     if (memo.count(key))
       return memo[key];
 
-    if (turn == 0) {
-      for (int i = minPos; i < (int)t.size(); i++) {
-        string nxt = t;
-        nxt.erase(nxt.begin() + i);
-        if (solve(nxt, 1, i) == 0)
-          return memo[key] = 0;
-      }
-      return memo[key] = 1;
+    int best = camiTurn ? 0 : 1;
+    for (int i = 0; i < (int)w.size(); i++) {
+      if (!(mask & (1ULL << i)) || i < minPos)
+        continue;
+      unsigned long long nmask = mask ^ (1ULL << i);
+      int res = solve(nmask, 0, !camiTurn);
+      if (camiTurn)
+        best = max(best, res);
+      else
+        best = min(best, res);
     }
-    for (int i = minPos; i < (int)t.size(); i++) {
-      string nxt = t;
-      nxt.erase(nxt.begin() + i);
-      if (solve(nxt, 0, i) == 1)
-        return memo[key] = 1;
-    }
-    return memo[key] = 0;
+    return memo[key] = best;
   }
 
 public:
   string whoWins(string word) {
-    s = word;
+    w = word;
     memo.clear();
-    return solve(word, 0, 0) == 0 ? "Camomile" : "Romashka";
+    unsigned long long mask = (word.size() == 64 ? ~0ULL : ((1ULL << word.size()) - 1));
+    return solve(mask, 0, true) ? "Camomile" : "Romashka";
   }
 };

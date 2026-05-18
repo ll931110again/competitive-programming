@@ -50,6 +50,8 @@ class CircuitDesign {
   }
 
   long long countBottom(const vector<vector<int>>& mustFull) {
+    if (kBot == 0)
+      return fact[n];
     vector<vector<int>> must(kBot, vector<int>(kBot));
     for (int i = 0; i < kBot; i++) {
       for (int j = 0; j < kBot; j++) {
@@ -58,10 +60,7 @@ class CircuitDesign {
       }
     }
     long long ways = linext(must, kBot);
-    if (kBot < n) {
-      long long denom = fact[n - kBot];
-      ways = ways * fact[n] % MOD * modPow(denom, MOD - 2) % MOD;
-    }
+    ways = ways * fact[n] % MOD * modPow(fact[kBot], MOD - 2) % MOD;
     return ways;
   }
 
@@ -93,7 +92,8 @@ class CircuitDesign {
           if (!(maskT & (1 << tjIdx)))
             continue;
           int bj = bottom[j];
-          nxt[bj][bi] = 1;
+          if (bi != bj)
+            nxt[bj][bi] = 1;
         }
       }
       res = (res + dfs(maskT | (1 << ti), nxt)) % MOD;
@@ -131,10 +131,7 @@ public:
     memo.clear();
     long long inner = dfs(0, mustFull);
 
-    long long embed = fact[n];
-    if (kTop < n)
-      embed = embed * modPow(fact[n - kTop], MOD - 2) % MOD;
-
+    long long embed = fact[n] * modPow(fact[kTop], MOD - 2) % MOD;
     return (int)(inner * embed % MOD);
   }
 };
