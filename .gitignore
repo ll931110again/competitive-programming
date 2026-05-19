@@ -4,6 +4,7 @@
 *.o
 midnightcodecup/2026/b_runner
 midnightcodecup/2026/c_runner
+codeton/codeton4/f_m_tree
 midnightcodecup/2026/a_submit_tmp/
 __pycache__/
 midnightcodecup/2026/b_problem_outputs/
