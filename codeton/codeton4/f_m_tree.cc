@@ -1,3 +1,4 @@
+// Codeforces 1810 (CodeTON Round 4) — F. M-Tree
 #ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
 #endif
@@ -15,7 +16,7 @@
 #define MAXD 50
 using namespace std;
 
-int T, n, m, Q;
+int T, n, m, Q, lim;
 int a[maxn], bits[maxn];
 
 int tx[4 * maxn], carrier[4 * maxn];
@@ -145,35 +146,38 @@ int max_right(int i, int low, int high, int lower_bound, int val) {
 }
 
 void add(int pos) {
-  int px = get(1, 0, maxn - 1, pos);
+  int px = get(1, 0, lim, pos);
   if (px < m - 1) {
-    update(1, 0, maxn - 1, pos, pos, px + 1);
+    update(1, 0, lim, pos, pos, px + 1);
     return;
   }
-  int rs = max_right(1, 0, maxn - 1, pos, m - 1);
+  int rs = max_right(1, 0, lim, pos, m - 1);
   rs = max(rs, pos);
-  update(1, 0, maxn - 1, pos, rs, 0);
+  update(1, 0, lim, pos, rs, 0);
 
-  px = get(1, 0, maxn - 1, rs + 1);
-  update(1, 0, maxn - 1, rs + 1, rs + 1, px + 1);
+  px = get(1, 0, lim, rs + 1);
+  update(1, 0, lim, rs + 1, rs + 1, px + 1);
 }
 
 void subtract(int pos) {
-  int px = get(1, 0, maxn - 1, pos);
+  int px = get(1, 0, lim, pos);
   if (px > 0) {
-    update(1, 0, maxn - 1, pos, pos, px - 1);
+    update(1, 0, lim, pos, pos, px - 1);
     return;
   }
 
-  int rs = max_right(1, 0, maxn - 1, pos, 0);
+  int rs = max_right(1, 0, lim, pos, 0);
   rs = max(rs, pos);
-  update(1, 0, maxn - 1, pos, rs, m - 1);
+  update(1, 0, lim, pos, rs, m - 1);
 
-  px = get(1, 0, maxn - 1, rs + 1);
-  update(1, 0, maxn - 1, rs + 1, rs + 1, px - 1);
+  px = get(1, 0, lim, rs + 1);
+  update(1, 0, lim, rs + 1, rs + 1, px - 1);
 }
 
 void get_range(int i, int low, int high, int u, int v) {
+  if (!is_all_zero) {
+    return;
+  }
   if (v < low || high < u) {
     return;
   }
@@ -211,8 +215,9 @@ int main() {
         H = max(H, i + 1);
         bits[i] %= m;
       }
+    lim = min(maxn - 1, H + Q + MAXD);
 
-    build(1, 0, maxn - 1);
+    build(1, 0, lim);
 
     while (Q--) {
       int pos, val;
@@ -226,7 +231,7 @@ int main() {
       is_all_zero = true;
       int x = msb[1];
 
-      get_range(1, 0, maxn - 1, 0, x - 1);
+      get_range(1, 0, lim, 0, x - 1);
       if (!is_all_zero) {
         x++;
       }

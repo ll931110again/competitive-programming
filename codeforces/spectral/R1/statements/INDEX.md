@@ -11,3 +11,4 @@ HTML statements were scraped from `mirror.codeforces.com` (Cloudflare blocks man
 | [`c_median_partition.md`](c_median_partition.md) | C — Median Partition |
 | [`d_permutation_construction.md`](d_permutation_construction.md) | D — Permutation Construction |
 | [`e_seek_the_truth.md`](e_seek_the_truth.md) | E — Seek the Truth |
+| (browser scrape) | F — Building Tree → `../f_building_tree.cc` |
