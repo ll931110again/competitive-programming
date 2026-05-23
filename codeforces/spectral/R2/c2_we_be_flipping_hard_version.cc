@@ -40,7 +40,7 @@ int main() {
 
     int max_pos = 0;
 
-    for (int i = 1; i <= n; i++)
+    for (int i = 1; i <= n; i++) {
       if (a[i] > 0) {
         long long tmp = abs_s[i - 1] - a[i] + (ss[n] - ss[i]);
         if (max_value < tmp) {
@@ -48,6 +48,7 @@ int main() {
           max_pos = i;
         }
       }
+    }
 
     vector<int> ops;
     int flag = 0;
