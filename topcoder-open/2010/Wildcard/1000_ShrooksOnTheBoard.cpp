@@ -1,84 +1,88 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define mod 100003
-#define LIM 100
+const int MOD = 100003;
+const int MAXN = 100;
 
-long long fac[mod], inv[mod];
-int sz;
+long long fac[MOD], inv[MOD];
 
-struct matrix {
-  long long d[LIM + 2][LIM + 2];
-};
+struct Matrix {
+  int n;
+  long long a[MAXN][MAXN];
 
-matrix multiply(matrix A, matrix B) {
-  matrix C;
-  memset(C.d, 0, sizeof(C.d));
-  for (int k = 0; k < sz; k++)
-    for (int i = 0; i < sz; i++)
-      for (int j = 0; j < sz; j++)
-        C.d[i][j] = (C.d[i][j] + A.d[i][k] * B.d[k][j]) % mod;
-  return C;
-}
-
-matrix divi[35], ans;
-
-matrix mat_power(matrix A, int p) {
-  bool flag = false;
-  for (int i = 0; p; i++) {
-    if (i)
-      divi[i] = multiply(divi[i - 1], divi[i - 1]);
-    else
-      divi[i] = A;
-    int m = p % 2;
-    p /= 2;
-    if (!m)
-      continue;
-    if (!flag) {
-      ans = divi[i];
-      flag = true;
-    } else
-      ans = multiply(ans, divi[i]);
+  Matrix() : n(0) {
+    memset(a, 0, sizeof(a));
   }
-  return ans;
-}
+
+  explicit Matrix(int n_) : n(n_) {
+    memset(a, 0, sizeof(a));
+  }
+
+  static Matrix identity(int n_) {
+    Matrix m(n_);
+    for (int i = 0; i < n_; i++)
+      m.a[i][i] = 1;
+    return m;
+  }
+
+  Matrix operator*(const Matrix& rhs) const {
+    Matrix res(n);
+    for (int k = 0; k < n; k++)
+      for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+          res.a[i][j] = (res.a[i][j] + a[i][k] * rhs.a[k][j]) % MOD;
+    return res;
+  }
+
+  Matrix pow(long long exp) const {
+    Matrix base = *this;
+    Matrix res = identity(n);
+    while (exp > 0) {
+      if (exp & 1)
+        res = res * base;
+      base = base * base;
+      exp >>= 1;
+    }
+    return res;
+  }
+};
 
 struct ShrooksOnTheBoard {
   int count(int K, int H, int W) {
     K++;
     fac[0] = inv[0] = 1;
-    for (int i = 1; i < mod; i++) {
-      fac[i] = (fac[i - 1] * 1LL * i) % mod;
-      inv[i] = power(fac[i], mod - 2);
+    for (int i = 1; i < MOD; i++) {
+      fac[i] = (fac[i - 1] * 1LL * i) % MOD;
+      inv[i] = power(fac[i], MOD - 2);
     }
 
-    long long one = (K <= LIM) ? matrix_method(K, W) : comb_method(K, W);
-    return (int)(power(one, H) + mod - 1) % mod;
+    long long one = (K <= MAXN) ? matrix_method(K, W) : comb_method(K, W);
+    return (int)(power(one, H) + MOD - 1) % MOD;
   }
 
   long long power(long long x, long long p) {
     if (!p)
       return 1;
     long long q = power(x, p / 2);
-    q = (q * q) % mod;
+    q = (q * q) % MOD;
     if (p & 1)
-      q = (q * x) % mod;
+      q = (q * x) % MOD;
     return q;
   }
 
   long long C(int n, int k) {
     if (n < k)
       return 0;
-    long long ret = (inv[k] * inv[n - k]) % mod;
-    return (ret * fac[n]) % mod;
+    long long ret = (inv[k] * inv[n - k]) % MOD;
+    return (ret * fac[n]) % MOD;
   }
 
   long long bigC(int n, int k) {
     long long ret = 1;
     while (n || k) {
-      ret = (ret * C(n % mod, k % mod)) % mod;
-      n /= mod;
-      k /= mod;
+      ret = (ret * C(n % MOD, k % MOD)) % MOD;
+      n /= MOD;
+      k /= MOD;
     }
     return ret;
   }
@@ -86,24 +90,23 @@ struct ShrooksOnTheBoard {
   long long comb_method(int K, int W) {
     long long ret = 1;
     for (int i = 1; K * (i - 1) <= W; i++)
-      ret = (ret + bigC(W - K * (i - 1) + i - 1, i)) % mod;
+      ret = (ret + bigC(W - K * (i - 1) + i - 1, i)) % MOD;
     return ret;
   }
 
   long long matrix_method(int K, int W) {
     if (K >= W)
-      return (W + 1) % mod;
-    matrix base;
-    memset(base.d, 0, sizeof(base.d));
-    sz = K;
-    for (int i = 1; i < sz; i++)
-      base.d[i][i - 1] = 1;
-    base.d[0][K - 1] = base.d[K - 1][K - 1] = 1;
+      return (W + 1) % MOD;
 
-    base = mat_power(base, W - K);
+    Matrix base(K);
+    for (int i = 1; i < K; i++)
+      base.a[i][i - 1] = 1;
+    base.a[0][K - 1] = base.a[K - 1][K - 1] = 1;
+
+    Matrix pw = base.pow(W - K);
     long long ret = 0;
     for (int i = 0; i < K; i++)
-      ret = (ret + 1LL * (i + 2) * base.d[i][K - 1]) % mod;
+      ret = (ret + 1LL * (i + 2) * pw.a[i][K - 1]) % MOD;
     return ret;
   }
 };
