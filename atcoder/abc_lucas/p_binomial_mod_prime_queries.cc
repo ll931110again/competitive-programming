@@ -1,10 +1,10 @@
 // Lucas theorem: C(n, m) mod p for huge n, m and prime p <= 10^5.
 // Same task as Luogu P3807 / Library Checker "Binomial Coefficient (mod prime)".
-// (Standard competitive-programming template; use on custom tests or mirrored contests.)
 //
 // Lucas: C(n,m) mod p = prod_i C(n_i, m_i) mod p where n_i, m_i are base-p digits.
+// https://judge.yosupo.jp/problem/binomial_coefficient_mod_prime
 
-#include <bits/stdc++.h>
+#include "../../bits/stdc++.h"
 using namespace std;
 
 static int pow_mod(int a, int mod, long long e) {

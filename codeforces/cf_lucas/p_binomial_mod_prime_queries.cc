@@ -2,8 +2,9 @@
 // Same I/O as Luogu P3807 / Library Checker "Binomial Coefficient (mod prime)".
 //
 // Lucas: C(n,m) mod p = prod_i C(n_i, m_i) mod p where n_i, m_i are base-p digits.
+// https://judge.yosupo.jp/problem/binomial_coefficient_mod_prime
 
-#include <bits/stdc++.h>
+#include "../../bits/stdc++.h"
 using namespace std;
 
 static int pow_mod(int a, int mod, long long e) {
