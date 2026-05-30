@@ -5,7 +5,7 @@
 // Answer: sum_{i=0}^{n} C(i + a_i, i + 1) mod 1e9+7.
 // With a_i, n <= 2e5 we have i + a_i < MOD, so factorials suffice (no Lucas needed).
 
-#include "../../bits/stdc++.h"
+#include <bits/stdc++.h>
 using namespace std;
 
 static constexpr unsigned MOD = 1'000'000'007;
