@@ -1,3 +1,5 @@
+#include "grader.h"
+
 void play() {
   int index[25][2];
 

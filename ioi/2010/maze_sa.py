@@ -36,7 +36,7 @@ DIRS = ((1, 0), (-1, 0), (0, 1), (0, -1))
 
 
 def parse_grid(lines: List[str]) -> Tuple[List[str], int, int]:
-    g = [ln.rstrip("\n") for ln in lines if ln.strip() != ""]
+    g = [ln.rstrip("\r\n") for ln in lines if ln.strip() != ""]
     n, m = len(g), len(g[0])
     return g, n, m
 
@@ -49,19 +49,36 @@ def strict_interior(i: int, j: int, n: int, m: int) -> bool:
     return 1 <= i <= n - 2 and 1 <= j <= m - 2
 
 
-def build_sa_masks(g_in: Sequence[str], n: int, m: int) -> Tuple[List[Coord], List[Coord]]:
-    """Corn that may become '.': sides = perimeter; interior = strict interior."""
+def is_corner(i: int, j: int, n: int, m: int) -> bool:
+    return (i == 0 and j == 0) or (i == 0 and j == m - 1) or (
+        i == n - 1 and j == 0
+    ) or (i == n - 1 and j == m - 1)
+
+
+def build_sa_masks(
+    g_in: Sequence[str], n: int, m: int
+) -> Tuple[List[Coord], List[Coord], List[Coord]]:
+    """
+    CF blog (entry 118853): ``sides`` = perimeter corn excluding corners;
+    ``all`` = every non-corner corn cell (interior + boundary).
+    """
     sides: List[Coord] = []
-    interior: List[Coord] = []
+    all_cells: List[Coord] = []
+    for i in range(1, n - 1):
+        for j in (0, m - 1):
+            if g_in[i][j] == "#":
+                sides.append((i, j))
+    for j in range(1, m - 1):
+        for i in (0, n - 1):
+            if g_in[i][j] == "#":
+                sides.append((i, j))
     for i in range(n):
         for j in range(m):
-            if g_in[i][j] != "#":
+            if is_corner(i, j, n, m) or g_in[i][j] != "#":
                 continue
-            if is_perimeter(i, j, n, m):
-                sides.append((i, j))
-            elif strict_interior(i, j, n, m):
-                interior.append((i, j))
-    return sides, interior
+            all_cells.append((i, j))
+    interior = [c for c in all_cells if strict_interior(c[0], c[1], n, m)]
+    return sides, interior, all_cells
 
 
 def random_initial_state(
@@ -164,13 +181,11 @@ def run_sa(
     log_every: int,
 ) -> Tuple[List[str], int]:
     n, m = len(g_in), len(g_in[0])
-    sides, interior = build_sa_masks(g_in, n, m)
+    sides, interior, all_cells = build_sa_masks(g_in, n, m)
     if not sides:
         raise SystemExit("No perimeter corn — cannot place entrance.")
 
-    # CF-style ``all``: interior U boundary corn (excluding corners in original CF;
-    # we include all perimeter corn for IOI entrances including corners).
-    flat_pick: List[Coord] = list(interior) + list(sides)
+    flat_pick: List[Coord] = all_cells
 
     if warm_path and warm_path.is_file():
         loaded = load_state_from_output(g_in, warm_path)
@@ -202,7 +217,7 @@ def run_sa(
         old_src = src_ref[0]
         i, j = rng.choice(flat_pick)
 
-        if strict_interior(i, j, n, m):
+        if not is_perimeter(i, j, n, m):
             old_ch = g[i][j]
             g[i][j] = "#" if old_ch == "." else "."
         else:
@@ -227,7 +242,7 @@ def run_sa(
         if accept:
             cur_e = new_e
         else:
-            if strict_interior(i, j, n, m):
+            if not is_perimeter(i, j, n, m):
                 g[i][j] = old_ch
             else:
                 g[src_ref[0][0]][src_ref[0][1]] = "#"
@@ -282,6 +297,12 @@ def _finalize_lines(
                 if rows[i][j] not in "#.":
                     rows[i][j] = "#"
     er, ec = src
+    for i in range(n):
+        for j in range(m):
+            if g_in[i][j] != "#":
+                continue
+            if is_perimeter(i, j, n, m) and (i, j) != (er, ec):
+                rows[i][j] = "#"
     rows[er][ec] = "."
     return ["".join(r) for r in rows]
 
@@ -302,7 +323,12 @@ def main() -> None:
     ap.add_argument("--alpha", type=float, default=0.999999999)
     ap.add_argument("--max-seconds", type=float, default=None)
     ap.add_argument("--max-iters", type=int, default=None)
-    ap.add_argument("--save-every", type=int, default=100_000)
+    ap.add_argument(
+        "--save-every",
+        type=int,
+        default=1 << 23,
+        help="write best grid every N iterations (blog uses 2^23)",
+    )
     ap.add_argument("--warm", type=Path, default=None, help="optional starting .out")
     ap.add_argument("--log-every", type=int, default=0)
     args = ap.parse_args()

@@ -9,7 +9,21 @@ import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
-from grade_maze import grade_directory
+from grade_maze import TEST_SPECS, grade_directory
+
+# Extra SA budget for large grids (warm-start from existing .out).
+DEFAULT_ITERS: dict[str, int] = {
+    "01": 400_000,
+    "02": 2_000_000,
+    "03": 2_000_000,
+    "04": 2_500_000,
+    "05": 2_000_000,
+    "06": 600_000,
+    "07": 800_000,
+    "08": 800_000,
+    "09": 600_000,
+    "10": 3_000_000,
+}
 
 
 def run_one(
@@ -19,10 +33,11 @@ def run_one(
     max_iters: int,
     alpha: float,
     seed: int,
+    warm_start: bool,
 ) -> tuple[str, int, str]:
     inp = inputs_dir / test_id
     out = outputs_dir / f"{test_id}.out"
-    warm = out if out.is_file() else None
+    warm = out if warm_start and out.is_file() else None
     cmd = [
         sys.executable,
         str(Path(__file__).resolve().parent / "maze_sa.py"),
@@ -67,12 +82,27 @@ def main() -> None:
     )
     ap.add_argument("--tests", nargs="*", default=[f"{i:02d}" for i in range(1, 11)])
     ap.add_argument("--jobs", type=int, default=4)
-    ap.add_argument("--max-iters", type=int, default=200_000)
-    ap.add_argument("--alpha", type=float, default=0.999999)
+    ap.add_argument(
+        "--max-iters",
+        type=int,
+        default=0,
+        help="uniform iters for all tests (0 = use per-test DEFAULT_ITERS)",
+    )
+    ap.add_argument("--alpha", type=float, default=0.999999999)
+    ap.add_argument(
+        "--warm",
+        action="store_true",
+        help="warm-start from existing .out (blog advises against)",
+    )
     ap.add_argument("--seed", type=int, default=1)
     args = ap.parse_args()
 
     args.outputs_dir.mkdir(parents=True, exist_ok=True)
+
+    def iters_for(tid: str) -> int:
+        if args.max_iters > 0:
+            return args.max_iters
+        return DEFAULT_ITERS.get(tid, 1_000_000)
 
     with ProcessPoolExecutor(max_workers=args.jobs) as pool:
         futures = {
@@ -81,15 +111,21 @@ def main() -> None:
                 tid,
                 args.inputs_dir,
                 args.outputs_dir,
-                args.max_iters,
+                iters_for(tid),
                 args.alpha,
                 args.seed + int(tid),
+                args.warm,
             ): tid
             for tid in args.tests
         }
         for fut in as_completed(futures):
             tid, best, tail = fut.result()
-            print(f"{tid}: bestE={best}  ({tail})")
+            spec = TEST_SPECS.get(tid)
+            area = spec[0] * spec[1] if spec else 0
+            print(
+                f"{tid}: bestE={best}  iters={iters_for(tid)}  "
+                f"area={area}  ({tail})"
+            )
 
     print("--- grading ---")
     rows = grade_directory(args.inputs_dir, args.outputs_dir)
