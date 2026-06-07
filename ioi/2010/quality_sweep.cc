@@ -1,3 +1,7 @@
+// IOI 2010 Day 1 – Quality of Living (quality)
+//
+// Binary search on the answer; each check slides an H×W window in O(R*C).
+
 static char good[3001][3001];
 static int col_cnt[3001];
 

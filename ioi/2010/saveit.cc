@@ -1,133 +1,178 @@
 #include "grader.h"
+
 #include <cstring>
-#include <map>
 #include <queue>
-#include <set>
 #include <vector>
-#define maxn 1005
-#define maxh 36
-using namespace std;
 
-vector<int> adj[maxn];
-int dist[maxn][maxh];
-int par[maxn];
+static std::vector<int> adj[1005];
+static int dist[1005][36];
+static int par[1005];
+static int decoded_delta[1005];
+static int decoded_dist[1005];
 
-int decoded_delta[maxn];
-int decoded_dist[maxn];
+static int ternary_buf[3];
+static int ternary_len;
 
-void encode_integer(int X) {
-  for (int mask = 0; mask < 10; mask++)
-    if (X & (1 << mask)) {
-      encode_bit(1);
-    } else {
-      encode_bit(0);
-    }
+static void encode_integer(int x) {
+  for (int b = 0; b < 10; ++b) {
+    encode_bit(x & 1);
+    x >>= 1;
+  }
 }
 
-int decode_integer() {
+static int decode_integer() {
   int value = 0;
-  for (int mask = 0; mask < 10; mask++) {
-    int bit = decode_bit();
-    if (bit) {
-      value |= (1 << mask);
+  for (int b = 0; b < 10; ++b) {
+    if (decode_bit()) {
+      value |= 1 << b;
     }
   }
   return value;
 }
 
-void encode(int N, int H, int P, int A[], int B[]) {
-  memset(dist, -1, sizeof dist);
-  for (int i = 0; i < P; i++) {
-    adj[A[i]].push_back(B[i]);
-    adj[B[i]].push_back(A[i]);
+static void flush_ternary() {
+  if (ternary_len == 0) {
+    return;
+  }
+  while (ternary_len < 3) {
+    ternary_buf[ternary_len++] = 0;
+  }
+  int val = ternary_buf[0] * 9 + ternary_buf[1] * 3 + ternary_buf[2];
+  for (int b = 0; b < 5; ++b) {
+    encode_bit(val & 1);
+    val >>= 1;
+  }
+  ternary_len = 0;
+}
+
+static void encode_delta(int delta) {
+  ternary_buf[ternary_len++] = delta + 1;
+  if (ternary_len == 3) {
+    flush_ternary();
+  }
+}
+
+static int decode_buf[3];
+static int decode_pos;
+
+static int decode_delta() {
+  if (decode_pos == 0) {
+    int val = 0;
+    for (int b = 0; b < 5; ++b) {
+      if (decode_bit()) {
+        val |= 1 << b;
+      }
+    }
+    decode_buf[0] = val / 9;
+    val %= 9;
+    decode_buf[1] = val / 3;
+    decode_buf[2] = val % 3;
+    decode_pos = 3;
+  }
+  return decode_buf[3 - decode_pos--] - 1;
+}
+
+static void fill_distance(int u, int p) {
+  for (int v : adj[u]) {
+    if (v == p) {
+      continue;
+    }
+    decoded_dist[v] = decoded_dist[u] + decoded_delta[v];
+    fill_distance(v, u);
+  }
+}
+
+void encode(int n, int h, int p, int a[], int b[]) {
+  for (int i = 0; i < n; ++i) {
+    adj[i].clear();
+  }
+  memset(par, -1, sizeof par);
+  par[0] = 0;
+  ternary_len = 0;
+
+  for (int i = 0; i < p; ++i) {
+    adj[a[i]].push_back(b[i]);
+    adj[b[i]].push_back(a[i]);
   }
 
-  for (int i = 0; i < H; i++) {
-    queue<int> q;
-    q.push(i);
+  std::queue<int> q;
+  q.push(0);
+  while (!q.empty()) {
+    const int u = q.front();
+    q.pop();
+    for (int v : adj[u]) {
+      if (par[v] == -1) {
+        par[v] = u;
+        q.push(v);
+      }
+    }
+  }
 
+  memset(dist, -1, sizeof dist);
+  for (int i = 0; i < h; ++i) {
     dist[i][i] = 0;
+    q.push(i);
     while (!q.empty()) {
-      int u = q.front();
+      const int u = q.front();
       q.pop();
-
-      for (auto v : adj[u]) {
-        if (dist[v][i] == -1 || dist[v][i] > 1 + dist[u][i]) {
-          dist[v][i] = 1 + dist[u][i];
+      for (int v : adj[u]) {
+        if (dist[v][i] == -1) {
+          dist[v][i] = dist[u][i] + 1;
           q.push(v);
-        }
-
-        if (i == 0 && par[v] == -1) {
-          par[v] = u;
         }
       }
     }
   }
 
-  /*
-      82000 bits
-      First, send the parent-child relationship
-      Then, for each h, first send dist[h][0]. For each further i, send
-     dist[h][i] - dist[h][par[i]]
-  */
-
-  for (int i = 1; i < N; i++) {
+  for (int i = 1; i < n; ++i) {
     encode_integer(par[i]);
   }
 
-  for (int i = 0; i < H; i++) {
-    encode_integer(dist[0][i]);
-    for (int x = 1; x < N; x++) {
-      int p = par[x], delta = dist[x][i] - dist[p][i];
-      if (delta == 0) {
-        encode_bit(0);
-        encode_bit(0);
-      } else if (delta == 1) {
-        encode_bit(0);
-        encode_bit(1);
-      } else if (delta == -1) {
-        encode_bit(1);
-        encode_bit(0);
-      }
+  for (int i = 0; i < h; ++i) {
+    for (int x = 1; x < n; ++x) {
+      encode_delta(dist[x][i] - dist[par[x]][i]);
     }
+    flush_ternary();
   }
 }
 
-void fill_distance(int u, int p) {
-  for (auto v : adj[u])
-    if (v != p) {
-      decoded_dist[v] = decoded_dist[u] + decoded_delta[v];
-      fill_distance(v, u);
-    }
-}
-
-void decode(int N, int H) {
-  for (int i = 0; i < N; i++) {
+void decode(int n, int h) {
+  for (int i = 0; i < n; ++i) {
     adj[i].clear();
   }
+  decode_pos = 0;
 
-  // Construct the parent-child relationship
-  for (int i = 1; i < N; i++) {
+  for (int i = 1; i < n; ++i) {
     par[i] = decode_integer();
     adj[par[i]].push_back(i);
   }
 
-  for (int i = 0; i < H; i++) {
-    decoded_dist[0] = decode_integer();
-    for (int x = 1; x < N; x++) {
-      int x0 = decode_bit(), x1 = decode_bit();
-      if (x0 == 0 && x1 == 0) {
-        decoded_delta[x] = 0;
-      } else if (x0 == 0 && x1 == 1) {
-        decoded_delta[x] = 1;
-      } else {
-        decoded_delta[x] = -1;
+  static int dist0[1005];
+  std::queue<int> q;
+  memset(dist0, -1, sizeof dist0);
+  dist0[0] = 0;
+  q.push(0);
+  while (!q.empty()) {
+    const int u = q.front();
+    q.pop();
+    for (int v : adj[u]) {
+      if (dist0[v] == -1) {
+        dist0[v] = dist0[u] + 1;
+        q.push(v);
       }
     }
+  }
+
+  for (int i = 0; i < h; ++i) {
+    decoded_dist[0] = dist0[i];
+    for (int x = 1; x < n; ++x) {
+      decoded_delta[x] = decode_delta();
+    }
+    decode_pos = 0;
 
     fill_distance(0, -1);
 
-    for (int x = 0; x < N; x++) {
+    for (int x = 0; x < n; ++x) {
       hops(i, x, decoded_dist[x]);
     }
   }

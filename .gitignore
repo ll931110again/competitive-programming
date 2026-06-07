@@ -10,6 +10,22 @@ __pycache__/
 midnightcodecup/2026/b_problem_outputs/
 midnightcodecup/2026/lost_cursor_b_submission.zip
 
+# Ongoing AHC — do not commit or push until contest ends
+atcoder/ahc066/
+
+# IOI 2010 local build artifacts and extracted grader data
+ioi/2010/bench_language
+ioi/2010/bench_quality_official
+ioi/2010/bench_saveit
+ioi/2010/bench_traffic
+ioi/2010/bench_hotter
+ioi/2010/quality_test
+ioi/2010/language/
+ioi/2010/quality/
+ioi/2010/saveit/
+ioi/2010/traffic/
+ioi/2010/hottercolder/
+
 # Codeforces API (local only — never commit)
 codeforces/.cf_api.env
 .cf_api.env

@@ -507,7 +507,24 @@ def prepend_entrance_to_interior_path(
     return None
 
 
+def path_eccentricity(
+    g_in: List[str],
+    n: int,
+    m: int,
+    path: Sequence[Coord],
+    entrance: Coord,
+) -> int:
+    """Score a candidate path by grader energy (not raw vertex count)."""
+    p, _ = eccentricity_energy(
+        grid_from_path(g_in, n, m, set(path), entrance),
+        n,
+        m,
+    )
+    return p
+
+
 def best_paths_for_entrance(
+    g_in: List[str],
     comp: Set[Coord],
     n: int,
     m: int,
@@ -561,7 +578,10 @@ def best_paths_for_entrance(
 
     if not candidates:
         return [entrance]
-    return max(candidates, key=len)
+    return max(
+        candidates,
+        key=lambda path: path_eccentricity(g_in, n, m, path, entrance),
+    )
 
 
 def trials_budget(n: int, m: int, n_allowed: int) -> Tuple[int, int, int]:
@@ -619,15 +639,18 @@ def solve_one(
 
     pool = [e for _, e in ranked[: max(top_k, 1)]]
 
+    best_score = -1
     best_path: List[Coord] = [pool[0]]
     best_ent: Coord = pool[0]
     for entrance in pool:
         allowed = allowed_vertices_for_entrance(comp, n, m, entrance)
         rw_use = min(rw_limit, max(3500, len(allowed) * 26))
         path_try = best_paths_for_entrance(
-            comp, n, m, entrance, rng, rw_use, wd_limit
+            g_in, comp, n, m, entrance, rng, rw_use, wd_limit
         )
-        if len(path_try) > len(best_path):
+        score = path_eccentricity(g_in, n, m, path_try, entrance)
+        if score > best_score:
+            best_score = score
             best_path = path_try
             best_ent = entrance
 

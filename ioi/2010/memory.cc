@@ -1,22 +1,20 @@
-int value[55];
-bool vis[55];
-
 void play() {
-  int maxc = 50;
-  while (true) {
-    int u = -1;
-    for (int i = 1; i <= maxc; i++)
-      if (!vis[i]) {
-        u = i;
-        break;
-      }
+  int index[25][2];
 
-    if (u < 0) {
-      break;
-    }
+  for (int lt = 0; lt < 25; ++lt) {
+    index[lt][0] = 0;
+    index[lt][1] = 0;
+  }
 
-    for (int v = u + 1; v <= maxc; v++)
-      if (!vis[j]) {
-      }
+  for (int i = 1; i <= 50; ++i) {
+    const char r = faceup(i);
+    const int lt = r - 'A';
+    const int k = index[lt][0] ? 1 : 0;
+    index[lt][k] = i;
+  }
+
+  for (int lt = 0; lt < 25; ++lt) {
+    faceup(index[lt][0]);
+    faceup(index[lt][1]);
   }
 }

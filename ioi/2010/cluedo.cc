@@ -1,21 +1,12 @@
 #include "grader.h"
 
 void Solve() {
-  int a = 1, b = 1, c = 1;
-  while (true) {
-    int output = Theory(a, b, c);
-    if (output == 0) {
-      break;
-    } else if (output == 1) {
-      a++;
-    } else if (output == 2) {
-      b++;
-    } else if (output == 3) {
-      c++;
+  int t[] = {0, 6, 10, 6};
+  int r;
+  do {
+    r = Theory(t[1], t[2], t[3]);
+    if (r != 0) {
+      --t[r];
     }
-  }
-}
-
-int main() {
-  return 0;
+  } while (r != 0);
 }
