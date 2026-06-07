@@ -26,8 +26,19 @@ ioi/2010/quality/
 ioi/2010/saveit/
 ioi/2010/traffic/
 ioi/2010/hottercolder/
+ioi/2010/maze_outputs/_work/
+ioi/2010/maze_outputs/_bench*.out
+ioi/2010/maze_outputs/*_sa.out
 
 # Codeforces API (local only — never commit)
 codeforces/.cf_api.env
 .cf_api.env
 codeforces/.cf_cookie
+
+# IOI 2011 local test binaries
+ioi/2011/garden_test
+ioi/2011/parrots_test
+ioi/2011/parrots_debug
+ioi/2011/race_centroid_test
+ioi/2011/race_merge_test
+ioi/2011/rank_debug

@@ -5,22 +5,24 @@
 // Energy: max BFS distance in cells from the entrance ('.' on the border).
 // Cooling: t0 = 2.5, alpha = 0.999999999, Boltzmann acceptance.
 //
-// Usage:  maze_sa <input> <output> [max_iters]
+// Usage:  maze_sa <input> <output> [max_iters] [--seed N] [--warm path]
 //   max_iters omitted => run until killed (blog style; saves best every 2^23 steps).
 
 #include <chrono>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <fstream>
-#include <queue>
 #include <random>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace {
 
 constexpr int kMaxN = 205;
+constexpr int kMaxCells = kMaxN * kMaxN;
 constexpr double kT0 = 2.5;
 constexpr double kAlpha = 0.999999999;
 constexpr int kSaveMask = (1 << 23) - 1;
@@ -31,16 +33,24 @@ const int kDj[4] = {0, 1, 0, -1};
 int n, m;
 char g[kMaxN][kMaxN];
 char bestg[kMaxN][kMaxN];
-char input_mask[kMaxN][kMaxN]; // '#', 'X', or 0
+char input_mask[kMaxN][kMaxN];
 
 int dist[kMaxN][kMaxN];
+unsigned short visit_stamp[kMaxN][kMaxN];
+unsigned short visit_gen = 1;
+
+int bfs_q_r[kMaxCells];
+int bfs_q_c[kMaxCells];
+
 std::vector<std::pair<int, int>> sides;
 std::vector<std::pair<int, int>> all;
 std::pair<int, int> src = {-1, -1};
 std::pair<int, int> best_src = {-1, -1};
 
-std::mt19937 rng(
-    static_cast<unsigned>(std::chrono::high_resolution_clock::now().time_since_epoch().count()));
+std::mt19937 rng(0);
+std::uniform_int_distribution<int> pick_all;
+std::uniform_int_distribution<int> pick_side;
+std::uniform_real_distribution<double> pick_real;
 
 bool is_corner(int i, int j) {
   return (i == 0 && j == 0) || (i == 0 && j == m - 1) || (i == n - 1 && j == 0) ||
@@ -49,10 +59,6 @@ bool is_corner(int i, int j) {
 
 bool is_perimeter(int i, int j) {
   return i == 0 || i == n - 1 || j == 0 || j == m - 1;
-}
-
-bool is_strict_interior(int i, int j) {
-  return i >= 1 && i <= n - 2 && j >= 1 && j <= m - 2;
 }
 
 void build_masks() {
@@ -85,13 +91,16 @@ void build_masks() {
       all.emplace_back(i, j);
     }
   }
+
+  pick_all = std::uniform_int_distribution<int>(0, static_cast<int>(all.size()) - 1);
+  pick_side = std::uniform_int_distribution<int>(0, static_cast<int>(sides.size()) - 1);
 }
 
 int calc_energy() {
-  for (int i = 0; i < n; ++i) {
-    for (int j = 0; j < m; ++j) {
-      dist[i][j] = -1;
-    }
+  ++visit_gen;
+  if (visit_gen == 0) {
+    std::memset(visit_stamp, 0, sizeof visit_stamp);
+    visit_gen = 1;
   }
 
   const int si = src.first;
@@ -100,14 +109,19 @@ int calc_energy() {
     return 0;
   }
 
-  std::queue<std::pair<int, int>> q;
+  int head = 0;
+  int tail = 0;
+  bfs_q_r[tail] = si;
+  bfs_q_c[tail] = sj;
+  ++tail;
+  visit_stamp[si][sj] = visit_gen;
   dist[si][sj] = 1;
-  q.emplace(si, sj);
   int res = 1;
 
-  while (!q.empty()) {
-    const auto [i, j] = q.front();
-    q.pop();
+  while (head < tail) {
+    const int i = bfs_q_r[head];
+    const int j = bfs_q_c[head];
+    ++head;
     const int d0 = dist[i][j];
     res = std::max(res, d0);
     for (int k = 0; k < 4; ++k) {
@@ -119,11 +133,14 @@ int calc_energy() {
       if (g[ni][nj] != '.') {
         continue;
       }
-      if (dist[ni][nj] != -1) {
+      if (visit_stamp[ni][nj] == visit_gen) {
         continue;
       }
+      visit_stamp[ni][nj] = visit_gen;
       dist[ni][nj] = d0 + 1;
-      q.emplace(ni, nj);
+      bfs_q_r[tail] = ni;
+      bfs_q_c[tail] = nj;
+      ++tail;
     }
   }
   return res;
@@ -133,8 +150,7 @@ bool accept(int new_energy, int old_energy, double t) {
   if (new_energy >= old_energy) {
     return true;
   }
-  std::uniform_real_distribution<double> dist(0.0, 1.0);
-  return dist(rng) < std::exp((new_energy - old_energy) / t);
+  return pick_real(rng) < std::exp((new_energy - old_energy) / t);
 }
 
 void write_grid(const char grid[kMaxN][kMaxN], const std::pair<int, int>& entrance,
@@ -166,8 +182,7 @@ void random_initial_state() {
     std::exit(1);
   }
 
-  std::uniform_int_distribution<int> side_dist(0, static_cast<int>(sides.size()) - 1);
-  src = sides[side_dist(rng)];
+  src = sides[pick_side(rng)];
   g[src.first][src.second] = '.';
 
   std::uniform_int_distribution<int> coin(0, 9);
@@ -243,11 +258,18 @@ void read_input(const char* path) {
   }
 }
 
+void save_best() {
+  for (int i = 0; i < n; ++i) {
+    std::memcpy(bestg[i], g[i], m);
+  }
+}
+
 } // namespace
 
 int main(int argc, char** argv) {
   if (argc < 3) {
-    std::fprintf(stderr, "usage: %s <input> <output> [max_iters] [--warm path]\n", argv[0]);
+    std::fprintf(stderr, "usage: %s <input> <output> [max_iters] [--seed N] [--warm path]\n",
+                 argv[0]);
     return 1;
   }
 
@@ -255,15 +277,20 @@ int main(int argc, char** argv) {
   const char* out_path = argv[2];
   long long max_iters = -1;
   const char* warm_path = nullptr;
+  unsigned seed =
+      static_cast<unsigned>(std::chrono::high_resolution_clock::now().time_since_epoch().count());
 
   for (int i = 3; i < argc; ++i) {
     if (std::string(argv[i]) == "--warm" && i + 1 < argc) {
       warm_path = argv[++i];
+    } else if (std::string(argv[i]) == "--seed" && i + 1 < argc) {
+      seed = static_cast<unsigned>(std::strtoul(argv[++i], nullptr, 10));
     } else {
       max_iters = std::atoll(argv[i]);
     }
   }
 
+  rng.seed(seed);
   read_input(in_path);
   build_masks();
 
@@ -286,11 +313,7 @@ int main(int argc, char** argv) {
   int cur_energy = calc_energy();
   int best_energy = cur_energy;
   best_src = src;
-  for (int i = 0; i < n; ++i) {
-    for (int j = 0; j < m; ++j) {
-      bestg[i][j] = g[i][j];
-    }
-  }
+  save_best();
 
   unsigned int cnt = 0;
   const auto t_start = std::chrono::steady_clock::now();
@@ -302,8 +325,7 @@ int main(int argc, char** argv) {
     }
     ++cnt;
 
-    std::uniform_int_distribution<int> pick(0, static_cast<int>(all.size()) - 1);
-    const int id = pick(rng);
+    const int id = pick_all(rng);
     const int ci = all[id].first;
     const int cj = all[id].second;
     const auto old_src = src;
@@ -311,8 +333,7 @@ int main(int argc, char** argv) {
     if (is_perimeter(ci, cj)) {
       g[old_src.first][old_src.second] = '#';
       if (old_src.first == ci && old_src.second == cj) {
-        std::uniform_int_distribution<int> side_pick(0, static_cast<int>(sides.size()) - 1);
-        src = sides[side_pick(rng)];
+        src = sides[pick_side(rng)];
       } else {
         src = {ci, cj};
       }
@@ -325,11 +346,7 @@ int main(int argc, char** argv) {
     if (new_energy >= best_energy) {
       best_energy = new_energy;
       best_src = src;
-      for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < m; ++j) {
-          bestg[i][j] = g[i][j];
-        }
-      }
+      save_best();
     }
 
     if (accept(new_energy, cur_energy, t)) {
@@ -350,7 +367,7 @@ int main(int argc, char** argv) {
   write_grid(bestg, best_src, out_path);
   const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
       std::chrono::steady_clock::now() - t_start);
-  std::fprintf(stderr, "best_energy=%d  iters=%u  elapsed_ms=%lld  -> %s\n", best_energy, cnt,
-               static_cast<long long>(elapsed.count()), out_path);
+  std::fprintf(stderr, "best_energy=%d  iters=%u  elapsed_ms=%lld  seed=%u  -> %s\n", best_energy,
+               cnt, static_cast<long long>(elapsed.count()), seed, out_path);
   return 0;
 }

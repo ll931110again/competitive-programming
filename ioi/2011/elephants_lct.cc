@@ -1,6 +1,7 @@
 // IOI 2011 Day 2 – Dancing Elephants (elephants)
 //
 // Link-Cut Tree (merge/split treap) solution, O(log N) per update.
+// Detailed writeup: elephants_lct.md
 //
 // Model from the Codeforces discussion (cf. blog entry 56486) and oj.uz #55017:
 // each elephant 2*i links to marker 2*i+1; each timeline event links forward in
