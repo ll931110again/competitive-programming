@@ -1,198 +1,247 @@
+// IOI 2010 Day 1 — Hotter Colder (full score, O(log(3N)) guesses)
+//
+// Each Guess(G) compares the secret J to M = (prev + G) / 2. Maintain an interval
+// [lo, hi] of candidates and recurse:
+//   • "middle game" — interval away from both 1 and N;
+//   • "wall game"   — interval touching one boundary (w.l.o.g. [1 .. P]).
+//
+// Reference: IOI 2010 task review / Gordon Cormack solution outline.
+
 #include "grader.h"
 
-static int t[50];
+extern int Guess(int g);
 
-static int imin(int a, int b) {
-  return a < b ? a : b;
-}
-static int imax(int a, int b) {
-  return a > b ? a : b;
-}
+enum Result : int { COLDER = -1, SAME = 0, HOTTER = 1 };
 
-static int fix(int end, int x) {
-  if (end == 1) {
-    return x;
-  }
-  return end - x + 1;
+namespace {
+
+// Local coordinate x in [1 .. len] against a wall at 1 (left) or N (right).
+int to_global(int wall_end, int local) {
+  return wall_end == 1 ? local : wall_end - local + 1;
 }
 
-static int midgame(int p, int a, int b) {
-  if (a == b) {
-    return a;
-  }
-  if (a > b) {
-    const int tmp = a;
-    a = b;
-    b = tmp;
-  }
-
+// Smallest odd 2^(k+1) - 1 covering `width` consecutive integers.
+int odd_cover_width(int width) {
   int sz = 3;
-  for (; b - a + 1 > sz; sz = 2 * sz + 1) {
+  while (sz < width) {
+    sz = 2 * sz + 1;
   }
-
-  int mid = -999;
-  if (p < b - sz + 1) {
-    mid = b - sz / 2;
-  } else if (p > a + sz - 1) {
-    mid = a + sz / 2;
-  } else if (p <= a) {
-    mid = p + sz / 2;
-  } else if (p >= b) {
-    mid = p - sz / 2;
-  }
-
-  const int q = mid + (mid - p);
-  const int g = Guess(q);
-  if (g == 0) {
-    return mid;
-  }
-  if ((q > mid && g > 0) || (q < mid && g < 0)) {
-    return midgame(q, imin(mid + 1, b), b);
-  }
-  return midgame(q, a, imax(mid - 1, a));
+  return sz;
 }
 
-static int endgame(int end, int n) {
-  int z = 0;
-  for (; t[z] < n; ++z) {
+// Candidates J in [lo, hi]; previous guess was `prev` (global coordinate).
+int solve_middle(int prev, int lo, int hi) {
+  if (lo == hi) {
+    return lo;
   }
+  if (lo > hi) {
+    const int t = lo;
+    lo = hi;
+    hi = t;
+  }
+
+  const int span = odd_cover_width(hi - lo + 1);
+  int pivot;
+
+  if (prev < hi - span + 1) {
+    pivot = hi - span / 2;
+  } else if (prev > lo + span - 1) {
+    pivot = lo + span / 2;
+  } else if (prev <= lo) {
+    pivot = prev + span / 2;
+  } else {
+    pivot = prev - span / 2;
+  }
+
+  const int g = 2 * pivot - prev;
+  const Result r = static_cast<Result>(Guess(g));
+
+  if (r == SAME) {
+    return pivot;
+  }
+
+  const bool secret_above = (g > pivot && r == HOTTER) || (g < pivot && r == COLDER);
+  if (secret_above) {
+    return solve_middle(g, pivot + 1, hi);
+  }
+  return solve_middle(g, lo, pivot - 1);
+}
+
+// wall_len[k] = largest P such that a wall interval of length P is solvable
+// using k further guesses after the last guess sat on the far endpoint.
+int wall_len[32];
+bool wall_table_built = false;
+
+void build_wall_table() {
+  if (wall_table_built) {
+    return;
+  }
+  wall_table_built = true;
+  wall_len[0] = 1;
+  wall_len[1] = 3;
+  wall_len[2] = 7;
+  for (int i = 3; i < 30; ++i) {
+    wall_len[i] = wall_len[i - 2] + (1 << i);
+  }
+}
+
+int wall_level(int n) {
+  int z = 0;
+  while (wall_len[z] < n) {
+    ++z;
+  }
+  return z;
+}
+
+Result ask(int g) {
+  return static_cast<Result>(Guess(g));
+}
+
+// Secret in local range [1 .. n] against wall at global `wall_end` (1 or N).
+int solve_wall(int wall_end, int n) {
+  const auto G = [&](int local) { return to_global(wall_end, local); };
 
   if (n == 2) {
-    const int g = Guess(fix(end, 1));
-    if (g > 0) {
-      return fix(end, 1);
+    if (ask(G(1)) == HOTTER) {
+      return G(1);
     }
-    return fix(end, 2);
+    return G(2);
   }
+
   if (n == 3) {
-    const int g = Guess(fix(end, 1));
-    if (g > 0) {
-      return fix(end, 1);
+    const Result r = ask(G(1));
+    if (r == HOTTER) {
+      return G(1);
     }
-    if (g == 0) {
-      return fix(end, 2);
+    if (r == SAME) {
+      return G(2);
     }
-    return fix(end, 3);
+    return G(3);
   }
+
   if (n == 4 || n == 5) {
-    int g = Guess(fix(end, 3));
-    if (g < 0) {
-      return fix(end, n);
+    Result r = ask(G(3));
+    if (r == COLDER) {
+      return G(n);
     }
-    if (g == 0) {
-      return fix(end, 4);
+    if (r == SAME) {
+      return G(4);
     }
-    g = Guess(fix(end, 1));
-    if (g > 0) {
-      return fix(end, 1);
+    r = ask(G(1));
+    if (r == HOTTER) {
+      return G(1);
     }
-    if (g == 0) {
-      return fix(end, 2);
+    if (r == SAME) {
+      return G(2);
     }
-    return fix(end, 3);
+    return G(3);
   }
+
   if (n == 6) {
-    int g = Guess(fix(end, 1));
-    if (g > 0) {
-      g = Guess(fix(end, 3));
-      if (g > 0) {
-        return fix(end, 3);
+    Result r = ask(G(1));
+    if (r == HOTTER) {
+      r = ask(G(3));
+      if (r == HOTTER) {
+        return G(3);
       }
-      if (g == 0) {
-        return fix(end, 2);
+      if (r == SAME) {
+        return G(2);
       }
-      return fix(end, 1);
+      return G(1);
     }
-    g = Guess(fix(end, 9));
-    if (g > 0) {
-      return fix(end, 6);
+    r = ask(G(9));
+    if (r == HOTTER) {
+      return G(6);
     }
-    if (g == 0) {
-      return fix(end, 5);
+    if (r == SAME) {
+      return G(5);
     }
-    return fix(end, 4);
+    return G(4);
   }
+
   if (n == 7) {
-    int g = Guess(fix(end, 1));
-    if (g == 0) {
-      return fix(end, 4);
+    Result r = ask(G(1));
+    if (r == SAME) {
+      return G(4);
     }
-    if (g > 0) {
-      g = Guess(fix(end, 3));
-      if (g > 0) {
-        return fix(end, 3);
+    if (r == HOTTER) {
+      r = ask(G(3));
+      if (r == HOTTER) {
+        return G(3);
       }
-      if (g == 0) {
-        return fix(end, 2);
+      if (r == SAME) {
+        return G(2);
       }
-      return fix(end, 1);
+      return G(1);
     }
-    g = Guess(fix(end, 11));
-    if (g > 0) {
-      return fix(end, 7);
+    r = ask(G(11));
+    if (r == HOTTER) {
+      return G(7);
     }
-    if (g == 0) {
-      return fix(end, 6);
+    if (r == SAME) {
+      return G(6);
     }
-    return fix(end, 5);
+    return G(5);
   }
 
-  int g = Guess(fix(end, t[z - 2] - 2));
-  if (g == 0) {
-    return fix(end, (t[z - 2] - 2 + n) / 2);
+  const int z = wall_level(n);
+  const int small = wall_len[z - 2];
+  const int probe = small - 2;
+  const int mid = (probe + n) / 2;
+
+  Result r = ask(G(probe));
+  if (r == SAME) {
+    return G(mid);
   }
-  if (g < 0) {
-    return midgame(fix(end, t[z - 2] - 2), fix(end, (t[z - 2] - 2 + n) / 2 + 1), fix(end, n));
+  if (r == COLDER) {
+    return solve_middle(G(probe), G(mid + 1), G(n));
   }
 
-  g = Guess(fix(end, t[z - 2]));
-  if (g < 0) {
-    return endgame(end, t[z - 2]);
+  r = ask(G(small));
+  if (r == COLDER) {
+    return solve_wall(wall_end, small);
   }
-  if (g == 0) {
-    return fix(end, t[z - 2] - 1);
+  if (r == SAME) {
+    return G(small - 1);
   }
-  return midgame(fix(end, t[z - 2]), fix(end, t[z - 2]), fix(end, (t[z - 2] - 2 + n - 1) / 2));
+  return solve_middle(G(small), G(small), G((probe + n - 1) / 2));
 }
 
+} // namespace
+
 int HC(int N) {
-  if (!t[0]) {
-    t[0] = 1;
-    t[1] = 3;
-    t[2] = 7;
-    for (int i = 3; i < 30; ++i) {
-      t[i] = t[i - 2] + (1 << i);
-    }
-  }
+  build_wall_table();
 
   if (N == 1) {
     return 1;
   }
+
   if (N == 2) {
     Guess(1);
-    const int r = Guess(2);
-    return r > 0 ? 2 : 1;
+    return ask(2) == HOTTER ? 2 : 1;
   }
+
   if (N == 3) {
     Guess(1);
-    const int r = Guess(3);
-    if (r > 0) {
+    const Result r = ask(3);
+    if (r == HOTTER) {
       return 3;
     }
-    if (r < 0) {
+    if (r == COLDER) {
       return 1;
     }
     return 2;
   }
 
-  const int mid = (N + 2) / 2;
-  Guess(mid - 2);
-  const int r = Guess(mid);
-  if (r == 0) {
-    return mid - 1;
+  const int anchor = (N + 2) / 2;
+  Guess(anchor - 2);
+  const Result r = ask(anchor);
+
+  if (r == SAME) {
+    return anchor - 1;
   }
-  if (r < 0) {
-    return endgame(1, mid);
+  if (r == COLDER) {
+    return solve_wall(1, anchor);
   }
-  return endgame(N, N - mid + 1);
+  return solve_wall(N, N - anchor + 1);
 }
