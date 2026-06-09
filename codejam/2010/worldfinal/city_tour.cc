@@ -1,12 +1,9 @@
-#include <algorithm>
-#include <iostream>
-#include <unordered_map>
-#include <utility>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-static inline long long edge_key(int a, int b) {
+namespace {
+
+inline long long edge_key(int a, int b) {
   if (a > b)
     swap(a, b);
   return (static_cast<long long>(a) << 32) ^ static_cast<unsigned int>(b);
@@ -55,6 +52,8 @@ struct Solver {
     return max_len;
   }
 };
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

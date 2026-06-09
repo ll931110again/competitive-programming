@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
-
 using namespace std;
+
+namespace {
 
 struct AdjEdge {
   int to;
@@ -10,9 +11,11 @@ struct AdjEdge {
 struct Frame {
   int u;
   int parent;
-  int parentEdge;
+  int parent_edge;
   int it;
 };
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -44,25 +47,25 @@ int main() {
       g[b].push_back({a, i});
     }
 
-    vector<int> disc(V + 1, 0), low(V + 1, 0), parent(V + 1, 0), parentEdge(V + 1, -1);
-    vector<int> childCnt(V + 1, 0);
-    vector<char> isArt(V + 1, 0);
+    vector<int> disc(V + 1, 0), low(V + 1, 0), parent(V + 1, 0), parent_edge(V + 1, -1);
+    vector<int> child_cnt(V + 1, 0);
+    vector<char> is_art(V + 1, 0);
     int timer = 0;
 
     vector<pair<int, int>> estack;
     estack.reserve(E);
 
-    vector<int> compSize;
-    vector<int> compArtCnt;
-    compSize.reserve(E);
-    compArtCnt.reserve(E);
+    vector<int> comp_size;
+    vector<int> comp_art_cnt;
+    comp_size.reserve(E);
+    comp_art_cnt.reserve(E);
 
     vector<int> seen(V + 1, 0);
-    int seenToken = 1;
+    int seen_token = 1;
 
-    auto addVertex = [&](vector<int>& verts, int v) {
-      if (seen[v] != seenToken) {
-        seen[v] = seenToken;
+    auto add_vertex = [&](vector<int>& verts, int v) {
+      if (seen[v] != seen_token) {
+        seen[v] = seen_token;
         verts.push_back(v);
       }
     };
@@ -76,7 +79,7 @@ int main() {
       st.reserve(V);
       st.push_back({start, 0, -1, 0});
       parent[start] = 0;
-      parentEdge[start] = -1;
+      parent_edge[start] = -1;
       disc[start] = low[start] = ++timer;
 
       while (!st.empty()) {
@@ -84,13 +87,13 @@ int main() {
         int u = fr.u;
         if (fr.it < (int)g[u].size()) {
           auto [v, eid] = g[u][fr.it++];
-          if (eid == fr.parentEdge)
+          if (eid == fr.parent_edge)
             continue;
 
           if (disc[v] == 0) {
             parent[v] = u;
-            parentEdge[v] = eid;
-            childCnt[u]++;
+            parent_edge[v] = eid;
+            child_cnt[u]++;
             estack.push_back({u, v});
             disc[v] = low[v] = ++timer;
             st.push_back({v, u, eid, 0});
@@ -110,32 +113,32 @@ int main() {
 
             // Articulation check (except root)
             if (parent[p] != 0 && low[u] >= disc[p])
-              isArt[p] = 1;
+              is_art[p] = 1;
 
             // Biconnected component formed by (p,u) if low[u] >= disc[p]
             if (low[u] >= disc[p]) {
               vector<int> verts;
               verts.reserve(16);
-              ++seenToken;
+              ++seen_token;
               while (!estack.empty()) {
                 auto [a, b] = estack.back();
                 estack.pop_back();
-                addVertex(verts, a);
-                addVertex(verts, b);
+                add_vertex(verts, a);
+                add_vertex(verts, b);
                 if ((a == p && b == u) || (a == u && b == p))
                   break;
               }
               int ac = 0;
               for (int x : verts)
-                if (isArt[x])
+                if (is_art[x])
                   ac++;
-              compSize.push_back((int)verts.size());
-              compArtCnt.push_back(ac);
+              comp_size.push_back((int)verts.size());
+              comp_art_cnt.push_back(ac);
             }
           } else {
             // root: articulation iff >=2 DFS children
-            if (childCnt[u] >= 2)
-              isArt[u] = 1;
+            if (child_cnt[u] >= 2)
+              is_art[u] = 1;
           }
         }
       }
@@ -143,10 +146,10 @@ int main() {
 
     long long shafts = 0;
     long long ways = 1;
-    int leafBlocks = 0;
+    int leaf_blocks = 0;
 
-    // Recompute compArtCnt now that root articulation status is finalized.
-    for (int i = 0; i < (int)compSize.size(); i++) {
+    // Recompute comp_art_cnt now that root articulation status is finalized.
+    for (int i = 0; i < (int)comp_size.size(); i++) {
       // We didn't store vertices per component; recomputing accurately would
       // require that. However, the only missed articulation status can be root
       // nodes; to handle this cleanly, we will re-run a lightweight pass that
@@ -155,7 +158,7 @@ int main() {
       (void)i;
     }
 
-    // Alternate strategy (standard): during component creation, we used isArt
+    // Alternate strategy (standard): during component creation, we used is_art
     // which might not have root marked yet. Fix by counting leaf blocks using
     // vertex membership again is expensive. So instead: we store vertices of
     // each component.
@@ -169,15 +172,15 @@ int main() {
     disc.assign(V + 1, 0);
     low.assign(V + 1, 0);
     parent.assign(V + 1, 0);
-    parentEdge.assign(V + 1, -1);
-    childCnt.assign(V + 1, 0);
+    parent_edge.assign(V + 1, -1);
+    child_cnt.assign(V + 1, 0);
     timer = 0;
     estack.clear();
 
     vector<vector<int>> comps;
     comps.reserve(E);
     seen.assign(V + 1, 0);
-    seenToken = 1;
+    seen_token = 1;
 
     for (int start = 1; start <= V; start++) {
       if (disc[start] != 0)
@@ -192,13 +195,13 @@ int main() {
         int u = fr.u;
         if (fr.it < (int)g[u].size()) {
           auto [v, eid] = g[u][fr.it++];
-          if (eid == fr.parentEdge)
+          if (eid == fr.parent_edge)
             continue;
 
           if (disc[v] == 0) {
             parent[v] = u;
-            parentEdge[v] = eid;
-            childCnt[u]++;
+            parent_edge[v] = eid;
+            child_cnt[u]++;
             estack.push_back({u, v});
             disc[v] = low[v] = ++timer;
             st.push_back({v, u, eid, 0});
@@ -216,16 +219,16 @@ int main() {
             if (low[u] >= disc[p]) {
               vector<int> verts;
               verts.reserve(16);
-              ++seenToken;
+              ++seen_token;
               while (!estack.empty()) {
                 auto [a, b] = estack.back();
                 estack.pop_back();
-                addVertex(verts, a);
-                addVertex(verts, b);
+                add_vertex(verts, a);
+                add_vertex(verts, b);
                 if ((a == p && b == u) || (a == u && b == p))
                   break;
               }
-              comps.push_back(std::move(verts));
+              comps.push_back(move(verts));
             }
           }
         }
@@ -235,16 +238,16 @@ int main() {
     for (const auto& verts : comps) {
       int ac = 0;
       for (int v : verts)
-        if (isArt[v])
+        if (is_art[v])
           ac++;
       if (ac == 1) {
-        leafBlocks++;
+        leaf_blocks++;
         shafts++;
         ways *= (long long)verts.size() - 1LL;
       }
     }
 
-    if (leafBlocks == 0) {
+    if (leaf_blocks == 0) {
       shafts = 2;
       ways = (long long)V * (long long)(V - 1) / 2LL;
     }

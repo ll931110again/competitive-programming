@@ -1,12 +1,4 @@
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <utility>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
 struct SemifinalAssignment {

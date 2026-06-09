@@ -1,31 +1,22 @@
 // Codeforces 1810 (CodeTON Round 4 (Div. 1 + Div. 2, Rated, Prizes!)) — E. Monsters
 // Submission: https://codeforces.com/contest/1810/submission/331029817
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <stack>
-#include <map>
-#include <queue>
-#include <vector>
-#define maxn 200005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
 int T, n, m;
-vector<int> adj[maxn];
-int level[maxn];
+vector<int> adj[k_max_n];
+int level[k_max_n];
 
-bool vis[maxn];
+bool vis[k_max_n];
 
-bool chk[maxn];
+bool chk[k_max_n];
 int vis_count = 0;
 
-pair<int, int> orders[maxn];
+pair<int, int> orders[k_max_n];
 
 bool BFS(int u) {
   vis_count = 0;
@@ -74,6 +65,8 @@ bool solve() {
 
   return false;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

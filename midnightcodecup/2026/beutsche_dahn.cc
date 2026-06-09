@@ -14,19 +14,10 @@
 // Objective is contest-defined (partial in statement); tuned against judge_beutsche.py
 // (minimize Σ P_i (T_arrival − T_appear)).
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#else
-#include <algorithm>
-#include <cassert>
-#include <iostream>
-#include <queue>
-#include <tuple>
-#include <utility>
-#include <vector>
-#endif
-
 using namespace std;
+
+namespace {
 
 struct Passenger {
   int u, v, t_ap;
@@ -36,13 +27,13 @@ struct Passenger {
   bool done = false;
 };
 
-static int V, E, Ttr, C, N;
-static vector<vector<int>> adj;
-static vector<int> train_pos;
-static vector<Passenger> pass;
-static vector<vector<int>> dist_mat; // dist_mat[a][b] = shortest path length a→b
+int V, E, Ttr, C, N;
+vector<vector<int>> adj;
+vector<int> train_pos;
+vector<Passenger> pass;
+vector<vector<int>> dist_mat; // dist_mat[a][b] = shortest path length a→b
 
-static void bfs_all_pairs() {
+void bfs_all_pairs() {
   dist_mat.assign(V + 1, vector<int>(V + 1, -1));
   for (int s = 1; s <= V; ++s) {
     queue<int> q;
@@ -62,7 +53,7 @@ static void bfs_all_pairs() {
 }
 
 // One step from `from` toward `goal` on a shortest path (tie: smallest neighbor id).
-static int step_toward(int from, int goal) {
+int step_toward(int from, int goal) {
   if (from == goal) {
     return from;
   }
@@ -84,15 +75,14 @@ struct RationalCandidate {
   int city{};
 };
 
-static bool rat_lt(const RationalCandidate& a, const RationalCandidate& b) {
+bool rat_lt(const RationalCandidate& a, const RationalCandidate& b) {
   return (__int128)a.num * b.den < (__int128)b.num * a.den;
 }
 
 // Empty-train staging: minimize dist(from, target) / (slack+1), where slack is ticks until
 // appearance for future passengers; slack=0 for cities that already have waiting passengers.
 // Returns ranked list of distinct goal cities (best first) for diversification across trains.
-static vector<int> staging_goals_ranked(int from, long long tick,
-                                        const vector<vector<int>>& waiting_at) {
+vector<int> staging_goals_ranked(int from, long long tick, const vector<vector<int>>& waiting_at) {
   vector<RationalCandidate> cand;
   cand.reserve((size_t)V + (size_t)N);
 
@@ -149,7 +139,7 @@ static vector<int> staging_goals_ranked(int from, long long tick,
   return out;
 }
 
-static int pick_staging_goal(const vector<int>& ranked, int rank) {
+int pick_staging_goal(const vector<int>& ranked, int rank) {
   if (ranked.empty()) {
     return -1;
   }
@@ -163,6 +153,8 @@ struct Tick {
   vector<string> cmds;
   vector<pair<int, int>> moves; // train, next_city
 };
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -365,13 +357,13 @@ int main() {
     }
 
     if (undelivered == 0) {
-      plan.push_back(std::move(cur));
+      plan.push_back(move(cur));
       break;
     }
 
     // No-op ticks advance time until the next appearance time (passengers not yet on platform).
     if (idle && future_appearance) {
-      plan.push_back(std::move(cur));
+      plan.push_back(move(cur));
       continue;
     }
 
@@ -380,7 +372,7 @@ int main() {
       return 1;
     }
 
-    plan.push_back(std::move(cur));
+    plan.push_back(move(cur));
   }
 
   // --- output ---

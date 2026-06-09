@@ -11,13 +11,15 @@
  */
 
 #include <bits/stdc++.h>
-#define maxn 200005
 using namespace std;
 
-int T, m, n;
-vector<int> adj[maxn];
+namespace {
 
-int dist[maxn];
+constexpr int k_max_n = 200005;
+int T, m, n;
+vector<int> adj[k_max_n];
+
+int dist[k_max_n];
 
 void BFS(int u) {
   queue<int> q;
@@ -34,6 +36,8 @@ void BFS(int u) {
       }
   }
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

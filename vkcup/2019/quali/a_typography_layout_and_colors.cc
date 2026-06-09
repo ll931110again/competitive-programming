@@ -1,22 +1,17 @@
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <unordered_set>
-#include <vector>
 using namespace std;
+
+namespace {
 
 int T;
 int m, n, x, y;
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   while (T--) {
     cin >> m >> n >> x >> y;

@@ -1,15 +1,15 @@
 // Codeforces 1870 (CodeTON Round 6 (Div. 1 + Div. 2, Rated, Prizes!)) — C. Colorful Table
 // Submission: https://codeforces.com/contest/1870/submission/307444815
 
-#include <algorithm>
-#include <iostream>
-#include <vector>
-#define maxn 100005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 100005;
 int T, n, k;
-int a[maxn];
-vector<int> pos[maxn];
+int a[k_max_n];
+vector<int> pos[k_max_n];
 
 vector<int> solve() {
   for (int i = 1; i <= k; i++) {
@@ -41,9 +41,11 @@ vector<int> solve() {
   return ans;
 }
 
+} // namespace
+
 int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
 
   cin >> T;
   while (T--) {

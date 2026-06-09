@@ -11,13 +11,17 @@
    Insert: O(1) amortized.
    Union: O(1) amortized.  */
 
-#ifndef GCC_FIBONACCI_HEAP_H
+#include <bits/stdc++.h>
+using namespace std;
+
 #define GCC_FIBONACCI_HEAP_H
+namespace {
 
 /* Forward definition */
+
 template <class K, class V> class fibonacci_heap;
 
-template <class K, class V, typename Compare = std::less<Key>> class fibonacci_node {
+template <class K, class V, typename Compare = less<Key>> class fibonacci_node {
   typedef fibonacci_node<K, V> fibonacci_node_t;
   friend class fibonacci_heap<K, V>;
 
@@ -81,3 +85,5 @@ template <class K, class V> class fibonacci_heap {
 public:
 fibonacci_heap(K global_min_key, pool_allocator* allocator = NULL) : m_nodes(0), private:
 }
+
+} // namespace

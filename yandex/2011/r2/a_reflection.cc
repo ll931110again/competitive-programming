@@ -4,6 +4,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 int L, R;
 
 long long revert(long long x) {
@@ -16,10 +18,15 @@ long long revert(long long x) {
   return sum - x;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   // freopen("a.in","r",stdin);
 
-  scanf("%d %d", &L, &R);
+  cin >> L >> R;
   long long ret = max(1LL * L * revert(L), 1LL * R * revert(R));
 
   for (long long sum = 9, start = 1; sum <= 99999999999LL; sum = sum * 10LL + 9, start *= 10LL) {

@@ -6,14 +6,12 @@
  * (next_prime(max(p,q)) - 1) down to 2. Upper bound is tight per statement.
  */
 
-#include <algorithm>
-#include <climits>
-#include <iostream>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-static bool is_prime(int x) {
+namespace {
+
+bool is_prime(int x) {
   if (x < 2)
     return false;
   for (int d = 2; (long long)d * d <= x; ++d)
@@ -22,16 +20,16 @@ static bool is_prime(int x) {
   return true;
 }
 
-static int next_prime_after(int x) {
+int next_prime_after(int x) {
   int y = x + 1;
   while (!is_prime(y))
     ++y;
   return y;
 }
 
-static vector<int> primes;
+vector<int> primes;
 
-static void sieve(int lim) {
+void sieve(int lim) {
   vector<char> comp(lim + 1, 0);
   for (int i = 2; (long long)i * i <= lim; ++i) {
     if (!comp[i])
@@ -44,7 +42,7 @@ static void sieve(int lim) {
       primes.push_back(i);
 }
 
-static long long vp_fact(int p, int n) {
+long long vp_fact(int p, int n) {
   long long s = 0;
   long long x = n;
   while (x) {
@@ -54,13 +52,15 @@ static long long vp_fact(int p, int n) {
   return s;
 }
 
-static void add_factorial(vector<long long>& exp, int n, int sign) {
+void add_factorial(vector<long long>& exp, int n, int sign) {
   for (int p : primes) {
     if (p > n)
       break;
     exp[p] += sign * vp_fact(p, n);
   }
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

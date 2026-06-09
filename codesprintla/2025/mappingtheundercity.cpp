@@ -10,9 +10,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-static const long long MOD = 1000000007LL;
+namespace {
 
-static long long mod_pow(long long a, long long e) {
+const long long MOD = 1000000007LL;
+
+long long mod_pow(long long a, long long e) {
   long long r = 1 % MOD;
   while (e > 0) {
     if (e & 1)
@@ -22,6 +24,8 @@ static long long mod_pow(long long a, long long e) {
   }
   return r;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

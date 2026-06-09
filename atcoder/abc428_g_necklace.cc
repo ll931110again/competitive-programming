@@ -7,7 +7,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-static constexpr unsigned MOD = 998244353;
+namespace {
+
+constexpr unsigned MOD = 998244353;
 
 template <unsigned M> struct ModInt {
   unsigned x;
@@ -62,7 +64,7 @@ template <unsigned M> struct ModInt {
 
 using Mint = ModInt<MOD>;
 
-static void dirichlet_conv(const vector<Mint>& a, const vector<Mint>& b, vector<Mint>& c, int U) {
+void dirichlet_conv(const vector<Mint>& a, const vector<Mint>& b, vector<Mint>& c, int U) {
   fill(c.begin(), c.end(), Mint(0));
   for (int i = 1; i <= U; i++) {
     if (!a[i].x)
@@ -73,7 +75,7 @@ static void dirichlet_conv(const vector<Mint>& a, const vector<Mint>& b, vector<
 }
 
 // Inverse of a (Dirichlet); requires a[1] == 1.
-static void dirichlet_inv(const vector<Mint>& a, vector<Mint>& b, int U) {
+void dirichlet_inv(const vector<Mint>& a, vector<Mint>& b, int U) {
   fill(b.begin(), b.end(), Mint(0));
   b[1] = 1;
   for (int i = 1; i <= U; i++) {
@@ -83,6 +85,8 @@ static void dirichlet_inv(const vector<Mint>& a, vector<Mint>& b, int U) {
       b[i * j] -= b[i] * a[j];
   }
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

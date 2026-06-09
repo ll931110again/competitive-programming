@@ -1,10 +1,9 @@
-#include <algorithm>
-#include <iostream>
-#include <string>
-#include <vector>
-#define maxn 1000005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 1000005;
 int T, n;
 vector<long long> nums;
 
@@ -51,7 +50,12 @@ void generate_candidates() {
   }
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   generate_candidates();
 
   cin >> T;

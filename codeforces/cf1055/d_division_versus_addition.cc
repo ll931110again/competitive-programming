@@ -1,29 +1,21 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <unordered_set>
-#include <vector>
-#define maxn 250005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 250005;
 int T, n, Q;
-int a[maxn];
-int logs[maxn], bs[maxn], cs[maxn];
+int a[k_max_n];
+int logs[k_max_n], bs[k_max_n], cs[k_max_n];
 unordered_set<int> p2, p2o;
 
 int solve(int L, int R) {
   int ans = logs[R] - logs[L - 1] + cs[R] - cs[L - 1] + (bs[R] - bs[L - 1]) / 2;
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

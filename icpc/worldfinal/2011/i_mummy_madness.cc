@@ -1,58 +1,59 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
+namespace {
+
 struct SegTreeCoverLen {
-  int nseg = 0;               // number of elementary segments (m-1)
-  vector<int> coverCount;     // lazy cover count
-  vector<long long> coverLen; // covered length in this node
-  vector<long long> ys;       // coordinate breaks, size m
+  int nseg = 0;                // number of elementary segments (m-1)
+  vector<int> cover_count;     // lazy cover count
+  vector<long long> cover_len; // covered length in this node
+  vector<long long> ys;        // coordinate breaks, size m
 
   SegTreeCoverLen() = default;
 
   explicit SegTreeCoverLen(vector<long long> ys_) {
-    init(std::move(ys_));
+    init(move(ys_));
   }
 
   void init(vector<long long> ys_) {
-    ys = std::move(ys_);
+    ys = move(ys_);
     nseg = max(0, (int)ys.size() - 1);
-    coverCount.assign(4 * max(1, nseg), 0);
-    coverLen.assign(4 * max(1, nseg), 0);
+    cover_count.assign(4 * max(1, nseg), 0);
+    cover_len.assign(4 * max(1, nseg), 0);
   }
 
   inline void pull(int v, int l, int r) {
-    if (coverCount[v] > 0) {
-      coverLen[v] = ys[r + 1] - ys[l];
+    if (cover_count[v] > 0) {
+      cover_len[v] = ys[r + 1] - ys[l];
     } else if (l == r) {
-      coverLen[v] = 0;
+      cover_len[v] = 0;
     } else {
-      coverLen[v] = coverLen[v << 1] + coverLen[v << 1 | 1];
+      cover_len[v] = cover_len[v << 1] + cover_len[v << 1 | 1];
     }
   }
 
-  void addRange(int ql, int qr, int delta) { // over segment indices, inclusive
+  void add_range(int ql, int qr, int delta) { // over segment indices, inclusive
     if (nseg == 0 || ql > qr)
       return;
-    addRangeRec(1, 0, nseg - 1, ql, qr, delta);
+    add_range_rec(1, 0, nseg - 1, ql, qr, delta);
   }
 
-  void addRangeRec(int v, int l, int r, int ql, int qr, int delta) {
+  void add_range_rec(int v, int l, int r, int ql, int qr, int delta) {
     if (qr < l || r < ql)
       return;
     if (ql <= l && r <= qr) {
-      coverCount[v] += delta;
+      cover_count[v] += delta;
       pull(v, l, r);
       return;
     }
     int m = (l + r) >> 1;
-    addRangeRec(v << 1, l, m, ql, qr, delta);
-    addRangeRec(v << 1 | 1, m + 1, r, ql, qr, delta);
+    add_range_rec(v << 1, l, m, ql, qr, delta);
+    add_range_rec(v << 1 | 1, m + 1, r, ql, qr, delta);
     pull(v, l, r);
   }
 
-  inline long long totalCoveredLen() const {
-    return nseg == 0 ? 0 : coverLen[1];
+  inline long long total_covered_len() const {
+    return nseg == 0 ? 0 : cover_len[1];
   }
 };
 
@@ -63,16 +64,16 @@ struct Event {
   int delta;
 };
 
-static inline vector<long long> sortedUnique(vector<long long> v) {
+inline vector<long long> sorted_unique(vector<long long> v) {
   sort(v.begin(), v.end());
   v.erase(unique(v.begin(), v.end()), v.end());
   return v;
 }
 
-static bool coveredAtX(const vector<pair<long long, long long>>& mummies, long long X) {
+bool covered_at_x(const vector<pair<long long, long long>>& mummies, long long X) {
   const long long L = -X;
   const long long R = X;
-  const long long targetYLen = (R + 1) - L; // = 2X+1, in half-open representation
+  const long long target_y_len = (R + 1) - L; // = 2X+1, in half-open representation
 
   vector<Event> events;
   events.reserve(mummies.size() * 2);
@@ -109,8 +110,8 @@ static bool coveredAtX(const vector<pair<long long, long long>>& mummies, long l
     ys.push_back(ye0);
   }
 
-  xs = sortedUnique(std::move(xs));
-  ys = sortedUnique(std::move(ys));
+  xs = sorted_unique(move(xs));
+  ys = sorted_unique(move(ys));
   if (xs.size() < 2 || ys.size() < 2)
     return false;
 
@@ -131,18 +132,20 @@ static bool coveredAtX(const vector<pair<long long, long long>>& mummies, long l
       int l = (int)(lower_bound(ys.begin(), ys.end(), events[ei].y1) - ys.begin());
       int r = (int)(lower_bound(ys.begin(), ys.end(), events[ei].y2) - ys.begin());
       // segments are [idx, idx+1), so apply on [l, r-1]
-      st.addRange(l, r - 1, events[ei].delta);
+      st.add_range(l, r - 1, events[ei].delta);
       ++ei;
     }
 
     if (nx - x >= 1) {
-      if (st.totalCoveredLen() < targetYLen)
+      if (st.total_covered_len() < target_y_len)
         return false;
     }
   }
 
   return true;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -189,7 +192,7 @@ int main() {
     }
 
     long long lo = 0, hi = 1;
-    while (!coveredAtX(mummies, hi)) {
+    while (!covered_at_x(mummies, hi)) {
       hi <<= 1;
       // With the quadrant condition, hi will eventually work. Guard anyway.
       if (hi > (1LL << 32))
@@ -198,7 +201,7 @@ int main() {
 
     while (lo + 1 < hi) {
       long long mid = lo + ((hi - lo) >> 1);
-      if (coveredAtX(mummies, mid))
+      if (covered_at_x(mummies, mid))
         hi = mid;
       else
         lo = mid;

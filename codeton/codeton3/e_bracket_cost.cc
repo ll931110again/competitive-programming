@@ -1,31 +1,22 @@
 // Codeforces 1750 (CodeTON Round 3 (Div. 1 + Div. 2, Rated, Prizes!)) — E. Bracket Cost
 // Submission: https://codeforces.com/contest/1750/submission/334622245
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <stack>
-#include <map>
-#include <queue>
-#include <vector>
-#define maxn 200005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
 int T, n;
 string s;
-int delta[maxn];
+int delta[k_max_n];
 
 struct Node {
   int cnt;
   long long sum;
 };
 
-Node tx[8 * maxn];
+Node tx[8 * k_max_n];
 
 void init(int i, int low, int high) {
   tx[i] = {.cnt = 0, .sum = 0};
@@ -68,6 +59,8 @@ Node get(int i, int low, int high, int upper) {
   Node t2 = get(2 * i + 1, mid + 1, high, upper);
   return {.cnt = t1.cnt + t2.cnt, .sum = t1.sum + t2.sum};
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

@@ -1,25 +1,29 @@
-#include <algorithm>
-#include <iostream>
-#include <string>
-#include <vector>
-#define maxn 10000005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 10000005;
 int T, n;
-int dp[maxn];
-bool primes[maxn];
+int dp[k_max_n];
+bool primes[k_max_n];
+
+} // namespace
 
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   memset(primes, true, sizeof primes);
   primes[0] = primes[1] = false;
-  for (int i = 2; i < maxn; i++)
+  for (int i = 2; i < k_max_n; i++)
     if (primes[i]) {
-      for (int j = i + i; j < maxn; j += i) {
+      for (int j = i + i; j < k_max_n; j += i) {
         primes[j] = false;
       }
     }
 
-  for (int i = 2; i < maxn; i++) {
+  for (int i = 2; i < k_max_n; i++) {
     dp[i] = dp[i - 1];
     if (primes[i] && primes[i - 2]) {
       dp[i]++;

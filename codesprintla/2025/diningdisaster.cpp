@@ -4,6 +4,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 struct Dinic {
   struct Edge {
     int to, rev, cap;
@@ -12,7 +14,7 @@ struct Dinic {
   vector<vector<Edge>> g;
   vector<int> level, it;
   Dinic(int n_, int s_, int t_) : n(n_), s(s_), t(t_), g(n_) {}
-  void addEdge(int fr, int to, int cap) {
+  void add_edge(int fr, int to, int cap) {
     Edge a{to, (int)g[to].size(), cap};
     Edge b{fr, (int)g[fr].size(), 0};
     g[fr].push_back(a);
@@ -63,6 +65,8 @@ struct Dinic {
   }
 };
 
+} // namespace
+
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
@@ -104,20 +108,20 @@ int main() {
     }
   }
 
-  vector<int> Ls, Rs, idOf(V, -1);
+  vector<int> Ls, Rs, id_of(V, -1);
   for (int v = 0; v < V; ++v) {
     if (blocked[v])
       continue;
     if (color(v) == 0)
-      idOf[v] = (int)Ls.size(), Ls.push_back(v);
+      id_of[v] = (int)Ls.size(), Ls.push_back(v);
     else
-      idOf[v] = (int)Rs.size(), Rs.push_back(v);
+      id_of[v] = (int)Rs.size(), Rs.push_back(v);
   }
 
-  int nL = (int)Ls.size(), nR = (int)Rs.size();
-  int S = nL + nR, T = S + 1;
+  int n_l = (int)Ls.size(), n_r = (int)Rs.size();
+  int S = n_l + n_r, T = S + 1;
   Dinic dc(S + 2, S, T);
-  vector<vector<int>> gM(nL);
+  vector<vector<int>> g_m(n_l);
 
   for (int u = 0; u < V; ++u) {
     if (blocked[u] || color(u) != 0)
@@ -125,46 +129,46 @@ int main() {
     for (int v : adj[u]) {
       if (blocked[v] || color(v) != 1)
         continue;
-      int li = idOf[u], rj = idOf[v];
-      dc.addEdge(li, nL + rj, 1);
-      gM[li].push_back(rj);
+      int li = id_of[u], rj = id_of[v];
+      dc.add_edge(li, n_l + rj, 1);
+      g_m[li].push_back(rj);
     }
   }
-  for (int i = 0; i < nL; ++i)
-    dc.addEdge(S, i, 1);
-  for (int j = 0; j < nR; ++j)
-    dc.addEdge(nL + j, T, 1);
+  for (int i = 0; i < n_l; ++i)
+    dc.add_edge(S, i, 1);
+  for (int j = 0; j < n_r; ++j)
+    dc.add_edge(n_l + j, T, 1);
 
   dc.maxflow();
 
-  vector<int> matchL(nL, -1), matchR(nR, -1);
-  for (int li = 0; li < nL; ++li) {
+  vector<int> match_l(n_l, -1), match_r(n_r, -1);
+  for (int li = 0; li < n_l; ++li) {
     for (const auto& e : dc.g[li]) {
-      if (e.to >= nL && e.to < nL + nR && e.cap == 0) {
-        int rj = e.to - nL;
-        matchL[li] = rj;
-        matchR[rj] = li;
+      if (e.to >= n_l && e.to < n_l + n_r && e.cap == 0) {
+        int rj = e.to - n_l;
+        match_l[li] = rj;
+        match_r[rj] = li;
         break;
       }
     }
   }
 
-  vector<char> visL(nL), visR(nR);
+  vector<char> vis_l(n_l), vis_r(n_r);
   queue<int> q;
-  for (int u = 0; u < nL; ++u)
-    if (matchL[u] == -1) {
-      visL[u] = 1;
+  for (int u = 0; u < n_l; ++u)
+    if (match_l[u] == -1) {
+      vis_l[u] = 1;
       q.push(u);
     }
   while (!q.empty()) {
     int u = q.front();
     q.pop();
-    for (int rj : gM[u]) {
-      if (matchL[u] != rj && !visR[rj]) {
-        visR[rj] = 1;
-        int u2 = matchR[rj];
-        if (u2 != -1 && !visL[u2]) {
-          visL[u2] = 1;
+    for (int rj : g_m[u]) {
+      if (match_l[u] != rj && !vis_r[rj]) {
+        vis_r[rj] = 1;
+        int u2 = match_r[rj];
+        if (u2 != -1 && !vis_l[u2]) {
+          vis_l[u2] = 1;
           q.push(u2);
         }
       }
@@ -176,11 +180,11 @@ int main() {
     if (forced[v])
       take[v] = 1;
   // Max independent set = (L ∩ Z) ∪ (R \ Z), Z = alternating reachability from free L
-  for (int i = 0; i < nL; ++i)
-    if (visL[i])
+  for (int i = 0; i < n_l; ++i)
+    if (vis_l[i])
       take[Ls[i]] = 1;
-  for (int j = 0; j < nR; ++j)
-    if (!visR[j])
+  for (int j = 0; j < n_r; ++j)
+    if (!vis_r[j])
       take[Rs[j]] = 1;
 
   int M = 0;

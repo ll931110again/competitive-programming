@@ -2,6 +2,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 int T, n;
 string s;
 vector<int> openings, closings;
@@ -26,6 +28,8 @@ bool ok(int mid) {
   }
   return true;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

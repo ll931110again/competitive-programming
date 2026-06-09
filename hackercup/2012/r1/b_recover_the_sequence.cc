@@ -1,37 +1,21 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <utility>
-#include <vector>
-#define maxn 10005
-#define mod 1000003
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
+
+constexpr int k_max_n = 10005;
+#define mod 1000003
 
 int T, n, last;
 string s;
-int arr[maxn], temp[maxn], opt[maxn];
+int arr[k_max_n], temp[k_max_n], opt[k_max_n];
 
-void mergeSort(int low, int high) {
+void merge_sort(int low, int high) {
   if (high - low <= 1)
     return;
   int mid = (low + high) / 2;
-  mergeSort(low, mid);
-  mergeSort(mid, high);
+  merge_sort(low, mid);
+  merge_sort(mid, high);
 
   int la = low, lb = mid, pos = low;
   while (mid - la > 0 && high - lb > 0) {
@@ -57,7 +41,12 @@ void mergeSort(int low, int high) {
     arr[i] = temp[i];
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   freopen("seq.in.1", "r", stdin);
   freopen("seq.out.1", "w", stdout);
   cin >> T;
@@ -67,7 +56,7 @@ int main() {
     for (int i = 0; i < n; i++)
       arr[i] = i;
     last = 0;
-    mergeSort(0, n);
+    merge_sort(0, n);
     for (int i = 0; i < n; i++)
       opt[arr[i]] = i;
     long long ret = 1;

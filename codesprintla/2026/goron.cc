@@ -25,17 +25,16 @@
     assign the rocks until we run out of time.
  */
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <iostream>
-#define maxn 1000005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 1000005;
 int n, m, g, t;
 
-int rocks[maxn], house[maxn];
-int goron[maxn];
+int rocks[k_max_n], house[k_max_n];
+int goron[k_max_n];
 
 bool ok(int mid) {
   int ix = 0, iy = 0;
@@ -79,6 +78,8 @@ int solve() {
 
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

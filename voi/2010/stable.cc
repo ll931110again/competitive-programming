@@ -1,14 +1,7 @@
-#include <algorithm>
-#include <cmath>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 vector<int> v[10001];
 vector<pair<int, int>> e;
@@ -16,7 +9,12 @@ queue<int> q;
 int way[10001], len[10001];
 bool fr[10001];
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   int n, m, x, y, s;
   //    freopen("stable.in","r",stdin);
   //    freopen("stable.out","w",stdout);

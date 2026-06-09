@@ -8,49 +8,41 @@
 // Usage:  maze_sa <input> <output> [max_iters] [--seed N] [--warm path]
 //   max_iters omitted => run until killed (blog style; saves best every 2^23 steps).
 
-#include <chrono>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <fstream>
-#include <random>
-#include <string>
-#include <utility>
-#include <vector>
+#include <bits/stdc++.h>
+using namespace std;
 
 namespace {
 
-constexpr int kMaxN = 205;
-constexpr int kMaxCells = kMaxN * kMaxN;
-constexpr double kT0 = 2.5;
-constexpr double kAlpha = 0.999999999;
-constexpr int kSaveMask = (1 << 23) - 1;
+constexpr int k_max_n = 205;
+constexpr int k_max_cells = k_max_n * k_max_n;
+constexpr double k_t0 = 2.5;
+constexpr double k_alpha = 0.999999999;
+constexpr int k_save_mask = (1 << 23) - 1;
 
-const int kDi[4] = {1, 0, -1, 0};
-const int kDj[4] = {0, 1, 0, -1};
+const int k_di[4] = {1, 0, -1, 0};
+const int k_dj[4] = {0, 1, 0, -1};
 
 int n, m;
-char g[kMaxN][kMaxN];
-char bestg[kMaxN][kMaxN];
-char input_mask[kMaxN][kMaxN];
+char g[k_max_n][k_max_n];
+char bestg[k_max_n][k_max_n];
+char input_mask[k_max_n][k_max_n];
 
-int dist[kMaxN][kMaxN];
-unsigned short visit_stamp[kMaxN][kMaxN];
+int dist[k_max_n][k_max_n];
+unsigned short visit_stamp[k_max_n][k_max_n];
 unsigned short visit_gen = 1;
 
-int bfs_q_r[kMaxCells];
-int bfs_q_c[kMaxCells];
+int bfs_q_r[k_max_cells];
+int bfs_q_c[k_max_cells];
 
-std::vector<std::pair<int, int>> sides;
-std::vector<std::pair<int, int>> all;
-std::pair<int, int> src = {-1, -1};
-std::pair<int, int> best_src = {-1, -1};
+vector<pair<int, int>> sides;
+vector<pair<int, int>> all;
+pair<int, int> src = {-1, -1};
+pair<int, int> best_src = {-1, -1};
 
-std::mt19937 rng(0);
-std::uniform_int_distribution<int> pick_all;
-std::uniform_int_distribution<int> pick_side;
-std::uniform_real_distribution<double> pick_real;
+mt19937 rng(0);
+uniform_int_distribution<int> pick_all;
+uniform_int_distribution<int> pick_side;
+uniform_real_distribution<double> pick_real;
 
 bool is_corner(int i, int j) {
   return (i == 0 && j == 0) || (i == 0 && j == m - 1) || (i == n - 1 && j == 0) ||
@@ -92,14 +84,14 @@ void build_masks() {
     }
   }
 
-  pick_all = std::uniform_int_distribution<int>(0, static_cast<int>(all.size()) - 1);
-  pick_side = std::uniform_int_distribution<int>(0, static_cast<int>(sides.size()) - 1);
+  pick_all = uniform_int_distribution<int>(0, static_cast<int>(all.size()) - 1);
+  pick_side = uniform_int_distribution<int>(0, static_cast<int>(sides.size()) - 1);
 }
 
 int calc_energy() {
   ++visit_gen;
   if (visit_gen == 0) {
-    std::memset(visit_stamp, 0, sizeof visit_stamp);
+    memset(visit_stamp, 0, sizeof visit_stamp);
     visit_gen = 1;
   }
 
@@ -123,10 +115,10 @@ int calc_energy() {
     const int j = bfs_q_c[head];
     ++head;
     const int d0 = dist[i][j];
-    res = std::max(res, d0);
+    res = max(res, d0);
     for (int k = 0; k < 4; ++k) {
-      const int ni = i + kDi[k];
-      const int nj = j + kDj[k];
+      const int ni = i + k_di[k];
+      const int nj = j + k_dj[k];
       if (ni < 0 || ni >= n || nj < 0 || nj >= m) {
         continue;
       }
@@ -150,12 +142,12 @@ bool accept(int new_energy, int old_energy, double t) {
   if (new_energy >= old_energy) {
     return true;
   }
-  return pick_real(rng) < std::exp((new_energy - old_energy) / t);
+  return pick_real(rng) < exp((new_energy - old_energy) / t);
 }
 
-void write_grid(const char grid[kMaxN][kMaxN], const std::pair<int, int>& entrance,
+void write_grid(const char grid[k_max_n][k_max_n], const pair<int, int>& entrance,
                 const char* path) {
-  std::ofstream fout(path);
+  ofstream fout(path);
   for (int i = 0; i < n; ++i) {
     for (int j = 0; j < m; ++j) {
       if (input_mask[i][j] == 'X') {
@@ -178,14 +170,14 @@ void write_grid(const char grid[kMaxN][kMaxN], const std::pair<int, int>& entran
 
 void random_initial_state() {
   if (sides.empty()) {
-    std::fprintf(stderr, "no valid entrance cells\n");
-    std::exit(1);
+    fprintf(stderr, "no valid entrance cells\n");
+    exit(1);
   }
 
   src = sides[pick_side(rng)];
   g[src.first][src.second] = '.';
 
-  std::uniform_int_distribution<int> coin(0, 9);
+  uniform_int_distribution<int> coin(0, 9);
   for (int i = 1; i < n - 1; ++i) {
     for (int j = 1; j < m - 1; ++j) {
       if (input_mask[i][j] != '#') {
@@ -197,13 +189,13 @@ void random_initial_state() {
 }
 
 void load_warm(const char* path) {
-  std::ifstream fin(path);
+  ifstream fin(path);
   if (!fin) {
     return;
   }
-  std::string line;
+  string line;
   int row = 0;
-  while (std::getline(fin, line) && row < n) {
+  while (getline(fin, line) && row < n) {
     for (int j = 0; j < m && j < static_cast<int>(line.size()); ++j) {
       g[row][j] = line[j];
       if (g[row][j] == '.' && is_perimeter(row, j)) {
@@ -233,20 +225,20 @@ bool valid_warm() {
 }
 
 void read_input(const char* path) {
-  std::ifstream fin(path);
+  ifstream fin(path);
   if (!fin) {
-    std::perror(path);
-    std::exit(1);
+    perror(path);
+    exit(1);
   }
-  std::string line;
-  while (std::getline(fin, line)) {
+  string line;
+  while (getline(fin, line)) {
     while (!line.empty() && (line.back() == '\r' || line.back() == '\n')) {
       line.pop_back();
     }
     if (line.empty()) {
       continue;
     }
-    if (n >= kMaxN) {
+    if (n >= k_max_n) {
       break;
     }
     m = static_cast<int>(line.size());
@@ -260,7 +252,7 @@ void read_input(const char* path) {
 
 void save_best() {
   for (int i = 0; i < n; ++i) {
-    std::memcpy(bestg[i], g[i], m);
+    memcpy(bestg[i], g[i], m);
   }
 }
 
@@ -268,8 +260,7 @@ void save_best() {
 
 int main(int argc, char** argv) {
   if (argc < 3) {
-    std::fprintf(stderr, "usage: %s <input> <output> [max_iters] [--seed N] [--warm path]\n",
-                 argv[0]);
+    fprintf(stderr, "usage: %s <input> <output> [max_iters] [--seed N] [--warm path]\n", argv[0]);
     return 1;
   }
 
@@ -278,15 +269,15 @@ int main(int argc, char** argv) {
   long long max_iters = -1;
   const char* warm_path = nullptr;
   unsigned seed =
-      static_cast<unsigned>(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+      static_cast<unsigned>(chrono::high_resolution_clock::now().time_since_epoch().count());
 
   for (int i = 3; i < argc; ++i) {
-    if (std::string(argv[i]) == "--warm" && i + 1 < argc) {
+    if (string(argv[i]) == "--warm" && i + 1 < argc) {
       warm_path = argv[++i];
-    } else if (std::string(argv[i]) == "--seed" && i + 1 < argc) {
-      seed = static_cast<unsigned>(std::strtoul(argv[++i], nullptr, 10));
+    } else if (string(argv[i]) == "--seed" && i + 1 < argc) {
+      seed = static_cast<unsigned>(strtoul(argv[++i], nullptr, 10));
     } else {
-      max_iters = std::atoll(argv[i]);
+      max_iters = atoll(argv[i]);
     }
   }
 
@@ -309,18 +300,18 @@ int main(int argc, char** argv) {
     random_initial_state();
   }
 
-  double t = kT0;
+  double t = k_t0;
   int cur_energy = calc_energy();
   int best_energy = cur_energy;
   best_src = src;
   save_best();
 
   unsigned int cnt = 0;
-  const auto t_start = std::chrono::steady_clock::now();
+  const auto t_start = chrono::steady_clock::now();
 
   while (max_iters < 0 || static_cast<long long>(cnt) < max_iters) {
-    if ((cnt & kSaveMask) == 0) {
-      std::fprintf(stderr, "%.12g %d\n", t, cur_energy);
+    if ((cnt & k_save_mask) == 0) {
+      fprintf(stderr, "%.12g %d\n", t, cur_energy);
       write_grid(bestg, best_src, out_path);
     }
     ++cnt;
@@ -361,13 +352,13 @@ int main(int argc, char** argv) {
       }
     }
 
-    t *= kAlpha;
+    t *= k_alpha;
   }
 
   write_grid(bestg, best_src, out_path);
-  const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
-      std::chrono::steady_clock::now() - t_start);
-  std::fprintf(stderr, "best_energy=%d  iters=%u  elapsed_ms=%lld  seed=%u  -> %s\n", best_energy,
-               cnt, static_cast<long long>(elapsed.count()), seed, out_path);
+  const auto elapsed =
+      chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - t_start);
+  fprintf(stderr, "best_energy=%d  iters=%u  elapsed_ms=%lld  seed=%u  -> %s\n", best_energy, cnt,
+          static_cast<long long>(elapsed.count()), seed, out_path);
   return 0;
 }

@@ -1,20 +1,23 @@
 #include <bits/stdc++.h>
-#define maxn 200005
-#define maxk 20
-#define maxd 10000005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
+#define maxk 20
+#define maxd 10000005
+
 int T, n;
-int value[maxn];
-int ans[maxn];
-vector<int> adj[maxn];
+int value[k_max_n];
+int ans[k_max_n];
+vector<int> adj[k_max_n];
 
 int divisor[maxd];
 
-int dist[maxn];
-int aentry[maxn], aexit[maxn];
+int dist[k_max_n];
+int aentry[k_max_n], aexit[k_max_n];
 int counter = 0;
-int par[maxn][maxk];
+int par[k_max_n][maxk];
 
 struct LCA {
   void DFS(int u, int p) {
@@ -32,7 +35,7 @@ struct LCA {
     aexit[u] = counter++;
   }
 
-  bool isParent(int u, int v) {
+  bool is_parent(int u, int v) {
     return aentry[u] <= aentry[v] && aexit[v] <= aexit[u];
   }
 
@@ -54,15 +57,15 @@ struct LCA {
   }
 
   int lca(int u, int v) {
-    if (isParent(u, v)) {
+    if (is_parent(u, v)) {
       return u;
     }
-    if (isParent(v, u)) {
+    if (is_parent(v, u)) {
       return v;
     }
 
     for (int j = maxk - 1; j >= 0; j--) {
-      if (par[u][j] >= 0 && !isParent(par[u][j], v)) {
+      if (par[u][j] >= 0 && !is_parent(par[u][j], v)) {
         u = par[u][j];
       }
     }
@@ -70,7 +73,7 @@ struct LCA {
     return par[u][0];
   }
 
-  int getDist(int u, int v) {
+  int get_dist(int u, int v) {
     int l = lca(u, v);
     return dist[u] + dist[v] - 2 * dist[l];
   }
@@ -112,27 +115,27 @@ void solve() {
 
     // find the diameter of the group
     auto u = group[0], v = group[0];
-    int maxDist = -1;
+    int max_dist = -1;
     for (auto c : group) {
-      int lc = rep.getDist(u, c);
-      if (lc > maxDist) {
-        maxDist = lc;
+      int lc = rep.get_dist(u, c);
+      if (lc > max_dist) {
+        max_dist = lc;
         v = c;
       }
     }
-    maxDist = -1;
+    max_dist = -1;
     for (auto c : group) {
-      int lc = rep.getDist(c, v);
-      if (lc > maxDist) {
-        maxDist = lc;
+      int lc = rep.get_dist(c, v);
+      if (lc > max_dist) {
+        max_dist = lc;
         u = c;
       }
     }
 
     // Now for each node, update distance against the diameter
     for (auto c : group) {
-      ans[c] = max(ans[c], rep.getDist(u, c));
-      ans[c] = max(ans[c], rep.getDist(v, c));
+      ans[c] = max(ans[c], rep.get_dist(u, c));
+      ans[c] = max(ans[c], rep.get_dist(v, c));
     }
   }
 
@@ -140,6 +143,8 @@ void solve() {
     cout << ans[i] << endl;
   }
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

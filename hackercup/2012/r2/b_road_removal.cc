@@ -1,31 +1,15 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <utility>
-#include <vector>
-#define maxn 10005
-#define maxm 50005
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
+
+constexpr int k_max_n = 10005;
+#define maxm 50005
 
 int T, n, m, k;
 int ma[maxm], mb[maxm];
-int pre[maxn], rank[maxn], ret;
-bool import[maxn];
+int pre[k_max_n], rank[k_max_n], ret;
+bool import[k_max_n];
 
 int root(int x) {
   if (x != pre[x])
@@ -49,7 +33,7 @@ void link(int u, int v) {
     rank[v]++;
 }
 
-void checkLink(int u, int v) {
+void check_link(int u, int v) {
   u = root(u);
   v = root(v);
   if (u == v && import[u]) {
@@ -59,7 +43,12 @@ void checkLink(int u, int v) {
   link(u, v);
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   freopen("road.in.2", "r", stdin);
   freopen("road.out.2", "w", stdout);
   cin >> T;
@@ -77,7 +66,7 @@ int main() {
     ret = 0;
     for (int i = 0; i < m; i++)
       if (ma[i] < k || mb[i] < k)
-        checkLink(ma[i], mb[i]);
+        check_link(ma[i], mb[i]);
     cout << "Case #" << it << ": " << ret << '\n';
   }
 }

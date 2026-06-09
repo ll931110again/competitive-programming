@@ -3,44 +3,25 @@
  *
  */
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <unordered_set>
-#include <utility>
-#include <vector>
-#define maxn 4005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 4005;
 struct Point {
   int pos;
   int idx;
 };
 
 int m, n;
-Point a[maxn], b[maxn];
+Point a[k_max_n], b[k_max_n];
 
-long long dp[maxn][maxn];
+long long dp[k_max_n][k_max_n];
 long long inf = 1e18;
-int trace[maxn][maxn], assignment[maxn];
+int trace[k_max_n][k_max_n], assignment[k_max_n];
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

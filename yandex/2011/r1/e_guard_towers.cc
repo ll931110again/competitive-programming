@@ -2,8 +2,11 @@
 // Submission: https://codeforces.com/contest/85/submission/462887
 
 #include <bits/stdc++.h>
-#define mod 1000000007
 using namespace std;
+
+#define mod 1000000007
+
+namespace {
 
 int n;
 pair<int, int> p[5002];
@@ -53,15 +56,18 @@ bool ok(int mid) {
   return true;
 }
 
-int main()
+} // namespace
+
+int main() ios::sync_with_stdio(false);
+cin.tie(nullptr);
 
 {
   //	freopen("e.in","r",stdin);
   //	freopen("e.ou","w",stdout);
 
-  scanf("%d", &n);
+  cin >> n;
   for (int i = 0; i < n; i++)
-    scanf("%d %d", &p[i].first, &p[i].second);
+    cin >> p[i].first >> p[i].second;
 
   int low = 0, high = 10000, ans = high;
   while (low <= high) {

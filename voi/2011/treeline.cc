@@ -1,20 +1,7 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <utility>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 int n, h, a[100010];
 int module = 1000000000, phi = module / 10 * 4;
@@ -54,7 +41,12 @@ void divide(int x) {
   ret = (1LL * ret * power(x, phi - 1, module)) % module;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   //  freopen("TREELINE.INP","r",stdin);
   //  freopen("TREELINE.OUT","w",stdout);
   cin >> n >> h;

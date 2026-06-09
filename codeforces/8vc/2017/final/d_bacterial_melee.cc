@@ -2,11 +2,13 @@
 // Submission: https://codeforces.com/contest/756/submission/335430920
 
 #include <bits/stdc++.h>
-#define maxn 5005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 5005;
 template <unsigned M_> struct ModInt {
-  static constexpr unsigned M = M_;
+  constexpr unsigned M = M_;
   unsigned x;
   constexpr ModInt() : x(0U) {}
   constexpr ModInt(unsigned x_) : x(x_ % M) {}
@@ -96,7 +98,7 @@ template <unsigned M_> struct ModInt {
   bool operator!=(const ModInt& a) const {
     return (x != a.x);
   }
-  friend std::ostream& operator<<(std::ostream& os, const ModInt& a) {
+  friend ostream& operator<<(ostream& os, const ModInt& a) {
     return os << a.x;
   }
 };
@@ -107,12 +109,14 @@ using Mint = ModInt<MOD>;
 int n;
 string s;
 
-Mint fact[maxn], inv[maxn];
-Mint dp[maxn][26], sum_dp[maxn];
+Mint fact[k_max_n], inv[k_max_n];
+Mint dp[k_max_n][26], sum_dp[k_max_n];
 
 Mint binom(int x, int y) {
   return fact[x] * inv[y] * inv[x - y];
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -143,11 +147,11 @@ int main() {
   }
 
   fact[0] = 1;
-  for (int i = 1; i < maxn; i++) {
+  for (int i = 1; i < k_max_n; i++) {
     fact[i] = fact[i - 1] * i;
   }
-  inv[maxn - 1] = fact[maxn - 1].inv();
-  for (int i = maxn - 2; i >= 0; i--) {
+  inv[k_max_n - 1] = fact[k_max_n - 1].inv();
+  for (int i = k_max_n - 2; i >= 0; i--) {
     inv[i] = inv[i + 1] * (i + 1);
   }
 

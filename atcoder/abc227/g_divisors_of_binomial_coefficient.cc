@@ -2,34 +2,30 @@
 //
 // C(N,K) = prod_{i=1}^K (N-K+i) / i. Sieve-factor 1..K and [N-K+1..N] (editorial).
 
-#if __has_include(<bits/stdc++.h>)
 #include <bits/stdc++.h>
-#else
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <vector>
-#endif
 using namespace std;
 
-static constexpr unsigned MOD = 998244353;
-static constexpr int PMAX = 1000000;
+namespace {
+
+constexpr unsigned MOD = 998244353;
+constexpr int PMAX = 1000000;
 
 #ifdef __GNUC__
 #pragma GCC optimize("O3,unroll-loops")
 #endif
 
-static inline unsigned mul_mod(unsigned a, unsigned b) {
+inline unsigned mul_mod(unsigned a, unsigned b) {
   return unsigned((unsigned long long)a * b % MOD);
 }
 
-static inline unsigned pow_mod_factor(long long e) {
+inline unsigned pow_mod_factor(long long e) {
   long long v = (e + 1) % (long long)MOD;
   if (v < 0)
     v += MOD;
   return unsigned(v);
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -44,9 +40,9 @@ int main() {
     return 0;
   }
 
-  static int primes[80000];
+  int primes[80000];
   int pc = 0;
-  static char comp[PMAX + 1];
+  char comp[PMAX + 1];
   memset(comp, 0, sizeof comp);
   for (int i = 2; i <= PMAX; i++) {
     if (comp[i])
@@ -56,10 +52,10 @@ int main() {
       comp[j] = 1;
   }
 
-  static int cnt[PMAX + 1];
+  int cnt[PMAX + 1];
   memset(cnt, 0, sizeof cnt);
 
-  static int den[PMAX + 1];
+  int den[PMAX + 1];
   for (int i = 1; i <= K; i++)
     den[i] = i;
 

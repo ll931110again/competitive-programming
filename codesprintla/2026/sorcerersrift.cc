@@ -1,12 +1,11 @@
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <iostream>
-#include <vector>
-
 using namespace std;
 
+namespace {
+
 // Interactive rift recovery between two trees with ≤36 path-intersection queries.
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

@@ -4,15 +4,10 @@
 // last ∈ {0,1} ⇒ decode offline. Edge toggles become time intervals; CDQ on time +
 // rollback DSU (codgician).
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <iostream>
-#include <unordered_map>
-#include <vector>
-
 using namespace std;
+
+namespace {
 
 struct Change {
   int* ptr;
@@ -112,6 +107,8 @@ void divide_conquer(int left, int right, const vector<Interval>& vec) {
   divide_conquer(mid + 1, right, right_vec);
   undo_all(snap);
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

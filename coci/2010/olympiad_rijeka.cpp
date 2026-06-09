@@ -1,22 +1,7 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <utility>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 vector<pair<int, int>> v, contain;
 int n, m;
@@ -29,7 +14,12 @@ bool cover(pair<int, int> p1, pair<int, int> p2) {
   return (p1.first <= p2.first && p2.second <= p1.second);
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   // freopen("rijeka.in.2","r",stdin);
 
   cin >> n >> m;

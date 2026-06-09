@@ -4,15 +4,10 @@
 // Sunny paving exists iff every connected component has even size.
 // D&C on query index + rollback DSU; search sorted edge weights.
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <iostream>
-#include <vector>
-
 using namespace std;
+
+namespace {
 
 struct Edge {
   int u, v, w, id;
@@ -138,6 +133,8 @@ void divide(int l, int r, int lo, int hi) {
   divide(mid + 1, r, lo, ans_mid);
   dsu.rollback(saved);
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

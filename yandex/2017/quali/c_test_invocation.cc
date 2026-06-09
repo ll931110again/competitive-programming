@@ -1,11 +1,15 @@
 #include <bits/stdc++.h>
-#define maxn 55
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 55;
 int n;
-int a[maxn];
-vector<int> dependencies[maxn];
-long long cnt[maxn];
+int a[k_max_n];
+vector<int> dependencies[k_max_n];
+long long cnt[k_max_n];
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

@@ -1,16 +1,11 @@
-#include <algorithm>
-#include <cmath>
-#include <iostream>
-#include <string>
-#include <unordered_map>
-#include <utility>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-static constexpr double TOL = 0.05;
+namespace {
 
-static int charWeight(char ch) {
+constexpr double TOL = 0.05;
+
+int char_weight(char ch) {
   if ('0' <= ch && ch <= '9')
     return ch - '0';
   if (ch == '-')
@@ -18,7 +13,7 @@ static int charWeight(char ch) {
   return -1;
 }
 
-static char weightToChar(int w) {
+char weight_to_char(int w) {
   if (0 <= w && w <= 9)
     return char('0' + w);
   if (w == 10)
@@ -26,27 +21,27 @@ static char weightToChar(int w) {
   return '?';
 }
 
-static int computeC(const string& msg) {
+int compute_c(const string& msg) {
   int n = (int)msg.size();
   long long s = 0;
   for (int i = 0; i < n; i++) {
-    int w = charWeight(msg[i]);
+    int w = char_weight(msg[i]);
     int coef = ((n - 1 - i) % 10) + 1;
     s += 1LL * coef * w;
   }
   return int(s % 11);
 }
 
-static int computeK(const string& msg, char Cch) {
+int compute_k(const string& msg, char Cch) {
   int n = (int)msg.size();
   long long s = 0;
   for (int i = 0; i < n; i++) {
-    int w = charWeight(msg[i]);
+    int w = char_weight(msg[i]);
     int coef = ((n - i) % 9) + 1;
     s += 1LL * coef * w;
   }
   // include C as c_{n+1} with i=n+1 -> coef = ((n-(n))%9)+1 = 1
-  s += 1LL * 1 * charWeight(Cch);
+  s += 1LL * 1 * char_weight(Cch);
   return int(s % 11);
 }
 
@@ -54,7 +49,7 @@ struct Interval {
   double lo, hi;
 };
 
-static vector<Interval> intersectSets(const vector<Interval>& set, const vector<Interval>& add) {
+vector<Interval> intersect_sets(const vector<Interval>& set, const vector<Interval>& add) {
   vector<Interval> out;
   for (auto a : set) {
     for (auto b : add) {
@@ -76,7 +71,7 @@ static vector<Interval> intersectSets(const vector<Interval>& set, const vector<
   return merged;
 }
 
-static vector<Interval> feasibleUnitIntervals(const vector<int>& d) {
+vector<Interval> feasible_unit_intervals(const vector<int>& d) {
   // Unit width u must satisfy each di in union of:
   // narrow: di in [0.95u,1.05u] => u in [di/1.05, di/0.95]
   // wide  : di in [1.9u,2.1u]  => u in [di/2.1,  di/1.9]
@@ -86,21 +81,21 @@ static vector<Interval> feasibleUnitIntervals(const vector<int>& d) {
     uni.push_back({di / (1.0 + TOL), di / (1.0 - TOL)});
     uni.push_back(
         {di / (2.0 + 2.0 * TOL), di / (2.0 - 2.0 * TOL)}); // 2u with +/-5% => factor 2*(1±TOL)
-    cur = intersectSets(cur, uni);
+    cur = intersect_sets(cur, uni);
     if (cur.empty())
       return {};
   }
   return cur;
 }
 
-static bool fitsNarrow(int di, double u) {
+bool fits_narrow(int di, double u) {
   return di >= (1.0 - TOL) * u - 1e-9 && di <= (1.0 + TOL) * u + 1e-9;
 }
-static bool fitsWide(int di, double u) {
+bool fits_wide(int di, double u) {
   return di >= (2.0 - 2.0 * TOL) * u - 1e-9 && di <= (2.0 + 2.0 * TOL) * u + 1e-9;
 }
 
-static unordered_map<int, char> buildPatternMap() {
+unordered_map<int, char> build_pattern_map() {
   unordered_map<int, char> mp;
   auto add = [&](char ch, const string& bits) {
     int x = 0;
@@ -130,8 +125,8 @@ struct DecodeRes {
   explicit DecodeRes(const vector<char>& v) : ok(true), chars(v) {}
 };
 
-static DecodeRes tryDecodeWithUnit(const vector<int>& d, double u) {
-  static unordered_map<int, char> pat = buildPatternMap();
+DecodeRes try_decode_with_unit(const vector<int>& d, double u) {
+  unordered_map<int, char> pat = build_pattern_map();
 
   int m = (int)d.size();
   if ((m + 1) % 6 != 0)
@@ -148,8 +143,8 @@ static DecodeRes tryDecodeWithUnit(const vector<int>& d, double u) {
     int code = 0;
     for (int j = 0; j < 5; j++) {
       int di = d[base + j];
-      bool n = fitsNarrow(di, u);
-      bool w = fitsWide(di, u);
+      bool n = fits_narrow(di, u);
+      bool w = fits_wide(di, u);
       if (!n && !w)
         return DecodeRes();
       if (n && w) {
@@ -166,7 +161,7 @@ static DecodeRes tryDecodeWithUnit(const vector<int>& d, double u) {
 
     if (k != t - 1) {
       int sep = d[base + 5];
-      if (!fitsNarrow(sep, u))
+      if (!fits_narrow(sep, u))
         return DecodeRes(); // separator must be narrow
     }
   }
@@ -176,10 +171,10 @@ static DecodeRes tryDecodeWithUnit(const vector<int>& d, double u) {
   return DecodeRes(chars);
 }
 
-static DecodeRes decodeEitherDirection(const vector<int>& d) {
+DecodeRes decode_either_direction(const vector<int>& d) {
   struct TryOneDir {
-    static DecodeRes run(const vector<int>& dd) {
-      auto intervals = feasibleUnitIntervals(dd);
+    DecodeRes run(const vector<int>& dd) {
+      auto intervals = feasible_unit_intervals(dd);
       for (const auto& iv : intervals) {
         // Use midpoint unit; if that causes ambiguity, try endpoints-ish too.
         vector<double> candidates;
@@ -189,7 +184,7 @@ static DecodeRes decodeEitherDirection(const vector<int>& d) {
         for (double u : candidates) {
           if (u <= 0)
             continue;
-          DecodeRes res = tryDecodeWithUnit(dd, u);
+          DecodeRes res = try_decode_with_unit(dd, u);
           if (res.ok)
             return res;
         }
@@ -209,12 +204,14 @@ static DecodeRes decodeEitherDirection(const vector<int>& d) {
   return DecodeRes();
 }
 
+} // namespace
+
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
   int m;
-  int caseNum = 1;
+  int case_num = 1;
   while (cin >> m) {
     if (m == 0)
       break;
@@ -223,7 +220,7 @@ int main() {
       cin >> d[i];
 
     string result;
-    DecodeRes decoded = decodeEitherDirection(d);
+    DecodeRes decoded = decode_either_direction(d);
     if (!decoded.ok) {
       result = "bad code";
     } else {
@@ -248,14 +245,14 @@ int main() {
           if (Cch == 'S' || Kch == 'S') {
             result = "bad code";
           } else {
-            int cW = computeC(msg);
-            char expectedC = weightToChar(cW);
-            if (expectedC != Cch) {
+            int c_w = compute_c(msg);
+            char expected_c = weight_to_char(c_w);
+            if (expected_c != Cch) {
               result = "bad C";
             } else {
-              int kW = computeK(msg, Cch);
-              char expectedK = weightToChar(kW);
-              if (expectedK != Kch)
+              int k_w = compute_k(msg, Cch);
+              char expected_k = weight_to_char(k_w);
+              if (expected_k != Kch)
                 result = "bad K";
               else
                 result = msg;
@@ -265,7 +262,7 @@ int main() {
       }
     }
 
-    cout << "Case " << caseNum++ << ": " << result << "\n";
+    cout << "Case " << case_num++ << ": " << result << "\n";
   }
   return 0;
 }

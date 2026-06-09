@@ -1,13 +1,11 @@
 // Google Code Jam 2011 — Round 2 — D. A.I. War
 
-#include <iostream>
-#include <queue>
-#include <unordered_map>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-static int g(const vector<vector<int>>& adj, int a, int b, int c) {
+namespace {
+
+int g(const vector<vector<int>>& adj, int a, int b, int c) {
   int cnt = 0;
   for (int v : adj[c]) {
     bool seen = false;
@@ -30,6 +28,8 @@ static int g(const vector<vector<int>>& adj, int a, int b, int c) {
   }
   return cnt;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

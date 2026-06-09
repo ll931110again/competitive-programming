@@ -2,13 +2,17 @@
 // Submission: https://codeforces.com/contest/756/submission/335410373
 
 #include <bits/stdc++.h>
-#define maxn 200005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
 int n;
-int a[maxn];
-bool marked[maxn];
+int a[k_max_n];
+bool marked[k_max_n];
 int flips;
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

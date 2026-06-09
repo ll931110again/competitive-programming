@@ -10,30 +10,25 @@
 // every site at that distance whose Voronoi cell (via neighbor half-planes)
 // contains the query.
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <iostream>
-#include <vector>
-
 using namespace std;
+
+namespace {
 
 struct Pt {
   long long x, y;
 };
 
-static long long cross(const Pt& o, const Pt& a, const Pt& b) {
+long long cross(const Pt& o, const Pt& a, const Pt& b) {
   return (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
 }
 
-static long long dist2(const Pt& a, const Pt& b) {
+long long dist2(const Pt& a, const Pt& b) {
   long long dx = a.x - b.x, dy = a.y - b.y;
   return dx * dx + dy * dy;
 }
 
-static bool inCircumcircle(const Pt& p, const Pt& a, const Pt& b, const Pt& c) {
+bool in_circumcircle(const Pt& p, const Pt& a, const Pt& b, const Pt& c) {
   return cross(a, b, c) * (dist2(p, a) * cross(b, c, p) + dist2(p, b) * cross(c, a, p) +
                            dist2(p, c) * cross(a, b, p)) >
          0;
@@ -43,7 +38,7 @@ struct Tri {
   int a, b, c;
 };
 
-static vector<Tri> delaunay(vector<Pt> pts) {
+vector<Tri> delaunay(vector<Pt> pts) {
   int n = (int)pts.size();
   long long mx = pts[0].x, Mx = mx, my = pts[0].y, My = my;
   for (const Pt& p : pts) {
@@ -64,7 +59,7 @@ static vector<Tri> delaunay(vector<Pt> pts) {
     vector<char> dead(tris.size());
     for (size_t t = 0; t < tris.size(); ++t) {
       const Tri& tr = tris[t];
-      if (inCircumcircle(pts[i], pts[tr.a], pts[tr.b], pts[tr.c])) {
+      if (in_circumcircle(pts[i], pts[tr.a], pts[tr.b], pts[tr.c])) {
         dead[t] = 1;
         edges.push_back({min(tr.a, tr.b), max(tr.a, tr.b)});
         edges.push_back({min(tr.b, tr.c), max(tr.b, tr.c)});
@@ -113,7 +108,7 @@ struct Voronoi {
     int n = (int)site.size();
     vector<Tri> tris = delaunay(site);
     adj.assign(n, {});
-    auto addEdge = [&](int u, int v) {
+    auto add_edge = [&](int u, int v) {
       if (u == v || u < 0 || v < 0 || u >= n || v >= n) {
         return;
       }
@@ -121,9 +116,9 @@ struct Voronoi {
       adj[v].push_back(u);
     };
     for (const Tri& tr : tris) {
-      addEdge(tr.a, tr.b);
-      addEdge(tr.b, tr.c);
-      addEdge(tr.c, tr.a);
+      add_edge(tr.a, tr.b);
+      add_edge(tr.b, tr.c);
+      add_edge(tr.c, tr.a);
     }
     for (int i = 0; i < n; ++i) {
       sort(adj[i].begin(), adj[i].end());
@@ -133,7 +128,7 @@ struct Voronoi {
 
   // q lies in the closure of cell i iff it is not strictly closer to any
   // Delaunay neighbor of i (Voronoi cell = intersection of neighbor bisectors).
-  bool inCell(int i, const Pt& q) const {
+  bool in_cell(int i, const Pt& q) const {
     long long di = dist2(q, site[i]);
     for (int j : adj[i]) {
       if (di > dist2(q, site[j])) {
@@ -143,7 +138,7 @@ struct Voronoi {
     return true;
   }
 
-  long long minDist2(const Pt& q) const {
+  long long min_dist2(const Pt& q) const {
     int cur = 0;
     long long best = dist2(q, site[cur]);
     bool improved = true;
@@ -162,16 +157,18 @@ struct Voronoi {
   }
 
   vector<int> regions(const Pt& q) const {
-    long long md = minDist2(q);
+    long long md = min_dist2(q);
     vector<int> ans;
     for (int i = 0; i < (int)site.size(); ++i) {
-      if (dist2(q, site[i]) == md && inCell(i, q)) {
+      if (dist2(q, site[i]) == md && in_cell(i, q)) {
         ans.push_back(i);
       }
     }
     return ans;
   }
 };
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

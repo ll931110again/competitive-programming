@@ -1,16 +1,13 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdint>
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
+using namespace std;
 
 using ll = long long;
 
-static constexpr int MAXN = 250002;
-static constexpr int LOG = 20;
+namespace {
+
+constexpr int MAXN = 250002;
+constexpr int LOG = 20;
 
 int T;
 int n;
@@ -23,15 +20,15 @@ int nex2[MAXN][LOG];
 ll step[MAXN][LOG];
 
 void solve_one() {
-  std::cin >> n >> z;
+  cin >> n >> z;
   for (int i = 0; i < n; ++i) {
-    std::cin >> x[i];
+    cin >> x[i];
   }
 
   nex[n][0] = n;
   for (int i = 0; i < n; ++i) {
     long long t = (long long)x[i] + z + 1;
-    nex[i][0] = (int)(std::lower_bound(x, x + n, t) - x);
+    nex[i][0] = (int)(lower_bound(x, x + n, t) - x);
   }
 
   for (int k = 0; k + 1 < LOG; ++k) {
@@ -74,14 +71,14 @@ void solve_one() {
     }
   }
 
-  std::cin >> q;
+  cin >> q;
   while (q--) {
     int L, R;
-    std::cin >> L >> R;
+    cin >> L >> R;
     --L;
     // Half-open interval [L, R): 1-based inclusive [L+1, R] -> L = l-1, R = r (exclusive end).
     if (L + 1 == R) {
-      std::cout << 1 << '\n';
+      cout << 1 << '\n';
       continue;
     }
     ll ret = 2;
@@ -108,15 +105,17 @@ void solve_one() {
         }
       }
     }
-    std::cout << ret << '\n';
+    cout << ret << '\n';
   }
 }
 
-int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
+} // namespace
 
-  std::cin >> T;
+int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  cin >> T;
   while (T--) {
     solve_one();
   }

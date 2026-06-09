@@ -1,29 +1,16 @@
 // #pragma comment(linker, "/STACK:16777216")
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <utility>
-#include <vector>
+
+#include <bits/stdc++.h>
 using namespace std;
 
-struct rec {
+namespace {
+
+struct Rec {
   pair<int, int> v;
   int pos;
 } a[1010];
 
-bool cmp(rec A, rec B) {
+bool cmp(Rec A, Rec B) {
   return A.v < B.v;
 }
 
@@ -31,7 +18,12 @@ string s[1010];
 int m, n;
 int order[1010];
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   //    freopen("znan.in","r",stdin);
   //    freopen("znan.ou","w",stdout);
   cin >> m >> n;

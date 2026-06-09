@@ -2,13 +2,21 @@
 // Submission: https://codeforces.com/contest/755/submission/23847229
 
 #include <bits/stdc++.h>
-#define MAXK 1000001
 using namespace std;
+
+#define MAXK 1000001
+
+namespace {
 
 bool is_prime[MAXK + 2];
 int n;
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   memset(is_prime, true, sizeof is_prime);
   is_prime[0] = is_prime[1] = false;
 
@@ -19,7 +27,7 @@ int main() {
       }
     }
 
-  scanf("%d", &n);
+  cin >> n;
   for (int m = 1; m <= 1000; m++) {
     if (!is_prime[n * m + 1]) {
       printf("%d\n", m);

@@ -5,9 +5,7 @@
 // IOI 2011 Elephants LCT solution).
 
 #include "../codeforces/lib/lct_splay.h"
-
-#include <iostream>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 int main() {

@@ -4,14 +4,10 @@
 // Odd cycle in streets NOT in [l, r]  <=>  graph without monitored edges is not bipartite.
 // DSU with parity + rollback queue (Codeforces blog 83467).
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <iostream>
-#include <vector>
-
 using namespace std;
+
+namespace {
 
 struct BipartiteDsu {
   vector<int> par, sz, parity;
@@ -123,6 +119,8 @@ struct DsuQueue {
     return dsu.bipartite();
   }
 };
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

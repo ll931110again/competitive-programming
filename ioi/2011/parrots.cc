@@ -1,29 +1,26 @@
 #include "parrotslib.h"
-
-#include <algorithm>
-#include <array>
-#include <cstdint>
-#include <vector>
+#include <bits/stdc++.h>
+using namespace std;
 
 namespace {
 
 // Blank slots in the combinatorial sequence use symbol 256 and are never sent.
 // Transmitted parrot calls use values 0..255 only.
-constexpr int kSeqPad = 256;
+constexpr int k_seq_pad = 256;
 
 // Minimum sequence length L such that C(256 + L, L) >= 256^n.
-constexpr int kSeqLenByN[] = {
+constexpr int k_seq_len_by_n[] = {
     0,   1,   3,   4,   5,   7,   8,   10,  12,  14,  15,  17,  19,  22,  24,  26,  28,
     31,  33,  36,  39,  41,  44,  47,  50,  53,  57,  60,  63,  67,  70,  74,  78,  82,
     86,  90,  94,  98,  102, 107, 111, 116, 121, 126, 131, 136, 141, 147, 152, 158, 164,
     170, 176, 182, 189, 195, 202, 209, 216, 223, 230, 238, 245, 253, 261,
 };
 
-constexpr int kBinomMax = 520;
+constexpr int k_binom_max = 520;
 
 class BigInt {
 public:
-  static constexpr int kMaxBytes = 99;
+  constexpr int k_max_bytes = 99;
 
   BigInt() = default;
 
@@ -52,7 +49,7 @@ public:
 
   BigInt& operator+=(const BigInt& other) {
     int carry = 0;
-    const int max_index = std::max(size_, other.size_);
+    const int max_index = max(size_, other.size_);
     for (int i = 0; i < max_index || carry; ++i) {
       const int sum = byte_at(*this, i) + byte_at(other, i) + carry;
       bytes_[i] = static_cast<uint8_t>(sum & 255);
@@ -116,7 +113,7 @@ public:
   }
 
 private:
-  static int byte_at(const BigInt& value, int index) {
+  int byte_at(const BigInt& value, int index) {
     return index < value.size_ ? value.bytes_[index] : 0;
   }
 
@@ -126,7 +123,7 @@ private:
     }
   }
 
-  uint8_t bytes_[kMaxBytes]{};
+  uint8_t bytes_[k_max_bytes]{};
   int size_ = 0;
 };
 
@@ -134,7 +131,7 @@ class BinomialTable {
 public:
   BinomialTable() {
     table_[0][0] = BigInt(1);
-    for (int n = 1; n < kBinomMax; ++n) {
+    for (int n = 1; n < k_binom_max; ++n) {
       table_[n][0] = BigInt(1);
       table_[n][n] = BigInt(1);
       for (int k = 1; k < n; ++k) {
@@ -152,17 +149,17 @@ public:
   }
 
 private:
-  std::array<std::array<BigInt, kBinomMax>, kBinomMax> table_{};
+  array<array<BigInt, k_binom_max>, k_binom_max> table_{};
 };
 
 class CombinatorialCodec {
 public:
   explicit CombinatorialCodec(const BinomialTable& binom) : binom_(binom) {}
 
-  std::vector<int> rank_to_sequence(const BigInt& rank, int seq_len) const {
-    std::vector<int> seq(seq_len);
+  vector<int> rank_to_sequence(const BigInt& rank, int seq_len) const {
+    vector<int> seq(seq_len);
     BigInt offset;
-    int cap = kSeqPad;
+    int cap = k_seq_pad;
 
     for (int i = 0; i < seq_len; ++i) {
       const int remaining = seq_len - i - 1;
@@ -181,19 +178,19 @@ public:
     return seq;
   }
 
-  BigInt multiset_to_rank(std::vector<int> symbols, int seq_len) const {
+  BigInt multiset_to_rank(vector<int> symbols, int seq_len) const {
     while (static_cast<int>(symbols.size()) < seq_len) {
-      symbols.push_back(kSeqPad);
+      symbols.push_back(k_seq_pad);
     }
-    std::sort(symbols.rbegin(), symbols.rend());
+    sort(symbols.rbegin(), symbols.rend());
     return sequence_to_rank(symbols);
   }
 
 private:
-  BigInt sequence_to_rank(const std::vector<int>& seq) const {
+  BigInt sequence_to_rank(const vector<int>& seq) const {
     BigInt rank;
     for (int i = 0; i < static_cast<int>(seq.size()); ++i) {
-      const int prev = (i > 0) ? seq[i - 1] : kSeqPad;
+      const int prev = (i > 0) ? seq[i - 1] : k_seq_pad;
       const int remaining = static_cast<int>(seq.size()) - i - 1;
       for (int symbol = seq[i] + 1; symbol <= prev; ++symbol) {
         rank += binom_.ways_with_cap(remaining, symbol);
@@ -212,7 +209,7 @@ private:
 };
 
 int seq_len_for(int n) {
-  return kSeqLenByN[n];
+  return k_seq_len_by_n[n];
 }
 
 BigInt pack_message(const int* messages, int n) {
@@ -225,7 +222,7 @@ BigInt pack_message(const int* messages, int n) {
 
 void unpack_message(const BigInt& value, int n) {
   BigInt copy = value;
-  std::vector<int> bytes(n);
+  vector<int> bytes(n);
   for (int i = n - 1; i >= 0; --i) {
     bytes[i] = copy.pop_lsb();
   }
@@ -235,8 +232,8 @@ void unpack_message(const BigInt& value, int n) {
 }
 
 const CombinatorialCodec& codec() {
-  static const BinomialTable binom;
-  static const CombinatorialCodec instance(binom);
+  const BinomialTable binom;
+  const CombinatorialCodec instance(binom);
   return instance;
 }
 
@@ -246,7 +243,7 @@ void encode(int n, int messages[]) {
   const int seq_len = seq_len_for(n);
   const BigInt rank = pack_message(messages, n);
   for (int symbol : codec().rank_to_sequence(rank, seq_len)) {
-    if (symbol != kSeqPad) {
+    if (symbol != k_seq_pad) {
       send(symbol);
     }
   }
@@ -254,7 +251,7 @@ void encode(int n, int messages[]) {
 
 void decode(int n, int L, int X[]) {
   const int seq_len = seq_len_for(n);
-  std::vector<int> symbols(X, X + L);
-  const BigInt rank = codec().multiset_to_rank(std::move(symbols), seq_len);
+  vector<int> symbols(X, X + L);
+  const BigInt rank = codec().multiset_to_rank(move(symbols), seq_len);
   unpack_message(rank, n);
 }

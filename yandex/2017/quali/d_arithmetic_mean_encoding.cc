@@ -1,6 +1,9 @@
 #include <bits/stdc++.h>
-#define maxk 60
 using namespace std;
+
+#define maxk 60
+
+namespace {
 
 int T;
 long long n;
@@ -43,6 +46,8 @@ void solve(long long n) {
     }
   }
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

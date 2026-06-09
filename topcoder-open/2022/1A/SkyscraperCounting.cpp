@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
-#define maxn 105
 using namespace std;
+
+#define maxn 105
 
 static constexpr unsigned MOD = 1'000'000'007;
 #include "../../../lib/modint.h"

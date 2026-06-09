@@ -1,12 +1,9 @@
-#include <algorithm>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-static bool feasible_min_len(const map<int, int>& cnt, int k) {
+namespace {
+
+bool feasible_min_len(const map<int, int>& cnt, int k) {
   if (k <= 1)
     return true;
 
@@ -60,6 +57,8 @@ static bool feasible_min_len(const map<int, int>& cnt, int k) {
   }
   return true;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

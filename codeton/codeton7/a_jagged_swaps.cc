@@ -1,23 +1,16 @@
 // Codeforces 1896 (CodeTON Round 7 (Div. 1 + Div. 2, Rated, Prizes!)) — A. Jagged Swaps
 // Submission: https://codeforces.com/contest/1896/submission/336566355
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <stack>
-#include <map>
-#include <queue>
-#include <vector>
-#define maxn 20
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 20;
 int T, n;
-int a[maxn];
+int a[k_max_n];
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

@@ -13,17 +13,19 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-static int n;
-static vector<string> g;
-static vector<pair<int, int>> whites;
-static vector<pair<int, int>> blacks;
+namespace {
 
-static bool is_black(int r, int c) {
+int n;
+vector<string> g;
+vector<pair<int, int>> whites;
+vector<pair<int, int>> blacks;
+
+bool is_black(int r, int c) {
   char x = g[r][c];
   return x == '1' || x == '#';
 }
 
-static void step(int& r, int& c, char ch) {
+void step(int& r, int& c, char ch) {
   if (ch == 'U')
     r = max(0, r - 1);
   else if (ch == 'D')
@@ -35,7 +37,7 @@ static void step(int& r, int& c, char ch) {
 }
 
 // 0: a^k b^k, 1: b^k a^k, 2: (ab)^k, 3: (ba)^k — each has k of each axis move.
-static string sync_corner_variant(const string& corner, int variant) {
+string sync_corner_variant(const string& corner, int variant) {
   int k = n - 1;
   char a = 'U', b = 'L';
   if (corner == "TL") {
@@ -73,7 +75,7 @@ static string sync_corner_variant(const string& corner, int variant) {
   return s;
 }
 
-static pair<int, int> corner_rc(const string& corner) {
+pair<int, int> corner_rc(const string& corner) {
   if (corner == "TL")
     return {0, 0};
   if (corner == "TR")
@@ -83,7 +85,7 @@ static pair<int, int> corner_rc(const string& corner) {
   return {n - 1, n - 1};
 }
 
-static string manhattan_path(int r, int c, int tr, int tc, bool row_first) {
+string manhattan_path(int r, int c, int tr, int tc, bool row_first) {
   string out;
   while (r != tr || c != tc) {
     if (row_first) {
@@ -119,8 +121,8 @@ static string manhattan_path(int r, int c, int tr, int tc, bool row_first) {
   return out;
 }
 
-static string build_candidate(const string& corner, int sync_variant, bool row_first_manhattan,
-                              int br, int bc) {
+string build_candidate(const string& corner, int sync_variant, bool row_first_manhattan, int br,
+                       int bc) {
   auto [cr, cc] = corner_rc(corner);
   string s = sync_corner_variant(corner, sync_variant);
   int r = cr, c = cc;
@@ -132,7 +134,7 @@ static string build_candidate(const string& corner, int sync_variant, bool row_f
 // effective length (max consumed over whites).
 // If max_eff_cap < INT_MAX, abandons when effective length would exceed
 // max_eff_cap (cannot beat current best strict length; ties handled by caller).
-static optional<int> analyze(const string& moves, int max_eff_cap = INT_MAX) {
+optional<int> analyze(const string& moves, int max_eff_cap = INT_MAX) {
   int global_need = 0;
   for (auto [r0, c0] : whites) {
     int r = r0, c = c0;
@@ -156,11 +158,13 @@ static optional<int> analyze(const string& moves, int max_eff_cap = INT_MAX) {
   return global_need;
 }
 
-static string truncate_to(const string& moves, int t) {
+string truncate_to(const string& moves, int t) {
   if (t <= 0)
     return "";
   return moves.substr(0, min(t, (int)moves.size()));
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -183,10 +187,10 @@ int main() {
         whites.push_back({i, j});
     }
 
-  const int kMaxLen = 5000;
+  const int k_max_len = 5000;
   // Nearest black minimizes full string length, but NOT always effective
   // length after truncation — probe several closest targets per layout.
-  const int kProbeBlacks = 28;
+  const int k_probe_blacks = 28;
   const vector<string> corners = {"TL", "TR", "BL", "BR"};
   string best_out;
   int best_eff = INT_MAX;
@@ -205,11 +209,11 @@ int main() {
       for (bool row_first : {true, false}) {
         int tried = 0;
         for (auto [br, bc] : ranked) {
-          if (tried >= kProbeBlacks)
+          if (tried >= k_probe_blacks)
             break;
           ++tried;
           string cand = build_candidate(cor, sync_variant, row_first, br, bc);
-          if ((int)cand.size() > kMaxLen)
+          if ((int)cand.size() > k_max_len)
             continue;
           auto eff_opt = analyze(cand, best_eff);
           if (!eff_opt)
@@ -218,7 +222,7 @@ int main() {
           string out = truncate_to(cand, eff);
           if (eff < best_eff || (eff == best_eff && out < best_out)) {
             best_eff = eff;
-            best_out = std::move(out);
+            best_out = move(out);
           }
         }
       }

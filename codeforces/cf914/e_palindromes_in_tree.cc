@@ -4,24 +4,20 @@
 // Centroid decomposition: palindromic path <=> XOR mask has at most one bit set.
 // Based on https://gist.github.com/luciocf/68f77b08dc3f9e2787b37d00fa23ed89
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <iostream>
-#include <vector>
-
 using namespace std;
 
-constexpr int kMaxN = 200010;
+namespace {
 
-int valc[kMaxN];
-int sz[kMaxN];
+constexpr int k_max_n = 200010;
+
+int valc[k_max_n];
+int sz[k_max_n];
 int freq[1 << 20];
-long long ans[kMaxN];
-bool dead[kMaxN];
+long long ans[k_max_n];
+bool dead[k_max_n];
 
-vector<int> adj[kMaxN];
+vector<int> adj[k_max_n];
 
 void dfs_sz(int u, int p) {
   sz[u] = 1;
@@ -103,6 +99,8 @@ void decompose(int entry) {
     }
   }
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

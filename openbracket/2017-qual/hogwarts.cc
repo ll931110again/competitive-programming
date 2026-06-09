@@ -1,28 +1,17 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <list>
-#include <map>
-#include <numeric>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <utility>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 string suffix = "hogwarts.com";
 string inp;
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> inp;
   int idx = -1;
   for (int i = 0; i < inp.size(); i++)

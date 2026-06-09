@@ -4,21 +4,17 @@
 // Sqrt decomposition with deques + per-block frequency counts.
 // Same "block + rebuild" family as IOI 2011 Elephants (sqrt solution).
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <deque>
-#include <iostream>
-#include <vector>
-
 using namespace std;
+
+namespace {
 
 struct Block {
   deque<int> vals;
   vector<int> cnt;
 };
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

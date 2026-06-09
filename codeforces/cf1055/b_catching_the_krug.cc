@@ -1,23 +1,19 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
-#define maxn 250005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 250005;
 int T;
 int n, rk, ck, rd, cd;
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   while (T--) {
     cin >> n >> rk >> ck >> rd >> cd;

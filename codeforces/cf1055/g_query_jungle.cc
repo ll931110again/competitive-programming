@@ -1,32 +1,22 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <unordered_set>
-#include <vector>
-#define maxn 250005
+#include <bits/stdc++.h>
 using namespace std;
 
-int T, n, Q;
-int a[maxn];
-vector<int> adj[maxn];
-int ins[maxn], outs[maxn], cnt = 0;
-int states[2 * maxn];
+namespace {
 
-struct node {
+constexpr int k_max_n = 250005;
+int T, n, Q;
+int a[k_max_n];
+vector<int> adj[k_max_n];
+int ins[k_max_n], outs[k_max_n], cnt = 0;
+int states[2 * k_max_n];
+
+struct Node {
   int flipped;
   int chain[4];
 };
 
-node tx[8 * maxn];
+node tx[8 * k_max_n];
 
 void DFS(int u, int p) {
   cnt++;
@@ -105,6 +95,8 @@ void update(int i, int low, int high, int u, int v) {
   update(2 * i + 1, mid + 1, high, u, v);
   merge(i);
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

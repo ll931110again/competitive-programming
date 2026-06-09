@@ -1,23 +1,15 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <stack>
-#include <vector>
-#define maxn 5005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 5005;
 int T;
 int m, n;
-vector<int> adj[maxn];
+vector<int> adj[k_max_n];
 
-int cur[maxn], nxt[maxn];
+int cur[k_max_n], nxt[k_max_n];
 int inf = 1e9;
 
 void solve() {
@@ -49,7 +41,12 @@ void solve() {
   }
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   while (T--) {
     cin >> n >> m;

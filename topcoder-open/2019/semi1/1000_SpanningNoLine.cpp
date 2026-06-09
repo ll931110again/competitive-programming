@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
+using namespace std;
+
 #define mod 998244353
 #define maxm 2000005
-using namespace std;
 
 long long fact[maxm], inv[maxm];
 

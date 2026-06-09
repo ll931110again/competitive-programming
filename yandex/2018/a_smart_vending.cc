@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 int M = 1e6;
 long long b, c, r, d;
 
@@ -46,6 +48,8 @@ long long solve() {
 
   return z;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

@@ -1,26 +1,18 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <utility>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 int a[402][402];
 int f[402][402][16];
 int n;
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   //  freopen("COLOREC.INP","r",stdin);
   //  freopen("COLOREC.OUT","w",stdout);
   cin >> n;

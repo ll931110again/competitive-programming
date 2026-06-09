@@ -4,31 +4,27 @@
 // Min bomb radius r so disks of radius r at every factory cover the republic
 // (disk of radius R).  Answer = max_{|p|<=R} min_i dist(p, factory_i).
 
-#include <algorithm>
-#include <cmath>
-#include <iomanip>
-#include <iostream>
-#include <set>
-#include <utility>
-#include <vector>
-
 #include "../lib/delaunay2d.hh"
+#include <bits/stdc++.h>
+using namespace std;
 
 using namespace delaunay2d;
 
-static bool inDisk(const LdP& p, ld R) {
+namespace {
+
+bool in_disk(const LdP& p, ld R) {
   return p.x * p.x + p.y * p.y <= R * R + 1e-9L;
 }
 
-static ld minDist2(const LdP& q, const std::vector<Pt>& pts) {
+ld min_dist2(const LdP& q, const std::vector<Pt>& pts) {
   ld best = 1e300L;
   for (const Pt& v : pts) {
-    best = std::min(best, dist2L(q, v));
+    best = std::min(best, dist2_l(q, v));
   }
   return best;
 }
 
-static std::vector<std::pair<LdP, LdP>> circleSegs(ld R) {
+std::vector<std::pair<LdP, LdP>> circle_segs(ld R) {
   // Approximate circle by many segments for intersection tests.
   std::vector<std::pair<LdP, LdP>> segs;
   const int steps = 360;
@@ -43,6 +39,8 @@ static std::vector<std::pair<LdP, LdP>> circleSegs(ld R) {
   return segs;
 }
 
+} // namespace
+
 int main() {
   std::ios::sync_with_stdio(false);
   std::cin.tie(nullptr);
@@ -56,13 +54,13 @@ int main() {
   }
 
   auto tris = delaunay(pts);
-  auto voro = buildVoronoi(pts, tris);
-  auto boundary = circleSegs(R);
+  auto voro = build_voronoi(pts, tris);
+  auto boundary = circle_segs(R);
 
   ld best = 0;
   auto consider = [&](const LdP& q) {
-    if (inDisk(q, R)) {
-      best = std::max(best, minDist2(q, pts));
+    if (in_disk(q, R)) {
+      best = std::max(best, min_dist2(q, pts));
     }
   };
 
@@ -75,23 +73,23 @@ int main() {
     consider(e.a);
     consider(e.b);
     for (const auto& [p3, p4] : boundary) {
-      if (segIntersect(e.a, e.b, p3, p4, tmp)) {
+      if (seg_intersect(e.a, e.b, p3, p4, tmp)) {
         consider(tmp);
       }
     }
   }
 
-  std::set<std::pair<int, int>> delEdges;
+  std::set<std::pair<int, int>> del_edges;
   for (const Tri& tr : tris) {
     int ed[3][2] = {{tr.a, tr.b}, {tr.b, tr.c}, {tr.c, tr.a}};
     for (auto& e : ed) {
       if (e[0] > e[1]) {
         std::swap(e[0], e[1]);
       }
-      delEdges.insert({e[0], e[1]});
+      del_edges.insert({e[0], e[1]});
     }
   }
-  for (const auto& [i, j] : delEdges) {
+  for (const auto& [i, j] : del_edges) {
     LdP pi{(ld)pts[i].x, (ld)pts[i].y};
     LdP pj{(ld)pts[j].x, (ld)pts[j].y};
     LdP mid{(pi.x + pj.x) / 2, (pi.y + pj.y) / 2};

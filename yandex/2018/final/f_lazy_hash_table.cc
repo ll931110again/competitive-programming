@@ -1,6 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 using ll = long long;
+
+namespace {
 
 const int MOD = 998244353;
 const int G = 3;
@@ -18,7 +21,7 @@ int mod_pow(ll a, ll e) {
 
 void ntt(vector<int>& a, bool invert) {
   int n = a.size();
-  static vector<int> rev;
+  vector<int> rev;
   if ((int)rev.size() != n) {
     int lg = __builtin_ctz(n);
     rev.assign(n, 0);
@@ -75,6 +78,8 @@ vector<int> convolution(const vector<int>& a, const vector<int>& b) {
   return fa;
 }
 
+} // namespace
+
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
@@ -83,43 +88,43 @@ int main() {
   if (!(cin >> n))
     return 0;
   vector<int> a(n);
-  int maxA = 0;
+  int max_a = 0;
   for (int i = 0; i < n; ++i) {
     cin >> a[i];
-    maxA = max(maxA, a[i]);
+    max_a = max(max_a, a[i]);
   }
 
-  vector<int> P(maxA + 1, 0);
+  vector<int> P(max_a + 1, 0);
   for (int x : a)
     P[x] = 1;
 
-  vector<int> R(maxA + 1);
-  for (int i = 0; i <= maxA; ++i)
-    R[i] = P[maxA - i];
+  vector<int> R(max_a + 1);
+  for (int i = 0; i <= max_a; ++i)
+    R[i] = P[max_a - i];
 
-  vector<int> C = convolution(P, R); // size ~ 2*(maxA+1)-1
+  vector<int> C = convolution(P, R); // size ~ 2*(max_a+1)-1
 
-  // hasDiff[d] = true if there exists a pair with absolute difference d (d>=1)
-  vector<char> hasDiff(maxA + 1, 0);
-  for (int d = 1; d <= maxA; ++d) {
-    int idx = maxA - d;
+  // has_diff[d] = true if there exists a pair with absolute difference d (d>=1)
+  vector<char> has_diff(max_a + 1, 0);
+  for (int d = 1; d <= max_a; ++d) {
+    int idx = max_a - d;
     if (idx >= 0 && idx < (int)C.size() && C[idx])
-      hasDiff[d] = 1;
+      has_diff[d] = 1;
   }
 
-  int M = maxA + 1;
+  int M = max_a + 1;
   vector<char> bad(M + 1, 0);
 
   // Correct marking: m is bad if there exists a multiple x = k*m (1 <= x <=
-  // maxA) with hasDiff[x]
+  // max_a) with has_diff[x]
   for (int m = 1; m <= M; ++m) {
-    for (int x = m; x <= maxA; x += m) {
-      if (hasDiff[x]) {
+    for (int x = m; x <= max_a; x += m) {
+      if (has_diff[x]) {
         bad[m] = 1;
         break;
       }
     }
-    // Note: when m == M (maxA+1), loop body never runs, so bad[M] stays 0.
+    // Note: when m == M (max_a+1), loop body never runs, so bad[M] stays 0.
   }
 
   int ans = -1;

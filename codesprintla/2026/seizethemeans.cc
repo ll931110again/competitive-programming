@@ -1,15 +1,14 @@
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <iostream>
-#include <vector>
-
 using namespace std;
 
-static const long long MOD = 1000000007LL;
+namespace {
+
+const long long MOD = 1000000007LL;
 
 // Restricted assembly-line counting with checkpoint toggles (seizethemeans).
 // Placeholder — needs digit DP / matrix exponentiation across checkpoint ranges.
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

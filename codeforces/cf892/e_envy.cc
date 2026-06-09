@@ -4,14 +4,10 @@
 // Offline: sort each query's edges by weight; process weights ascending with
 // rollback DSU — temporary merges detect cycles (NO), permanent merges add edges.
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <iostream>
-#include <vector>
-
 using namespace std;
+
+namespace {
 
 struct Edge {
   int u, v, w, id;
@@ -69,6 +65,8 @@ struct RollbackDsu {
 struct Seg {
   int id, l, r;
 };
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

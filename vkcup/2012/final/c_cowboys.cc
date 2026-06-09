@@ -1,31 +1,10 @@
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <utility>
-#include <vector>
-
-#define maxn 105
 using namespace std;
 
-long long f[maxn], g[maxn];
+namespace {
+
+constexpr int k_max_n = 105;
+long long f[k_max_n], g[k_max_n];
 int n;
 string s;
 
@@ -48,7 +27,12 @@ void populate() {
   }
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> s;
   n = s.size();
 

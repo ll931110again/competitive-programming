@@ -1,13 +1,5 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <set>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
 int main() {

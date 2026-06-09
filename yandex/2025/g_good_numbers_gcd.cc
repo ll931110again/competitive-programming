@@ -1,11 +1,14 @@
 #include <bits/stdc++.h>
-#define maxn 200005
-#define maxk 20
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
+#define maxk 20
+
 int T, n, k;
-int a[maxn], good[maxn], last_good[maxn];
-int gcds[maxn][maxk];
+int a[k_max_n], good[k_max_n], last_good[k_max_n];
+int gcds[k_max_n][maxk];
 
 int gcd(int x, int y) {
   if (x > y) {
@@ -29,6 +32,8 @@ int gcd_range(int i, int j) {
   }
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

@@ -5,17 +5,14 @@
  * java.lang.Math.round snapping, same 80 rotations, same derive() logic.
  */
 
-#include <cmath>
-#include <cstdlib>
-#include <iostream>
-#include <optional>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 using int64 = long long;
 
-static inline int64 javaRound(double a) {
+namespace {
+
+inline int64 java_round(double a) {
   return (int64)floor(a + 0.5);
 }
 
@@ -28,7 +25,7 @@ struct Aff2 {
   }
 };
 
-static Aff2 multiply(const Aff2& A, const Aff2& B) {
+Aff2 multiply(const Aff2& A, const Aff2& B) {
   Aff2 R{};
   R.m00 = A.m00 * B.m00 + A.m01 * B.m10;
   R.m01 = A.m00 * B.m01 + A.m01 * B.m11;
@@ -39,7 +36,7 @@ static Aff2 multiply(const Aff2& A, const Aff2& B) {
   return R;
 }
 
-static Aff2 rotateInstance(int64 vx, int64 vy) {
+Aff2 rotate_instance(int64 vx, int64 vy) {
   double L = hypot((double)vx, (double)vy);
   double c = (double)vx / L, s = (double)vy / L;
   Aff2 R{};
@@ -52,7 +49,7 @@ static Aff2 rotateInstance(int64 vx, int64 vy) {
   return R;
 }
 
-static Aff2 scaleThenTranslate(int sx, int sy, int tx, int ty) {
+Aff2 scale_then_translate(int sx, int sy, int tx, int ty) {
   Aff2 S{};
   S.m00 = sx;
   S.m01 = 0;
@@ -86,7 +83,7 @@ struct ST1D {
 };
 
 /* Inner derive(x00,x01,x10,x11): throws if diff0==0 && diff1==0 */
-static optional<ST1D> derivePair(int x00, int x01, int x10, int x11, bool& nu_exc) {
+optional<ST1D> derive_pair(int x00, int x01, int x10, int x11, bool& nu_exc) {
   nu_exc = false;
   int diff0 = x01 - x00;
   int diff1 = x11 - x10;
@@ -106,7 +103,7 @@ static optional<ST1D> derivePair(int x00, int x01, int x10, int x11, bool& nu_ex
  * Matches Java derive(int[] x0, int[] x1): any tmp==null => return null;
  * mismatch => return null; else all pairs agree; if !unique throw NU at end.
  */
-static optional<ST1D> derive1d(const int x0[3], const int x1[3], bool& nu_end) {
+optional<ST1D> derive1d(const int x0[3], const int x1[3], bool& nu_end) {
   nu_end = false;
   bool unique = false;
   optional<ST1D> ans;
@@ -114,7 +111,7 @@ static optional<ST1D> derive1d(const int x0[3], const int x1[3], bool& nu_end) {
   for (int i = 0; i < 3; ++i) {
     for (int j = i + 1; j < 3; ++j) {
       bool exc = false;
-      optional<ST1D> tmp = derivePair(x0[i], x0[j], x1[i], x1[j], exc);
+      optional<ST1D> tmp = derive_pair(x0[i], x0[j], x1[i], x1[j], exc);
       if (exc)
         continue; // Java empty catch
       if (!tmp.has_value() || (ans.has_value() && *tmp != *ans)) {
@@ -135,7 +132,7 @@ static optional<ST1D> derive1d(const int x0[3], const int x1[3], bool& nu_end) {
   return {};
 }
 
-static optional<Aff2> deriveST(const Pt p0[3], const Pt p1[3], bool& nu1d) {
+optional<Aff2> derive_st(const Pt p0[3], const Pt p1[3], bool& nu1d) {
   nu1d = false;
   int xs0[3] = {p0[0].x, p0[1].x, p0[2].x};
   int ys0[3] = {p0[0].y, p0[1].y, p0[2].y};
@@ -150,12 +147,12 @@ static optional<Aff2> deriveST(const Pt p0[3], const Pt p1[3], bool& nu1d) {
     return {};
   }
   if (xt.has_value() && yt.has_value()) {
-    return scaleThenTranslate(xt->scale, yt->scale, xt->translate, yt->translate);
+    return scale_then_translate(xt->scale, yt->scale, xt->translate, yt->translate);
   }
   return {};
 }
 
-static optional<Aff2> derivePerm(Pt p0r[3], const Pt p1[3], bool& nu_perm) {
+optional<Aff2> derive_perm(Pt p0r[3], const Pt p1[3], bool& nu_perm) {
   nu_perm = false;
   optional<Aff2> ans;
 
@@ -169,7 +166,7 @@ static optional<Aff2> derivePerm(Pt p0r[3], const Pt p1[3], bool& nu_perm) {
 
       Pt triple[3] = {p0r[i], p0r[j], p0r[k]};
       bool nu = false;
-      optional<Aff2> tmp = deriveST(triple, p1, nu);
+      optional<Aff2> tmp = derive_st(triple, p1, nu);
       if (nu) {
         nu_perm = true;
         return {};
@@ -185,19 +182,19 @@ static optional<Aff2> derivePerm(Pt p0r[3], const Pt p1[3], bool& nu_perm) {
   return ans;
 }
 
-static vector<Aff2> buildRotations() {
+vector<Aff2> build_rotations() {
   vector<Aff2> rot;
   for (int x = -10; x <= 10; x += 20)
     for (int y = -10; y <= 10; y++)
-      rot.push_back(rotateInstance(x, y));
+      rot.push_back(rotate_instance(x, y));
   for (int y = -10; y <= 10; y += 20)
     for (int x = -9; x <= 9; x++)
-      rot.push_back(rotateInstance(x, y));
+      rot.push_back(rotate_instance(x, y));
   return rot;
 }
 
-static optional<Aff2> deriveFull(const Pt p0[3], const Pt p1[3], bool& nu_full) {
-  static const vector<Aff2> ROT = buildRotations();
+optional<Aff2> derive_full(const Pt p0[3], const Pt p1[3], bool& nu_full) {
+  const vector<Aff2> ROT = build_rotations();
   nu_full = false;
   optional<Aff2> answer;
 
@@ -206,12 +203,12 @@ static optional<Aff2> deriveFull(const Pt p0[3], const Pt p1[3], bool& nu_full) 
     for (int i = 0; i < 3; ++i) {
       double xr = R.m00 * p0[i].x + R.m01 * p0[i].y;
       double yr = R.m10 * p0[i].x + R.m11 * p0[i].y;
-      p0p[i].x = (int)javaRound(xr);
-      p0p[i].y = (int)javaRound(yr);
+      p0p[i].x = (int)java_round(xr);
+      p0p[i].y = (int)java_round(yr);
     }
 
     bool nu = false;
-    optional<Aff2> st = derivePerm(p0p, p1, nu);
+    optional<Aff2> st = derive_perm(p0p, p1, nu);
     if (nu) {
       nu_full = true;
       return {};
@@ -230,6 +227,8 @@ static optional<Aff2> deriveFull(const Pt p0[3], const Pt p1[3], bool& nu_full) 
   return answer;
 }
 
+} // namespace
+
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
@@ -247,7 +246,7 @@ int main() {
 
     cout << "Case " << ++z << ": ";
     bool nu = false;
-    optional<Aff2> ans = deriveFull(p0, p1, nu);
+    optional<Aff2> ans = derive_full(p0, p1, nu);
     if (nu)
       cout << "inconsistent solutions\n";
     else if (!ans.has_value())

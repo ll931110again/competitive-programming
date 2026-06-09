@@ -1,25 +1,21 @@
 // Codeforces 1750 (CodeTON Round 3 (Div. 1 + Div. 2, Rated, Prizes!)) — A. Indirect Sort
 // Submission: https://codeforces.com/contest/1750/submission/334470282
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <stack>
-#include <map>
-#include <queue>
-#include <vector>
-#define maxn 20
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 20;
 int T, n;
-int a[maxn];
+int a[k_max_n];
+
+} // namespace
 
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   while (T--) {
     cin >> n;

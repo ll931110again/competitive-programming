@@ -1,22 +1,15 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <set>
-#include <vector>
-#define maxn 200005
+#include <bits/stdc++.h>
 using namespace std;
 
-int T, n, Q;
-int a[maxn];
+namespace {
 
-long long tx[4 * maxn];
-int min_index[4 * maxn];
+constexpr int k_max_n = 200005;
+int T, n, Q;
+int a[k_max_n];
+
+long long tx[4 * k_max_n];
+int min_index[4 * k_max_n];
 
 void init(int i, int low, int high) {
   if (low == high) {
@@ -107,6 +100,8 @@ pair<long long, long long> solve() {
 
   return {first_sum, second_sum};
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

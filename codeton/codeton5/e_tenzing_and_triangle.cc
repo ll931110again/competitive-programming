@@ -1,21 +1,12 @@
 // Codeforces 1842 (CodeTON Round 5 (Div. 1 + Div. 2, Rated, Prizes!)) — E. Tenzing and Triangle
 // Submission: https://codeforces.com/contest/1842/submission/334343383
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <stack>
-#include <map>
-#include <queue>
-#include <vector>
-#define maxn 200005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
 int n, k, A;
 long long inf = 1e18;
 
@@ -23,16 +14,16 @@ struct Point {
   int x, y, c;
 };
 
-Point pts[maxn];
-vector<int> buckets[maxn];
-long long dp[maxn];
+Point pts[k_max_n];
+vector<int> buckets[k_max_n];
+long long dp[k_max_n];
 
 struct Node {
   long long value;
   long long carry;
 };
 
-Node tx[5 * maxn];
+Node tx[5 * k_max_n];
 
 void flag(int i) {
   tx[2 * i].value += tx[i].carry;
@@ -69,6 +60,8 @@ long long get(int i, int low, int high, int u, int v) {
   int mid = (low + high) / 2;
   return max(get(2 * i, low, mid, u, v), get(2 * i + 1, mid + 1, high, u, v));
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

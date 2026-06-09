@@ -2,11 +2,13 @@
 // Submission: https://codeforces.com/contest/97/submission/263711543
 
 #include <bits/stdc++.h>
-#define maxn 10005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 10005;
 int n;
-pair<int, int> pts[maxn];
+pair<int, int> pts[k_max_n];
 set<pair<int, int>> ans;
 
 void rec(int low, int high) {
@@ -24,7 +26,12 @@ void rec(int low, int high) {
   rec(mid + 1, high);
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> n;
   for (int i = 0; i < n; i++) {
     cin >> pts[i].first >> pts[i].second;

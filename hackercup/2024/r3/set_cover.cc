@@ -1,52 +1,43 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
-#define maxn 2505
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 2505;
 int T, n, K;
 vector<string> grid;
 
 int solve_top_left(vector<string>& grid) {
-  int minX = n, maxX = -1, minY = n, maxY = -1;
+  int min_x = n, max_x = -1, min_y = n, max_y = -1;
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < n; j++)
       if (grid[i][j] == '1') {
-        if (minX < 0 || minX > i) {
-          minX = i;
+        if (min_x < 0 || min_x > i) {
+          min_x = i;
         }
-        maxX = max(maxX, i);
-        if (minY < 0 || minY > j) {
-          minY = j;
+        max_x = max(max_x, i);
+        if (min_y < 0 || min_y > j) {
+          min_y = j;
         }
-        maxY = max(maxY, j);
+        max_y = max(max_y, j);
         grid[i][j] = '?';
       }
   }
 
   int ans = 0;
-  if (maxX >= 0) {
-    ans = (maxX - minX + 1) * (maxY - minY + 1);
+  if (max_x >= 0) {
+    ans = (max_x - min_x + 1) * (max_y - min_y + 1);
   }
 
   if (K == 1) {
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < n; j++)
         if (grid[i][j] == '?') {
-          int ax = min(minX, i);
-          int bx = max(maxX, i);
-          int ay = min(minY, j);
-          int by = max(maxY, j);
+          int ax = min(min_x, i);
+          int bx = max(max_x, i);
+          int ay = min(min_y, j);
+          int by = max(max_y, j);
           ans = max(ans, (bx - ax + 1) * (by - ay + 1));
         }
     }
@@ -70,16 +61,16 @@ int solve_top_left(vector<string>& grid) {
 
     for (auto u : top_lefts) {
       for (auto v : bottom_rights) {
-        int ax = min(minX, u.first);
+        int ax = min(min_x, u.first);
         ax = min(ax, v.first);
 
-        int bx = max(maxX, u.first);
+        int bx = max(max_x, u.first);
         bx = max(bx, v.first);
 
-        int ay = min(minY, u.second);
+        int ay = min(min_y, u.second);
         ay = min(ay, v.second);
 
-        int by = max(maxY, u.second);
+        int by = max(max_y, u.second);
         by = max(by, v.second);
 
         ans = max(ans, (bx - ax + 1) * (by - ay + 1));
@@ -122,16 +113,16 @@ int solve_top_left(vector<string>& grid) {
         }
     }
 
-    int ax = min(minX, rightmost.first);
+    int ax = min(min_x, rightmost.first);
     ax = min(ax, bottommost.first);
 
-    int bx = max(maxX, rightmost.first);
+    int bx = max(max_x, rightmost.first);
     bx = max(bx, bottommost.first);
 
-    int ay = min(minY, rightmost.second);
+    int ay = min(min_y, rightmost.second);
     ay = min(ay, bottommost.second);
 
-    int by = max(maxY, rightmost.second);
+    int by = max(max_y, rightmost.second);
     by = max(by, bottommost.second);
 
     for (auto u : top_lefts) {
@@ -144,7 +135,7 @@ int solve_top_left(vector<string>& grid) {
   }
 
   if (K >= 4) {
-    int ax = minX, bx = maxX, ay = minY, by = maxY;
+    int ax = min_x, bx = max_x, ay = min_y, by = max_y;
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < n; j++)
         if (grid[i][j] == '?') {
@@ -179,6 +170,8 @@ int solve() {
   }
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

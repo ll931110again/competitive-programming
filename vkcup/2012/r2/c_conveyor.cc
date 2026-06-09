@@ -1,31 +1,20 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <utility>
-#include <vector>
-#define maxn 100005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 100005;
 int n, l, v1, v2;
-int pos[maxn];
-double ret[maxn];
+int pos[k_max_n];
+double ret[k_max_n];
 vector<pair<double, int>> event;
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> n >> l >> v1 >> v2;
   for (int i = 0; i < n; i++)
     cin >> pos[i];

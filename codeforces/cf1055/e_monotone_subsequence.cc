@@ -1,20 +1,10 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <unordered_set>
-#include <vector>
-#define maxn 105
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 105;
 int T, n;
 
 set<int> a;
@@ -91,6 +81,8 @@ void solve() {
   cout << endl;
   cout << flush;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

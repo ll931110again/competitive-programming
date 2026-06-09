@@ -1,14 +1,11 @@
-#include <algorithm>
-#include <iostream>
-#include <numeric>
-#include <set>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 using int64 = long long;
 
-static vector<int> sieve_primes(int n) {
+namespace {
+
+vector<int> sieve_primes(int n) {
   vector<bool> is_prime(n + 1, true);
   is_prime[0] = is_prime[1] = false;
   for (int i = 2; i * i <= n; i++) {
@@ -24,14 +21,14 @@ static vector<int> sieve_primes(int n) {
   return primes;
 }
 
-static int64 mod_norm(int64 x, int64 mod) {
+int64 mod_norm(int64 x, int64 mod) {
   x %= mod;
   if (x < 0)
     x += mod;
   return x;
 }
 
-static int64 mod_inv(int64 a, int64 mod) {
+int64 mod_inv(int64 a, int64 mod) {
   int64 t = 0, newt = 1;
   int64 r = mod, newr = mod_norm(a, mod);
   while (newr != 0) {
@@ -50,7 +47,7 @@ static int64 mod_inv(int64 a, int64 mod) {
   return t;
 }
 
-static bool verify(const vector<int64>& s, int64 P, int64 A, int64 B) {
+bool verify(const vector<int64>& s, int64 P, int64 A, int64 B) {
   int K = (int)s.size();
   for (int i = 0; i < K - 1; i++) {
     if (((A * s[i] + B) % P + P) % P != s[i + 1])
@@ -58,6 +55,8 @@ static bool verify(const vector<int64>& s, int64 P, int64 A, int64 B) {
   }
   return true;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -71,9 +70,9 @@ int main() {
   for (int tc = 1; tc <= T; tc++) {
     int D, K;
     cin >> D >> K;
-    int64 maxP = 1;
+    int64 max_p = 1;
     for (int i = 0; i < D; i++)
-      maxP *= 10;
+      max_p *= 10;
 
     vector<int64> s(K);
     for (int i = 0; i < K; i++)
@@ -88,7 +87,7 @@ int main() {
     }
 
     for (int P : primes) {
-      if ((int64)P > maxP)
+      if ((int64)P > max_p)
         break;
 
       bool ok_range = true;
@@ -115,7 +114,7 @@ int main() {
         int64 d = mod_norm(s[1] - s[0], P);
         if (d == 0)
           continue;
-        int64 g = std::gcd(d, (int64)P);
+        int64 g = gcd(d, (int64)P);
         if (g == 1) {
           int64 n0 = mod_norm(s[1], P);
           int64 n1 = mod_norm(d + s[1], P);

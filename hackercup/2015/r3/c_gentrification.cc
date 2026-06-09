@@ -1,30 +1,21 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
-#define maxn 505
+#include <bits/stdc++.h>
 using namespace std;
 
-int T, n, m;
-vector<int> edges[maxn];
+namespace {
 
-bool vis[maxn];
-bool reachable[maxn][maxn];
+constexpr int k_max_n = 505;
+int T, n, m;
+vector<int> edges[k_max_n];
+
+bool vis[k_max_n];
+bool reachable[k_max_n][k_max_n];
 
 struct BipartiteGraph {
   int N;
   vector<vector<int>> adj;
-  int left_index[maxn], right_index[maxn];
-  int trace[maxn];
+  int left_index[k_max_n], right_index[k_max_n];
+  int trace[k_max_n];
 
   int maximum_matching() {
     memset(left_index, -1, sizeof left_index);
@@ -118,7 +109,7 @@ struct SCCGraph {
     }
     graph.adj.resize(graph.N);
 
-    int ranges[maxn];
+    int ranges[k_max_n];
     ranges[0] = 0;
     for (int i = 0; i < scc_size.size(); i++) {
       ranges[i + 1] = ranges[i] + scc_size[i];
@@ -143,6 +134,8 @@ int solve() {
   auto matching = bipartite_graph.maximum_matching();
   return n - matching;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

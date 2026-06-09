@@ -1,13 +1,11 @@
-#include <algorithm>
-#include <iomanip>
-#include <iostream>
-#include <string>
-#include <vector>
-#define maxn 1000005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 1000005;
 int T, n;
-pair<int, int> ts[maxn];
+pair<int, int> ts[k_max_n];
 
 double solve() {
   cin >> n;
@@ -30,7 +28,12 @@ double solve() {
   return lower_bound;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   for (int it = 1; it <= T; it++) {
     cout << fixed << setprecision(9) << "Case #" << it << ": " << solve() << '\n';

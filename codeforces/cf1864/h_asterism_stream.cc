@@ -19,19 +19,14 @@
 //
 // Complexity: O(log n) layers, O(log n) terms per layer => O(log^2 n) per test case.
 
-#if __has_include(<bits/stdc++.h>)
 #include <bits/stdc++.h>
-#else
-#include <algorithm>
-#include <iostream>
-#include <utility>
-#include <vector>
-#endif
 using namespace std;
 
-static constexpr int MOD = 998244353;
+namespace {
 
-static long long power(long long x, long long p) {
+constexpr int MOD = 998244353;
+
+long long power(long long x, long long p) {
   if (p < 0)
     return power(power(x, MOD - 2), -p);
   long long ans = 1;
@@ -45,7 +40,7 @@ static long long power(long long x, long long p) {
   return ans;
 }
 
-static void solve_one(long long n) {
+void solve_one(long long n) {
   const long long k = power(2, MOD - 2);
   long long l = n;
   long long r = max(1LL, (n - 1) * 2);
@@ -70,7 +65,7 @@ static void solve_one(long long n) {
     P[0] = (P[0] + (MOD - n0) * power(k, r + 1)) % MOD;
     for (auto& x : P)
       x %= MOD;
-    Q = std::move(P);
+    Q = move(P);
     n0 += 2;
   }
 
@@ -80,6 +75,8 @@ static void solve_one(long long n) {
   }
   cout << s << '\n';
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

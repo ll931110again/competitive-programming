@@ -1,19 +1,12 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <queue>
-#include <set>
-#include <vector>
-#define maxn 500005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 500005;
 int T, n;
-int hold[maxn], cap[maxn];
+int hold[k_max_n], cap[k_max_n];
 
 bool solve() {
   queue<int> fulls;
@@ -57,6 +50,8 @@ bool solve() {
 
   return true;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

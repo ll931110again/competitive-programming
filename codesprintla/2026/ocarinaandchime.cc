@@ -8,46 +8,37 @@
  * To check it for a single j, we can use FFT to compute the convolution of melody and chime
  */
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#else
-#include <algorithm>
-#include <cmath>
-#include <cstring>
-#include <iostream>
-#include <vector>
-#endif
+using namespace std;
 
-#ifdef __GNUC__
+namespace {
+
 // Ofast enables -fcx-limited-range, which inlines `_Complex double` multiplication as the naive
 // (ac-bd, ad+bc) — without this flag, GCC emits a call to libgcc's __muldc3 (NaN/inf fixup) and
 // the inner FFT butterfly stays un-inlined / un-vectorized.
 #pragma GCC optimize("Ofast,unroll-loops")
-#endif
-
-using namespace std;
-
 // GCC/Clang C99 complex type. With -fcx-limited-range (from Ofast) the compiler inlines a*b as
-// the four-mul/two-add formula; without it, the same call goes through __muldc3 like std::complex.
+// the four-mul/two-add formula; without it, the same call goes through __muldc3 like complex.
+
 using cd = _Complex double;
 
-static inline cd make_cd(double r, double i) {
+inline cd make_cd(double r, double i) {
   cd z;
   __real__ z = r;
   __imag__ z = i;
   return z;
 }
 
-static const double PI = acos(-1.0);
+const double PI = acos(-1.0);
 
-static inline int mod_k(int x, int k) {
+inline int mod_k(int x, int k) {
   x %= k;
   return x < 0 ? x + k : x;
 }
 
-static vector<vector<cd>> tw_fwd, tw_inv;
+vector<vector<cd>> tw_fwd, tw_inv;
 
-static void build_twiddles(int n) {
+void build_twiddles(int n) {
   tw_fwd.assign(n + 1, {});
   tw_inv.assign(n + 1, {});
   for (int len = 2; len <= n; len <<= 1) {
@@ -63,9 +54,9 @@ static void build_twiddles(int n) {
   }
 }
 
-static vector<int> rev_perm;
+vector<int> rev_perm;
 
-static void fft_inplace(cd* a, int n, bool invert) {
+void fft_inplace(cd* a, int n, bool invert) {
   for (int i = 0; i < n; ++i)
     if (i < rev_perm[i])
       swap(a[i], a[rev_perm[i]]);
@@ -91,13 +82,15 @@ static void fft_inplace(cd* a, int n, bool invert) {
   }
 }
 
-static void convolution_complex(int n, cd* a, cd* b) {
+void convolution_complex(int n, cd* a, cd* b) {
   fft_inplace(a, n, false);
   fft_inplace(b, n, false);
   for (int i = 0; i < n; ++i)
     a[i] *= b[i];
   fft_inplace(a, n, true);
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

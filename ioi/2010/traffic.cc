@@ -1,9 +1,11 @@
-#include <algorithm>
-#include <vector>
+#include <bits/stdc++.h>
+using namespace std;
 
-static std::vector<int> adj[1000005];
-static long long sub[1000005];
-static int weight[1000005];
+namespace {
+
+vector<int> adj[1000005];
+long long sub[1000005];
+int weight[1000005];
 
 int LocateCentre(int n, int p[], int s[], int d[]) {
   for (int i = 0; i < n; ++i) {
@@ -17,9 +19,9 @@ int LocateCentre(int n, int p[], int s[], int d[]) {
     weight[i] = p[i];
   }
 
-  std::vector<int> parent(n, -1), order;
+  vector<int> parent(n, -1), order;
   order.reserve(n);
-  std::vector<int> stack;
+  vector<int> stack;
   stack.push_back(0);
   parent[0] = -1;
   while (!stack.empty()) {
@@ -34,7 +36,7 @@ int LocateCentre(int n, int p[], int s[], int d[]) {
       stack.push_back(v);
     }
   }
-  std::reverse(order.begin(), order.end());
+  reverse(order.begin(), order.end());
 
   long long total = 0;
   for (int u : order) {
@@ -49,12 +51,12 @@ int LocateCentre(int n, int p[], int s[], int d[]) {
 
   long long best_val = (1LL << 60);
   int best_node = 0;
-  struct frame {
+  struct Frame {
     int u;
     int p;
     long long up;
   };
-  std::vector<frame> st;
+  vector<Frame> st;
   st.push_back({0, -1, 0});
   while (!st.empty()) {
     const frame cur = st.back();
@@ -65,7 +67,7 @@ int LocateCentre(int n, int p[], int s[], int d[]) {
       if (v == cur.p) {
         continue;
       }
-      worst = std::max(worst, sub[v]);
+      worst = max(worst, sub[v]);
     }
     if (worst < best_val) {
       best_val = worst;
@@ -82,3 +84,5 @@ int LocateCentre(int n, int p[], int s[], int d[]) {
 
   return best_node;
 }
+
+} // namespace

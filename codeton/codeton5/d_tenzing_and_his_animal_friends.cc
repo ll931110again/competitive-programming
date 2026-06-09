@@ -1,27 +1,20 @@
 // Codeforces 1842 (CodeTON Round 5 (Div. 1 + Div. 2, Rated, Prizes!)) — D. Tenzing and His Animal
 // Friends Submission: https://codeforces.com/contest/1842/submission/334324620
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <stack>
-#include <map>
-#include <queue>
-#include <vector>
-#define maxn 105
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 105;
 int n, m;
-long long dist[maxn][maxn];
+long long dist[k_max_n][k_max_n];
 long long inf = 1e18;
 
-int orders[maxn];
+int orders[k_max_n];
 vector<pair<string, long long>> ops;
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

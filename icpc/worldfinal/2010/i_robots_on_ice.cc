@@ -1,25 +1,23 @@
-#include <cstdint>
-#include <iostream>
-#include <queue>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-static int M, N;
-static int TOT;
-static int endPos;
-static int cpPos[3];
-static int cpTime[3];
+namespace {
 
-static vector<int> nbr[64];
-static uint64_t visited;
-static long long ways;
+int M, N;
+int TOT;
+int end_pos;
+int cp_pos[3];
+int cp_time[3];
 
-static inline int id(int r, int c) {
+vector<int> nbr[64];
+uint64_t visited;
+long long ways;
+
+inline int id(int r, int c) {
   return r * N + c;
 }
 
-static bool connectivityOk(int cur) {
+bool connectivity_ok(int cur) {
   // All unvisited squares must be reachable from cur via unvisited squares.
   uint64_t unvis = ((TOT == 64) ? ~visited : ((1ULL << TOT) - 1) ^ visited);
   // include cur as start even though visited.
@@ -28,7 +26,7 @@ static bool connectivityOk(int cur) {
   int qs = 0, qe = 0;
   q[qe++] = cur;
   seen |= (1ULL << cur);
-  int reachUnvis = 0;
+  int reach_unvis = 0;
   while (qs < qe) {
     int u = q[qs++];
     for (int v : nbr[u]) {
@@ -39,36 +37,36 @@ static bool connectivityOk(int cur) {
       seen |= (1ULL << v);
       q[qe++] = v;
       if (!(visited & (1ULL << v)))
-        reachUnvis++;
+        reach_unvis++;
     }
   }
   int remaining = TOT - __builtin_popcountll(visited);
-  return reachUnvis == remaining;
+  return reach_unvis == remaining;
 }
 
-static void dfs(int cur, int step) {
+void dfs(int cur, int step) {
   // step = number of visited squares so far (start is step=1)
   if (step == TOT) {
-    if (cur == endPos)
+    if (cur == end_pos)
       ways++;
     return;
   }
 
   // checkpoint constraints at this step
   for (int i = 0; i < 3; i++) {
-    if (step == cpTime[i]) {
-      if (cur != cpPos[i])
+    if (step == cp_time[i]) {
+      if (cur != cp_pos[i])
         return;
     } else {
-      if (cur == cpPos[i])
+      if (cur == cp_pos[i])
         return; // visited checkpoint at wrong time
     }
   }
 
-  if (cur == endPos)
+  if (cur == end_pos)
     return; // end must be last
 
-  if (!connectivityOk(cur))
+  if (!connectivity_ok(cur))
     return;
 
   for (int v : nbr[cur]) {
@@ -80,12 +78,14 @@ static void dfs(int cur, int step) {
   }
 }
 
+} // namespace
+
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
   int m, n;
-  int caseNum = 1;
+  int case_num = 1;
   while (cin >> m >> n) {
     if (m == 0 && n == 0)
       break;
@@ -95,13 +95,13 @@ int main() {
 
     int r1, c1, r2, c2, r3, c3;
     cin >> r1 >> c1 >> r2 >> c2 >> r3 >> c3;
-    cpPos[0] = id(r1, c1);
-    cpPos[1] = id(r2, c2);
-    cpPos[2] = id(r3, c3);
+    cp_pos[0] = id(r1, c1);
+    cp_pos[1] = id(r2, c2);
+    cp_pos[2] = id(r3, c3);
 
-    cpTime[0] = (1 * TOT) / 4;
-    cpTime[1] = (2 * TOT) / 4;
-    cpTime[2] = (3 * TOT) / 4;
+    cp_time[0] = (1 * TOT) / 4;
+    cp_time[1] = (2 * TOT) / 4;
+    cp_time[2] = (3 * TOT) / 4;
 
     for (int i = 0; i < 64; i++)
       nbr[i].clear();
@@ -120,14 +120,14 @@ int main() {
     }
 
     int start = id(0, 0);
-    endPos = id(0, 1);
+    end_pos = id(0, 1);
 
     visited = 0;
     visited |= (1ULL << start);
     ways = 0;
     dfs(start, 1);
 
-    cout << "Case " << caseNum++ << ": " << ways << "\n";
+    cout << "Case " << case_num++ << ": " << ways << "\n";
   }
   return 0;
 }

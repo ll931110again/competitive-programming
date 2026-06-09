@@ -3,26 +3,26 @@
 //
 // Count triangular faces on the 3D convex hull (each face once, CCW outward).
 
-#include <algorithm>
-#include <cmath>
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
+using namespace std;
 
 using ld = long double;
+
+namespace {
 
 struct P3 {
   ld x, y, z;
 };
 
-static ld dot(const P3& a, const P3& b) {
+ld dot(const P3& a, const P3& b) {
   return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
-static P3 cross(const P3& a, const P3& b) {
+P3 cross(const P3& a, const P3& b) {
   return {a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x};
 }
 
-static ld vol(const P3& a, const P3& b, const P3& c, const P3& d) {
+ld vol(const P3& a, const P3& b, const P3& c, const P3& d) {
   P3 ab{b.x - a.x, b.y - a.y, b.z - a.z};
   P3 ac{c.x - a.x, c.y - a.y, c.z - a.z};
   P3 ad{d.x - a.x, d.y - a.y, d.z - a.z};
@@ -33,9 +33,9 @@ struct Face {
   int a, b, c;
 };
 
-static std::vector<Face> hullFaces(const std::vector<P3>& p) {
+vector<Face> hull_faces(const vector<P3>& p) {
   int n = (int)p.size();
-  std::vector<Face> faces;
+  vector<Face> faces;
   const ld eps = 1e-9L;
   for (int i = 0; i < n; ++i) {
     for (int j = i + 1; j < n; ++j) {
@@ -74,20 +74,22 @@ static std::vector<Face> hullFaces(const std::vector<P3>& p) {
   return faces;
 }
 
+} // namespace
+
 int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
 
   int t;
-  std::cin >> t;
+  cin >> t;
   while (t--) {
     int n;
-    std::cin >> n;
-    std::vector<P3> pts(n);
+    cin >> n;
+    vector<P3> pts(n);
     for (int i = 0; i < n; ++i) {
-      std::cin >> pts[i].x >> pts[i].y >> pts[i].z;
+      cin >> pts[i].x >> pts[i].y >> pts[i].z;
     }
-    std::cout << hullFaces(pts).size() << '\n';
+    cout << hull_faces(pts).size() << '\n';
   }
   return 0;
 }

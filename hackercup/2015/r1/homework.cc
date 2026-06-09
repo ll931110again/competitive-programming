@@ -1,21 +1,28 @@
-#include <cstring>
-#include <iostream>
-#define MAXN 10000000
+#include <bits/stdc++.h>
 using namespace std;
 
-bool isPrime[MAXN + 2];
+#define MAXN 10000000
+
+namespace {
+
+bool is_prime[MAXN + 2];
 int primacity[MAXN + 2];
 int remains[MAXN + 2];
 
+} // namespace
+
 int main() {
-  memset(isPrime, true, sizeof(isPrime));
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  memset(is_prime, true, sizeof(is_prime));
   for (int i = 2; i <= MAXN; i++)
     remains[i] = i;
 
   for (int i = 2; i <= MAXN; i++)
-    if (isPrime[i])
+    if (is_prime[i])
       for (int j = i; j <= MAXN; j += i) {
-        isPrime[j] = false;
+        is_prime[j] = false;
         primacity[j]++;
         while (remains[j] % i == 0) {
           remains[j] /= i;

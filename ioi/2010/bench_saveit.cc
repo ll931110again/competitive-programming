@@ -1,22 +1,21 @@
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <queue>
-#include <vector>
+#include <bits/stdc++.h>
+using namespace std;
 
-static std::vector<int> bits;
-static int bit_pos;
+namespace {
 
-static void encode_bit(int b) {
+vector<int> bits;
+int bit_pos;
+
+void encode_bit(int b) {
   bits.push_back(b);
 }
 
-static int decode_bit() {
+int decode_bit() {
   return bits[bit_pos++];
 }
 
-static int got_hops[1005][36];
-static int hop_calls;
+int got_hops[1005][36];
+int hop_calls;
 
 void hops(int h, int c, int d) {
   got_hops[h][c] = d;
@@ -25,10 +24,10 @@ void hops(int h, int c, int d) {
 
 #include "saveit.cc"
 
-static void bfs_dist(int n, int h, const std::vector<int> g[], int ans[1005][36]) {
+void bfs_dist(int n, int h, const vector<int> g[], int ans[1005][36]) {
   for (int hub = 0; hub < h; ++hub) {
-    std::fill(ans[hub], ans[hub] + n, -1);
-    std::queue<int> q;
+    fill(ans[hub], ans[hub] + n, -1);
+    queue<int> q;
     ans[hub][hub] = 0;
     q.push(hub);
     while (!q.empty()) {
@@ -44,7 +43,7 @@ static void bfs_dist(int n, int h, const std::vector<int> g[], int ans[1005][36]
   }
 }
 
-static bool read_saveit(const char* path, int& n, int& h, int& p, int a[], int b[]) {
+bool read_saveit(const char* path, int& n, int& h, int& p, int a[], int b[]) {
   FILE* f = fopen(path, "r");
   if (!f) {
     return false;
@@ -63,15 +62,20 @@ static bool read_saveit(const char* path, int& n, int& h, int& p, int a[], int b
   return true;
 }
 
+} // namespace
+
 int main(int argc, char** argv) {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   const char* path = (argc > 1) ? argv[1] : "saveit/appeal/Subtask1-data/grader.in.0a";
-  static int a[1000005], b[1000005];
+  int a[1000005], b[1000005];
   int n, h, p;
   if (!read_saveit(path, n, h, p, a, b)) {
     return 1;
   }
 
-  std::vector<int> g[1005];
+  vector<int> g[1005];
   for (int i = 0; i < p; ++i) {
     g[a[i]].push_back(b[i]);
     g[b[i]].push_back(a[i]);

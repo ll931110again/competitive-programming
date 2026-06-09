@@ -2,10 +2,15 @@
 //
 // Binary search on the answer; each check slides an H×W window in O(R*C).
 
-static char good[3001][3001];
-static int col_cnt[3001];
+#include <bits/stdc++.h>
+using namespace std;
 
-static bool scan_row(int c, int w, int need) {
+namespace {
+
+char good[3001][3001];
+int col_cnt[3001];
+
+bool scan_row(int c, int w, int need) {
   int win = 0;
   for (int j = 0; j < w; ++j) {
     win += col_cnt[j];
@@ -22,7 +27,7 @@ static bool scan_row(int c, int w, int need) {
   return false;
 }
 
-static bool feasible(int r, int c, int h, int w, int mid, int need, int q[3001][3001]) {
+bool feasible(int r, int c, int h, int w, int mid, int need, int q[3001][3001]) {
   for (int i = 0; i < r; ++i) {
     for (int j = 0; j < c; ++j) {
       good[i][j] = q[i][j] <= mid;
@@ -67,3 +72,5 @@ int rectangle(int r, int c, int h, int w, int q[3001][3001]) {
   }
   return lo;
 }
+
+} // namespace

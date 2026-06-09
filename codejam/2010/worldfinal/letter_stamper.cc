@@ -1,12 +1,9 @@
-#include <algorithm>
-#include <array>
-#include <iostream>
-#include <string>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-static string compress_runs(const string& s) {
+namespace {
+
+string compress_runs(const string& s) {
   string t;
   for (char c : s) {
     if (t.empty() || t.back() != c)
@@ -15,7 +12,7 @@ static string compress_runs(const string& s) {
   return t;
 }
 
-static int solve_case(const string& original) {
+int solve_case(const string& original) {
   // Per analysis: optimal strategy satisfies:
   // - never push same as top
   // - after push, immediately print
@@ -49,7 +46,7 @@ static int solve_case(const string& original) {
   int dp0 = 0;       // empty stack
   array<int, 3> dp1; // height=1, only top known
   dp1.fill(INF);
-  vector<array<int, 6>> maxH; // unused, keep simple; heights up to n
+  vector<array<int, 6>> max_h; // unused, keep simple; heights up to n
 
   vector<vector<int>> dp2(6, vector<int>(n + 2, INF));
   // dp2[p][h] valid for h >= 2
@@ -132,6 +129,8 @@ static int solve_case(const string& original) {
   close_pops();
   return dp0;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

@@ -18,19 +18,22 @@
  */
 
 #include <bits/stdc++.h>
-#define maxn 200005
-#define maxk 20
 using namespace std;
 
-int n;
-int weight[maxn];
-vector<pair<int, int>> adj[maxn];
-int par[maxn], ventry[maxn], vexit[maxn], vcount = 0;
-long long depth[maxn];
-int level[maxn][maxk];
-bool marked[maxn];
+namespace {
 
-int subtree_size[maxn];
+constexpr int k_max_n = 200005;
+#define maxk 20
+
+int n;
+int weight[k_max_n];
+vector<pair<int, int>> adj[k_max_n];
+int par[k_max_n], ventry[k_max_n], vexit[k_max_n], vcount = 0;
+long long depth[k_max_n];
+int level[k_max_n][maxk];
+bool marked[k_max_n];
+
+int subtree_size[k_max_n];
 int centroid_node = -1;
 
 double min_cost = 1e18;
@@ -150,7 +153,12 @@ void opt(int u, int p) {
   }
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> n;
   for (int i = 0; i < n; i++) {
     cin >> weight[i];

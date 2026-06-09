@@ -1,30 +1,14 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <utility>
-#include <vector>
-#define maxn 50005
-#define maxk 505
+#include <bits/stdc++.h>
 using namespace std;
 
-int n, k, f[maxn][maxk];
+namespace {
+
+constexpr int k_max_n = 50005;
+#define maxk 505
+
+int n, k, f[k_max_n][maxk];
 long long ret = 0;
-vector<int> adj[maxn];
+vector<int> adj[k_max_n];
 
 void DFS(int u, int pre) {
   for (int i = 0; i < adj[u].size(); i++) {
@@ -45,7 +29,12 @@ void DFS(int u, int pre) {
   }
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> n >> k;
   for (int i = 1; i < n; i++) {
     int u, v;

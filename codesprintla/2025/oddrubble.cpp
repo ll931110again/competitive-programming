@@ -7,7 +7,9 @@ using namespace std;
 using int64 = long long;
 using i128 = __int128_t;
 
-static int trailing_pow2(int64 v) {
+namespace {
+
+int trailing_pow2(int64 v) {
   int t = 0;
   while (v % 2 == 0) {
     v /= 2;
@@ -15,6 +17,8 @@ static int trailing_pow2(int64 v) {
   }
   return t;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -25,12 +29,12 @@ int main() {
   for (int i = 0; i < n; ++i)
     cin >> a[i];
 
-  vector<i128> cntLeaf(n);
+  vector<i128> cnt_leaf(n);
   i128 total = 0;
   for (int i = 0; i < n; ++i) {
     int t = trailing_pow2(a[i]);
-    cntLeaf[i] = (i128)1 << t;
-    total += cntLeaf[i];
+    cnt_leaf[i] = (i128)1 << t;
+    total += cnt_leaf[i];
   }
 
   while (q--) {
@@ -47,11 +51,11 @@ int main() {
     i128 pref = 0;
     int pos = -1;
     for (int i = 0; i < n; ++i) {
-      if (x <= pref + cntLeaf[i]) {
+      if (x <= pref + cnt_leaf[i]) {
         pos = i;
         break;
       }
-      pref += cntLeaf[i];
+      pref += cnt_leaf[i];
     }
     int64 v = a[pos];
     int t = trailing_pow2(v);

@@ -2,27 +2,29 @@
 // Submission: https://codeforces.com/contest/86/submission/216531011
 
 #include <bits/stdc++.h>
-#define maxn 200005
-#define maxv 1000005
 using namespace std;
 
-struct query {
+namespace {
+
+constexpr int k_max_n = 200005;
+constexpr int k_max_v = 1000005;
+struct Query {
   int x, y, z;
-  query(int _x, int _y, int _z) {
+  Query(int _x, int _y, int _z) {
     x = _x;
     y = _y;
     z = _z;
   }
 };
 
-bool cmp(query A, query B) {
+bool cmp(Query A, Query B) {
   return A.y < B.y;
 }
 
 int n, Q, block;
-int a[maxn], cnt[maxv];
-vector<query> bucket[maxn];
-long long ret[maxn];
+int a[k_max_n], cnt[k_max_v];
+vector<Query> bucket[k_max_n];
+long long ret[k_max_n];
 long long sum;
 
 void modify(int pos, int delta) {
@@ -32,22 +34,27 @@ void modify(int pos, int delta) {
   sum += (next - prev);
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   // freopen("d.in","r",stdin);
 
-  scanf("%d %d", &n, &Q);
+  cin >> n >> Q;
   block = (int)floor(sqrt(n));
   if (!block)
     block = 1;
   for (int i = 0; i < n; i++)
-    scanf("%d", &a[i]);
+    cin >> a[i];
 
   for (int i = 0; i < Q; i++) {
     int u, v;
-    scanf("%d %d", &u, &v);
+    cin >> u >> v;
     u--;
     v--;
-    bucket[u / block].push_back(query(u, v, i));
+    bucket[u / block].push_back(Query(u, v, i));
   }
   memset(cnt, 0, sizeof(cnt));
 
@@ -75,5 +82,5 @@ int main() {
     }
 
   for (int i = 0; i < Q; i++)
-    printf("%I64d\n", ret[i]);
+    cout << ret[i] << '\n';
 }

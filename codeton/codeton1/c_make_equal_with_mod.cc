@@ -1,19 +1,13 @@
 // Codeforces 1656 (CodeTON Round 1 (Div. 1 + Div. 2, Rated, Prizes!)) — C. Make Equal With Mod
 // Submission: https://codeforces.com/contest/1656/submission/150742937
 
-#include <algorithm>
-#include <cmath>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <cstdio>
-#include <queue>
-#include <stack>
-#include <vector>
-#define maxn 200005
+#include <bits/stdc++.h>
 using namespace std;
 
-int T, n, a[maxn];
+namespace {
+
+constexpr int k_max_n = 200005;
+int T, n, a[k_max_n];
 
 bool solve() {
   sort(a, a + n);
@@ -37,12 +31,17 @@ bool solve() {
   return true;
 }
 
+} // namespace
+
 int main() {
-  scanf("%d", &T);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  cin >> T;
   while (T--) {
-    scanf("%d", &n);
+    cin >> n;
     for (int i = 0; i < n; i++) {
-      scanf("%d", &a[i]);
+      cin >> a[i];
     }
     if (solve()) {
       printf("YES\n");

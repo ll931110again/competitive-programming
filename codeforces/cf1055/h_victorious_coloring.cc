@@ -1,36 +1,26 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <array>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <unordered_set>
-#include <vector>
-#define maxn 250005
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
+
+constexpr int k_max_n = 250005;
 using pi = array<long long, 2>;
 
-struct edge {
+struct Edge {
   int w, u, v;
 };
 
-edge edges[maxn];
+edge edges[k_max_n];
 
 int T, n, Q;
-int par[2 * maxn];
-long long cost[2 * maxn];
-pair<int, int> ch[2 * maxn];
-long long dp[2 * maxn];
+int par[2 * k_max_n];
+long long cost[2 * k_max_n];
+pair<int, int> ch[2 * k_max_n];
+long long dp[2 * k_max_n];
 
-pair<int, int> queries[maxn];
-long long ans[maxn];
+pair<int, int> queries[k_max_n];
+long long ans[k_max_n];
 
 int get(int u) {
   if (u != par[u]) {
@@ -38,6 +28,8 @@ int get(int u) {
   }
   return par[u];
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

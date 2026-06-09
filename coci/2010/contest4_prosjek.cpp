@@ -1,20 +1,7 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <deque>
-#include <fstream>
-#include <iostream>
-#include <iterator>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <string>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 long long r[6];
 string p;
@@ -25,7 +12,12 @@ long long gcd(long long x, long long y) {
   return (!x) ? y : gcd(y % x, x);
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   //  freopen("prosjek.in","r",stdin);
   //  freopen("prosjek.ou","w",stdout);
   cin >> p;

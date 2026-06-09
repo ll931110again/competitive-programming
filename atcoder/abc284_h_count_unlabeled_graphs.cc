@@ -7,7 +7,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-static unsigned PMOD;
+namespace {
+
+unsigned PMOD;
 
 struct Mint {
   unsigned x;
@@ -85,7 +87,7 @@ Mint count_at_most(int C) {
       for (int i = 0; i < m; i++) {
         exp += part[i] / 2;
         for (int j = 0; j < i; j++)
-          exp += std::gcd(part[i], part[j]);
+          exp += gcd(part[i], part[j]);
       }
       Mint fix = Mint(2).pow(exp) * Mint(C).pow(m);
 
@@ -113,6 +115,8 @@ Mint count_at_most(int C) {
   go(go, N, N);
   return total / fact[N];
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

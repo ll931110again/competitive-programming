@@ -1,15 +1,21 @@
 // Codeforces 1704 (CodeTON Round 2 (Div. 1 + Div. 2, Rated, Prizes!)) — B. Luke is a Foodie
 // Submission: https://codeforces.com/contest/1704/submission/211845813
 
-#include <cmath>
-#include <iostream>
-#define maxn 200005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
 int T, n, x;
-int a[maxn];
+int a[k_max_n];
+
+} // namespace
 
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   while (T--) {
     cin >> n >> x;

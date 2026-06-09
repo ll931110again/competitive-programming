@@ -1,41 +1,37 @@
 // Codeforces 1810 (CodeTON Round 4 (Div. 1 + Div. 2, Rated, Prizes!)) — D. Climbing the Tree
 // Submission: https://codeforces.com/contest/1810/submission/201604776
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <iostream>
-#include <unordered_set>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 int T, Q;
 
 struct Range {
-  long long minValue;
-  long long maxValue;
+  long long min_value;
+  long long max_value;
 };
 
-Range getRange(int a, int b, int n) {
+Range get_range(int a, int b, int n) {
   if (n == 1) {
-    return Range{.minValue = 1, .maxValue = a};
+    return Range{.min_value = 1, .max_value = a};
   }
 
-  long long baseHeight = 1LL * (n - 1) * (a - b);
-  return Range{.minValue = baseHeight + b + 1, .maxValue = baseHeight + a};
+  long long base_height = 1LL * (n - 1) * (a - b);
+  return Range{.min_value = base_height + b + 1, .max_value = base_height + a};
 }
 
 Range intersect(const Range& lhs, const Range& rhs, bool* ok) {
   (*ok) = false;
 
-  if (lhs.maxValue < rhs.minValue || rhs.maxValue < lhs.minValue) {
+  if (lhs.max_value < rhs.min_value || rhs.max_value < lhs.min_value) {
     return lhs;
   }
 
-  Range result = {.minValue = max(lhs.minValue, rhs.minValue),
-                  .maxValue = min(lhs.maxValue, rhs.maxValue)};
-  if (result.minValue > result.maxValue) {
+  Range result = {.min_value = max(lhs.min_value, rhs.min_value),
+                  .max_value = min(lhs.max_value, rhs.max_value)};
+  if (result.min_value > result.max_value) {
     return lhs;
   }
 
@@ -43,13 +39,13 @@ Range intersect(const Range& lhs, const Range& rhs, bool* ok) {
   return result;
 }
 
-long long query(int a, int b, long long treeHeight) {
-  if (treeHeight <= a) {
+long long query(int a, int b, long long tree_height) {
+  if (tree_height <= a) {
     return 1;
   }
 
-  long long n = (treeHeight - a) / (a - b);
-  if ((treeHeight - a) % (a - b)) {
+  long long n = (tree_height - a) / (a - b);
+  if ((tree_height - a) % (a - b)) {
     n++;
   }
 
@@ -61,32 +57,37 @@ long long query(int a, int b, long long treeHeight) {
 
 void solve() {
   scanf("%d", &Q);
-  Range lhs = {.minValue = 1, .maxValue = (long long)1e18};
+  Range lhs = {.min_value = 1, .max_value = (long long)1e18};
 
   while (Q--) {
-    int eventType, a, b, n;
-    scanf("%d %d %d", &eventType, &a, &b);
-    if (eventType == 1) {
+    int event_type, a, b, n;
+    scanf("%d %d %d", &event_type, &a, &b);
+    if (event_type == 1) {
       scanf("%d", &n);
       bool ok;
-      Range rhs = getRange(a, b, n);
+      Range rhs = get_range(a, b, n);
       lhs = intersect(lhs, rhs, &ok);
       printf("%d ", ok);
     } else {
-      long long minDates = query(a, b, lhs.minValue);
-      long long maxDates = query(a, b, lhs.maxValue);
-      if (minDates != maxDates) {
+      long long min_dates = query(a, b, lhs.min_value);
+      long long max_dates = query(a, b, lhs.max_value);
+      if (min_dates != max_dates) {
         printf("-1 ");
       } else {
-        printf("%lld ", minDates);
+        printf("%lld ", min_dates);
       }
     }
   }
   printf("\n");
 }
 
+} // namespace
+
 int main() {
-  scanf("%d", &T);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  cin >> T;
   while (T--) {
     solve();
   }

@@ -1,26 +1,17 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
-#define maxn 1000005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 1000005;
 int T;
 int n, m;
-int scores[maxn], stockpile[maxn], a[maxn], cnt_a;
+int scores[k_max_n], stockpile[k_max_n], a[k_max_n], cnt_a;
 
 vector<int> score_bucket;
 map<int, int> score_cnt;
-int prefix[maxn];
+int prefix[k_max_n];
 
 bool get(int mid) {
   if (m < mid) {
@@ -63,6 +54,8 @@ int solve() {
   }
   return output;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

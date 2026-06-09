@@ -4,24 +4,17 @@
 // Offline dynamic connectivity: edge active on [add_time, remove_time); segment tree
 // over query time + rollback DSU.
 
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
-
-#include <fstream>
-#include <iostream>
-#include <unordered_map>
-#include <vector>
-
 #include "../../lib/dsu_rollback.hh"
-
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 struct EdgeInterval {
   int u, v, l, r;
 };
 
-static long long pack_edge(int u, int v, int n) {
+long long pack_edge(int u, int v, int n) {
   if (u > v) {
     swap(u, v);
   }
@@ -64,7 +57,12 @@ void dfs(int node, int tl, int tr, int components) {
   dsu.rollback(snap);
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   ifstream fin("connect.in");
   ofstream fout("connect.out");
   if (!fin) {

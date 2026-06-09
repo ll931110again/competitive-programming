@@ -6,18 +6,9 @@
 // all edges with weight w. Build MST on the complete graph of colors with those weights.
 // D&C on weight buckets + rollback DSU (tourist-style).
 
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
-
-#include <functional>
-#include <iostream>
-#include <utility>
-#include <vector>
-
 #include "../../../lib/dsu.hh"
 #include "../../../lib/dsu_rollback.hh"
-
+#include <bits/stdc++.h>
 using namespace std;
 
 int main() {

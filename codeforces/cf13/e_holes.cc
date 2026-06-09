@@ -4,14 +4,10 @@
 // Sqrt decomposition with per-block jump pointers (same idea as bucket
 // precomputation in IOI 2011 Elephants).
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <iostream>
-#include <vector>
-
 using namespace std;
+
+namespace {
 
 struct Block {
   int l = 0;
@@ -20,6 +16,8 @@ struct Block {
   vector<int> end_hole;
   vector<int> jumps;
 };
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

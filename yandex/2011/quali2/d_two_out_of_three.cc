@@ -4,6 +4,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 int f[1005][1005];
 int cost[1005];
 int n;
@@ -58,11 +60,16 @@ void track(int a, int b) {
     track(a, b + 2);
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   // freopen("d.in","r",stdin);
-  scanf("%d", &n);
+  cin >> n;
   for (int i = 1; i <= n; i++)
-    scanf("%d", &cost[i]);
+    cin >> cost[i];
   memset(f, -1, sizeof(f));
   printf("%d\n", rec(1, 2));
   track(1, 2);

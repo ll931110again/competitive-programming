@@ -1,27 +1,22 @@
-#include <algorithm>
-#include <cmath>
-#include <iostream>
-#include <limits>
-#include <random>
-#include <utility>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 struct Pt {
   double x, y;
 };
 
-static double dist(const Pt& a, const Pt& b) {
+double dist(const Pt& a, const Pt& b) {
   double dx = a.x - b.x, dy = a.y - b.y;
   return sqrt(dx * dx + dy * dy);
 }
 
-static double ang(const Pt& from, const Pt& to) {
+double ang(const Pt& from, const Pt& to) {
   return atan2(to.y - from.y, to.x - from.x);
 }
 
-static double norm_angle(double a) {
+double norm_angle(double a) {
   const double TWO = 2.0 * M_PI;
   while (a < 0)
     a += TWO;
@@ -30,7 +25,7 @@ static double norm_angle(double a) {
   return a;
 }
 
-static double ccw_delta(double a, double b) {
+double ccw_delta(double a, double b) {
   // smallest d in [0,2pi) such that a + d == b (mod 2pi)
   a = norm_angle(a);
   b = norm_angle(b);
@@ -40,7 +35,7 @@ static double ccw_delta(double a, double b) {
   return d;
 }
 
-static int simulate(const vector<Pt>& pts, double r0) {
+int simulate(const vector<Pt>& pts, double r0) {
   const double EPS = 1e-10;
   const double MIN_DEL = 1e-7; // require a non-trivial rotation to count/move
   const int N = (int)pts.size();
@@ -138,6 +133,8 @@ static int simulate(const vector<Pt>& pts, double r0) {
   return bends;
 }
 
+} // namespace
+
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
@@ -187,8 +184,8 @@ int main() {
 
     // Randomized sampling to catch "non-obvious" cut lengths.
     // This is purely heuristic; keep it bounded for speed.
-    std::mt19937_64 rng(1234567ULL + (unsigned long long)tc * 1000003ULL);
-    std::uniform_real_distribution<double> uni01(0.0, 1.0);
+    mt19937_64 rng(1234567ULL + (unsigned long long)tc * 1000003ULL);
+    uniform_real_distribution<double> uni01(0.0, 1.0);
     for (int t = 0; t < 2500; t++) {
       double r = R * uni01(rng);
       cand.push_back(r);

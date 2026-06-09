@@ -3,35 +3,14 @@
  *
  */
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <unordered_set>
-#include <utility>
-#include <vector>
-#define maxn 205
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 205;
 vector<vector<string>> texts;
-char s[maxn];
+char s[k_max_n];
 
 vector<string> split() {
   vector<string> tokens;
@@ -90,6 +69,8 @@ vector<string> align(vector<vector<string>> texts) {
   return output;
 }
 
+} // namespace
+
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
@@ -97,7 +78,7 @@ int main() {
   freopen("alignment.in", "r", stdin);
   freopen("alignment.out", "w", stdout);
 
-  while (fgets(s, maxn, stdin)) {
+  while (fgets(s, k_max_n, stdin)) {
     size_t L = strlen(s);
     while (L > 0 && (s[L - 1] == '\n' || s[L - 1] == '\r')) {
       s[--L] = '\0';

@@ -8,24 +8,22 @@
  * - When P > b: only chunked over [a+1, b]; each run length <= 10^j, O((b-a)/10^j + 10) iterations.
  */
 
-#include <algorithm>
-#include <cstdio>
-#include <iostream>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 using u64 = unsigned long long;
 
-static int op[10][10];
-static u64 pow10_u[22];
+namespace {
 
-static int digit_at(u64 x, int j) {
+int op[10][10];
+u64 pow10_u[22];
+
+int digit_at(u64 x, int j) {
   return (int)((x / pow10_u[j]) % 10ULL);
 }
 
 // Apply x -> op[x][dig] exactly len times (state space size 10).
-static int repeat_fixed_input(int x, int dig, u64 len) {
+int repeat_fixed_input(int x, int dig, u64 len) {
   if (len == 0)
     return x;
   int seq[24];
@@ -47,7 +45,7 @@ static int repeat_fixed_input(int x, int dig, u64 len) {
   }
 }
 
-static int combine_period_fast(int j, int start_d) {
+int combine_period_fast(int j, int start_d) {
   int d = start_d;
   u64 run = pow10_u[j];
   for (int v = 0; v <= 9; ++v)
@@ -55,7 +53,7 @@ static int combine_period_fast(int j, int start_d) {
   return d;
 }
 
-static int repeat_lookup(const int nxt[10], int d, u64 nb) {
+int repeat_lookup(const int nxt[10], int d, u64 nb) {
   if (nb == 0)
     return d;
   int seq[24];
@@ -78,7 +76,7 @@ static int repeat_lookup(const int nxt[10], int d, u64 nb) {
 }
 
 // Apply transitions for i in [L, R] inclusive; digit column j; P = 10^{j+1}.
-static int apply_chunked_range(int j, int d, u64 L, u64 R) {
+int apply_chunked_range(int j, int d, u64 L, u64 R) {
   u64 P = pow10_u[j + 1];
   u64 powj = pow10_u[j];
   u64 i = L;
@@ -96,12 +94,12 @@ static int apply_chunked_range(int j, int d, u64 L, u64 R) {
   return d;
 }
 
-static int evolve_digit(int j, int start_d, u64 a, u64 b) {
+int evolve_digit(int j, int start_d, u64 a, u64 b) {
   int d = start_d;
   u64 i = a + 1;
   u64 P = pow10_u[j + 1];
-  static int macro_d[22][10];
-  static bool macro_ready[22];
+  int macro_d[22][10];
+  bool macro_ready[22];
   if (!macro_ready[j]) {
     for (int sd = 0; sd < 10; ++sd)
       macro_d[j][sd] = combine_period_fast(j, sd);
@@ -129,6 +127,8 @@ static int evolve_digit(int j, int start_d, u64 a, u64 b) {
   }
   return d;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

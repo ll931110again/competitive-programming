@@ -1,17 +1,15 @@
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <set>
-#include <vector>
-#define maxn 55
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 55;
 int n;
-int scores[maxn];
-int test_cnt[maxn];
-bool ok[maxn];
+int scores[k_max_n];
+int test_cnt[k_max_n];
+bool ok[k_max_n];
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

@@ -1,19 +1,10 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
-#define maxn 20
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 20;
 int query(set<int> idx) {
   cout << "? ";
   for (auto x : idx) {
@@ -36,7 +27,12 @@ void output(vector<int> idx) {
   cout << flush;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   int T;
   cin >> T;
   while (T--) {

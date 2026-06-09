@@ -1,28 +1,19 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstring>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <numeric>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
-#define maxn 22
-#define maxl 10000
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
+
+constexpr int k_max_n = 22;
+#define maxl 10000
 
 int T;
 double p;
 
 int N = 20;
-double dp[maxl][maxn];
-double pin[maxn], pout[maxn];
-long long binom[maxn][maxn];
+double dp[maxl][k_max_n];
+double pin[k_max_n], pout[k_max_n];
+long long binom[k_max_n][k_max_n];
 
 double solve(double p) {
   pin[0] = 1;
@@ -50,7 +41,12 @@ double solve(double p) {
   return ans;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   binom[0][0] = 1;
   for (int i = 1; i <= N; i++) {
     for (int j = 0; j <= i; j++) {

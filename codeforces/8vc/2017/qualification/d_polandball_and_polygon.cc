@@ -2,8 +2,11 @@
 // Submission: https://codeforces.com/contest/755/submission/23866898
 
 #include <bits/stdc++.h>
-#define MAXK 2000000
 using namespace std;
+
+#define MAXK 2000000
+
+namespace {
 
 int tree[5 * MAXK];
 long long ret = 1;
@@ -48,8 +51,13 @@ int query(int start, int k) {
   return query_tree(1, 0, 2 * n - 1, low, high);
 }
 
+} // namespace
+
 int main() {
-  scanf("%d %d", &n, &k);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  cin >> n >> k;
   if (k + k > n) {
     k = n - k;
   }

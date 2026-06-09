@@ -1,24 +1,7 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <ctime>
-#include <deque>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <list>
-#include <map>
-#include <numeric>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <utility>
-#include <vector>
-#define maxn 202
+#include <bits/stdc++.h>
 using namespace std;
+
+#define maxn 202
 
 double d[maxn][maxn];
 int n;

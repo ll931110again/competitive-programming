@@ -12,16 +12,15 @@
 // powers of two in (q−1) for the transform length. Padding is 2¹⁹ and linear conv
 // needs length 2²¹, so q ≡ 1 (mod 2²¹). Example: q = 19086·2²¹ + 1 > N²_max.
 
-#include <algorithm>
-#include <iostream>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 using int64 = long long;
 using i128 = __int128_t;
 
-static int64 mod_pow(int64 a, int64 e, int64 mod) {
+namespace {
+
+int64 mod_pow(int64 a, int64 e, int64 mod) {
   int64 r = 1 % mod;
   a %= mod;
   while (e > 0) {
@@ -33,7 +32,7 @@ static int64 mod_pow(int64 a, int64 e, int64 mod) {
   return r;
 }
 
-static int64 mod_inv(int64 a, int64 mod) {
+int64 mod_inv(int64 a, int64 mod) {
   int64 t = 0, nt = 1, r = mod, nr = a % mod;
   while (nr != 0) {
     int64 q = r / nr;
@@ -49,7 +48,7 @@ static int64 mod_inv(int64 a, int64 mod) {
   return t;
 }
 
-static int primitive_root(int p) {
+int primitive_root(int p) {
   if (p == 2)
     return 1;
   int phi = p - 1;
@@ -78,7 +77,7 @@ static int primitive_root(int p) {
   return -1;
 }
 
-static void ntt(vector<int64>& a, bool invert, int64 mod, int64 root) {
+void ntt(vector<int64>& a, bool invert, int64 mod, int64 root) {
   int n = (int)a.size();
   for (int i = 1, j = 0; i < n; ++i) {
     int bit = n >> 1;
@@ -117,10 +116,10 @@ static void ntt(vector<int64>& a, bool invert, int64 mod, int64 root) {
 }
 
 // q = 19086·2^21 + 1 > 200000² and 2^21 | (q−1); primitive root 5 (q−1 = 2^21·3·3181).
-static const int64 MOD = 40026243073LL;
-static const int64 ROOT = 5;
+const int64 MOD = 40026243073LL;
+const int64 ROOT = 5;
 
-static vector<int64> convolution_ll(const vector<int64>& aa, const vector<int64>& bb) {
+vector<int64> convolution_ll(const vector<int64>& aa, const vector<int64>& bb) {
   int need = (int)aa.size() + (int)bb.size() - 1;
   int n = 1;
   while (n < need)
@@ -141,7 +140,7 @@ static vector<int64> convolution_ll(const vector<int64>& aa, const vector<int64>
   return res;
 }
 
-static vector<int64> cyclic_convolution(const vector<int64>& A, const vector<int64>& B, int L) {
+vector<int64> cyclic_convolution(const vector<int64>& A, const vector<int64>& B, int L) {
   int pad = 1;
   while (pad < 2 * L)
     pad <<= 1;
@@ -160,6 +159,8 @@ static vector<int64> cyclic_convolution(const vector<int64>& A, const vector<int
   }
   return C;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

@@ -1,10 +1,9 @@
 // Google Code Jam 2011 — Round 2 — B. Spinning Blade
 
-#include <iostream>
-#include <string>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 struct Prefix2D {
   int R, C;
@@ -37,11 +36,13 @@ struct Prefix2D {
   }
 };
 
-static bool balanced(long long m, long long mx, long long my, int r1, int c1, int r2, int c2) {
+bool balanced(long long m, long long mx, long long my, int r1, int c1, int r2, int c2) {
   long long cx = c1 + c2;
   long long cy = r1 + r2;
   return 2 * mx == cx * m && 2 * my == cy * m;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

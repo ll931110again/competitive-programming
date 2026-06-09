@@ -1,27 +1,19 @@
 // #pragma comment(linker, "/STACK:16777216")
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <utility>
-#include <vector>
+
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 int m, n;
 int a[100010];
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   //    freopen("lj.in","r",stdin);
   //    freopen("lj.ou","w",stdout);
   cin >> m >> n;

@@ -1,19 +1,10 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
-#define maxn 3005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 3005;
 struct Meeting {
   int start_ts;
   int end_ts;
@@ -21,9 +12,11 @@ struct Meeting {
 
 int THRESHOLD = 80'000'000;
 int T, m, n, L;
-Meeting a[maxn], b[maxn];
+Meeting a[k_max_n], b[k_max_n];
 
-int dp[2 * maxn][maxn];
+int dp[2 * k_max_n][k_max_n];
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);
@@ -60,7 +53,7 @@ int main() {
       tss.push_back(ts);
     }
 
-    int reach_a[2 * maxn], reach_b[2 * maxn];
+    int reach_a[2 * k_max_n], reach_b[2 * k_max_n];
 
     map<int, int> available_endpoints;
     int j = 0;

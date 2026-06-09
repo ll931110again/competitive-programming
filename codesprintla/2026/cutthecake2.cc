@@ -1,22 +1,17 @@
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <iostream>
-#include <vector>
-#include <tuple>
-#include <map>
-
 using namespace std;
+
+namespace {
 
 struct Cut {
   char t;
   int a, b, c;
 };
 
-static int N, M, Kglobal;
-static int query_budget = 0;
+int N, M, Kglobal;
+int query_budget = 0;
 
-static int ask(int x1, int x2, int y1, int y2) {
+int ask(int x1, int x2, int y1, int y2) {
   ++query_budget;
   cout << "? " << x1 << ' ' << x2 << ' ' << y1 << ' ' << y2 << '\n';
   cout.flush();
@@ -31,9 +26,9 @@ static int ask(int x1, int x2, int y1, int y2) {
 }
 
 // Memoize oracle answers for axis-aligned boxes we actually query.
-static map<tuple<int, int, int, int>, int> memo_q;
+map<tuple<int, int, int, int>, int> memo_q;
 
-static int Q(int x1, int x2, int y1, int y2) {
+int Q(int x1, int x2, int y1, int y2) {
   const auto key = make_tuple(x1, x2, y1, y2);
   auto it = memo_q.find(key);
   if (it != memo_q.end()) {
@@ -44,9 +39,9 @@ static int Q(int x1, int x2, int y1, int y2) {
   return v;
 }
 
-static vector<Cut> cuts_out;
+vector<Cut> cuts_out;
 
-static bool dfs(int xl, int xr, int yb, int yt, int k) {
+bool dfs(int xl, int xr, int yb, int yt, int k) {
   const int qfull = Q(xl, xr, yb, yt);
   if (k == 1) {
     return qfull == 0;
@@ -57,37 +52,37 @@ static bool dfs(int xl, int xr, int yb, int yt, int k) {
 
   // Vertical split: line x for xl < x < xr; cut segment from (x, yb) to (x, yt).
   for (int x = xl + 1; x < xr; x++) {
-    const int qL = Q(xl, x, yb, yt);
-    const int qR = Q(x, xr, yb, yt);
+    const int q_l = Q(xl, x, yb, yt);
+    const int q_r = Q(x, xr, yb, yt);
 
     vector<pair<int, int>> cand;
-    const bool zL = (qL == 0);
-    const bool zR = (qR == 0);
-    if (zL && zR) {
+    const bool z_l = (q_l == 0);
+    const bool z_r = (q_r == 0);
+    if (z_l && z_r) {
       continue;
     }
-    if (zL && !zR) {
+    if (z_l && !z_r) {
       cand.push_back({1, k - 1});
-    } else if (!zL && zR) {
+    } else if (!z_l && z_r) {
       cand.push_back({k - 1, 1});
     } else {
-      for (int kL = 2; kL <= k - 2; kL++) {
-        cand.push_back({kL, k - kL});
+      for (int k_l = 2; k_l <= k - 2; k_l++) {
+        cand.push_back({k_l, k - k_l});
       }
     }
 
-    for (auto [kL, kR] : cand) {
-      if (kL <= 0 || kR <= 0 || kL + kR != k) {
+    for (auto [k_l, k_r] : cand) {
+      if (k_l <= 0 || k_r <= 0 || k_l + k_r != k) {
         continue;
       }
-      const bool okL = (kL == 1) == (qL == 0);
-      const bool okR = (kR == 1) == (qR == 0);
-      if (!okL || !okR) {
+      const bool ok_l = (k_l == 1) == (q_l == 0);
+      const bool ok_r = (k_r == 1) == (q_r == 0);
+      if (!ok_l || !ok_r) {
         continue;
       }
       const size_t before = cuts_out.size();
       cuts_out.push_back({'v', x, yb, yt});
-      if (dfs(xl, x, yb, yt, kL) && dfs(x, xr, yb, yt, kR)) {
+      if (dfs(xl, x, yb, yt, k_l) && dfs(x, xr, yb, yt, k_r)) {
         return true;
       }
       cuts_out.resize(before);
@@ -96,37 +91,37 @@ static bool dfs(int xl, int xr, int yb, int yt, int k) {
 
   // Horizontal split: line y for yb < y < yt; cut from (xl, y) to (xr, y).
   for (int y = yb + 1; y < yt; y++) {
-    const int qD = Q(xl, xr, yb, y);
-    const int qU = Q(xl, xr, y, yt);
+    const int q_d = Q(xl, xr, yb, y);
+    const int q_u = Q(xl, xr, y, yt);
 
     vector<pair<int, int>> cand;
-    const bool zD = (qD == 0);
-    const bool zU = (qU == 0);
-    if (zD && zU) {
+    const bool z_d = (q_d == 0);
+    const bool z_u = (q_u == 0);
+    if (z_d && z_u) {
       continue;
     }
-    if (zD && !zU) {
+    if (z_d && !z_u) {
       cand.push_back({1, k - 1});
-    } else if (!zD && zU) {
+    } else if (!z_d && z_u) {
       cand.push_back({k - 1, 1});
     } else {
-      for (int kD = 2; kD <= k - 2; kD++) {
-        cand.push_back({kD, k - kD});
+      for (int k_d = 2; k_d <= k - 2; k_d++) {
+        cand.push_back({k_d, k - k_d});
       }
     }
 
-    for (auto [kD, kU] : cand) {
-      if (kD <= 0 || kU <= 0 || kD + kU != k) {
+    for (auto [k_d, k_u] : cand) {
+      if (k_d <= 0 || k_u <= 0 || k_d + k_u != k) {
         continue;
       }
-      const bool okD = (kD == 1) == (qD == 0);
-      const bool okU = (kU == 1) == (qU == 0);
-      if (!okD || !okU) {
+      const bool ok_d = (k_d == 1) == (q_d == 0);
+      const bool ok_u = (k_u == 1) == (q_u == 0);
+      if (!ok_d || !ok_u) {
         continue;
       }
       const size_t before = cuts_out.size();
       cuts_out.push_back({'h', xl, xr, y});
-      if (dfs(xl, xr, yb, y, kD) && dfs(xl, xr, y, yt, kU)) {
+      if (dfs(xl, xr, yb, y, k_d) && dfs(xl, xr, y, yt, k_u)) {
         return true;
       }
       cuts_out.resize(before);
@@ -135,6 +130,8 @@ static bool dfs(int xl, int xr, int yb, int yt, int k) {
 
   return false;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

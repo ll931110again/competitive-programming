@@ -1,15 +1,11 @@
-#include <algorithm>
-#include <cstdio>
-#include <iostream>
-#include <queue>
-#include <set>
-#include <string>
-#include <vector>
-#define maxn 7
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 7;
 int T;
-string input[maxn];
+string input[k_max_n];
 int M = 6, N = 7;
 int dx[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
 int dy[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
@@ -143,6 +139,8 @@ char solve() {
   }
   return 'F';
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

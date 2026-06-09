@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-using namespace std;
 int dr[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
 int dc[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
 

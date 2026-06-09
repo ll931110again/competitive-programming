@@ -1,24 +1,16 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
-#define maxn 20
-#define maxk 805
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
+
+constexpr int k_max_n = 20;
+#define maxk 805
 
 int T;
 int m, n;
 vector<string> grid;
-vector<pair<int, int>> buckets[2 * maxn];
+vector<pair<int, int>> buckets[2 * k_max_n];
 
 int src, sink, cnt;
 int cap[maxk][maxk], flow[maxk][maxk];
@@ -149,7 +141,7 @@ string solve() {
     }
   }
 
-  for (int i = 0; i < 2 * maxn; i++) {
+  for (int i = 0; i < 2 * k_max_n; i++) {
     buckets[i].clear();
   }
 
@@ -182,6 +174,8 @@ string solve() {
   }
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

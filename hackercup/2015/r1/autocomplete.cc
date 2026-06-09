@@ -1,12 +1,14 @@
-#include <iostream>
-#include <vector>
-#define MAXK 1000005
+#include <bits/stdc++.h>
 using namespace std;
+
+#define MAXK 1000005
+
+namespace {
 
 vector<int> trie[MAXK];
 int T, N, K;
 
-void solveCase(int it) {
+void solve_case(int it) {
   K = 2;
   trie[1] = vector<int>(26);
   cin >> N;
@@ -14,31 +16,36 @@ void solveCase(int it) {
 
   for (int i = 0; i < N; i++) {
     string input;
-    bool isTyped = false;
+    bool is_typed = false;
     cin >> input;
 
     int root = 1;
     for (int j = 0; j < input.size(); j++) {
-      int trieNode = trie[root][input[j] - 'a'];
-      if (trieNode <= 0 && !isTyped) {
+      int trie_node = trie[root][input[j] - 'a'];
+      if (trie_node <= 0 && !is_typed) {
         result += j + 1;
-        isTyped = true;
+        is_typed = true;
       }
-      if (trieNode <= 0) {
+      if (trie_node <= 0) {
         trie[K] = vector<int>(26);
         trie[root][input[j] - 'a'] = K++;
       }
       root = trie[root][input[j] - 'a'];
     }
 
-    if (!isTyped)
+    if (!is_typed)
       result += input.size();
   }
   cout << "Case #" << it << ": " << result << '\n';
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   for (int it = 1; it <= T; it++)
-    solveCase(it);
+    solve_case(it);
 }

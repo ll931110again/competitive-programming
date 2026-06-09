@@ -1,29 +1,20 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <unordered_set>
-#include <vector>
-#define maxn 200005
-#define maxk 20
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
+#define maxk 20
+
 int T, n, K;
-int color[maxn];
-int weight[maxn];
+int color[k_max_n];
+int weight[k_max_n];
 
-vector<int> adj[maxn];
+vector<int> adj[k_max_n];
 
-int ins[maxn], outs[maxn], cnt = 0;
-int par[maxn][maxk];
+int ins[k_max_n], outs[k_max_n], cnt = 0;
+int par[k_max_n][maxk];
 
 void DFS(int u, int p) {
   par[u][0] = p;
@@ -141,6 +132,8 @@ void solve() {
   }
   cout << endl;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

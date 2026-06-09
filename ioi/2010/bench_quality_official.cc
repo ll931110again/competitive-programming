@@ -1,14 +1,11 @@
-#include <chrono>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <dirent.h>
-#include <string>
-#include <vector>
-
 #include "quality_sweep.cc"
+#include <dirent.h>
+#include <bits/stdc++.h>
+using namespace std;
 
-static bool read_test(const char* path, int& r, int& c, int& h, int& w, int q[3001][3001]) {
+namespace {
+
+bool read_test(const char* path, int& r, int& c, int& h, int& w, int q[3001][3001]) {
   FILE* f = fopen(path, "r");
   if (!f) {
     return false;
@@ -29,7 +26,7 @@ static bool read_test(const char* path, int& r, int& c, int& h, int& w, int q[30
   return true;
 }
 
-static bool read_expect(const char* path, int& expect) {
+bool read_expect(const char* path, int& expect) {
   FILE* f = fopen(path, "r");
   if (!f) {
     return false;
@@ -39,8 +36,8 @@ static bool read_expect(const char* path, int& expect) {
   return ok;
 }
 
-static std::vector<std::string> list_inputs(const char* dir) {
-  std::vector<std::string> out;
+vector<string> list_inputs(const char* dir) {
+  vector<string> out;
   DIR* d = opendir(dir);
   if (!d) {
     return out;
@@ -49,20 +46,25 @@ static std::vector<std::string> list_inputs(const char* dir) {
     if (strncmp(ent->d_name, "grader.in.", 10) != 0) {
       continue;
     }
-    out.push_back(std::string(dir) + "/" + ent->d_name);
+    out.push_back(string(dir) + "/" + ent->d_name);
   }
   closedir(d);
   return out;
 }
 
-static int subtask_num(const std::string& path) {
+int subtask_num(const string& path) {
   const size_t dash = path.rfind('-');
-  return dash == std::string::npos ? 0 : atoi(path.c_str() + dash + 1);
+  return dash == string::npos ? 0 : atoi(path.c_str() + dash + 1);
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   const char* root = "quality/appeal";
-  std::vector<std::string> inputs;
+  vector<string> inputs;
   for (int st = 1; st <= 5; ++st) {
     char dir[256];
     snprintf(dir, sizeof(dir), "%s/Subtask%d-data", root, st);
@@ -70,21 +72,21 @@ int main() {
     inputs.insert(inputs.end(), files.begin(), files.end());
   }
 
-  static int q[3001][3001];
+  int q[3001][3001];
   long long total_ms = 0;
   int ok = 0, fail = 0;
 
   printf("%-40s %8s %10s %8s\n", "test", "R", "C", "ms");
   printf("%-40s %8s %10s %8s\n", "----", "-", "-", "--");
 
-  for (const std::string& in_path : inputs) {
+  for (const string& in_path : inputs) {
     int r, c, h, w;
     if (!read_test(in_path.c_str(), r, c, h, w, q)) {
       fprintf(stderr, "read failed: %s\n", in_path.c_str());
       return 1;
     }
 
-    std::string exp_path = in_path;
+    string exp_path = in_path;
     exp_path.replace(exp_path.find("grader.in."), 10, "grader.expect.");
 
     int expect = 0;
@@ -93,10 +95,10 @@ int main() {
       return 1;
     }
 
-    const auto t0 = std::chrono::steady_clock::now();
+    const auto t0 = chrono::steady_clock::now();
     const int got = rectangle(r, c, h, w, q);
-    const auto t1 = std::chrono::steady_clock::now();
-    const long long ms = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
+    const auto t1 = chrono::steady_clock::now();
+    const long long ms = chrono::duration_cast<chrono::milliseconds>(t1 - t0).count();
     total_ms += ms;
 
     const bool pass = got == expect;

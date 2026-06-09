@@ -1,14 +1,11 @@
-#include <algorithm>
-#include <cmath>
-#include <iomanip>
-#include <iostream>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 using int64 = long long;
 
-static int floor_log2_u64(unsigned long long x) {
+namespace {
+
+int floor_log2_u64(unsigned long long x) {
   int r = -1;
   while (x) {
     x >>= 1;
@@ -24,7 +21,7 @@ struct Points {
   vector<int64> all_in;  // strict + optional all-in points (subset of inflections)
 };
 
-static int max_doubles_k(int64 x, int64 M) {
+int max_doubles_k(int64 x, int64 M) {
   // Maximum k >= 1 such that x * 2^(k-1) <= M.
   if (x <= 0)
     return 0;
@@ -34,7 +31,7 @@ static int max_doubles_k(int64 x, int64 M) {
   return floor_log2_u64(t) + 1;
 }
 
-static long double lose_value_ld(int64 x, int64 M) {
+long double lose_value_ld(int64 x, int64 M) {
   int k = max_doubles_k(x, M);
   // lose after k consecutive losses: x - (2^k - 1) * x = -(2^k - 2) * x
   // compute as -x * (2^k - 2) in long double without overflow
@@ -42,43 +39,42 @@ static long double lose_value_ld(int64 x, int64 M) {
   return -((two_k - 2.0L) * (long double)x);
 }
 
-static long double interp(long double x, long double x0, long double y0, long double x1,
-                          long double y1) {
+long double interp(long double x, long double x0, long double y0, long double x1, long double y1) {
   if (x1 == x0)
     return y0;
   return y0 + (x - x0) * (y1 - y0) / (x1 - x0);
 }
 
-static long double eval_P(const vector<int64>& strictX, const vector<long double>& strictP,
-                          int from_idx, int64 V, int64 x) {
+long double eval_P(const vector<int64>& strict_x, const vector<long double>& strict_p, int from_idx,
+                   int64 V, int64 x) {
   if (x <= 0)
     return 0.0L;
   if (x >= V)
     return 1.0L;
-  // find segment in [strictX[from_idx], ..., V]
-  int n = (int)strictX.size();
+  // find segment in [strict_x[from_idx], ..., V]
+  int n = (int)strict_x.size();
   int lo = from_idx, hi = n; // hi==n means endpoint V
-  // upper_bound on strictX to find first > x
-  int ub = (int)(upper_bound(strictX.begin() + from_idx, strictX.end(), x) - strictX.begin());
+  // upper_bound on strict_x to find first > x
+  int ub = (int)(upper_bound(strict_x.begin() + from_idx, strict_x.end(), x) - strict_x.begin());
   if (ub == from_idx) {
-    // x < strictX[from_idx], shouldn't happen if called correctly
-    return interp((long double)x, 0.0L, 0.0L, (long double)strictX[from_idx], strictP[from_idx]);
+    // x < strict_x[from_idx], shouldn't happen if called correctly
+    return interp((long double)x, 0.0L, 0.0L, (long double)strict_x[from_idx], strict_p[from_idx]);
   }
   int left = ub - 1;
-  long double x0 = (long double)strictX[left];
-  long double y0 = strictP[left];
+  long double x0 = (long double)strict_x[left];
+  long double y0 = strict_p[left];
   long double x1, y1;
   if (ub == n) {
     x1 = (long double)V;
     y1 = 1.0L;
   } else {
-    x1 = (long double)strictX[ub];
-    y1 = strictP[ub];
+    x1 = (long double)strict_x[ub];
+    y1 = strict_p[ub];
   }
   return interp((long double)x, x0, y0, x1, y1);
 }
 
-static Points build_strategy(int64 M, int64 V) {
+Points build_strategy(int64 M, int64 V) {
   // Build strict all-in points by scanning inflection points.
   vector<int64> inf;
   inf.reserve(128);
@@ -97,22 +93,22 @@ static Points build_strategy(int64 M, int64 V) {
   res.xs.clear();
   res.all_in.clear();
 
-  long double bestLose = 0.0L; // "lowest total yet" (most negative) seen among strict points
+  long double best_lose = 0.0L; // "lowest total yet" (most negative) seen among strict points
   for (int64 x : inf) {
     if (x < 1)
       continue;
     long double lv = lose_value_ld(x, M);
     if (res.xs.empty()) {
       res.xs.push_back(1);
-      bestLose = lose_value_ld(1, M);
+      best_lose = lose_value_ld(1, M);
       res.all_in.push_back(1);
       continue;
     }
-    if (lv + 1e-18L < bestLose) { // strictly lower
+    if (lv + 1e-18L < best_lose) { // strictly lower
       res.xs.push_back(x);
-      bestLose = lv;
+      best_lose = lv;
       res.all_in.push_back(x);
-    } else if (fabsl(lv - bestLose) <= 1e-18L) {
+    } else if (fabsl(lv - best_lose) <= 1e-18L) {
       // Optional all-in point (equally good as waiting).
       res.all_in.push_back(x);
     }
@@ -150,7 +146,7 @@ static Points build_strategy(int64 M, int64 V) {
   return res;
 }
 
-static long double probability_from(int64 A, int64 M, int64 V, const Points& st) {
+long double probability_from(int64 A, int64 M, int64 V, const Points& st) {
   if (A <= 0)
     return 0.0L;
   if (A >= V)
@@ -162,14 +158,14 @@ static long double probability_from(int64 A, int64 M, int64 V, const Points& st)
   }
   // interpolate between surrounding strict points (or 0/V)
   int idx = (int)(it - st.xs.begin());
-  int64 leftX = (idx == 0) ? 0 : st.xs[idx - 1];
-  long double leftP = (idx == 0) ? 0.0L : st.P[idx - 1];
-  int64 rightX = (idx == (int)st.xs.size()) ? V : st.xs[idx];
-  long double rightP = (idx == (int)st.xs.size()) ? 1.0L : st.P[idx];
-  return interp((long double)A, (long double)leftX, leftP, (long double)rightX, rightP);
+  int64 left_x = (idx == 0) ? 0 : st.xs[idx - 1];
+  long double left_p = (idx == 0) ? 0.0L : st.P[idx - 1];
+  int64 right_x = (idx == (int)st.xs.size()) ? V : st.xs[idx];
+  long double right_p = (idx == (int)st.xs.size()) ? 1.0L : st.P[idx];
+  return interp((long double)A, (long double)left_x, left_p, (long double)right_x, right_p);
 }
 
-static int64 max_first_bet(int64 A, int64 M, int64 V, const Points& st) {
+int64 max_first_bet(int64 A, int64 M, int64 V, const Points& st) {
   int64 cap = min<int64>({A, M, V - A});
   if (cap <= 0)
     return 0;
@@ -188,13 +184,15 @@ static int64 max_first_bet(int64 A, int64 M, int64 V, const Points& st) {
   return min(cap, room);
 }
 
+} // namespace
+
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
   int T;
   cin >> T;
-  cout.setf(std::ios::fixed);
+  cout.setf(ios::fixed);
   cout << setprecision(9);
 
   for (int tc = 1; tc <= T; tc++) {

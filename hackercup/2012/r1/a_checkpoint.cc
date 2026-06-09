@@ -1,29 +1,12 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <utility>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 map<int, int> mp;
 int T, s;
 
-int findComb(int x) {
+int find_comb(int x) {
   if (x == 1)
     return 1;
   if (mp.count(x))
@@ -40,7 +23,12 @@ int findComb(int x) {
   }
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   freopen("checkpoint.in.1", "r", stdin);
   freopen("checkpoint.out.1", "w", stdout);
   cin >> T;
@@ -49,7 +37,7 @@ int main() {
     int ret = 2 * s;
     for (int i = 1; i * i <= s; i++)
       if (s % i == 0)
-        ret = min(ret, findComb(i) + findComb(s / i));
+        ret = min(ret, find_comb(i) + find_comb(s / i));
     cout << "Case #" << it << ": " << ret << '\n';
   }
 }

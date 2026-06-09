@@ -4,25 +4,16 @@
 // Recover Manhattan-Voronoi seed coordinates from a discrete pixel diagram.
 // Tie-break: smallest letter wins on equal distance.
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <climits>
-#include <iostream>
-#include <map>
-#include <numeric>
-#include <set>
-#include <string>
-#include <vector>
-
 using namespace std;
 
-static int manhattan(int x1, int y1, int x2, int y2) {
+namespace {
+
+int manhattan(int x1, int y1, int x2, int y2) {
   return abs(x1 - x2) + abs(y1 - y2);
 }
 
-static char winner(int px, int py, const map<char, pair<int, int>>& pos) {
+char winner(int px, int py, const map<char, pair<int, int>>& pos) {
   int best = INT_MAX;
   char win = 0;
   for (const auto& [ch, p] : pos) {
@@ -35,7 +26,7 @@ static char winner(int px, int py, const map<char, pair<int, int>>& pos) {
   return win;
 }
 
-static bool matches(const vector<string>& grid, const map<char, pair<int, int>>& pos) {
+bool matches(const vector<string>& grid, const map<char, pair<int, int>>& pos) {
   for (int y = 0; y < (int)grid.size(); ++y) {
     for (int x = 0; x < (int)grid[y].size(); ++x) {
       if (winner(x, y, pos) != grid[y][x]) {
@@ -46,8 +37,7 @@ static bool matches(const vector<string>& grid, const map<char, pair<int, int>>&
   return true;
 }
 
-static bool existsCenter(const vector<pair<int, int>>& pixels, int r, int xl, int xr, int yl,
-                         int yr) {
+bool exists_center(const vector<pair<int, int>>& pixels, int r, int xl, int xr, int yl, int yr) {
   for (int x = xl; x <= xr; ++x) {
     for (int y = yl; y <= yr; ++y) {
       bool ok = true;
@@ -65,7 +55,7 @@ static bool existsCenter(const vector<pair<int, int>>& pixels, int r, int xl, in
   return false;
 }
 
-static vector<pair<int, int>> candidatesFor(const vector<pair<int, int>>& pixels, int pad) {
+vector<pair<int, int>> candidates_for(const vector<pair<int, int>>& pixels, int pad) {
   int minx = INT_MAX, maxx = INT_MIN, miny = INT_MAX, maxy = INT_MIN;
   for (const auto& [px, py] : pixels) {
     minx = min(minx, px);
@@ -78,7 +68,7 @@ static vector<pair<int, int>> candidatesFor(const vector<pair<int, int>>& pixels
   while (lo < hi) {
     int mid = (lo + hi) / 2;
     int xl = maxx - mid, xr = minx + mid, yl = maxy - mid, yr = miny + mid;
-    if (existsCenter(pixels, mid, xl, xr, yl, yr)) {
+    if (exists_center(pixels, mid, xl, xr, yl, yr)) {
       hi = mid;
     } else {
       lo = mid + 1;
@@ -107,9 +97,8 @@ static vector<pair<int, int>> candidatesFor(const vector<pair<int, int>>& pixels
   return out;
 }
 
-static bool dfs(int idx, const vector<char>& letters, const vector<vector<pair<int, int>>>& cands,
-                const vector<string>& grid, map<char, pair<int, int>>& pos,
-                set<pair<int, int>>& used) {
+bool dfs(int idx, const vector<char>& letters, const vector<vector<pair<int, int>>>& cands,
+         const vector<string>& grid, map<char, pair<int, int>>& pos, set<pair<int, int>>& used) {
   if (idx == (int)letters.size()) {
     return matches(grid, pos);
   }
@@ -128,6 +117,8 @@ static bool dfs(int idx, const vector<char>& letters, const vector<vector<pair<i
   pos.erase(ch);
   return false;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -155,28 +146,28 @@ int main() {
   int pad = max(w, h);
   vector<vector<pair<int, int>>> cands;
   for (char ch : letters) {
-    cands.push_back(candidatesFor(cells[ch], pad));
+    cands.push_back(candidates_for(cells[ch], pad));
   }
 
   vector<int> order(letters.size());
   iota(order.begin(), order.end(), 0);
   sort(order.begin(), order.end(), [&](int a, int b) { return cands[a].size() < cands[b].size(); });
 
-  vector<char> orderedLetters;
-  vector<vector<pair<int, int>>> orderedCands;
+  vector<char> ordered_letters;
+  vector<vector<pair<int, int>>> ordered_cands;
   for (int i : order) {
-    orderedLetters.push_back(letters[i]);
-    orderedCands.push_back(cands[i]);
+    ordered_letters.push_back(letters[i]);
+    ordered_cands.push_back(cands[i]);
   }
 
   map<char, pair<int, int>> pos;
   set<pair<int, int>> used;
-  if (!dfs(0, orderedLetters, orderedCands, grid, pos, used)) {
-    orderedCands.clear();
-    for (char ch : orderedLetters) {
-      orderedCands.push_back(candidatesFor(cells[ch], 3 * pad));
+  if (!dfs(0, ordered_letters, ordered_cands, grid, pos, used)) {
+    ordered_cands.clear();
+    for (char ch : ordered_letters) {
+      ordered_cands.push_back(candidates_for(cells[ch], 3 * pad));
     }
-    if (!dfs(0, orderedLetters, orderedCands, grid, pos, used)) {
+    if (!dfs(0, ordered_letters, ordered_cands, grid, pos, used)) {
       return 0;
     }
   }

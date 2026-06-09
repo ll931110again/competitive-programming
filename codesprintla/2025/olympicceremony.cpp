@@ -7,7 +7,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-static int ask(int l, int r) {
+namespace {
+
+int ask(int l, int r) {
   cout << "? " << l << ' ' << r << '\n';
   cout.flush();
   string tok;
@@ -16,6 +18,8 @@ static int ask(int l, int r) {
   cin >> k;
   return k;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

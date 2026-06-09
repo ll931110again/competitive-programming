@@ -7,17 +7,15 @@
 // stabilized "segment" (full interval or H-segment with one hole). While it overlaps the stack top,
 // pop and merge using only (K, total_sum) — Observation 1 uniquely fixes the merged terminal shape.
 
-#include <algorithm>
-#include <iostream>
-#include <utility>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 using i128 = __int128_t;
 using int64 = long long;
 
-static int64 div_floor(int64 a, int64 b) {
+namespace {
+
+int64 div_floor(int64 a, int64 b) {
   if (b <= 0)
     exit(1);
   if (a >= 0)
@@ -26,7 +24,7 @@ static int64 div_floor(int64 a, int64 b) {
 }
 
 // Sum of squares of n consecutive integers starting at `first`.
-static i128 sum_sq_consecutive(int64 first, int64 n) {
+i128 sum_sq_consecutive(int64 first, int64 n) {
   if (n <= 0)
     return 0;
   i128 f = first;
@@ -49,11 +47,11 @@ struct Seg {
   vector<Interval> occ;
 };
 
-static bool intervals_overlap(int64 a1, int64 b1, int64 a2, int64 b2) {
+bool intervals_overlap(int64 a1, int64 b1, int64 a2, int64 b2) {
   return a1 <= b2 && a2 <= b1;
 }
 
-static bool seg_overlap(const Seg& A, const Seg& B) {
+bool seg_overlap(const Seg& A, const Seg& B) {
   for (const auto& ia : A.occ)
     for (const auto& ib : B.occ)
       if (intervals_overlap(ia.lo, ia.hi, ib.lo, ib.hi))
@@ -62,7 +60,7 @@ static bool seg_overlap(const Seg& A, const Seg& B) {
 }
 
 // Terminal configuration for K chips on Z with total sum S (one component, ≤ one hole).
-static Seg terminal_from_KS(int64 K, int64 S) {
+Seg terminal_from_KS(int64 K, int64 S) {
   Seg g;
   g.K = K;
   g.S = S;
@@ -129,13 +127,15 @@ static Seg terminal_from_KS(int64 K, int64 S) {
   exit(1);
 }
 
-static Seg from_pile(int64 V, int64 P) {
+Seg from_pile(int64 V, int64 P) {
   return terminal_from_KS(V, V * P);
 }
 
-static Seg merge_seg(const Seg& A, const Seg& B) {
+Seg merge_seg(const Seg& A, const Seg& B) {
   return terminal_from_KS(A.K + B.K, A.S + B.S);
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

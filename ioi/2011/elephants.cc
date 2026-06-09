@@ -1,10 +1,13 @@
 #include <bits/stdc++.h>
-#define maxn 150005
-#define BUCKET_SIZE 400
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 150005;
+#define BUCKET_SIZE 400
+
 int N, L;
-int initial[maxn], X[maxn];
+int initial[k_max_n], X[k_max_n];
 int query_counter = 0;
 
 struct Bucket {
@@ -207,3 +210,5 @@ int update(int idx, int new_value) {
 
   return steps;
 }
+
+} // namespace

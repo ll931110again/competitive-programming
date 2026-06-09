@@ -1,21 +1,12 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
-#define maxn 200005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
 int T, n, K;
-pair<int, int> a[maxn];
+pair<int, int> a[k_max_n];
 
 multiset<pair<int, int>> s;
 
@@ -61,6 +52,8 @@ long long solve() {
 
   return ans + value;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

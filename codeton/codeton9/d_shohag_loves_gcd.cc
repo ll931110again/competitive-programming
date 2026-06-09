@@ -1,15 +1,16 @@
 // Codeforces 2039 (CodeTON Round 9 (Div. 1 + Div. 2, Rated, Prizes!)) — D. Shohag Loves GCD
 // Submission: https://codeforces.com/contest/2039/submission/295467002
 
-#include <algorithm>
-#include <iostream>
-#define maxn 100005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 100005;
 int T;
 int n, m;
-int a[maxn];
-int value[maxn];
+int a[k_max_n];
+int value[k_max_n];
 
 void solve() {
   for (int i = 1; i <= n; i++) {
@@ -35,7 +36,12 @@ void solve() {
   cout << endl;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   while (T--) {
     cin >> n >> m;

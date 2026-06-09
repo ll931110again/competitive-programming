@@ -1,22 +1,19 @@
-#include <algorithm>
-#include <cmath>
-#include <iomanip>
-#include <iostream>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 struct Pt {
   long double x, y;
 };
 
-static long double lerp_y(const Pt& a, const Pt& b, long double x) {
+long double lerp_y(const Pt& a, const Pt& b, long double x) {
   // a.x < b.x, x in [a.x, b.x]
   long double t = (x - a.x) / (b.x - a.x);
   return a.y + (b.y - a.y) * t;
 }
 
-static vector<long double> y_at_xs(const vector<Pt>& poly, const vector<long double>& xs) {
+vector<long double> y_at_xs(const vector<Pt>& poly, const vector<long double>& xs) {
   vector<long double> y(xs.size(), 0.0L);
   int j = 0;
   for (int i = 0; i < (int)xs.size(); i++) {
@@ -35,13 +32,15 @@ static vector<long double> y_at_xs(const vector<Pt>& poly, const vector<long dou
   return y;
 }
 
+} // namespace
+
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
   int T;
   cin >> T;
-  cout.setf(std::ios::fixed);
+  cout.setf(ios::fixed);
   cout << setprecision(6);
 
   for (int tc = 1; tc <= T; tc++) {

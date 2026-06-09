@@ -1,9 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 template <int MOD = 1000000007> struct Modular {
   int value;
-  static const int MOD_value = MOD;
+  const int MOD_value = MOD;
 
   Modular(long long v = 0) {
     value = v % MOD;
@@ -64,7 +66,7 @@ template <int MOD = 1000000007> struct Modular {
   friend Modular operator/(Modular a, Modular const b) {
     return a /= b;
   }
-  friend std::ostream& operator<<(std::ostream& os, Modular const& a) {
+  friend ostream& operator<<(ostream& os, Modular const& a) {
     return os << a.value;
   }
   friend bool operator==(Modular const& a, Modular const& b) {
@@ -94,7 +96,12 @@ int solve(int n) {
   return x.value;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   int n;
   cin >> n;
   cout << solve(n) << endl;

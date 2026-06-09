@@ -1,19 +1,10 @@
 // Codeforces 1704 (CodeTON Round 2 (Div. 1 + Div. 2, Rated, Prizes!)) — A. Two 0-1 Sequences
 // Submission: https://codeforces.com/contest/1704/submission/318382308
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <stack>
-#include <map>
-#include <queue>
-#include <vector>
 using namespace std;
+
+namespace {
 
 int T, m, n;
 string a, b;
@@ -40,7 +31,12 @@ bool solve() {
   return true;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   while (T--) {
     cin >> n >> m;

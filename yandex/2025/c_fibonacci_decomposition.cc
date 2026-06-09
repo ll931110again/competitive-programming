@@ -1,11 +1,13 @@
 #include <bits/stdc++.h>
-#define maxn 105
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 105;
 int T;
 int n;
 long long k;
-long long fib[maxn];
+long long fib[k_max_n];
 long long inf = 1e18;
 int fib_count;
 
@@ -36,6 +38,8 @@ void rec(long long prod, int sum_value, int idx) {
     pos.pop_back();
   }
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

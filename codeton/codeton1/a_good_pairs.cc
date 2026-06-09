@@ -1,27 +1,26 @@
 // Codeforces 1656 (CodeTON Round 1 (Div. 1 + Div. 2, Rated, Prizes!)) — A. Good Pairs
 // Submission: https://codeforces.com/contest/1656/submission/150726089
 
-#include <algorithm>
-#include <cmath>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <cstdio>
-#include <queue>
-#include <stack>
-#include <vector>
-#define maxn 100005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 100005;
 int T, n;
-int a[maxn];
+int a[k_max_n];
+
+} // namespace
 
 int main() {
-  scanf("%d", &T);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  cin >> T;
   while (T--) {
-    scanf("%d", &n);
+    cin >> n;
     for (int i = 1; i <= n; i++) {
-      scanf("%d", &a[i]);
+      cin >> a[i];
     }
 
     int min_idx = 1, max_idx = 1;

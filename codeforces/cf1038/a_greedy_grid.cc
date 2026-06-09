@@ -1,16 +1,8 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <stack>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 int T, m, n;
 
@@ -27,7 +19,12 @@ bool solve(int m, int n) {
   return true;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   while (T--) {
     cin >> m >> n;

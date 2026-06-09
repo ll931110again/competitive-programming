@@ -14,11 +14,10 @@
     2 * gcd(a, b) > gcd(a, b) is divisible by both a and b, which is impossible.
  */
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <iostream>
 using namespace std;
+
+namespace {
 
 int t, a, b;
 
@@ -31,6 +30,8 @@ int gcd(int x, int y) {
   }
   return gcd(y % x, x);
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

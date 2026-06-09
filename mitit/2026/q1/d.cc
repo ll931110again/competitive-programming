@@ -1,23 +1,15 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <set>
-#include <unordered_set>
-#include <vector>
-#define maxn 200005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
 int T;
 int n, Q, K;
-long long a[maxn];
+long long a[k_max_n];
 
-struct node {
+struct Node {
   int cnt;
   int max_sum;
   int nxt[2];
@@ -25,7 +17,7 @@ struct node {
   bool is_leaf = false;
 };
 
-vector<node> nodes;
+vector<Node> nodes;
 unordered_set<int> unallocated;
 
 void rec(int idx, long long x, int i, int delta) {
@@ -126,6 +118,8 @@ void solve() {
     cout << nodes[0].max_sum << endl;
   }
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

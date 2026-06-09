@@ -1,9 +1,7 @@
-#include <algorithm>
-#include <cstdint>
-#include <iostream>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 struct Castle {
   int a; // minimum to attack
@@ -16,7 +14,7 @@ struct Task {
   long long cost; // soldiers lost after conquering this subtree
 };
 
-static long long minInitialForTasks(vector<Task>& tasks) {
+long long min_initial_for_tasks(vector<Task>& tasks) {
   // Given tasks where each requires current >= req and then reduces by cost,
   // the minimal starting value is minimized by sorting by (req - cost)
   // descending.
@@ -42,32 +40,33 @@ struct DpRes {
   long long loss; // total soldiers removed in this subtree (deaths+garrisons)
 };
 
-static DpRes dfsSolve(int u, int parent, const vector<Castle>& castles,
-                      const vector<vector<int>>& adj) {
+DpRes dfs_solve(int u, int parent, const vector<Castle>& castles, const vector<vector<int>>& adj) {
   vector<Task> tasks;
-  long long lossSum = 0;
+  long long loss_sum = 0;
 
   for (int v : adj[u]) {
     if (v == parent)
       continue;
-    DpRes child = dfsSolve(v, u, castles, adj);
+    DpRes child = dfs_solve(v, u, castles, adj);
     tasks.push_back(Task{child.need, child.loss});
-    lossSum += child.loss;
+    loss_sum += child.loss;
   }
 
-  long long selfCost = (long long)castles[u].m + (long long)castles[u].g;
-  long long needAfterCapture = minInitialForTasks(tasks);
-  long long needBeforeAttack = max<long long>(castles[u].a, selfCost + needAfterCapture);
-  long long totalLoss = selfCost + lossSum;
-  return DpRes{needBeforeAttack, totalLoss};
+  long long self_cost = (long long)castles[u].m + (long long)castles[u].g;
+  long long need_after_capture = min_initial_for_tasks(tasks);
+  long long need_before_attack = max<long long>(castles[u].a, self_cost + need_after_capture);
+  long long total_loss = self_cost + loss_sum;
+  return DpRes{need_before_attack, total_loss};
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
   int n;
-  int caseNum = 1;
+  int case_num = 1;
   while (cin >> n) {
     if (n == 0)
       break;
@@ -88,11 +87,11 @@ int main() {
 
     long long best = (1LL << 62);
     for (int root = 0; root < n; root++) {
-      DpRes res = dfsSolve(root, -1, castles, adj);
+      DpRes res = dfs_solve(root, -1, castles, adj);
       best = min(best, res.need);
     }
 
-    cout << "Case " << caseNum++ << ": " << best << "\n";
+    cout << "Case " << case_num++ << ": " << best << "\n";
   }
   return 0;
 }

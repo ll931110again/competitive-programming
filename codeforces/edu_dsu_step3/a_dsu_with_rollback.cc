@@ -3,14 +3,7 @@
 //
 // union x y | persist | rollback — print component count only after union/rollback.
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <iostream>
-#include <string>
-#include <vector>
-
 using namespace std;
 
 int main() {
@@ -50,7 +43,7 @@ int main() {
         pending.push_back(y);
       }
     } else if (op == "persist") {
-      batches.push_back(std::move(pending));
+      batches.push_back(move(pending));
       pending.clear();
     } else {
       for (int v : pending) {

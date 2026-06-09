@@ -1,29 +1,28 @@
 // Codeforces 1656 (CodeTON Round 1 (Div. 1 + Div. 2, Rated, Prizes!)) — F. Parametric MST
 // Submission: https://codeforces.com/contest/1656/submission/151142642
 
-#include <algorithm>
-#include <cmath>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <cstdio>
-#include <queue>
-#include <stack>
-#include <vector>
-#define maxn 200005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
 int T, n;
 int INF = 1e6;
-int a[maxn], b[maxn];
-long long ss[maxn];
+int a[k_max_n], b[k_max_n];
+long long ss[k_max_n];
+
+} // namespace
 
 int main() {
-  scanf("%d", &T);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  cin >> T;
   while (T--) {
-    scanf("%d", &n);
+    cin >> n;
     for (int i = 1; i <= n; i++) {
-      scanf("%d", &a[i]);
+      cin >> a[i];
     }
     sort(a + 1, a + n + 1);
 
@@ -71,7 +70,7 @@ int main() {
     if (abs(pos) >= INF) {
       printf("INF\n");
     } else {
-      printf("%lld\n", value);
+      cout << value << '\n';
     }
   }
   return 0;

@@ -2,14 +2,16 @@
 // Submission: https://codeforces.com/contest/86/submission/466590
 
 #include <bits/stdc++.h>
-#define maxn 1005
 using namespace std;
 
-string s[maxn], ret[maxn];
+namespace {
+
+constexpr int k_max_n = 1005;
+string s[k_max_n], ret[k_max_n];
 int m, n;
 int dx[4] = {-1, 0, 1, 0};
 int dy[4] = {0, 1, 0, -1};
-int ans[maxn][maxn];
+int ans[k_max_n][k_max_n];
 bool flag = true;
 
 bool outside(int fx, int fy) {
@@ -76,10 +78,15 @@ void attempt(int sx, int sy) {
   cover(p);
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   // freopen("b.in","r",stdin);
 
-  scanf("%d %d", &m, &n);
+  cin >> m >> n;
   for (int i = 0; i < m; i++)
     cin >> s[i];
 

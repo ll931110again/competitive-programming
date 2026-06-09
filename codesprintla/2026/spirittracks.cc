@@ -1,19 +1,14 @@
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <algorithm>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <vector>
-
 using namespace std;
 
-// --- Fast buffered I/O ---
-static char IN_BUF[1 << 22];
-static int IN_POS = 0, IN_LEN = 0;
+namespace {
 
-static inline int fast_getc() {
+// --- Fast buffered I/O ---
+
+char IN_BUF[1 << 22];
+int IN_POS = 0, IN_LEN = 0;
+
+inline int fast_getc() {
   if (IN_POS == IN_LEN) {
     IN_LEN = (int)fread(IN_BUF, 1, sizeof(IN_BUF), stdin);
     IN_POS = 0;
@@ -23,7 +18,7 @@ static inline int fast_getc() {
   return (unsigned char)IN_BUF[IN_POS++];
 }
 
-static inline void read_int(int& out) {
+inline void read_int(int& out) {
   int c = fast_getc();
   while (c != -1 && (c < '0' || c > '9'))
     c = fast_getc();
@@ -35,21 +30,21 @@ static inline void read_int(int& out) {
   out = x;
 }
 
-static char OUT_BUF[1 << 22];
-static int OUT_POS = 0;
+char OUT_BUF[1 << 22];
+int OUT_POS = 0;
 
-static inline void flush_out() {
+inline void flush_out() {
   fwrite(OUT_BUF, 1, (size_t)OUT_POS, stdout);
   OUT_POS = 0;
 }
 
-static inline void put_char(char c) {
+inline void put_char(char c) {
   if (OUT_POS == (int)sizeof(OUT_BUF))
     flush_out();
   OUT_BUF[OUT_POS++] = c;
 }
 
-static inline void write_int(int x) {
+inline void write_int(int x) {
   if (x == 0) {
     put_char('0');
     return;
@@ -77,7 +72,12 @@ struct alignas(32) Node {
   int idx[3];
 };
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   int N, M, Q;
   read_int(N);
   read_int(M);
@@ -162,7 +162,7 @@ int main() {
   // CHOICE[gt][eidx]: gt = (f > thr) ? 1 : 0; eidx = incoming entry index 0/1/2.
   //   gt=1 (f > thr) -> take greater of the other two
   //   gt=0 (f <= thr) -> take lesser of the other two
-  static const int CHOICE[2][3] = {
+  const int CHOICE[2][3] = {
       {1, 0, 0}, // gt=0 (lesser)
       {2, 2, 1}, // gt=1 (greater)
   };

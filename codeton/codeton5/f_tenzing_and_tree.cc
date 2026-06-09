@@ -1,25 +1,16 @@
 // Codeforces 1842 (CodeTON Round 5 (Div. 1 + Div. 2, Rated, Prizes!)) — F. Tenzing and Tree
 // Submission: https://codeforces.com/contest/1842/submission/334322452
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <stack>
-#include <map>
-#include <queue>
-#include <vector>
-#define maxn 5005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 5005;
 int n;
-vector<int> adj[maxn];
-int ans[maxn];
-bool vis[maxn];
+vector<int> adj[k_max_n];
+int ans[k_max_n];
+bool vis[k_max_n];
 
 void solve(int root) {
   memset(vis, false, sizeof vis);
@@ -45,6 +36,8 @@ void solve(int root) {
       }
   }
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

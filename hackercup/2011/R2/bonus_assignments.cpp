@@ -2,17 +2,17 @@
 // gcd(all bonuses) = 1  <=>  for every bottle price p>=2 some worker has remainder > 0
 // Answer = sum_d mu(d) * F(d), F(d) = assignments with all bonuses divisible by d.
 
-#include <algorithm>
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
-static constexpr int MOD = 1000000007;
-static constexpr int MAXV = 1000005;
+namespace {
 
-static int mu_arr[MAXV];
+constexpr int MOD = 1000000007;
+constexpr int MAXV = 1000005;
 
-static void sieve_mobius(int limit) {
+int mu_arr[MAXV];
+
+void sieve_mobius(int limit) {
   vector<int> primes;
   vector<bool> comp(limit + 1);
   mu_arr[0] = 0;
@@ -36,7 +36,7 @@ static void sieve_mobius(int limit) {
   }
 }
 
-static int mod_pow(long long a, long long e) {
+int mod_pow(long long a, long long e) {
   long long r = 1 % MOD;
   a %= MOD;
   while (e > 0) {
@@ -48,7 +48,7 @@ static int mod_pow(long long a, long long e) {
   return (int)r;
 }
 
-static int range_sum(const vector<int>& pref, int lo, int hi) {
+int range_sum(const vector<int>& pref, int lo, int hi) {
   if (lo > hi)
     return 0;
   if (lo <= 0)
@@ -59,7 +59,7 @@ static int range_sum(const vector<int>& pref, int lo, int hi) {
   return v;
 }
 
-static int count_min_max(int a, int b, int c, int dmax, const vector<int>& pref) {
+int count_min_max(int a, int b, int c, int dmax, const vector<int>& pref) {
   if (a > b || c > dmax)
     return 0;
   long long total = 0;
@@ -75,7 +75,7 @@ static int count_min_max(int a, int b, int c, int dmax, const vector<int>& pref)
   return (int)(total % MOD);
 }
 
-static int f_multiple_of_d(int A, int B, int C, int D, int d, const vector<int>& pref) {
+int f_multiple_of_d(int A, int B, int C, int D, int d, const vector<int>& pref) {
   int a = (A + d - 1) / d;
   int b = B / d;
   int c = (C + d - 1) / d;
@@ -83,7 +83,7 @@ static int f_multiple_of_d(int A, int B, int C, int D, int d, const vector<int>&
   return count_min_max(a, b, c, dd, pref);
 }
 
-static void build_h_prefix(int n, int max_k, vector<int>& pref) {
+void build_h_prefix(int n, int max_k, vector<int>& pref) {
   vector<int> pow_tab(max_k + 3);
   for (int i = 0; i < (int)pow_tab.size(); ++i)
     pow_tab[i] = mod_pow(i, n);
@@ -108,7 +108,7 @@ static void build_h_prefix(int n, int max_k, vector<int>& pref) {
   }
 }
 
-static int solve_one(int n, int A, int B, int C, int D) {
+int solve_one(int n, int A, int B, int C, int D) {
   int max_gap = max({D - A, D - C, B - A, B - C}) + 3;
   if (max_gap > MAXV)
     max_gap = MAXV;
@@ -127,6 +127,8 @@ static int solve_one(int n, int A, int B, int C, int D) {
   }
   return (int)ans;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

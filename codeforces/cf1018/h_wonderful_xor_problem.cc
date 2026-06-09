@@ -1,8 +1,10 @@
-#include <iostream>
-#include <vector>
-#define maxn 200005
-#define maxm 18
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
+
+constexpr int k_max_n = 200005;
+#define maxm 18
 
 const int MOD = 998244353;
 
@@ -60,13 +62,18 @@ vector<int> xor_convolution(vector<int> a, vector<int> b) {
 }
 
 int T, n;
-pair<int, int> a[maxn];
+pair<int, int> a[k_max_n];
 
 int solve() {
   return 0;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   while (T--) {
     cin >> n;

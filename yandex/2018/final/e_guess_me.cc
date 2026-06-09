@@ -1,10 +1,14 @@
 #include <bits/stdc++.h>
-#define maxn 1005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 1005;
 int n;
 vector<int> permutations;
-bool good[maxn];
+bool good[k_max_n];
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);
@@ -16,8 +20,8 @@ int main() {
   }
 
   // Initialize random number generator
-  std::random_device rd; // Provides a non-deterministic seed
-  std::mt19937 g(rd());  // Mersenne Twister engine seeded with rd
+  random_device rd; // Provides a non-deterministic seed
+  mt19937 g(rd());  // Mersenne Twister engine seeded with rd
 
   memset(good, true, sizeof good);
   int distincts = n;

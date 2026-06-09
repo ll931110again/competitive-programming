@@ -1,23 +1,14 @@
 // Codeforces 1842 (CodeTON Round 5 (Div. 1 + Div. 2, Rated, Prizes!)) — G. Tenzing and Random
 // Operations Submission: https://codeforces.com/contest/1842/submission/334321441
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <stack>
-#include <map>
-#include <queue>
-#include <vector>
-#define maxn 5005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 5005;
 template <unsigned M_> struct ModInt {
-  static constexpr unsigned M = M_;
+  constexpr unsigned M = M_;
   unsigned x;
   constexpr ModInt() : x(0U) {}
   constexpr ModInt(unsigned x_) : x(x_ % M) {}
@@ -107,7 +98,7 @@ template <unsigned M_> struct ModInt {
   bool operator!=(const ModInt& a) const {
     return (x != a.x);
   }
-  friend std::ostream& operator<<(std::ostream& os, const ModInt& a) {
+  friend ostream& operator<<(ostream& os, const ModInt& a) {
     return os << a.x;
   }
 };
@@ -116,9 +107,11 @@ constexpr unsigned MOD = 1'000'000'007;
 using Mint = ModInt<MOD>;
 
 int n, m, v;
-int a[maxn];
+int a[k_max_n];
 
-Mint cur[maxn], nxt[maxn];
+Mint cur[k_max_n], nxt[k_max_n];
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

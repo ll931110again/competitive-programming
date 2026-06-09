@@ -1,18 +1,14 @@
-#include <algorithm>
-#include <iostream>
-#include <limits>
-#include <queue>
-#include <tuple>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 using int64 = long long;
 
-static const int DX[4] = {1, -1, 0, 0};
-static const int DY[4] = {0, 0, 1, -1};
+namespace {
 
-static vector<int64> water_levels(int H, int W, const vector<int64>& h) {
+const int DX[4] = {1, -1, 0, 0};
+const int DY[4] = {0, 0, 1, -1};
+
+vector<int64> water_levels(int H, int W, const vector<int64>& h) {
   const int N = H * W;
   const int64 INF = numeric_limits<int64>::max() / 4;
 
@@ -55,6 +51,8 @@ static vector<int64> water_levels(int H, int W, const vector<int64>& h) {
 
   return wl;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

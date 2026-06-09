@@ -3,14 +3,17 @@
  */
 
 #include <bits/stdc++.h>
-#define maxn 1000005
-#define maxk 7
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 1000005;
+#define maxk 7
+
 int n;
-bool is_valid[maxn][maxk];
-int choice[maxn][maxk];
-int max_height[maxn];
+bool is_valid[k_max_n][maxk];
+int choice[k_max_n][maxk];
+int max_height[k_max_n];
 
 vector<pair<int, int>> pyramids;
 
@@ -64,13 +67,15 @@ string solve(int n) {
   return ans;
 }
 
+} // namespace
+
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
   for (int i = 2;; i++) {
     int high = high_pyramid(i);
-    if (high >= maxn) {
+    if (high >= k_max_n) {
       break;
     }
     pyramids.push_back({high, i});
@@ -78,7 +83,7 @@ int main() {
 
   for (int i = 3;; i++) {
     int low = low_pyramid(i);
-    if (low >= maxn) {
+    if (low >= k_max_n) {
       break;
     }
     pyramids.push_back({low, -i});
@@ -86,7 +91,7 @@ int main() {
 
   sort(pyramids.begin(), pyramids.end());
 
-  for (int i = 1; i < maxn; i++) {
+  for (int i = 1; i < k_max_n; i++) {
     max_height[i] = max_height[i - 1];
     while (max_height[i] < pyramids.size() && pyramids[max_height[i]].first <= i) {
       max_height[i]++;
@@ -100,7 +105,7 @@ int main() {
   memset(is_valid, false, sizeof is_valid);
   is_valid[0][0] = true;
   choice[0][0] = -1;
-  for (int i = 1; i < maxn; i++) {
+  for (int i = 1; i < k_max_n; i++) {
     for (int j = 1; j < maxk; j++) {
       for (int t = 0; t <= max_height[i]; t++) {
         int h = pyramids[t].first;

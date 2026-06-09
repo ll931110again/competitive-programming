@@ -4,19 +4,14 @@
 // City graph = grid adjacency within Gridland. Offline queries: divide & conquer on time;
 // shops in the right half are temporary multi-source BFS sources (rollback dist updates).
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <iostream>
-#include <unordered_map>
-#include <vector>
-
 using namespace std;
 
-constexpr int kInf = 1e9;
-constexpr int kDx[4] = {1, -1, 0, 0};
-constexpr int kDy[4] = {0, 0, 1, -1};
+namespace {
+
+constexpr int k_inf = 1e9;
+constexpr int k_dx[4] = {1, -1, 0, 0};
+constexpr int k_dy[4] = {0, 0, 1, -1};
 
 struct Query {
   int type;
@@ -83,7 +78,7 @@ void solve_time(int l, int r) {
   if (r - l == 1) {
     if (queries[l].type == 2) {
       const int d = dist[queries[l].city];
-      answers[l] = d >= kInf ? -1 : d;
+      answers[l] = d >= k_inf ? -1 : d;
     }
     return;
   }
@@ -94,7 +89,7 @@ void solve_time(int l, int r) {
   for (int i = mid; i < r; ++i) {
     if (queries[i].type == 2) {
       const int d = dist[queries[i].city];
-      answers[i] = d >= kInf ? -1 : d;
+      answers[i] = d >= k_inf ? -1 : d;
     }
   }
   rollback_dist(snap);
@@ -106,6 +101,8 @@ void solve_time(int l, int r) {
   solve_time(mid, r);
   rollback_dist(snap2);
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -122,7 +119,7 @@ int main() {
 
   for (int i = 0; i < n; ++i) {
     for (int dir = 0; dir < 4; ++dir) {
-      const int j = city_at(xs[i] + kDx[dir], ys[i] + kDy[dir]);
+      const int j = city_at(xs[i] + k_dx[dir], ys[i] + k_dy[dir]);
       if (j != -1) {
         adj[i].push_back(j);
       }
@@ -139,7 +136,7 @@ int main() {
     queries[i].city = city_at(x, y);
   }
 
-  dist.assign(n, kInf);
+  dist.assign(n, k_inf);
   solve_time(0, q);
 
   for (int i = 0; i < q; ++i) {

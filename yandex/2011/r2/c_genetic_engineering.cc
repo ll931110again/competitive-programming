@@ -2,27 +2,32 @@
 // Submission: https://codeforces.com/contest/86/submission/351670998
 
 #include <bits/stdc++.h>
-#define mod 1000000009
-#define maxn 15
-#define maxk 115
-#define max_alphabet 4
 using namespace std;
 
+#define mod 1000000009
+namespace {
+
+constexpr int k_max_n = 15;
+#define maxk 115
+#define max_alphabet 4
+
 int n, m;
-string s[maxn];
+string s[k_max_n];
 
 int trie_idx[maxk][max_alphabet];
 int jump_idx[maxk][max_alphabet];
 unordered_map<string, int> prefix_idx;
 int finish_len[maxk];
 
-long long cur[maxk][maxn], nxt[maxk][maxn];
+long long cur[maxk][k_max_n], nxt[maxk][k_max_n];
 map<char, int> dna = {
     {'A', 0},
     {'C', 1},
     {'G', 2},
     {'T', 3},
 };
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

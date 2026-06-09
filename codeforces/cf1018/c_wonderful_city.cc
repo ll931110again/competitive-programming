@@ -1,24 +1,15 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <stack>
-#include <unordered_set>
-#include <vector>
-#define maxn 1005
+#include <bits/stdc++.h>
 using namespace std;
 
-int T, n;
-int a[maxn][maxn];
+namespace {
 
-int row_cost[maxn], col_cost[maxn];
-long long dp[maxn][2];
+constexpr int k_max_n = 1005;
+int T, n;
+int a[k_max_n][k_max_n];
+
+int row_cost[k_max_n], col_cost[k_max_n];
+long long dp[k_max_n][2];
 
 long long solve() {
   memset(dp, -1, sizeof dp);
@@ -93,6 +84,8 @@ long long solve() {
 
   return row_ans + col_ans;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

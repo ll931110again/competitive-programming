@@ -1,26 +1,18 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <deque>
-#include <fstream>
-#include <iostream>
-#include <iterator>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <string>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 long long n;
 long long fibo[90];
 int cnt;
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   //    freopen("hrpa.in","r",stdin);
   //    freopen("hrpa.ou","w",stdout);
   cin >> n;

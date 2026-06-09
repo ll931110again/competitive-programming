@@ -8,15 +8,12 @@
 //   max(d(s,t),d(t,s)) = (dist(s,t) + |h(s)-h(t)|) / 2,
 // minimum D = ceil(diam/2). Count valid h with gauge-fixing per editorial.
 
-#include <algorithm>
-#include <functional>
-#include <iostream>
-#include <queue>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-static const int MOD = int(1e9 + 7);
+namespace {
+
+const int MOD = int(1e9 + 7);
 
 struct BFSResult {
   vector<int> dist;
@@ -24,7 +21,7 @@ struct BFSResult {
   int far{};
 };
 
-static BFSResult bfs(const vector<vector<int>>& adj, int src, int n) {
+BFSResult bfs(const vector<vector<int>>& adj, int src, int n) {
   BFSResult res;
   res.dist.assign(n + 1, -1);
   res.parent.assign(n + 1, -1);
@@ -50,13 +47,15 @@ static BFSResult bfs(const vector<vector<int>>& adj, int src, int n) {
 }
 
 // Second BFS started from u; parent[] walks toward u. Walking v→u gives u … v.
-static vector<int> diameter_path_from_parent(int v, const vector<int>& parent) {
+vector<int> diameter_path_from_parent(int v, const vector<int>& parent) {
   vector<int> path;
   for (int x = v; x != -1; x = parent[x])
     path.push_back(x);
   reverse(path.begin(), path.end());
   return path;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

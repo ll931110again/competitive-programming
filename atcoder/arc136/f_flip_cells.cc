@@ -7,10 +7,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-static constexpr int MOD = 998244353;
-static constexpr int G = 3;
+namespace {
 
-static int mod_pow_int(int a, long long e) {
+constexpr int MOD = 998244353;
+constexpr int G = 3;
+
+int mod_pow_int(int a, long long e) {
   long long r = 1;
   a %= MOD;
   while (e > 0) {
@@ -98,7 +100,7 @@ template <int P> vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>>& s) 
       continue;
     }
     L = i + 1 - L;
-    B = std::move(T);
+    B = move(T);
     b = d;
     m = 1;
   }
@@ -111,9 +113,9 @@ template <int P> vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>>& s) 
 using MI = ModInt<MOD>;
 using Mat = vector<vector<MI>>;
 
-static void ntt(vector<int>& a, bool invert) {
+void ntt(vector<int>& a, bool invert) {
   const int n = (int)a.size();
-  static vector<int> rev;
+  vector<int> rev;
   if ((int)rev.size() != n) {
     const int lg = __builtin_ctz(n);
     rev.assign(n, 0);
@@ -152,7 +154,7 @@ static void ntt(vector<int>& a, bool invert) {
   }
 }
 
-static vector<int> poly_conv(const vector<int>& a, const vector<int>& b, int lim) {
+vector<int> poly_conv(const vector<int>& a, const vector<int>& b, int lim) {
   if (a.empty() || b.empty())
     return {};
   int need = min(lim, (int)a.size() + (int)b.size() - 1);
@@ -171,7 +173,7 @@ static vector<int> poly_conv(const vector<int>& a, const vector<int>& b, int lim
   return fa;
 }
 
-static vector<vector<MI>> mat_mul(const vector<vector<MI>>& a, const vector<vector<MI>>& b) {
+vector<vector<MI>> mat_mul(const vector<vector<MI>>& a, const vector<vector<MI>>& b) {
   const int n = (int)a.size();
   vector<vector<MI>> c(n, vector<MI>(n));
   for (int i = 0; i < n; ++i)
@@ -182,8 +184,7 @@ static vector<vector<MI>> mat_mul(const vector<vector<MI>>& a, const vector<vect
   return c;
 }
 
-static vector<MI> extend_entry(const vector<Mat>& pw, int from, int to, const vector<MI>& trans,
-                               int D) {
+vector<MI> extend_entry(const vector<Mat>& pw, int from, int to, const vector<MI>& trans, int D) {
   const int L = (int)trans.size();
   vector<MI> row(D);
   for (int t = 0; t < L && t < D; ++t)
@@ -197,14 +198,14 @@ static vector<MI> extend_entry(const vector<Mat>& pw, int from, int to, const ve
   return row;
 }
 
-static MI eval_poly(const vector<MI>& p, MI x) {
+MI eval_poly(const vector<MI>& p, MI x) {
   MI r(0);
   for (int i = (int)p.size() - 1; i >= 0; --i)
     r = r * x + p[i];
   return r;
 }
 
-static vector<MI> deriv_poly(const vector<MI>& p) {
+vector<MI> deriv_poly(const vector<MI>& p) {
   if ((int)p.size() <= 1)
     return {};
   vector<MI> q(p.size() - 1);
@@ -213,7 +214,7 @@ static vector<MI> deriv_poly(const vector<MI>& p) {
   return q;
 }
 
-static MI expected_from_recurrence(const vector<MI>& f, const vector<MI>& trans) {
+MI expected_from_recurrence(const vector<MI>& f, const vector<MI>& trans) {
   const int L = (int)trans.size();
   vector<MI> den(L + 1);
   den[0] = MI(1);
@@ -233,6 +234,8 @@ static MI expected_from_recurrence(const vector<MI>& f, const vector<MI>& trans)
   const MI Qp = eval_poly(deriv_poly(den), MI(1));
   return (Pp * Q1 - P1 * Qp) / (Q1 * Q1);
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -281,7 +284,7 @@ int main() {
   for (int t = 0; t < boot; ++t) {
     ref[t] = cur[0][0];
     nxt = mat_mul(cur, T);
-    cur = std::move(nxt);
+    cur = move(nxt);
   }
   const vector<MI> trans = berlekamp_massey(ref);
 
@@ -292,7 +295,7 @@ int main() {
   for (int i = D; i >= 1; --i)
     inv_fact[i - 1] = inv_fact[i] * MI(i);
 
-  const MI invH = mod_pow(MI(H), MOD - 2);
+  const MI inv_h = mod_pow(MI(H), MOD - 2);
 
   auto build_g = [&](bool from_target) {
     vector<int> prod(1, 1);
@@ -309,7 +312,7 @@ int main() {
     MI hn(1);
     for (int t = 0; t < D; ++t) {
       g[t] = fact[t] * hn * MI(prod[t]);
-      hn = hn * invH;
+      hn = hn * inv_h;
     }
     return g;
   };

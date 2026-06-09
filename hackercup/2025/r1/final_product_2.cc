@@ -1,19 +1,10 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
-static constexpr unsigned MOD = 1'000'000'007;
+namespace {
+
+constexpr unsigned MOD = 1'000'000'007;
 #include "../../../lib/modint.h"
 using Mint = ModInt<MOD>;
 
@@ -93,6 +84,8 @@ Mint solve(long long n, long long a, long long b) {
   rec(0, 1);
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

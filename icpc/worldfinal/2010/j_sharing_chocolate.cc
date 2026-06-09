@@ -1,7 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 /*
+
 Sharing Chocolate (UVa / Valladolid OJ 1099)
 
 We need to decide if an x*y rectangle can be partitioned by repeated straight
@@ -26,18 +29,18 @@ struct Key {
 struct KeyHash {
   size_t operator()(Key const& k) const noexcept {
     // Mix three integers.
-    size_t x = std::hash<int>{}(k.mask);
-    x ^= (std::hash<int>{}(k.w) + 0x9e3779b97f4a7c15ULL + (x << 6) + (x >> 2));
-    x ^= (std::hash<int>{}(k.h) + 0x9e3779b97f4a7c15ULL + (x << 6) + (x >> 2));
+    size_t x = hash<int>{}(k.mask);
+    x ^= (hash<int>{}(k.w) + 0x9e3779b97f4a7c15ULL + (x << 6) + (x >> 2));
+    x ^= (hash<int>{}(k.h) + 0x9e3779b97f4a7c15ULL + (x << 6) + (x >> 2));
     return x;
   }
 };
 
-static vector<int> partArea;
-static vector<int> sumMask;
-static unordered_map<Key, bool, KeyHash> memo;
+vector<int> part_area;
+vector<int> sum_mask;
+unordered_map<Key, bool, KeyHash> memo;
 
-static bool canFill(int mask, int w, int h) {
+bool can_fill(int mask, int w, int h) {
   if (w > h)
     swap(w, h);
   Key key{mask, w, h};
@@ -45,7 +48,7 @@ static bool canFill(int mask, int w, int h) {
   if (it != memo.end())
     return it->second;
 
-  int area = sumMask[mask];
+  int area = sum_mask[mask];
   if (area != w * h)
     return memo[key] = false;
 
@@ -59,13 +62,13 @@ static bool canFill(int mask, int w, int h) {
     if ((sub & lsb) == 0)
       continue;
 
-    int s = sumMask[sub];
+    int s = sum_mask[sub];
 
     // Horizontal cut: width stays w, heights split.
     if (s % w == 0) {
       int h1 = s / w;
       if (0 < h1 && h1 < h) {
-        if (canFill(sub, w, h1) && canFill(mask ^ sub, w, h - h1))
+        if (can_fill(sub, w, h1) && can_fill(mask ^ sub, w, h - h1))
           return memo[key] = true;
       }
     }
@@ -74,7 +77,7 @@ static bool canFill(int mask, int w, int h) {
     if (s % h == 0) {
       int w1 = s / h;
       if (0 < w1 && w1 < w) {
-        if (canFill(sub, w1, h) && canFill(mask ^ sub, w - w1, h))
+        if (can_fill(sub, w1, h) && can_fill(mask ^ sub, w - w1, h))
           return memo[key] = true;
       }
     }
@@ -83,7 +86,7 @@ static bool canFill(int mask, int w, int h) {
   return memo[key] = false;
 }
 
-static bool solveCase(int x, int y, const vector<int>& parts) {
+bool solve_case(int x, int y, const vector<int>& parts) {
   int n = (int)parts.size();
   long long total = 0;
   for (int a : parts)
@@ -91,26 +94,28 @@ static bool solveCase(int x, int y, const vector<int>& parts) {
   if (total != 1LL * x * y)
     return false;
 
-  partArea = parts;
-  sumMask.assign(1 << n, 0);
+  part_area = parts;
+  sum_mask.assign(1 << n, 0);
   for (int i = 0; i < n; i++) {
     int bit = 1 << i;
     for (int mask = 0; mask < bit; mask++) {
-      sumMask[mask | bit] = sumMask[mask] + partArea[i];
+      sum_mask[mask | bit] = sum_mask[mask] + part_area[i];
     }
   }
 
   memo.clear();
   int full = (1 << n) - 1;
-  return canFill(full, x, y);
+  return can_fill(full, x, y);
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
   int n;
-  int caseNum = 1;
+  int case_num = 1;
   while (cin >> n) {
     if (n == 0)
       break;
@@ -120,8 +125,8 @@ int main() {
     for (int i = 0; i < n; i++)
       cin >> parts[i];
 
-    bool ok = solveCase(x, y, parts);
-    cout << "Case " << caseNum++ << ": " << (ok ? "Yes" : "No") << "\n";
+    bool ok = solve_case(x, y, parts);
+    cout << "Case " << case_num++ << ": " << (ok ? "Yes" : "No") << "\n";
   }
   return 0;
 }

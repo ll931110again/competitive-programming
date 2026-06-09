@@ -12,28 +12,19 @@
 // ascents (equivalently k descents of the reverse). One inclusion-exclusion form
 // is  sum_{i=0}^{k} (-1)^i * C(n+1, i) * (k+1-i)^n  (Wikipedia: Eulerian number).
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <stack>
-#include <vector>
-#define maxn 400005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 400005;
 int T, n, k;
 
-static constexpr unsigned MOD = 998244353;
+constexpr unsigned MOD = 998244353;
 #include "../../lib/modint.h"
 using Mint = ModInt<MOD>;
 
-Mint fact[maxn], inv[maxn];
+Mint fact[k_max_n], inv[k_max_n];
 
 Mint binom(int x, int y) {
   return fact[x] * inv[y] * inv[x - y];
@@ -61,14 +52,19 @@ Mint solve(int n, int k) {
   return ans;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   fact[0] = Mint(1);
-  for (int i = 1; i < maxn; i++) {
+  for (int i = 1; i < k_max_n; i++) {
     fact[i] = fact[i - 1] * i;
   }
 
-  inv[maxn - 1] = fact[maxn - 1].inv();
-  for (int i = maxn - 2; i >= 0; i--) {
+  inv[k_max_n - 1] = fact[k_max_n - 1].inv();
+  for (int i = k_max_n - 2; i >= 0; i--) {
     inv[i] = inv[i + 1] * (i + 1);
   }
 

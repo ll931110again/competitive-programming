@@ -1,15 +1,14 @@
 // Codeforces 1810 (CodeTON Round 4 (Div. 1 + Div. 2, Rated, Prizes!)) — A. Beautiful Sequence
 // Submission: https://codeforces.com/contest/1810/submission/201603208
 
-#include <cstdio>
-#include <cstdlib>
-#include <iostream>
-#include <vector>
-#define maxn 105
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 105;
 int T, n;
-int a[maxn];
+int a[k_max_n];
 
 bool solve() {
   cin >> n;
@@ -24,8 +23,13 @@ bool solve() {
   return false;
 }
 
+} // namespace
+
 int main() {
-  scanf("%d", &T);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  cin >> T;
   while (T--) {
     if (solve()) {
       cout << "YES";

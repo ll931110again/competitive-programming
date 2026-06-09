@@ -4,6 +4,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 int n, m;
 map<string, int> mp;
 int acount, bcount, shared;
@@ -31,8 +33,13 @@ bool win() {
   }
 }
 
+} // namespace
+
 int main() {
-  scanf("%d %d", &n, &m);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  cin >> n >> m;
   for (int i = 0; i < n; i++) {
     cin >> input;
     mp[input]++;

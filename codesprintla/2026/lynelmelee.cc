@@ -2,18 +2,16 @@
     E — Lynel Melee (user AC)
 */
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <algorithm>
-#include <cmath>
-#include <cstring>
-#include <iostream>
-#define maxn 1005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 1005;
 int n, b;
-int num_arrows[maxn];
+int num_arrows[k_max_n];
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -34,7 +32,7 @@ int main() {
     total_large += i * num_arrows[i];
   }
 
-  int bound = 2 * maxn - 1;
+  int bound = 2 * k_max_n - 1;
 
   bool stopped = false;
   for (int i = n; i >= 5; i--) {
@@ -54,7 +52,7 @@ int main() {
     }
   }
 
-  bool cur[2 * maxn], nxt[2 * maxn];
+  bool cur[2 * k_max_n], nxt[2 * k_max_n];
   memset(cur, false, sizeof cur);
   memset(nxt, false, sizeof nxt);
   cur[0] = true;

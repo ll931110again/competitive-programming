@@ -1,10 +1,13 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
-static inline int idx2(int i, int j, int stride) {
+namespace {
+
+inline int idx2(int i, int j, int stride) {
   return i * stride + j;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -40,28 +43,28 @@ int main() {
 
     // 2D prefix sum in-place in cnt
     for (int i = 1; i <= Usize; i++) {
-      int rowBase = i * (Vsize + 1);
-      int prevRowBase = (i - 1) * (Vsize + 1);
+      int row_base = i * (Vsize + 1);
+      int prev_row_base = (i - 1) * (Vsize + 1);
       int run = 0;
       for (int j = 1; j <= Vsize; j++) {
-        run += cnt[rowBase + j];
-        cnt[rowBase + j] = run + cnt[prevRowBase + j];
+        run += cnt[row_base + j];
+        cnt[row_base + j] = run + cnt[prev_row_base + j];
       }
     }
 
-    auto rectSum = [&](int uL, int uR, int vL, int vR) -> int {
-      if (uL > uR || vL > vR)
+    auto rect_sum = [&](int u_l, int u_r, int v_l, int v_r) -> int {
+      if (u_l > u_r || v_l > v_r)
         return 0;
-      uL = max(uL, Umin);
-      uR = min(uR, Umax);
-      vL = max(vL, Vmin);
-      vR = min(vR, Vmax);
-      if (uL > uR || vL > vR)
+      u_l = max(u_l, Umin);
+      u_r = min(u_r, Umax);
+      v_l = max(v_l, Vmin);
+      v_r = min(v_r, Vmax);
+      if (u_l > u_r || v_l > v_r)
         return 0;
-      int a = (uL - Umin) + 1;
-      int b = (uR - Umin) + 1;
-      int c = (vL - Vmin) + 1;
-      int d = (vR - Vmin) + 1;
+      int a = (u_l - Umin) + 1;
+      int b = (u_r - Umin) + 1;
+      int c = (v_l - Vmin) + 1;
+      int d = (v_r - Vmin) + 1;
       int stride = Vsize + 1;
       auto at = [&](int ui, int vi) -> int { return cnt[idx2(ui, vi, stride)]; };
       return at(b, d) - at(a - 1, d) - at(b, c - 1) + at(a - 1, c - 1);
@@ -74,22 +77,22 @@ int main() {
       cin >> m;
 
       int best = -1;
-      int bestX = 1, bestY = 1;
+      int best_x = 1, best_y = 1;
 
       for (int y = 1; y <= dy; y++) {
         for (int x = 1; x <= dx; x++) {
           int u = x + y;
           int v = x - y;
-          int val = rectSum(u - m, u + m, v - m, v + m);
+          int val = rect_sum(u - m, u + m, v - m, v + m);
           if (val > best) {
             best = val;
-            bestX = x;
-            bestY = y;
+            best_x = x;
+            best_y = y;
           }
         }
       }
 
-      cout << best << " (" << bestX << "," << bestY << ")\n";
+      cout << best << " (" << best_x << "," << best_y << ")\n";
     }
   }
 

@@ -2,17 +2,19 @@
 // Submission: https://codeforces.com/contest/756/submission/335431611
 
 #include <bits/stdc++.h>
-#define maxn 100005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 100005;
 struct Node {
   int max_prefix;
   int delta;
 };
 
-Node tx[4 * maxn];
+Node tx[4 * k_max_n];
 int n;
-int value[maxn];
+int value[k_max_n];
 
 void update(int i, int low, int high, int pos, int value) {
   if (low == high) {
@@ -51,6 +53,8 @@ int find_prefix(int i, int low, int high, int accum) {
   }
   return find_prefix(2 * i + 1, mid + 1, high, accum + tx[2 * i].delta);
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

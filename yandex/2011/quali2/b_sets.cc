@@ -4,6 +4,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 vector<int> occur[205];
 bool c[205][205];
 int n;
@@ -24,18 +26,23 @@ void DFS(int u) {
     }
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   // freopen("b.in","r",stdin);
   // freopen("b.ou","w",stdout);
 
-  scanf("%d", &n);
+  cin >> n;
   int k = n * (n - 1) / 2;
   for (int i = 0; i < k; i++) {
     int sz;
-    scanf("%d", &sz);
+    cin >> sz;
     for (int j = 0; j < sz; j++) {
       int u;
-      scanf("%d", &u);
+      cin >> u;
       occur[u].push_back(i);
     }
 

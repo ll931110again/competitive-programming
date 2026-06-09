@@ -1,10 +1,9 @@
-#include <algorithm>
-#include <iostream>
-#include <string>
-#include <vector>
-#define maxn 1000005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 1000005;
 int T, n;
 
 long long solve() {
@@ -42,7 +41,12 @@ long long solve() {
   return ret;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   for (int it = 1; it <= T; it++) {
     cout << "Case #" << it << ": " << solve() << '\n';

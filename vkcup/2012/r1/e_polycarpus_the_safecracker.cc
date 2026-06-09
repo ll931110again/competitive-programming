@@ -1,28 +1,11 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <utility>
-#include <vector>
-#define maxn 100000
+#include <bits/stdc++.h>
 using namespace std;
 
-bool prime[maxn + 3];
-int numPrime[maxn + 3][6];
+namespace {
+
+constexpr int k_max_n = 100000;
+bool prime[k_max_n + 3];
+int num_prime[k_max_n + 3][6];
 int board[8][8], T, digit;
 long long ans;
 
@@ -35,7 +18,7 @@ inline void attempt(int x, int y, long long way) {
     int val = 0;
     for (int i = 0; i < digit; i++)
       val = val * 10 + board[x][i];
-    attempt(x + 1, 0, way * numPrime[val][digit - 1 - x]);
+    attempt(x + 1, 0, way * num_prime[val][digit - 1 - x]);
     return;
   }
   if (x >= y) {
@@ -63,19 +46,24 @@ long long solve(int n) {
   return ans;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   prime[0] = prime[1] = true;
-  for (int i = 2; i <= maxn; i++)
+  for (int i = 2; i <= k_max_n; i++)
     if (!prime[i])
-      for (int j = i + i; j <= maxn; j += i)
+      for (int j = i + i; j <= k_max_n; j += i)
         prime[j] = true;
-  for (int i = 0; i < maxn; i++) {
+  for (int i = 0; i < k_max_n; i++) {
     int prod = 1;
     for (int j = 0; j < 6; j++) {
       int x = i;
       for (int k = 0; k < 10; k++) {
-        if (x < maxn && !prime[x])
-          numPrime[i][j]++;
+        if (x < k_max_n && !prime[x])
+          num_prime[i][j]++;
         x += prod;
       }
       prod *= 10;

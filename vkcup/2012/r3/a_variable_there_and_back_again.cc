@@ -1,29 +1,12 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <utility>
-#include <vector>
-#define maxn 100005
+#include <bits/stdc++.h>
 using namespace std;
 
-int init[maxn];
-bool touch[maxn], ford[maxn], back[maxn];
-vector<int> adj[maxn], rev[maxn];
+namespace {
+
+constexpr int k_max_n = 100005;
+int init[k_max_n];
+bool touch[k_max_n], ford[k_max_n], back[k_max_n];
+vector<int> adj[k_max_n], rev[k_max_n];
 int n, m;
 
 void BFS() {
@@ -74,7 +57,12 @@ void BFS() {
       cout << "0\n";
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> n >> m;
   for (int i = 1; i <= n; i++)
     cin >> init[i];

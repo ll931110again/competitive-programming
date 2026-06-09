@@ -1,30 +1,27 @@
-#include <algorithm>
-#include <array>
-#include <iostream>
-#include <string>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-static const int MOD = 1000003; // prime
+namespace {
 
-static int mod_add(int a, int b) {
+const int MOD = 1000003; // prime
+
+int mod_add(int a, int b) {
   a += b;
   if (a >= MOD)
     a -= MOD;
   return a;
 }
-static int mod_sub(int a, int b) {
+int mod_sub(int a, int b) {
   a -= b;
   if (a < 0)
     a += MOD;
   return a;
 }
-static long long mod_mul(long long a, long long b) {
+long long mod_mul(long long a, long long b) {
   return (a * b) % MOD;
 }
 
-static int mod_pow(int a, long long e) {
+int mod_pow(int a, long long e) {
   long long r = 1, x = a;
   while (e > 0) {
     if (e & 1)
@@ -54,12 +51,14 @@ struct Comb {
   }
 };
 
-static int count_runs(const string& s) {
+int count_runs(const string& s) {
   int r = 1;
   for (int i = 1; i < (int)s.size(); i++)
     r += (s[i] != s[i - 1]);
   return r;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

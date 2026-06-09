@@ -1,8 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 set<int> organizers;
 int T;
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

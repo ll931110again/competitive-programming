@@ -25,18 +25,18 @@
 //   P   = beta + Q_a + Q_b
 // Answer = sum of coefficients of P([0, n-1]).
 
-#include <iostream>
-#include <string>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
 using u64 = unsigned long long;
-static constexpr u64 MOD = 1000000007ULL;
-static constexpr int MAXN = 64;
+namespace {
 
-static u64 BIN[MAXN + 1][MAXN + 1];
+constexpr u64 MOD = 1000000007ULL;
+constexpr int MAXN = 64;
 
-static void precompute_binomials() {
+u64 BIN[MAXN + 1][MAXN + 1];
+
+void precompute_binomials() {
   for (int i = 0; i <= MAXN; ++i) {
     BIN[i][0] = 1;
     for (int j = 1; j <= i; ++j) {
@@ -55,7 +55,7 @@ struct Poly {
   }
 };
 
-static Poly add(const Poly& x, const Poly& y) {
+Poly add(const Poly& x, const Poly& y) {
   int n = max(x.size(), y.size());
   Poly r(n);
   for (int i = 0; i < x.size(); ++i)
@@ -67,7 +67,7 @@ static Poly add(const Poly& x, const Poly& y) {
   return r;
 }
 
-static Poly sub(const Poly& x, const Poly& y) {
+Poly sub(const Poly& x, const Poly& y) {
   int n = max(x.size(), y.size());
   Poly r(n);
   for (int i = 0; i < x.size(); ++i)
@@ -80,7 +80,7 @@ static Poly sub(const Poly& x, const Poly& y) {
 }
 
 // Binomial convolution: c_t = sum_k C(t,k) * x_k * y_{t-k}.
-static Poly bmul(const Poly& x, const Poly& y) {
+Poly bmul(const Poly& x, const Poly& y) {
   int nx = x.size(), ny = y.size();
   if (nx == 0 || ny == 0)
     return Poly();
@@ -103,14 +103,14 @@ static Poly bmul(const Poly& x, const Poly& y) {
 }
 
 // Integrate EGF: shift coefficients right by one (insert 0 at index 0).
-static Poly integ(const Poly& x) {
+Poly integ(const Poly& x) {
   Poly r(x.size() + 1);
   for (int i = 0; i < x.size(); ++i)
     r.a[i + 1] = x.a[i];
   return r;
 }
 
-static u64 solve(const string& s) {
+u64 solve(const string& s) {
   int n = (int)s.size();
 
   vector<vector<Poly>> P(n, vector<Poly>(n));
@@ -161,6 +161,8 @@ static u64 solve(const string& s) {
   }
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

@@ -1,6 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 int T, x, y;
 
 bool solve() {
@@ -28,6 +30,8 @@ bool solve() {
   }
   return true;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

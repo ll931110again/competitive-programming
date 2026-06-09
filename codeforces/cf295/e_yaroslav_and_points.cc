@@ -5,8 +5,10 @@
 // coordinate sum, and sum of pairwise distances (res). Type 1 moves a point by
 // erase/insert; type 2 splits out [L, R] by coordinate and reads res.
 
-#include <cstdio>
-#include <vector>
+#include <bits/stdc++.h>
+using namespace std;
+
+namespace {
 
 struct Node {
   int ch[2]{};
@@ -17,9 +19,9 @@ struct Node {
   long long pairs = 0;
 };
 
-constexpr int kMaxNodes = 200005;
+constexpr int k_max_nodes = 200005;
 
-Node pool[kMaxNodes];
+Node pool[k_max_nodes];
 int pool_used = 0;
 int root = 0;
 
@@ -122,24 +124,29 @@ long long query_range(int l, int r) {
   return answer;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   int n = 0;
-  std::scanf("%d", &n);
-  std::vector<int> coord(n);
+  cin >> n;
+  vector<int> coord(n);
   for (int i = 0; i < n; ++i) {
-    std::scanf("%d", &coord[i]);
+    cin >> coord[i];
     insert(coord[i]);
   }
 
   int m = 0;
-  std::scanf("%d", &m);
+  cin >> m;
   while (m--) {
     int type = 0;
-    std::scanf("%d", &type);
+    cin >> type;
     if (type == 1) {
       int p = 0;
       int delta = 0;
-      std::scanf("%d %d", &p, &delta);
+      cin >> p >> delta;
       --p;
       erase(coord[p]);
       coord[p] += delta;
@@ -147,8 +154,8 @@ int main() {
     } else {
       int l = 0;
       int r = 0;
-      std::scanf("%d %d", &l, &r);
-      std::printf("%lld\n", query_range(l, r));
+      cin >> l >> r;
+      cout << query_range(l, r << '\n');
     }
   }
   return 0;

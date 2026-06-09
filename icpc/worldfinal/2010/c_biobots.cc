@@ -1,16 +1,13 @@
-#include <algorithm>
-#include <cstdint>
-#include <iostream>
-#include <queue>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 struct Wall {
   int x1, y, x2;
 };
 
-static int findBlockIndex(const vector<int>& coords, int v) {
+int find_block_index(const vector<int>& coords, int v) {
   // returns i such that coords[i] <= v < coords[i+1]
   int lo = 0, hi = (int)coords.size() - 2;
   while (lo <= hi) {
@@ -25,19 +22,21 @@ static int findBlockIndex(const vector<int>& coords, int v) {
   return -1;
 }
 
+} // namespace
+
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
   int m, n, w;
-  int caseNum = 1;
+  int case_num = 1;
   while (cin >> m >> n >> w) {
     if (m == 0 && n == 0 && w == 0)
       break;
 
     vector<Wall> walls;
     walls.reserve(w);
-    long long blockedCells = 0;
+    long long blocked_cells = 0;
 
     vector<int> xs, ys;
     xs.push_back(0);
@@ -53,7 +52,7 @@ int main() {
       ww.x2 = x2;
       ww.y = y1;
       walls.push_back(ww);
-      blockedCells += (long long)(x2 - x1 + 1);
+      blocked_cells += (long long)(x2 - x1 + 1);
 
       xs.push_back(x1);
       xs.push_back(x2 + 1);
@@ -73,15 +72,15 @@ int main() {
     auto id = [&](int ix, int iy) -> int { return iy * X + ix; };
 
     for (const auto& ww : walls) {
-      int iy = findBlockIndex(ys, ww.y);
-      int ix1 = findBlockIndex(xs, ww.x1);
-      int ix2 = findBlockIndex(xs, ww.x2);
+      int iy = find_block_index(ys, ww.y);
+      int ix1 = find_block_index(xs, ww.x1);
+      int ix2 = find_block_index(xs, ww.x2);
       for (int ix = ix1; ix <= ix2; ix++)
         blocked[id(ix, iy)] = 1;
     }
 
-    int sx = findBlockIndex(xs, n - 1);
-    int sy = findBlockIndex(ys, m - 1);
+    int sx = find_block_index(xs, n - 1);
+    int sy = find_block_index(ys, m - 1);
 
     vector<uint8_t> vis((size_t)X * (size_t)Y, 0);
     queue<pair<int, int>> q;
@@ -126,11 +125,11 @@ int main() {
       }
     }
 
-    long long totalCells = 1LL * m * n;
-    long long emptyCells = totalCells - blockedCells;
-    long long stuck = emptyCells - reachable;
+    long long total_cells = 1LL * m * n;
+    long long empty_cells = total_cells - blocked_cells;
+    long long stuck = empty_cells - reachable;
 
-    cout << "Case " << caseNum++ << ": " << stuck << "\n";
+    cout << "Case " << case_num++ << ": " << stuck << "\n";
   }
   return 0;
 }

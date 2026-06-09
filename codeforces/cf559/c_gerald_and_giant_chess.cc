@@ -9,6 +9,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 template <unsigned M> struct ModInt {
   unsigned x;
 
@@ -58,15 +60,15 @@ template <unsigned M> struct ModInt {
   bool operator!=(const ModInt& a) const {
     return x != a.x;
   }
-  friend std::ostream& operator<<(std::ostream& os, const ModInt& a) {
+  friend ostream& operator<<(ostream& os, const ModInt& a) {
     return os << a.x;
   }
 };
 
-static constexpr unsigned MOD = 1'000'000'007;
+constexpr unsigned MOD = 1'000'000'007;
 using Mint = ModInt<MOD>;
 
-static constexpr int MAXN = 200005;
+constexpr int MAXN = 200005;
 
 Mint fact[MAXN], ifac[MAXN];
 
@@ -75,6 +77,8 @@ Mint C(int n, int k) {
     return 0;
   return fact[n] * ifac[k] * ifac[n - k];
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

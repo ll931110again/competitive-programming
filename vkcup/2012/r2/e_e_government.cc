@@ -1,33 +1,16 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <utility>
-#include <vector>
-#define maxn 1000005
+#include <bits/stdc++.h>
 using namespace std;
 
-int depth[maxn], next[maxn][26], linka[maxn], pos[maxn];
-vector<int> adj[maxn];
-bool status[maxn];
-int n, Q, total = 1;
-int begin[maxn], end[maxn], eval[maxn], cnt = 0, fenwick[2 * maxn];
+namespace {
 
-string pattern[maxn];
+constexpr int k_max_n = 1000005;
+int depth[k_max_n], next[k_max_n][26], linka[k_max_n], pos[k_max_n];
+vector<int> adj[k_max_n];
+bool status[k_max_n];
+int n, Q, total = 1;
+int begin[k_max_n], end[k_max_n], eval[k_max_n], cnt = 0, fenwick[2 * k_max_n];
+
+string pattern[k_max_n];
 
 void DFS(int u) {
   begin[u] = cnt++;
@@ -103,7 +86,7 @@ void update(string s, int sign) {
     fenwick[i] -= delta;
 }
 
-long long computeNode(int u) {
+long long compute_node(int u) {
   long long ret = 0;
   int idx = begin[u];
   if (idx)
@@ -124,12 +107,17 @@ void query(string s) {
         break;
     }
     start = max(next[start][s[i] - 'a'], 0);
-    ret += computeNode(start);
+    ret += compute_node(start);
   }
   cout << ret << endl;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> Q >> n;
   for (int i = 0; i < n; i++)
     cin >> pattern[i];

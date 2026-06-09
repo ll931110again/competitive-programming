@@ -1,13 +1,12 @@
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <iostream>
-#include <vector>
-
 using namespace std;
+
+namespace {
 
 // Tree + one extra edge → unicyclic “Q graph” extraction (robbiesresearchquest).
 // Placeholder — needs casework on cycle/tail attachment per query.
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

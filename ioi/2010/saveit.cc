@@ -1,26 +1,26 @@
 #include "grader.h"
+#include <bits/stdc++.h>
+using namespace std;
 
-#include <cstring>
-#include <queue>
-#include <vector>
+namespace {
 
-static std::vector<int> adj[1005];
-static int dist[1005][36];
-static int par[1005];
-static int decoded_delta[1005];
-static int decoded_dist[1005];
+vector<int> adj[1005];
+int dist[1005][36];
+int par[1005];
+int decoded_delta[1005];
+int decoded_dist[1005];
 
-static int ternary_buf[3];
-static int ternary_len;
+int ternary_buf[3];
+int ternary_len;
 
-static void encode_integer(int x) {
+void encode_integer(int x) {
   for (int b = 0; b < 10; ++b) {
     encode_bit(x & 1);
     x >>= 1;
   }
 }
 
-static int decode_integer() {
+int decode_integer() {
   int value = 0;
   for (int b = 0; b < 10; ++b) {
     if (decode_bit()) {
@@ -30,7 +30,7 @@ static int decode_integer() {
   return value;
 }
 
-static void flush_ternary() {
+void flush_ternary() {
   if (ternary_len == 0) {
     return;
   }
@@ -45,17 +45,17 @@ static void flush_ternary() {
   ternary_len = 0;
 }
 
-static void encode_delta(int delta) {
+void encode_delta(int delta) {
   ternary_buf[ternary_len++] = delta + 1;
   if (ternary_len == 3) {
     flush_ternary();
   }
 }
 
-static int decode_buf[3];
-static int decode_pos;
+int decode_buf[3];
+int decode_pos;
 
-static int decode_delta() {
+int decode_delta() {
   if (decode_pos == 0) {
     int val = 0;
     for (int b = 0; b < 5; ++b) {
@@ -72,7 +72,7 @@ static int decode_delta() {
   return decode_buf[3 - decode_pos--] - 1;
 }
 
-static void fill_distance(int u, int p) {
+void fill_distance(int u, int p) {
   for (int v : adj[u]) {
     if (v == p) {
       continue;
@@ -95,7 +95,7 @@ void encode(int n, int h, int p, int a[], int b[]) {
     adj[b[i]].push_back(a[i]);
   }
 
-  std::queue<int> q;
+  queue<int> q;
   q.push(0);
   while (!q.empty()) {
     const int u = q.front();
@@ -147,8 +147,8 @@ void decode(int n, int h) {
     adj[par[i]].push_back(i);
   }
 
-  static int dist0[1005];
-  std::queue<int> q;
+  int dist0[1005];
+  queue<int> q;
   memset(dist0, -1, sizeof dist0);
   dist0[0] = 0;
   q.push(0);
@@ -177,3 +177,5 @@ void decode(int n, int h) {
     }
   }
 }
+
+} // namespace

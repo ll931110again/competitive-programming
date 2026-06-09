@@ -10,37 +10,16 @@
  * that, we simply check d_from[v] + d_to[v] == d_from[n].
  */
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <unordered_set>
-#include <utility>
-#include <vector>
-#define maxn 100005
 using namespace std;
 
-int n, m;
-vector<pair<int, int>> adj[maxn];
+namespace {
 
-int d_from[maxn], d_to[maxn];
+constexpr int k_max_n = 100005;
+int n, m;
+vector<pair<int, int>> adj[k_max_n];
+
+int d_from[k_max_n], d_to[k_max_n];
 
 void BFS() {
   for (int i = 1; i <= n; i++) {
@@ -115,6 +94,8 @@ vector<int> compute_path() {
 
   return path;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

@@ -10,42 +10,27 @@
 // Localization: intersect candidate passable cells with distance shells (BFS on known map);
 // landmarks on rooms, then randomized splitting queries.
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#else
-#include <algorithm>
-#include <chrono>
-#include <climits>
-#include <cstdint>
-#include <cstdlib>
-#include <cstring>
-#include <functional>
-#include <iostream>
-#include <queue>
-#include <random>
-#include <unordered_map>
-#include <utility>
-#include <vector>
-#endif
-
 using namespace std;
 
-static int N;
-static int queries_left;
-static int T_total;
+namespace {
+
+int N;
+int queries_left;
+int T_total;
 
 // -1 unknown corridor, 0 free, 1 blocked
-static int8_t wall[130][130];
+int8_t wall[130][130];
 
-static inline bool is_border(int r, int c) {
+inline bool is_border(int r, int c) {
   return r == 1 || r == N || c == 1 || c == N;
 }
 
-static inline bool is_room(int r, int c) {
+inline bool is_room(int r, int c) {
   return r % 2 == 0 && c % 2 == 0 && r >= 2 && r <= N - 1 && c >= 2 && c <= N - 1;
 }
 
-static int ask(int r, int c) {
+int ask(int r, int c) {
   cout << r << ' ' << c << endl;
   --queries_left;
   int resp;
@@ -60,13 +45,13 @@ static int ask(int r, int c) {
   return resp;
 }
 
-static vector<vector<int>> bfs_dist_map(int sr, int sc) {
+vector<vector<int>> bfs_dist_map(int sr, int sc) {
   vector<vector<int>> d(N + 1, vector<int>(N + 1, -1));
   if (sr < 1 || sr > N || sc < 1 || sc > N || wall[sr][sc] != 0) {
     return d;
   }
-  static const int dr[4] = {-1, 1, 0, 0};
-  static const int dc[4] = {0, 0, -1, 1};
+  const int dr[4] = {-1, 1, 0, 0};
+  const int dc[4] = {0, 0, -1, 1};
   queue<pair<int, int>> q;
   d[sr][sc] = 0;
   q.push({sr, sc});
@@ -93,7 +78,7 @@ static vector<vector<int>> bfs_dist_map(int sr, int sc) {
   return d;
 }
 
-static vector<pair<int, int>> all_passable() {
+vector<pair<int, int>> all_passable() {
   vector<pair<int, int>> out;
   out.reserve(8000);
   for (int r = 1; r <= N; ++r) {
@@ -106,8 +91,8 @@ static vector<pair<int, int>> all_passable() {
   return out;
 }
 
-static vector<pair<int, int>> filter_by_distance(const vector<pair<int, int>>& cand, int qr, int qc,
-                                                 int dist_need) {
+vector<pair<int, int>> filter_by_distance(const vector<pair<int, int>>& cand, int qr, int qc,
+                                          int dist_need) {
   auto dm = bfs_dist_map(qr, qc);
   vector<pair<int, int>> out;
   out.reserve(cand.size());
@@ -119,7 +104,7 @@ static vector<pair<int, int>> filter_by_distance(const vector<pair<int, int>>& c
   return out;
 }
 
-static pair<int, int> pick_splitting_query(const vector<pair<int, int>>& cand, mt19937& rng) {
+pair<int, int> pick_splitting_query(const vector<pair<int, int>>& cand, mt19937& rng) {
   const int n = (int)cand.size();
   if (n == 1) {
     return cand[0];
@@ -150,7 +135,7 @@ static pair<int, int> pick_splitting_query(const vector<pair<int, int>>& cand, m
   return best_q;
 }
 
-static vector<pair<int, int>> build_landmarks() {
+vector<pair<int, int>> build_landmarks() {
   vector<pair<int, int>> lm;
   lm.reserve(13);
   lm.push_back({2, 2});
@@ -180,7 +165,7 @@ static vector<pair<int, int>> build_landmarks() {
 }
 
 // At most min(5000, T_total) exploration asks: corridors first, then pad with room probes.
-static void exploration_phase() {
+void exploration_phase() {
   const long long explore_cap = min(5000, max(0, T_total));
   long long done = 0;
 
@@ -208,7 +193,7 @@ static void exploration_phase() {
   }
 }
 
-static void localize_one(mt19937& rng) {
+void localize_one(mt19937& rng) {
   const vector<pair<int, int>> landmarks = build_landmarks();
   vector<pair<int, int>> cand = all_passable();
   size_t li = 0;
@@ -254,6 +239,8 @@ static void localize_one(mt19937& rng) {
     cand = filter_by_distance(cand, qr, qc, resp);
   }
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

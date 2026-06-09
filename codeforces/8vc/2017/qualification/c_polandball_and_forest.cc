@@ -2,8 +2,11 @@
 // Submission: https://codeforces.com/contest/755/submission/23854630
 
 #include <bits/stdc++.h>
-#define MAXN 10005
 using namespace std;
+
+#define MAXN 10005
+
+namespace {
 
 int n;
 int a[MAXN];
@@ -18,10 +21,15 @@ void DFS(int u) {
     }
 }
 
+} // namespace
+
 int main() {
-  scanf("%d", &n);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  cin >> n;
   for (int i = 1; i <= n; i++) {
-    scanf("%d", &a[i]);
+    cin >> a[i];
     if (a[i] != i) {
       adj[i].push_back(a[i]);
       adj[a[i]].push_back(i);

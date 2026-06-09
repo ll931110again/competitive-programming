@@ -1,16 +1,13 @@
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <algorithm>
-#include <cstdint>
-#include <iostream>
-#include <vector>
-
 using namespace std;
+
+namespace {
 
 struct Rect {
   int r1, r2, c1, c2;
 };
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

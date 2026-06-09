@@ -1,24 +1,18 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <set>
-#include <vector>
-#define maxn 200005
-#define mod 998'244'353
+#include <bits/stdc++.h>
 using namespace std;
 
-int T, n;
-vector<int> adj[maxn];
-int max_child[maxn];
+namespace {
 
-long long dp[maxn], prefix[maxn];
-bool reachable[maxn];
+constexpr int k_max_n = 200005;
+#define mod 998'244'353
+
+int T, n;
+vector<int> adj[k_max_n];
+int max_child[k_max_n];
+
+long long dp[k_max_n], prefix[k_max_n];
+bool reachable[k_max_n];
 
 void DFS(int u, int p) {
   max_child[u] = -1;
@@ -28,6 +22,8 @@ void DFS(int u, int p) {
       max_child[u] = max({max_child[u], max_child[v], v});
     }
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

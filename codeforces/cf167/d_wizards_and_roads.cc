@@ -4,7 +4,10 @@
 // Road graph is the Cartesian tree on (x, y): BST by x, heap by y. Each node
 // stores max matching DP; query [L, R] splits the treap by x and reads res.
 
-#include <cstdio>
+#include <bits/stdc++.h>
+using namespace std;
+
+namespace {
 
 struct Node {
   int ch[2]{};
@@ -14,10 +17,10 @@ struct Node {
   int match = 0;
 };
 
-constexpr int kMod = 1'000'000'009;
-constexpr int kMaxNodes = 100005;
+constexpr int k_mod = 1'000'000'009;
+constexpr int k_max_nodes = 100005;
 
-Node pool[kMaxNodes];
+Node pool[k_max_nodes];
 int pool_used = 0;
 int root = 0;
 
@@ -117,15 +120,20 @@ int query(int l, int r) {
   return answer;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   int n = 0;
   int k = 0;
-  std::scanf("%d %d", &n, &k);
+  cin >> n >> k;
 
   int x = 0;
   int y = 0;
   for (int i = 0; i < k; ++i) {
-    std::scanf("%d %d", &x, &y);
+    cin >> x >> y;
     insert(root, new_node(x, y));
   }
 
@@ -133,20 +141,20 @@ int main() {
   int b = 0;
   int c = 0;
   int d = 0;
-  std::scanf("%d %d %d %d", &a, &b, &c, &d);
+  scanf("%d %d %d %d", &a, &b, &c, &d);
   for (int i = k; i < n; ++i) {
-    x = (static_cast<long long>(a) * x + b) % kMod;
-    y = (static_cast<long long>(c) * y + d) % kMod;
+    x = (static_cast<long long>(a) * x + b) % k_mod;
+    y = (static_cast<long long>(c) * y + d) % k_mod;
     insert(root, new_node(x, y));
   }
 
   int m = 0;
-  std::scanf("%d", &m);
+  cin >> m;
   while (m--) {
     int l = 0;
     int r = 0;
-    std::scanf("%d %d", &l, &r);
-    std::printf("%d\n", query(l, r));
+    cin >> l >> r;
+    printf("%d\n", query(l, r));
   }
   return 0;
 }

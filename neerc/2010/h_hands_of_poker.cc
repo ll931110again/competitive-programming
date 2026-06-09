@@ -4,14 +4,10 @@
  * Rank each of C(52,5) hands with a tuple consistent with the statement; sort and map to 1..7462.
  */
 
-#include <algorithm>
-#include <array>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 struct Score {
   array<int, 6> t{};
@@ -23,7 +19,7 @@ struct Score {
   }
 };
 
-static Score eval_hand(const array<int, 5>& ix) {
+Score eval_hand(const array<int, 5>& ix) {
   int rnk[5], sut[5];
   for (int i = 0; i < 5; ++i) {
     rnk[i] = ix[i] % 13;
@@ -120,10 +116,10 @@ static Score eval_hand(const array<int, 5>& ix) {
   return s;
 }
 
-static vector<Score> all_scores;
+vector<Score> all_scores;
 
 // Stable LSD radix on t[5]..t[0]; keys fit in [0,15] for our Score encoding.
-static void radix_sort_scores(vector<Score>& v) {
+void radix_sort_scores(vector<Score>& v) {
   const int W = 16;
   vector<Score> tmp(v.size());
   int cnt[W];
@@ -148,7 +144,7 @@ static void radix_sort_scores(vector<Score>& v) {
   }
 }
 
-static void build_table() {
+void build_table() {
   all_scores.reserve(2598960);
   array<int, 5> h{};
   for (h[0] = 0; h[0] < 52; ++h[0])
@@ -166,12 +162,14 @@ static void build_table() {
   all_scores.resize(w);
 }
 
-static int card_index(char rk, char st) {
+int card_index(char rk, char st) {
   const char* R = "23456789TJQKA";
   int r = strchr(R, rk) - R;
   int s = strchr("CDHS", st) - "CDHS";
   return s * 13 + r;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

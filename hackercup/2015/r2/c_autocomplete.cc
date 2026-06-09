@@ -1,27 +1,19 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
-#define maxn 20002
-#define maxk 102
-#define maxl 26
+#include <bits/stdc++.h>
 using namespace std;
 
-int T, n, K;
-string s[maxn];
+namespace {
 
-int nodes[maxn][maxl];
-int dp[maxn][maxk];
-int depth[maxn], is_terminal[maxn];
+constexpr int k_max_n = 20002;
+#define maxk 102
+#define maxl 26
+
+int T, n, K;
+string s[k_max_n];
+
+int nodes[k_max_n][maxl];
+int dp[k_max_n][maxk];
+int depth[k_max_n], is_terminal[k_max_n];
 
 int cur[maxk], nxt[maxk];
 int num_nodes = 1;
@@ -89,6 +81,8 @@ int solve() {
 
   return dp[0][K];
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

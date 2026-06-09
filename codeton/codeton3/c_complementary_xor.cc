@@ -1,28 +1,19 @@
 // Codeforces 1750 (CodeTON Round 3 (Div. 1 + Div. 2, Rated, Prizes!)) — C. Complementary XOR
 // Submission: https://codeforces.com/contest/1750/submission/334472404
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <stack>
-#include <map>
-#include <queue>
-#include <vector>
-#define maxn 200005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
 int T, n;
 string a, b;
 
 map<pair<int, int>, int> ops;
 vector<pair<int, int>> outputs;
 
-int xa[maxn], xb[maxn];
+int xa[k_max_n], xb[k_max_n];
 
 bool solve() {
   ops.clear();
@@ -68,7 +59,12 @@ bool solve() {
   return true;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   while (T--) {
     cin >> n;

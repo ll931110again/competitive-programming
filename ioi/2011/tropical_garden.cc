@@ -3,14 +3,11 @@
 // precompute route counts for all K up to 2(N+M) and extrapolate periodically.
 // Time: O(M + N + Q), build with grader or -DTROPICAL_GARDEN_LOCAL_MAIN.
 
-#include <algorithm>
-#include <vector>
+#include <bits/stdc++.h>
+using namespace std;
 
-#ifdef TROPICAL_GARDEN_LOCAL_MAIN
-#include <iostream>
-#include <vector>
-static std::vector<long long> garden_local_answers;
-static inline void answer(long long X) {
+vector<long long> garden_local_answers;
+inline void answer(long long X) {
   garden_local_answers.push_back(X);
 }
 #else
@@ -19,22 +16,22 @@ static inline void answer(long long X) {
 
 namespace {
 
-constexpr int kMaxN = 150005;
-constexpr int kInf = 1e9;
+constexpr int k_max_n = 150005;
+constexpr int k_inf = 1e9;
 
-int nxt[2 * kMaxN];
-std::vector<int> rev[2 * kMaxN];
-int dist_to_p[2 * kMaxN];
-int next_p_gap[2 * kMaxN];
+int nxt[2 * k_max_n];
+vector<int> rev[2 * k_max_n];
+int dist_to_p[2 * k_max_n];
+int next_p_gap[2 * k_max_n];
 
 int compute_next_p_gap(int state, int P, int N) {
   int cur = nxt[state];
   int steps = 1;
-  std::vector<char> seen(2 * N, 0);
+  vector<char> seen(2 * N, 0);
   seen[state] = 1;
   while (cur / 2 != P) {
     if (seen[cur] || steps > 4 * N + 5) {
-      return kInf;
+      return k_inf;
     }
     seen[cur] = 1;
     cur = nxt[cur];
@@ -46,7 +43,7 @@ int compute_next_p_gap(int state, int P, int N) {
 } // namespace
 
 void count_routes(int N, int M, int P, int R[][2], int Q, int G[]) {
-  std::vector<int> out0(N, -1), out1(N, -1);
+  vector<int> out0(N, -1), out1(N, -1);
   for (int i = M - 1; i >= 0; --i) {
     const int a = R[i][0], b = R[i][1];
     out1[a] = out0[a];
@@ -58,8 +55,8 @@ void count_routes(int N, int M, int P, int R[][2], int Q, int G[]) {
   const int states = 2 * N;
   for (int i = 0; i < states; ++i) {
     rev[i].clear();
-    dist_to_p[i] = kInf;
-    next_p_gap[i] = kInf;
+    dist_to_p[i] = k_inf;
+    next_p_gap[i] = k_inf;
   }
 
   for (int v = 0; v < N; ++v) {
@@ -74,7 +71,7 @@ void count_routes(int N, int M, int P, int R[][2], int Q, int G[]) {
     rev[nxt[u]].push_back(u);
   }
 
-  std::vector<int> queue;
+  vector<int> queue;
   queue.reserve(states);
   for (int m = 0; m < 2; ++m) {
     const int target = 2 * P + m;
@@ -85,7 +82,7 @@ void count_routes(int N, int M, int P, int R[][2], int Q, int G[]) {
   for (size_t qi = 0; qi < queue.size(); ++qi) {
     const int u = queue[qi];
     for (int pred : rev[u]) {
-      if (dist_to_p[pred] == kInf) {
+      if (dist_to_p[pred] == k_inf) {
         dist_to_p[pred] = dist_to_p[u] + 1;
         queue.push_back(pred);
       }
@@ -93,14 +90,14 @@ void count_routes(int N, int M, int P, int R[][2], int Q, int G[]) {
   }
 
   struct FountainInfo {
-    int first = kInf;
-    int period = kInf;
+    int first = k_inf;
+    int period = k_inf;
   };
 
-  std::vector<FountainInfo> info(N);
+  vector<FountainInfo> info(N);
   for (int s = 0; s < N; ++s) {
     const int start = 2 * s;
-    if (dist_to_p[start] == kInf) {
+    if (dist_to_p[start] == k_inf) {
       continue;
     }
     info[s].first = dist_to_p[start];
@@ -108,7 +105,7 @@ void count_routes(int N, int M, int P, int R[][2], int Q, int G[]) {
     for (int step = 0; step < info[s].first; ++step) {
       cur = nxt[cur];
     }
-    if (next_p_gap[cur] == kInf) {
+    if (next_p_gap[cur] == k_inf) {
       next_p_gap[cur] = compute_next_p_gap(cur, P, N);
     }
     info[s].period = next_p_gap[cur];
@@ -116,15 +113,15 @@ void count_routes(int N, int M, int P, int R[][2], int Q, int G[]) {
 
   const int limit = 2 * (N + M) + 5;
   const int tail_start = 2 * M;
-  std::vector<long long> ways(limit + 1, 0);
+  vector<long long> ways(limit + 1, 0);
 
-  std::vector<int> unit_period;
+  vector<int> unit_period;
   for (int s = 0; s < N; ++s) {
     const int d = info[s].first;
-    if (d == kInf) {
+    if (d == k_inf) {
       continue;
     }
-    if (info[s].period == kInf) {
+    if (info[s].period == k_inf) {
       if (d <= limit) {
         ++ways[d];
       }
@@ -139,10 +136,10 @@ void count_routes(int N, int M, int P, int R[][2], int Q, int G[]) {
     }
   }
 
-  std::sort(unit_period.begin(), unit_period.end());
+  sort(unit_period.begin(), unit_period.end());
   for (int k = 0; k <= limit; ++k) {
     ways[k] += static_cast<long long>(unit_period.end() -
-                                      std::lower_bound(unit_period.begin(), unit_period.end(), k));
+                                      lower_bound(unit_period.begin(), unit_period.end(), k));
   }
 
   int seq_period = 0;
@@ -180,31 +177,31 @@ void count_routes(int N, int M, int P, int R[][2], int Q, int G[]) {
 
 #ifdef TROPICAL_GARDEN_LOCAL_MAIN
 int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
   int N, M, P;
-  if (!(std::cin >> N >> M >> P)) {
+  if (!(cin >> N >> M >> P)) {
     return 0;
   }
-  static int R[kMaxN][2];
+  int R[k_max_n][2];
   for (int i = 0; i < M; ++i) {
-    std::cin >> R[i][0] >> R[i][1];
+    cin >> R[i][0] >> R[i][1];
   }
   int Q;
-  std::cin >> Q;
-  static int G[kMaxN];
+  cin >> Q;
+  int G[k_max_n];
   for (int i = 0; i < Q; ++i) {
-    std::cin >> G[i];
+    cin >> G[i];
   }
   garden_local_answers.clear();
   count_routes(N, M, P, R, Q, G);
   for (int i = 0; i < Q; ++i) {
     if (i) {
-      std::cout << ' ';
+      cout << ' ';
     }
-    std::cout << garden_local_answers[i];
+    cout << garden_local_answers[i];
   }
-  std::cout << '\n';
+  cout << '\n';
   return 0;
 }
 #endif

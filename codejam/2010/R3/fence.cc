@@ -1,14 +1,13 @@
-#include <algorithm>
-#include <deque>
-#include <iostream>
-#include <numeric>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 using int64 = long long;
 
-static const int64 kInf = (int64)4e18;
+namespace {
+
+const int64 k_inf = (int64)4e18;
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -26,7 +25,7 @@ int main() {
 
     int64 g = 0;
     for (int64 x : B)
-      g = std::gcd(g, x);
+      g = gcd(g, x);
     if (L % g != 0) {
       cout << "Case #" << tc << ": IMPOSSIBLE\n";
       continue;
@@ -49,7 +48,7 @@ int main() {
       continue;
     }
 
-    vector<int64> dist((size_t)A, kInf);
+    vector<int64> dist((size_t)A, k_inf);
     dist[0] = 0;
     deque<int> dq;
     dq.push_front(0);
@@ -72,7 +71,7 @@ int main() {
       }
     }
 
-    if (dist[(size_t)q] >= kInf) {
+    if (dist[(size_t)q] >= k_inf) {
       cout << "Case #" << tc << ": IMPOSSIBLE\n";
       continue;
     }

@@ -1,31 +1,21 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <unordered_map>
-#include <vector>
-#define maxn 1000005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 1000005;
 int T;
 int n;
-int a[maxn];
+int a[k_max_n];
 
-struct item {
+struct Item {
   int cnt;
   long long sum;
 };
 
-item zeroes[maxn], nonzeroes[maxn];
-int nxt[maxn];
+item zeroes[k_max_n], nonzeroes[k_max_n];
+int nxt[k_max_n];
 
 long long solve() {
   unordered_map<int, int> mp;
@@ -79,6 +69,8 @@ long long solve() {
 
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

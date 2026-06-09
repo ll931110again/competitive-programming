@@ -1,25 +1,16 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
-#define maxn 200055
+#include <bits/stdc++.h>
 using namespace std;
 
-int n, Q;
-int a[maxn], bits[maxn];
+namespace {
 
-int tx[4 * maxn], carrier[4 * maxn];
-int strips[4 * maxn][2];
-int msb[4 * maxn];
+constexpr int k_max_n = 200055;
+int n, Q;
+int a[k_max_n], bits[k_max_n];
+
+int tx[4 * k_max_n], carrier[4 * k_max_n];
+int strips[4 * k_max_n][2];
+int msb[4 * k_max_n];
 
 void set_value(int i, int mid) {
   if (tx[2 * i] < 0 || tx[2 * i + 1] < 0) {
@@ -118,26 +109,28 @@ int max_right(int i, int low, int high, int lower_bound, int val) {
 }
 
 void add(int pos) {
-  if (get(1, 0, maxn - 1, pos) == 0) {
-    update(1, 0, maxn - 1, pos, pos, 1);
+  if (get(1, 0, k_max_n - 1, pos) == 0) {
+    update(1, 0, k_max_n - 1, pos, pos, 1);
     return;
   }
-  int rs = max_right(1, 0, maxn - 1, pos, 1);
+  int rs = max_right(1, 0, k_max_n - 1, pos, 1);
   rs = max(rs, pos);
-  update(1, 0, maxn - 1, pos, rs, 0);
-  update(1, 0, maxn - 1, rs + 1, rs + 1, 1);
+  update(1, 0, k_max_n - 1, pos, rs, 0);
+  update(1, 0, k_max_n - 1, rs + 1, rs + 1, 1);
 }
 
 void subtract(int pos) {
-  if (get(1, 0, maxn - 1, pos) == 1) {
-    update(1, 0, maxn - 1, pos, pos, 0);
+  if (get(1, 0, k_max_n - 1, pos) == 1) {
+    update(1, 0, k_max_n - 1, pos, pos, 0);
     return;
   }
-  int rs = max_right(1, 0, maxn - 1, pos, 0);
+  int rs = max_right(1, 0, k_max_n - 1, pos, 0);
   rs = max(rs, pos);
-  update(1, 0, maxn - 1, pos, rs, 1);
-  update(1, 0, maxn - 1, rs + 1, rs + 1, 0);
+  update(1, 0, k_max_n - 1, pos, rs, 1);
+  update(1, 0, k_max_n - 1, rs + 1, rs + 1, 0);
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);
@@ -163,7 +156,7 @@ int main() {
     bits[a[i]]++;
   }
 
-  for (int i = 0; i < maxn; i++)
+  for (int i = 0; i < k_max_n; i++)
     if (bits[i] > 1) {
       bits[i + 1] += bits[i] / 2;
       bits[i] %= 2;
@@ -171,7 +164,7 @@ int main() {
 
   memset(tx, -1, sizeof tx);
   memset(carrier, -1, sizeof carrier);
-  build(1, 0, maxn - 1);
+  build(1, 0, k_max_n - 1);
 
   while (Q--) {
     int pos, val;

@@ -1,24 +1,13 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdlib>
-#include <cstring>
-#include <deque>
-#include <fstream>
-#include <iostream>
-#include <iterator>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <string>
-#define maxn 5002
+#include <bits/stdc++.h>
 using namespace std;
 
-vector<int> adj[maxn];
-int n, child[maxn];
-bool found[maxn];
-bool seek[maxn];
+namespace {
+
+constexpr int k_max_n = 5002;
+vector<int> adj[k_max_n];
+int n, child[k_max_n];
+bool found[k_max_n];
+bool seek[k_max_n];
 vector<int> store;
 
 void DFS(int u, int pre) {
@@ -48,7 +37,12 @@ void DFS(int u, int pre) {
     found[i] |= seek[i];
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> n;
   for (int i = 1; i < n; i++) {
     int u, v;

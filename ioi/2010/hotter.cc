@@ -8,6 +8,8 @@
 // Reference: IOI 2010 task review / Gordon Cormack solution outline.
 
 #include "grader.h"
+#include <bits/stdc++.h>
+using namespace std;
 
 extern int Guess(int g);
 

@@ -12,21 +12,18 @@
 //   ioi/2011/elephants_lct.cc
 
 #include "meetings.h"
-
-#include <algorithm>
-#include <cstdlib>
-#include <utility>
-#include <vector>
+#include <bits/stdc++.h>
+using namespace std;
 
 namespace {
 
-constexpr long long kInf = 4'000'000'000'000'000'000LL;
+constexpr long long k_inf = 4'000'000'000'000'000'000LL;
 
 struct Rmq {
   int lim = 1;
-  std::vector<std::pair<int, int>> tree;
+  vector<pair<int, int>> tree;
 
-  void build(const std::vector<int>& h) {
+  void build(const vector<int>& h) {
     const int n = static_cast<int>(h.size());
     lim = 1;
     while (lim < n) {
@@ -37,20 +34,20 @@ struct Rmq {
       tree[i + lim] = {h[i], i};
     }
     for (int i = lim - 1; i > 0; --i) {
-      tree[i] = std::max(tree[2 * i], tree[2 * i + 1]);
+      tree[i] = max(tree[2 * i], tree[2 * i + 1]);
     }
   }
 
   int argmax(int l, int r) const {
     l += lim;
     r += lim;
-    std::pair<int, int> best = {0, -1};
+    pair<int, int> best = {0, -1};
     while (l <= r) {
       if (l & 1) {
-        best = std::max(best, tree[l++]);
+        best = max(best, tree[l++]);
       }
       if (!(r & 1)) {
-        best = std::max(best, tree[r--]);
+        best = max(best, tree[r--]);
       }
       l >>= 1;
       r >>= 1;
@@ -71,23 +68,23 @@ struct QueryAt {
 // sums in a link-cut tree).
 struct CostPath {
   int n = 0;
-  std::vector<long long> min_left;
-  std::vector<long long> min_right;
-  std::vector<long long> lazy_add;
-  std::vector<long long> line_k;
-  std::vector<long long> line_b;
-  std::vector<unsigned char> has_line;
+  vector<long long> min_left;
+  vector<long long> min_right;
+  vector<long long> lazy_add;
+  vector<long long> line_k;
+  vector<long long> line_b;
+  vector<unsigned char> has_line;
 
   explicit CostPath(int n_) : n(n_) {
-    min_left.assign(4 * n + 4, kInf);
-    min_right.assign(4 * n + 4, kInf);
+    min_left.assign(4 * n + 4, k_inf);
+    min_right.assign(4 * n + 4, k_inf);
     lazy_add.assign(4 * n + 4, 0);
     line_k.assign(4 * n + 4, 0);
     line_b.assign(4 * n + 4, 0);
     has_line.assign(4 * n + 4, 0);
   }
 
-  static long long line_at(long long k, long long b, int x) {
+  long long line_at(long long k, long long b, int x) {
     return k * x + b;
   }
 
@@ -178,12 +175,12 @@ struct CostPath {
 };
 
 struct Solver {
-  std::vector<int> height;
-  std::vector<std::vector<QueryAt>> queries_at;
+  vector<int> height;
+  vector<vector<QueryAt>> queries_at;
   Rmq rmq;
 
   void dfs(int left, int right, CostPath& left_costs, CostPath& right_costs,
-           std::vector<long long>& answers) {
+           vector<long long>& answers) {
     if (left > right) {
       return;
     }
@@ -195,12 +192,12 @@ struct Solver {
     for (const QueryAt& query : queries_at[node]) {
       long long best = (query.right - query.left + 1LL) * h;
       if (query.left < node) {
-        best = std::min(best, left_costs.point_query(query.left) + (query.right - node + 1LL) * h);
+        best = min(best, left_costs.point_query(query.left) + (query.right - node + 1LL) * h);
       }
       if (query.right > node) {
-        best = std::min(best, right_costs.point_query(query.right) + (node - query.left + 1LL) * h);
+        best = min(best, right_costs.point_query(query.right) + (node - query.left + 1LL) * h);
       }
-      answers[query.id] = std::min(answers[query.id], best);
+      answers[query.id] = min(answers[query.id], best);
     }
 
     long long left_seed = 0;
@@ -217,7 +214,7 @@ struct Solver {
                             (right - node + 1LL) * h);
   }
 
-  std::vector<long long> solve(const std::vector<int>& left, const std::vector<int>& right) {
+  vector<long long> solve(const vector<int>& left, const vector<int>& right) {
     const int n = static_cast<int>(height.size());
     rmq.build(height);
 
@@ -227,7 +224,7 @@ struct Solver {
       queries_at[peak].push_back({i, left[i], right[i]});
     }
 
-    std::vector<long long> answers(left.size(), kInf);
+    vector<long long> answers(left.size(), k_inf);
     CostPath left_costs(n);
     CostPath right_costs(n);
     dfs(0, n - 1, left_costs, right_costs, answers);
@@ -235,29 +232,29 @@ struct Solver {
   }
 };
 
-long long brute_query(const std::vector<int>& h, int L, int R) {
-  long long best = kInf;
+long long brute_query(const vector<int>& h, int L, int R) {
+  long long best = k_inf;
   for (int x = L; x <= R; ++x) {
     long long cost = 0;
     for (int y = L; y <= R; ++y) {
-      const int lo = std::min(x, y);
-      const int hi = std::max(x, y);
+      const int lo = min(x, y);
+      const int hi = max(x, y);
       int mx = h[lo];
       for (int i = lo; i <= hi; ++i) {
-        mx = std::max(mx, h[i]);
+        mx = max(mx, h[i]);
       }
       cost += mx;
     }
-    best = std::min(best, cost);
+    best = min(best, cost);
   }
   return best;
 }
 
 } // namespace
 
-std::vector<long long> minimum_costs(std::vector<int> H, std::vector<int> L, std::vector<int> R) {
+vector<long long> minimum_costs(vector<int> H, vector<int> L, vector<int> R) {
   Solver solver;
-  solver.height = std::move(H);
+  solver.height = move(H);
   return solver.solve(L, R);
 }
 
@@ -266,13 +263,13 @@ std::vector<long long> minimum_costs(std::vector<int> H, std::vector<int> L, std
 #include <random>
 
 int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
 
-  std::mt19937 rng(42);
+  mt19937 rng(42);
   for (int tc = 0; tc < 300; ++tc) {
     const int n = 2 + tc % 10;
-    std::vector<int> h(n);
+    vector<int> h(n);
     for (int i = 0; i < n; ++i) {
       h[i] = static_cast<int>(rng() % 20) + 1;
     }
@@ -281,33 +278,33 @@ int main() {
     const long long expected = brute_query(h, ql, qr);
     const long long got = minimum_costs(h, {ql}, {qr})[0];
     if (expected != got) {
-      std::cerr << "FAIL tc=" << tc << " n=" << n << " [" << ql << "," << qr << "]"
-                << " expected=" << expected << " got=" << got << '\n';
+      cerr << "FAIL tc=" << tc << " n=" << n << " [" << ql << "," << qr << "]"
+           << " expected=" << expected << " got=" << got << '\n';
       for (int x : h) {
-        std::cerr << x << ' ';
+        cerr << x << ' ';
       }
-      std::cerr << '\n';
+      cerr << '\n';
       return 1;
     }
   }
 
   int n, q;
-  if (std::cin >> n) {
-    std::vector<int> h(n);
+  if (cin >> n) {
+    vector<int> h(n);
     for (int i = 0; i < n; ++i) {
-      std::cin >> h[i];
+      cin >> h[i];
     }
-    std::cin >> q;
-    std::vector<int> l(q), r(q);
+    cin >> q;
+    vector<int> l(q), r(q);
     for (int i = 0; i < q; ++i) {
-      std::cin >> l[i] >> r[i];
+      cin >> l[i] >> r[i];
     }
-    const std::vector<long long> ans = minimum_costs(h, l, r);
+    const vector<long long> ans = minimum_costs(h, l, r);
     for (long long value : ans) {
-      std::cout << value << '\n';
+      cout << value << '\n';
     }
   } else {
-    std::cout << "all random tests passed\n";
+    cout << "all random tests passed\n";
   }
   return 0;
 }

@@ -1,15 +1,18 @@
 #include <bits/stdc++.h>
-#define MAXN 2000
 using namespace std;
 
+#define MAXN 2000
+
+namespace {
+
 int T;
-static constexpr unsigned MOD = 1'000'000'007;
+constexpr unsigned MOD = 1'000'000'007;
 #include "../../../lib/modint.h"
 using Mint = ModInt<MOD>;
 
 Mint sfree[MAXN + 2][MAXN + 2], sful[MAXN + 2][MAXN + 2];
 
-void solveCase(int it) {
+void solve_case(int it) {
   string input;
   cin >> input;
   int hypen = input.find("-");
@@ -18,7 +21,12 @@ void solveCase(int it) {
   cout << "Case #" << it << ": " << sfree[a][b] << ' ' << sful[b][b] << '\n';
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   sfree[1][0] = 1;
   for (int i = 1; i <= MAXN; i++)
@@ -41,5 +49,5 @@ int main() {
       }
 
   for (int it = 1; it <= T; it++)
-    solveCase(it);
+    solve_case(it);
 }

@@ -1,19 +1,12 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <stack>
-#include <unordered_set>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 int T, n;
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

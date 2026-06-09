@@ -1,23 +1,14 @@
 // Codeforces 1750 (CodeTON Round 3 (Div. 1 + Div. 2, Rated, Prizes!)) — D. Count GCD
 // Submission: https://codeforces.com/contest/1750/submission/334473118
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <stack>
-#include <map>
-#include <queue>
-#include <vector>
-#define maxn 200005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
 template <unsigned M_> struct ModInt {
-  static constexpr unsigned M = M_;
+  constexpr unsigned M = M_;
   unsigned x;
   constexpr ModInt() : x(0U) {}
   constexpr ModInt(unsigned x_) : x(x_ % M) {}
@@ -107,7 +98,7 @@ template <unsigned M_> struct ModInt {
   bool operator!=(const ModInt& a) const {
     return (x != a.x);
   }
-  friend std::ostream& operator<<(std::ostream& os, const ModInt& a) {
+  friend ostream& operator<<(ostream& os, const ModInt& a) {
     return os << a.x;
   }
 };
@@ -116,7 +107,7 @@ constexpr unsigned MOD = 998'244'353;
 using Mint = ModInt<MOD>;
 
 int T, n, m;
-int a[maxn];
+int a[k_max_n];
 vector<int> factors;
 
 Mint solve() {
@@ -167,6 +158,8 @@ Mint solve() {
 
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

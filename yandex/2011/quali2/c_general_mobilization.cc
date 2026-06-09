@@ -4,6 +4,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 int cap[5002], cur[5002], ret[5002], pos[5002], parent[5002];
 int n;
 pair<int, int> p[5002];
@@ -20,12 +22,17 @@ void DFS(int u, int pre) {
   }
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   // freopen("c.in","r",stdin);
 
-  scanf("%d", &n);
+  cin >> n;
   for (int i = 0; i < n; i++) {
-    scanf("%d", &p[i].first);
+    cin >> p[i].first;
     p[i].second = i;
   }
   sort(p, p + n);

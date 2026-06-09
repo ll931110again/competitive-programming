@@ -6,35 +6,16 @@
  * in the end.
  */
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <unordered_set>
-#include <utility>
-#include <vector>
-#define maxn 10005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 10005;
 int n;
-string s[maxn];
+string s[k_max_n];
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

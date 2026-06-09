@@ -8,9 +8,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-static constexpr int MOD = 998244353;
-static constexpr int K = 161;
-static constexpr int AL = 26;
+namespace {
+
+constexpr int MOD = 998244353;
+constexpr int K = 161;
+constexpr int AL = 26;
 
 template <int P> struct ModInt {
   int x;
@@ -85,7 +87,7 @@ template <int P> vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>>& s) 
       continue;
     }
     L = i + 1 - L;
-    B = std::move(T);
+    B = move(T);
     b = d;
     m = 1;
   }
@@ -122,11 +124,11 @@ ModInt<P> kth_linear_recurrence(vector<ModInt<P>> init, const vector<ModInt<P>>&
   for (int i = 0; i < n; ++i)
     res[i][i] = ModInt<P>(1);
   long long e = k - n + 1;
-  M powM = base;
+  M pow_m = base;
   while (e > 0) {
     if (e & 1)
-      res = mat_mul(res, powM);
-    powM = mat_mul(powM, powM);
+      res = mat_mul(res, pow_m);
+    pow_m = mat_mul(pow_m, pow_m);
     e >>= 1;
   }
 
@@ -146,7 +148,7 @@ struct TrieNode {
   }
 };
 
-static int get_id(map<pair<int, int>, int>& num, vector<pair<int, int>>& order, int v, int u) {
+int get_id(map<pair<int, int>, int>& num, vector<pair<int, int>>& order, int v, int u) {
   if (v > u)
     swap(v, u);
   const pair<int, int> key{v, u};
@@ -158,6 +160,8 @@ static int get_id(map<pair<int, int>, int>& num, vector<pair<int, int>>& order, 
   order.push_back(key);
   return id;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

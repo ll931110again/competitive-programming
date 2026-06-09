@@ -1,38 +1,33 @@
-#include <algorithm>
-#include <cstdint>
-#include <iostream>
-#include <limits>
-#include <queue>
-#include <utility>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 struct Best {
   long long cost;
   int cnt;
 };
 
-static inline bool better(const Best& a, const Best& b) {
+inline bool better(const Best& a, const Best& b) {
   if (a.cost != b.cost)
     return a.cost < b.cost;
   return a.cnt < b.cnt;
 }
 
-static inline Best addBest(const Best& a, const Best& b) {
+inline Best add_best(const Best& a, const Best& b) {
   return Best{a.cost + b.cost, a.cnt + b.cnt};
 }
 
 struct Edge {
   int to;
   long long w;
-  int addCnt;
+  int add_cnt;
 };
 
-static const long long INF_COST = (1LL << 62);
-static const int INF_CNT = (1 << 29);
+const long long INF_COST = (1LL << 62);
+const int INF_CNT = (1 << 29);
 
-static void dijkstra(int V, const vector<vector<Edge>>& g, vector<Best>& dist) {
+void dijkstra(int V, const vector<vector<Edge>>& g, vector<Best>& dist) {
   struct Node {
     long long cost;
     int cnt;
@@ -64,7 +59,7 @@ static void dijkstra(int V, const vector<vector<Edge>>& g, vector<Best>& dist) {
     vis[v] = 1;
 
     for (const auto& e : g[v]) {
-      Best nd{cur.cost + e.w, cur.cnt + e.addCnt};
+      Best nd{cur.cost + e.w, cur.cnt + e.add_cnt};
       if (better(nd, dist[e.to])) {
         dist[e.to] = nd;
         pq.push(Node{nd.cost, nd.cnt, e.to});
@@ -72,6 +67,8 @@ static void dijkstra(int V, const vector<vector<Edge>>& g, vector<Best>& dist) {
     }
   }
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

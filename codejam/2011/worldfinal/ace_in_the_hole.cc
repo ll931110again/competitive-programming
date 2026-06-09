@@ -1,9 +1,7 @@
-#include <algorithm>
-#include <iostream>
-#include <limits>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 struct SegTreeMin {
   int n;
@@ -33,6 +31,8 @@ struct SegTreeMin {
     return res;
   }
 };
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

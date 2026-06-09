@@ -1,29 +1,12 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <utility>
-#include <vector>
-#define maxn 1000005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 1000005;
 int n, m;
-int a[maxn], b[maxn];
-int posB[maxn];
+int a[k_max_n], b[k_max_n];
+int pos_b[k_max_n];
 
 bool good(int i, int j, int k) {
   if (k < 0) {
@@ -42,11 +25,13 @@ int length(int i, int j) {
   return (j - i + 1 + n);
 }
 
+} // namespace
+
 int main() {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
 
-  memset(posB, -1, sizeof posB);
+  memset(pos_b, -1, sizeof pos_b);
 
   cin >> n >> m;
   for (int i = 0; i < n; i++) {
@@ -54,17 +39,17 @@ int main() {
   }
   for (int i = 0; i < m; i++) {
     cin >> b[i];
-    posB[b[i]] = i;
+    pos_b[b[i]] = i;
   }
 
   int ans = 0;
   int R = -1;
   for (int L = 0; L < n; L++) {
-    if (R < 0 && posB[a[L]] >= 0) {
+    if (R < 0 && pos_b[a[L]] >= 0) {
       R = L;
     }
     if (R >= 0) {
-      while ((R + 1) % n != L && good(posB[a[L]], posB[a[R]], posB[a[(R + 1) % n]])) {
+      while ((R + 1) % n != L && good(pos_b[a[L]], pos_b[a[R]], pos_b[a[(R + 1) % n]])) {
         R = (R + 1) % n;
       }
       ans = max(ans, length(L, R));

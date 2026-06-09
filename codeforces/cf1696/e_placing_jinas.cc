@@ -8,7 +8,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-static constexpr unsigned MOD = 1'000'000'007;
+namespace {
+
+constexpr unsigned MOD = 1'000'000'007;
 
 template <unsigned M> struct ModInt {
   unsigned x;
@@ -33,9 +35,9 @@ template <unsigned M> struct ModInt {
 
 using Mint = ModInt<MOD>;
 
-static constexpr int MAXN = 400005;
+constexpr int MAXN = 400005;
 
-static int pow_mod(int a, long long e) {
+int pow_mod(int a, long long e) {
   long long r = 1, b = a % MOD;
   while (e > 0) {
     if (e & 1)
@@ -46,13 +48,15 @@ static int pow_mod(int a, long long e) {
   return int(r);
 }
 
-static unsigned fac[MAXN], ifac[MAXN];
+unsigned fac[MAXN], ifac[MAXN];
 
-static unsigned C(int n, int k) {
+unsigned C(int n, int k) {
   if (k < 0 || k > n)
     return 0;
   return unsigned(1ULL * fac[n] * ifac[k] % MOD * ifac[n - k] % MOD);
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

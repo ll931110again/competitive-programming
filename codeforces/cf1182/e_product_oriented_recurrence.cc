@@ -10,10 +10,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-static constexpr long long MOD = 1'000'000'007;
-static constexpr long long PHI = MOD - 1;
+namespace {
 
-static long long mod_pow(long long a, long long e, long long mod = MOD) {
+constexpr long long MOD = 1'000'000'007;
+constexpr long long PHI = MOD - 1;
+
+long long mod_pow(long long a, long long e, long long mod = MOD) {
   long long r = 1 % mod;
   a %= mod;
   while (e > 0) {
@@ -35,7 +37,7 @@ struct Mat {
         a[i][i] = 1;
   }
 
-  static Mat mul(const Mat& x, const Mat& y) {
+  Mat mul(const Mat& x, const Mat& y) {
     Mat z(x.n);
     for (int i = 0; i < x.n; ++i)
       for (int k = 0; k < x.n; ++k)
@@ -45,7 +47,7 @@ struct Mat {
     return z;
   }
 
-  static Mat pow(Mat base, long long e) {
+  Mat pow(Mat base, long long e) {
     Mat res(base.n, true);
     while (e > 0) {
       if (e & 1)
@@ -65,6 +67,8 @@ struct Mat {
   }
 };
 
+} // namespace
+
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
@@ -73,20 +77,20 @@ int main() {
   cin >> n >> f1 >> f2 >> f3 >> c;
 
   // x, y, z: tribonacci on exponents. Companion state at i = 3 is (s_i, s_{i-1}, s_{i-2}).
-  Mat baseA(3);
-  baseA.a = {{1, 1, 1}, {1, 0, 0}, {0, 1, 0}};
+  Mat base_a(3);
+  base_a.a = {{1, 1, 1}, {1, 0, 0}, {0, 1, 0}};
   vector<long long> vx = {0, 0, 1}, vy = {0, 1, 0}, vz = {1, 0, 0}; // (x_3,x_2,x_1), (y_3,...)
 
   // w_i = w_{i-1} + w_{i-2} + w_{i-3} + 2i - 6; augmented with (2i-6).
-  Mat baseB(5);
-  baseB.a = {
+  Mat base_b(5);
+  base_b.a = {
       {1, 1, 1, 1, 1}, {1, 0, 0, 0, 0}, {0, 1, 0, 0, 0}, {0, 0, 0, 1, 1}, {0, 0, 0, 0, 1},
   };
   vector<long long> vw = {0, 0, 0, 0, 2};
 
   if (n >= 4) {
-    Mat pa = Mat::pow(baseA, n - 3);
-    Mat pb = Mat::pow(baseB, n - 3);
+    Mat pa = Mat::pow(base_a, n - 3);
+    Mat pb = Mat::pow(base_b, n - 3);
     vx = pa.apply(vx);
     vy = pa.apply(vy);
     vz = pa.apply(vz);

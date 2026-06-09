@@ -1,17 +1,8 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 int T;
 int n, m;
@@ -30,6 +21,8 @@ bool solve(int n, int m) {
   // One player gets k points, the other gets k - 2 points (for k > m)
   return (n % 2 == 0);
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

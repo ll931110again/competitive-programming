@@ -16,37 +16,18 @@
  * and eliminating pairs of opposite colors.
  */
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <utility>
-#include <vector>
-#define maxn 100005
-#define maxk 800005
 using namespace std;
 
-int n;
-string a[maxn], b[maxn];
+namespace {
 
-struct node {
+constexpr int k_max_n = 100005;
+#define maxk 800005
+
+int n;
+string a[k_max_n], b[k_max_n];
+
+struct Node {
   vector<int> a_indices;
   vector<int> b_indices;
   vector<int> nxt;
@@ -66,9 +47,9 @@ node new_node(int depth) {
   return x;
 }
 
-vector<node> nodes;
+vector<Node> nodes;
 int refs[maxk];
-int matchings[maxn], total_value = 0;
+int matchings[k_max_n], total_value = 0;
 int node_count = 1;
 
 void add(string s, int idx, int color) {
@@ -140,6 +121,8 @@ void build_answer(int node) {
       check_matchings(refs[node], nodes[node].depth);
     }
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

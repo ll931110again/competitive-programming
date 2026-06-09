@@ -1,24 +1,17 @@
 // Codeforces 1896 (CodeTON Round 7 (Div. 1 + Div. 2, Rated, Prizes!)) — B. AB Flipping
 // Submission: https://codeforces.com/contest/1896/submission/336566608
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <stack>
-#include <map>
-#include <queue>
-#include <vector>
-#define maxn 200005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
 int T, n;
 string s;
-bool enabled[maxn];
+bool enabled[k_max_n];
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

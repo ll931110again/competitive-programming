@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-using namespace std;
 static bool isPrefix(int idx, const string& str, const string& S) {
   if (idx + (int)str.size() > (int)S.size())
     return false;

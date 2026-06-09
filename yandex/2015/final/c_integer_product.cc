@@ -1,32 +1,36 @@
 #include <bits/stdc++.h>
-#define maxn 10000005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 10000005;
 struct Fraction {
   int numerator;
   int denominator;
 };
 
 int n;
-Fraction fs[maxn];
+Fraction fs[k_max_n];
 
-int min_divisor[maxn];
-int denominator_idx[maxn];
+int min_divisor[k_max_n];
+int denominator_idx[k_max_n];
 
-int chosen_fractions_idx[maxn];
+int chosen_fractions_idx[k_max_n];
 int cnt = 0;
 
-bool cmpDenominator(Fraction x, Fraction y) {
+bool cmp_denominator(Fraction x, Fraction y) {
   return x.denominator < y.denominator;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);
   cin.tie(0);
 
-  for (int i = 2; i < maxn; i++)
+  for (int i = 2; i < k_max_n; i++)
     if (!min_divisor[i]) {
-      for (int j = i; j < maxn; j += i)
+      for (int j = i; j < k_max_n; j += i)
         if (!min_divisor[j]) {
           min_divisor[j] = i;
         }
@@ -50,7 +54,7 @@ int main() {
     fs[i] = {.numerator = numerator, .denominator = denominator};
   }
 
-  sort(fs, fs + n, cmpDenominator);
+  sort(fs, fs + n, cmp_denominator);
   memset(denominator_idx, -1, sizeof denominator_idx);
   int pos = 0;
 

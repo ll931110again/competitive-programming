@@ -1,12 +1,15 @@
 #include <bits/stdc++.h>
-#define maxn 1000005
-#define maxk 26
-#define maxQ 10005
 using namespace std;
 
-int nxt[maxn][maxk];
-int maskValue[maxQ];
-unordered_set<int> inMask;
+namespace {
+
+constexpr int k_max_n = 1000005;
+#define maxk 26
+#define max_q 10005
+
+int nxt[k_max_n][maxk];
+int mask_value[max_q];
+unordered_set<int> in_mask;
 unordered_map<int, int> counter;
 string s;
 int n, Q;
@@ -14,7 +17,12 @@ int n, Q;
 pair<int, int> order[26];
 int cnt = 0;
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> s;
   n = s.size();
   memset(nxt, -1, sizeof(nxt));
@@ -28,8 +36,8 @@ int main() {
     int mask = 0;
     for (int i = 0; i < query.size(); i++)
       mask |= 1 << (query[i] - 'a');
-    inMask.insert(mask);
-    maskValue[it] = mask;
+    in_mask.insert(mask);
+    mask_value[it] = mask;
   }
   for (int i = 0; i < n; i++) {
     if (i && s[i] == s[i - 1])
@@ -45,10 +53,10 @@ int main() {
       if (i && pos + 'a' == s[i - 1])
         break;
       mask |= 1 << pos;
-      if (inMask.find(mask) != inMask.end())
+      if (in_mask.find(mask) != in_mask.end())
         counter[mask]++;
     }
   }
   for (int i = 0; i < Q; i++)
-    cout << counter[maskValue[i]] << '\n';
+    cout << counter[mask_value[i]] << '\n';
 }

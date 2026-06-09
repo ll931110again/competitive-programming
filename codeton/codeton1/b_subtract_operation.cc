@@ -1,25 +1,23 @@
 // Codeforces 1656 (CodeTON Round 1 (Div. 1 + Div. 2, Rated, Prizes!)) — B. Subtract Operation
 // Submission: https://codeforces.com/contest/1656/submission/150734646
 
-#include <algorithm>
-#include <cmath>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <cstdio>
-#include <queue>
-#include <stack>
-#include <vector>
-#include <unordered_set>
-#define maxn 200005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
 int T, n;
 long long K;
 unordered_set<long long> elems;
 
+} // namespace
+
 int main() {
-  scanf("%d", &T);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  cin >> T;
   while (T--) {
     bool ok = false;
     elems.clear();

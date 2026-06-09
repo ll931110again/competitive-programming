@@ -2,20 +2,22 @@
 // Submission: https://codeforces.com/contest/85/submission/468531
 
 #include <bits/stdc++.h>
-#define maxn 100005
 using namespace std;
 
-string s[maxn];
-int val[maxn];
+namespace {
+
+constexpr int k_max_n = 100005;
+string s[k_max_n];
+int val[k_max_n];
 int Q, n;
 vector<pair<int, int>> v;
 vector<int> store;
 map<int, int> mp;
 
-struct node {
+struct Node {
   int num;
   long long total[5];
-} tx[6 * maxn];
+} tx[6 * k_max_n];
 
 void add(int i, int low, int high, int pos, int value) {
   if (low == high) {
@@ -55,10 +57,15 @@ void del(int i, int low, int high, int pos) {
   }
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   // freopen("d.in","r",stdin);
 
-  scanf("%d", &Q);
+  cin >> Q;
   for (int i = 0; i < Q; i++) {
     cin >> s[i];
     if (s[i] == "sum")
@@ -89,6 +96,6 @@ int main() {
       // cout << "delpos: " << val[i] << endl;
       del(1, 1, cnt, mp[val[i]]);
     } else
-      printf("%I64d\n", tx[1].total[2]);
+      cout << tx[1].total[2] << '\n';
   }
 }

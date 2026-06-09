@@ -1,27 +1,11 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <utility>
-#include <vector>
-#define maxn 100005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 100005;
 int n, k, h;
-int w[maxn], a[maxn], pos[maxn], ans[maxn], store[maxn];
+int w[k_max_n], a[k_max_n], pos[k_max_n], ans[k_max_n], store[k_max_n];
 
 bool cmp(int x, int y) {
   if (w[x] != w[y])
@@ -29,7 +13,12 @@ bool cmp(int x, int y) {
   return a[x] < a[y];
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> n >> k >> h;
   for (int i = 0; i < n; i++)
     cin >> w[i];

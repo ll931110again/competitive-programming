@@ -1,0 +1,50 @@
+---
+description: C++ solution style (SWE structure, concise CP headers)
+globs: **/*.{cc,cpp,hh,h}
+alwaysApply: false
+---
+
+# C++ Solution Style
+
+LLVM formatting from `.clang-format` (2-space indent, 100 columns).
+
+## Includes (concise)
+
+Standalone solutions:
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+```
+
+Use the repo `bits/stdc++.h` when the system header is missing. Do **not** paste long explicit include lists into solutions.
+
+`lib/` headers: explicit includes only, no `bits/stdc++.h`, named namespace (e.g. `delaunay2d`).
+
+## File header
+
+```cpp
+// Platform Contest — Problem Title
+// https://judge-url/problem/X
+//
+// Algorithm summary and complexity (keep short).
+```
+
+## Structure (SWE)
+
+- Types: `PascalCase`. Functions/variables: `snake_case`. Constants: `kPascalCase` or `constexpr`.
+- Internal helpers in an anonymous `namespace { ... }`.
+- Prefer small structs and named functions over large global arrays when reasonable.
+- `main`: fast I/O, then solve.
+
+## Tooling
+
+- `bash scripts/format_cpp.sh` — clang-format all C++ files.
+- `python3 scripts/normalize_headers.py` — collapse STL includes to `bits/stdc++.h` + `using namespace std`.
+- `python3 scripts/refactor_swe_style.py` — anonymous namespace, `kMaxN` constants, PascalCase structs, `snake_case` helpers, fast I/O in `main`.
+
+## Exceptions
+
+- IOI/grader signatures (`race.h`, `grader.h`, …) stay **before** `bits/stdc++.h`.
+- TopCoder `class` shells: normalize headers only; do not rewrite class APIs.
+- `lib/*.hh`: explicit includes and `std::`, no `bits/stdc++.h`.

@@ -1,9 +1,10 @@
 // Codeforces 1870 (CodeTON Round 6 (Div. 1 + Div. 2, Rated, Prizes!)) — A. MEXanized Array
 // Submission: https://codeforces.com/contest/1870/submission/307441829
 
-#include <algorithm>
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 int T;
 int n, k, x;
@@ -29,7 +30,12 @@ int solve(int n, int k, int x) {
   return ss;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   while (T--) {
     cin >> n >> k >> x;

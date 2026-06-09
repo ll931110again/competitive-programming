@@ -1,14 +1,21 @@
 // Codeforces 1842 (CodeTON Round 5 (Div. 1 + Div. 2, Rated, Prizes!)) — A. Tenzing and Tsondu
 // Submission: https://codeforces.com/contest/1842/submission/210977293
 
-#include <iostream>
-#define maxn 55
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 55;
 int T, n, m;
-int a[maxn], b[maxn];
+int a[k_max_n], b[k_max_n];
+
+} // namespace
 
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   while (T--) {
     cin >> n >> m;

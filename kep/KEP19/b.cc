@@ -1,13 +1,11 @@
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <set>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 int n, x, delta;
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

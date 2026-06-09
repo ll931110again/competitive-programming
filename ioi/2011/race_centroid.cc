@@ -3,26 +3,25 @@
 // Time: O(N log N), memory: O(N + K).
 
 #include "race.h"
-
-#include <algorithm>
-#include <vector>
+#include <bits/stdc++.h>
+using namespace std;
 
 namespace {
 
-constexpr int kInf = 1e9;
+constexpr int k_inf = 1e9;
 
 struct Edge {
   int to;
   int len;
 };
 
-std::vector<Edge> adj[200005];
+vector<Edge> adj[200005];
 
 int n, target_k;
 int subtree_size[200005];
 bool removed[200005];
 int min_edges[1000005];
-std::vector<int> touched;
+vector<int> touched;
 
 int dfs_size(int u, int parent) {
   subtree_size[u] = 1;
@@ -52,7 +51,7 @@ struct DistEntry {
   int edges;
 };
 
-std::vector<DistEntry> collected;
+vector<DistEntry> collected;
 
 void collect(int u, int parent, int dist, int edges) {
   if (dist > target_k) {
@@ -71,20 +70,20 @@ void mark_best(int dist, int edges) {
   if (dist > target_k) {
     return;
   }
-  if (min_edges[dist] == kInf) {
+  if (min_edges[dist] == k_inf) {
     touched.push_back(dist);
   }
-  min_edges[dist] = std::min(min_edges[dist], edges);
+  min_edges[dist] = min(min_edges[dist], edges);
 }
 
 void clear_best() {
   for (int dist : touched) {
-    min_edges[dist] = kInf;
+    min_edges[dist] = k_inf;
   }
   touched.clear();
 }
 
-int answer = kInf;
+int answer = k_inf;
 
 void process_centroid(int centroid) {
   mark_best(0, 0);
@@ -97,8 +96,8 @@ void process_centroid(int centroid) {
     collect(edge.to, centroid, edge.len, 1);
     for (const DistEntry& entry : collected) {
       const int need = target_k - entry.dist;
-      if (need >= 0 && min_edges[need] < kInf) {
-        answer = std::min(answer, min_edges[need] + entry.edges);
+      if (need >= 0 && min_edges[need] < k_inf) {
+        answer = min(answer, min_edges[need] + entry.edges);
       }
     }
     for (const DistEntry& entry : collected) {
@@ -125,12 +124,12 @@ void decompose(int entry) {
 int best_path(int N, int K, int H[][2], int L[]) {
   n = N;
   target_k = K;
-  answer = kInf;
+  answer = k_inf;
   for (int i = 0; i < N; ++i) {
     adj[i].clear();
   }
-  std::fill(removed, removed + N, false);
-  std::fill(min_edges, min_edges + K + 1, kInf);
+  fill(removed, removed + N, false);
+  fill(min_edges, min_edges + K + 1, k_inf);
 
   for (int i = 0; i < N - 1; ++i) {
     const int u = H[i][0];
@@ -140,26 +139,26 @@ int best_path(int N, int K, int H[][2], int L[]) {
   }
 
   decompose(0);
-  return answer == kInf ? -1 : answer;
+  return answer == k_inf ? -1 : answer;
 }
 
 #ifdef RACE_LOCAL_MAIN
 #include <iostream>
 
 int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
 
   int N, K;
-  if (!(std::cin >> N >> K)) {
+  if (!(cin >> N >> K)) {
     return 0;
   }
-  static int H[200005][2];
-  static int L[200005];
+  int H[200005][2];
+  int L[200005];
   for (int i = 0; i < N - 1; ++i) {
-    std::cin >> H[i][0] >> H[i][1] >> L[i];
+    cin >> H[i][0] >> H[i][1] >> L[i];
   }
-  std::cout << best_path(N, K, H, L) << '\n';
+  cout << best_path(N, K, H, L) << '\n';
   return 0;
 }
 #endif

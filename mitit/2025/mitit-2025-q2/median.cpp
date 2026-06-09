@@ -1,23 +1,25 @@
 #include <bits/stdc++.h>
-#define maxn 900005
 using namespace std;
 
-int T, n, m;
-int a[maxn], b[maxn];
+namespace {
 
-static constexpr unsigned MOD = 1'000'000'007;
+constexpr int k_max_n = 900005;
+int T, n, m;
+int a[k_max_n], b[k_max_n];
+
+constexpr unsigned MOD = 1'000'000'007;
 #include "../../../lib/modint.h"
 using Mint = ModInt<MOD>;
 
-Mint fact[maxn], inv[maxn];
+Mint fact[k_max_n], inv[k_max_n];
 
-static Mint binom(int x, int y) {
+Mint binom(int x, int y) {
   Mint up = fact[x];
   Mint down = inv[y] * inv[x - y];
   return up * down;
 }
 
-static int solve() {
+int solve() {
   int X = (3 * n + 1) / 2;
   int pos = -1;
 
@@ -71,16 +73,18 @@ static int solve() {
   return (int)ret.x;
 }
 
+} // namespace
+
 int main() {
   ios_base::sync_with_stdio(false);
   cin.tie(0);
 
   fact[0] = 1;
-  for (int i = 1; i < maxn; i++) {
+  for (int i = 1; i < k_max_n; i++) {
     fact[i] = fact[i - 1] * i;
   }
 
-  for (int i = 0; i < maxn; i++) {
+  for (int i = 0; i < k_max_n; i++) {
     inv[i] = fact[i].inv();
   }
 

@@ -13,15 +13,16 @@
 //   https://kazuma8128.hatenablog.com/entry/2018/02/18/014946
 //   https://oj.uz/submission/55017
 
-#include <cstdlib>
-#include <set>
-#include <utility>
+#include <bits/stdc++.h>
+using namespace std;
 
-using pii = std::pair<int, int>;
+using pii = pair<int, int>;
 
-constexpr int kMaxNodes = 1 << 20;
-constexpr int kInf = 2'000'000'000;
-constexpr int kOffset = 400042;
+namespace {
+
+constexpr int k_max_nodes = 1 << 20;
+constexpr int k_inf = 2'000'000'000;
+constexpr int k_offset = 400042;
 
 int n, l;
 int pos[150010];
@@ -37,7 +38,7 @@ struct Node {
   Node* path_parent = nullptr;
 };
 
-Node pool[kMaxNodes];
+Node pool[k_max_nodes];
 int pool_used = 0;
 
 Node* new_node(int value) {
@@ -160,7 +161,7 @@ Node* merge_trees(Node* a, Node* b) {
 }
 
 namespace LCT {
-Node* tree[kMaxNodes];
+Node* tree[k_max_nodes];
 
 Node* access(Node* u) {
   u = remove_right(u);
@@ -192,13 +193,13 @@ void make_node(int id, int value) {
 }
 } // namespace LCT
 
-std::set<pii> timeline;
+set<pii> timeline;
 
 inline int fix_id(int id) {
-  return id >= kOffset ? id - kOffset : id;
+  return id >= k_offset ? id - k_offset : id;
 }
 
-void relink(std::set<pii>::iterator it) {
+void relink(set<pii>::iterator it) {
   Node* u = LCT::tree[fix_id(it->second)];
   LCT::cut(u);
 
@@ -207,7 +208,7 @@ void relink(std::set<pii>::iterator it) {
   if (raw != 2 * n && (raw & 1) == 0) {
     parent = LCT::tree[raw + 1];
   } else {
-    parent = LCT::tree[fix_id(std::next(it)->second)];
+    parent = LCT::tree[fix_id(next(it)->second)];
   }
   LCT::link(u, parent);
 }
@@ -216,7 +217,7 @@ void relink_all() {
   if (timeline.size() < 2) {
     return;
   }
-  const auto last = std::prev(timeline.end());
+  const auto last = prev(timeline.end());
   for (auto it = timeline.begin(); it != last; ++it) {
     relink(it);
   }
@@ -235,7 +236,7 @@ void init(int N, int L, int X[]) {
   LCT::make_node(2 * n, 0);
   LCT::make_node(2 * n + 1, 0);
   timeline.emplace(-42, 2 * n);
-  timeline.emplace(kInf, 2 * n + 1);
+  timeline.emplace(k_inf, 2 * n + 1);
 
   for (int i = 0; i < n; ++i) {
     pos[i] = X[i];
@@ -243,7 +244,7 @@ void init(int N, int L, int X[]) {
     LCT::make_node(2 * i + 1, 0);
     LCT::link(LCT::tree[2 * i], LCT::tree[2 * i + 1]);
     timeline.emplace(pos[i], 2 * i);
-    timeline.emplace(pos[i] + l, 2 * i + 1 + kOffset);
+    timeline.emplace(pos[i] + l, 2 * i + 1 + k_offset);
   }
 
   relink_all();
@@ -251,13 +252,13 @@ void init(int N, int L, int X[]) {
 
 int update(int elephant, int value) {
   auto it_pos = timeline.lower_bound(pii(pos[elephant], 2 * elephant));
-  auto it_marker = timeline.lower_bound(pii(pos[elephant] + l, 2 * elephant + 1 + kOffset));
+  auto it_marker = timeline.lower_bound(pii(pos[elephant] + l, 2 * elephant + 1 + k_offset));
 
   cut_node(it_pos->second);
   cut_node(it_marker->second);
 
-  auto before_pos = std::prev(it_pos);
-  auto before_marker = std::prev(it_marker);
+  auto before_pos = prev(it_pos);
+  auto before_marker = prev(it_marker);
   cut_node(before_pos->second);
   cut_node(before_marker->second);
 
@@ -266,14 +267,16 @@ int update(int elephant, int value) {
   pos[elephant] = value;
 
   it_pos = timeline.insert(pii(pos[elephant], 2 * elephant)).first;
-  it_marker = timeline.insert(pii(pos[elephant] + l, 2 * elephant + 1 + kOffset)).first;
+  it_marker = timeline.insert(pii(pos[elephant] + l, 2 * elephant + 1 + k_offset)).first;
 
   relink(before_pos);
   relink(before_marker);
   relink(it_pos);
   relink(it_marker);
-  relink(std::prev(it_pos));
-  relink(std::prev(it_marker));
+  relink(prev(it_pos));
+  relink(prev(it_marker));
 
   return LCT::query(LCT::tree[2 * n]);
 }
+
+} // namespace

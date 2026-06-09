@@ -1,4 +1,8 @@
 #include "grader.h"
+#include <bits/stdc++.h>
+using namespace std;
+
+namespace {
 
 void play() {
   int index[25][2];
@@ -20,3 +24,5 @@ void play() {
     faceup(index[lt][1]);
   }
 }
+
+} // namespace

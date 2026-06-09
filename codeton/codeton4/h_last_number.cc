@@ -1,19 +1,10 @@
 // Codeforces 1810 (CodeTON Round 4 (Div. 1 + Div. 2, Rated, Prizes!)) — H. Last Number
 // Submission: https://codeforces.com/contest/1810/submission/350399292
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <stack>
-#include <map>
-#include <queue>
-#include <vector>
 using namespace std;
+
+namespace {
 
 int T, n;
 
@@ -65,6 +56,8 @@ long long solve(int n) {
 
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

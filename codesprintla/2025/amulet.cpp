@@ -12,8 +12,10 @@ using namespace std;
 
 using ull = unsigned long long;
 
-static const ull B1 = 911382323ULL;
-static const ull B2 = 972663749ULL;
+namespace {
+
+const ull B1 = 911382323ULL;
+const ull B2 = 972663749ULL;
 
 struct H2 {
   ull h1, h2;
@@ -28,11 +30,11 @@ struct H2Hash {
   }
 };
 
-static inline int code(char ch) {
+inline int code(char ch) {
   return (int)(unsigned char)ch + 1;
 }
 
-static int count_row_substr(const vector<string>& g, int R, int C, int L, const string& t) {
+int count_row_substr(const vector<string>& g, int R, int C, int L, const string& t) {
   if ((int)t.size() != L)
     return -1;
   int cnt = 0;
@@ -48,7 +50,7 @@ static int count_row_substr(const vector<string>& g, int R, int C, int L, const 
   return cnt;
 }
 
-static int count_col_substr(const vector<string>& g, int R, int C, int L, const string& t) {
+int count_col_substr(const vector<string>& g, int R, int C, int L, const string& t) {
   if ((int)t.size() != L)
     return -1;
   int cnt = 0;
@@ -70,10 +72,11 @@ static int count_col_substr(const vector<string>& g, int R, int C, int L, const 
   return cnt;
 }
 
-static bool ok_counts(const vector<string>& g, int R, int C, int L, int x, int y,
-                      const string& sub) {
+bool ok_counts(const vector<string>& g, int R, int C, int L, int x, int y, const string& sub) {
   return count_row_substr(g, R, C, L, sub) == x && count_col_substr(g, R, C, L, sub) == y;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -85,15 +88,15 @@ int main() {
   for (int i = 0; i < R; ++i)
     cin >> g[i];
 
-  int maxL = min(R, C);
-  vector<ull> pow1(maxL + 2), pow2(maxL + 2);
+  int max_l = min(R, C);
+  vector<ull> pow1(max_l + 2), pow2(max_l + 2);
   pow1[0] = pow2[0] = 1;
-  for (int i = 1; i <= maxL + 1; ++i) {
+  for (int i = 1; i <= max_l + 1; ++i) {
     pow1[i] = pow1[i - 1] * B1;
     pow2[i] = pow2[i - 1] * B2;
   }
 
-  for (int L = maxL; L >= 1; --L) {
+  for (int L = max_l; L >= 1; --L) {
     unordered_map<H2, int, H2Hash> row_cover;
     unordered_map<H2, int, H2Hash> last_row;
 
@@ -181,7 +184,7 @@ int main() {
           continue;
         string sub = s.substr(c, L);
         if (!got || sub < best) {
-          best = std::move(sub);
+          best = move(sub);
           got = true;
         }
       }
@@ -213,7 +216,7 @@ int main() {
           continue;
         string sub = s.substr(c, L);
         if (seen.insert(sub).second)
-          pool.push_back(std::move(sub));
+          pool.push_back(move(sub));
       }
     }
     sort(pool.begin(), pool.end());

@@ -1,9 +1,13 @@
 #include <bits/stdc++.h>
-#define maxn 100005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 100005;
 int T, n;
-int x[maxn], y[maxn];
+int x[k_max_n], y[k_max_n];
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

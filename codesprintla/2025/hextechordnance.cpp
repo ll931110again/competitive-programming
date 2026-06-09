@@ -11,10 +11,11 @@
 // so remaining checks are automatic once k ≤ n.
 
 #include <bits/stdc++.h>
-#include <cassert>
 using namespace std;
 
-static long long count_at_most_K(const vector<int>& a, long long K) {
+namespace {
+
+long long count_at_most_k(const vector<int>& a, long long K) {
   const int n = (int)a.size();
   deque<int> dq_min, dq_max;
   long long ans = 0;
@@ -42,6 +43,8 @@ static long long count_at_most_K(const vector<int>& a, long long K) {
   return ans;
 }
 
+} // namespace
+
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
@@ -61,7 +64,7 @@ int main() {
   const long long total_pairs = 1LL * n * (n - 1) / 2;
 
   for (long long k = 1; k <= n; ++k) {
-    long long cnt = (k >= D) ? total_pairs : count_at_most_K(a, k);
+    long long cnt = (k >= D) ? total_pairs : count_at_most_k(a, k);
     if (cnt < k) {
       cout << "unstable\n";
       return 0;

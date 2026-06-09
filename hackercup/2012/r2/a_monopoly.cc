@@ -1,30 +1,13 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <utility>
-#include <vector>
-#define maxn 30005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 30005;
 int T, n, d;
-pair<int, int> order[maxn], newOrder[maxn];
-int pos[maxn];
-vector<int> bucket[maxn];
+pair<int, int> order[k_max_n], new_order[k_max_n];
+int pos[k_max_n];
+vector<int> bucket[k_max_n];
 
 bool cmp(int x, int y) {
   return order[x] < order[y];
@@ -52,7 +35,12 @@ void merge(int mu, int mv) {
   sort(bucket[mu].begin(), bucket[mu].end(), cmp);
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   freopen("monopoly.in.2", "r", stdin);
   freopen("monopoly.out.2", "w", stdout);
   cin >> T;
@@ -73,25 +61,25 @@ int main() {
       for (int j = 0; j < bucket[mu].size(); j++) {
         int x = bucket[mu][j];
         if (order[x].second >= d)
-          newOrder[x] = make_pair(n + 8, d + 3);
+          new_order[x] = make_pair(n + 8, d + 3);
         else {
-          newOrder[x].second = order[x].second + 1;
-          newOrder[x].first = max(1 + smv, order[x].first);
+          new_order[x].second = order[x].second + 1;
+          new_order[x].first = max(1 + smv, order[x].first);
         }
       }
       for (int j = 0; j < bucket[mv].size(); j++) {
         int x = bucket[mv][j];
         if (order[x].second >= d)
-          newOrder[x] = make_pair(n + 8, d + 3);
+          new_order[x] = make_pair(n + 8, d + 3);
         else {
-          newOrder[x].second = order[x].second + 1;
-          newOrder[x].first = max(1 + smu, order[x].first);
+          new_order[x].second = order[x].second + 1;
+          new_order[x].first = max(1 + smu, order[x].first);
         }
       }
       for (int j = 0; j < bucket[mu].size(); j++)
-        order[bucket[mu][j]] = newOrder[bucket[mu][j]];
+        order[bucket[mu][j]] = new_order[bucket[mu][j]];
       for (int j = 0; j < bucket[mv].size(); j++)
-        order[bucket[mv][j]] = newOrder[bucket[mv][j]];
+        order[bucket[mv][j]] = new_order[bucket[mv][j]];
       merge(mu, mv);
     }
     int ret = n;

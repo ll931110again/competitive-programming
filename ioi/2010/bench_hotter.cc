@@ -1,11 +1,13 @@
-#include <cstdio>
-#include <cstdlib>
+#include <bits/stdc++.h>
+using namespace std;
 
-static int secret;
-static int prev;
-static int guesses;
+namespace {
 
-static int hotter_colder(int j, int p, int g) {
+int secret;
+int prev;
+int guesses;
+
+int hotter_colder(int j, int p, int g) {
   if (abs(g - j) < abs(p - j)) {
     return 1;
   }
@@ -28,7 +30,7 @@ int Guess(int g) {
 
 #include "hotter.cc"
 
-static int max_guesses(int n, int st) {
+int max_guesses(int n, int st) {
   if (st == 1) {
     return 500;
   }
@@ -45,9 +47,14 @@ static int max_guesses(int n, int st) {
   return w - 1;
 }
 
+} // namespace
+
 int main(int argc, char** argv) {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   const char* path = (argc > 1) ? argv[1] : "hottercolder/appeal/Subtask1-data/grader.in.1";
-  const int max_n = (argc > 2) ? std::atoi(argv[2]) : 500;
+  const int max_n = (argc > 2) ? atoi(argv[2]) : 500;
 
   FILE* f = fopen(path, "r");
   if (!f) {

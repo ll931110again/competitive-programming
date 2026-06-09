@@ -1,6 +1,7 @@
-#include <cmath>
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 const int MAX_EXACT_H = 100000000;
 const long long MAX_CHUNK = 1000000000;
@@ -23,20 +24,20 @@ double solve_small(long long N, int P) {
   double ans = 0;
 
   for (long k = 0; k < N; k++) {
-    double bestCost = 999999;
+    double best_cost = 999999;
 
     for (int C = 1; C <= 100; C++) {
-      double chanceNew = min((C - 1) * p, 1.0);
-      double chance = chanceNew + (1.0 - chanceNew) * (N - k) / (float)N;
+      double chance_new = min((C - 1) * p, 1.0);
+      double chance = chance_new + (1.0 - chance_new) * (N - k) / (float)N;
       double cost = C / chance;
-      if (cost < bestCost) {
-        bestCost = cost;
+      if (cost < best_cost) {
+        best_cost = cost;
       }
-      if (chanceNew >= 1 || P == 0) {
+      if (chance_new >= 1 || P == 0) {
         break;
       }
     }
-    ans += bestCost;
+    ans += best_cost;
   }
 
   return ans;
@@ -95,10 +96,10 @@ double solve() {
 
   // For x in [B1, B2-1], we spend M-1 coins.
   // We'll use a trapezoid approximation of the function.
-  long long chunkSize = (B2 - B1) / MAX_CHUNK + 1;
+  long long chunk_size = (B2 - B1) / MAX_CHUNK + 1;
   long long left = B1;
   while (left < B2) {
-    long long right = min(left + chunkSize - 1, B2 - 1);
+    long long right = min(left + chunk_size - 1, B2 - 1);
     double size = right - left + 1;
     double leftval = (M - 1) / ((M - 2) * p + (1 - (M - 2) * p) * (float)(N - left) / N);
     double rightval = (M - 1) / ((M - 2) * p + (1 - (M - 2) * p) * (float)(N - right) / N);
@@ -113,7 +114,12 @@ double solve() {
   return ans;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   // Precompute the first terms of the harmonic series
   h[0] = 0;
   for (int i = 1; i < MAX_EXACT_H; i++) {

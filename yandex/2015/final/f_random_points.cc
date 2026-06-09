@@ -1,9 +1,11 @@
 #include <bits/stdc++.h>
-#define maxn 200005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
 int n;
-long long a[maxn];
+long long a[k_max_n];
 int delta = 200;
 
 const long long GENERATOR_A = 134775813;
@@ -37,6 +39,8 @@ bool solve() {
     }
   return false;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

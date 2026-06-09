@@ -1,13 +1,6 @@
 // C++11
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
-#include <map>
-#include <set>
-#include <sstream>
-#include <string>
-#include <vector>
 
+#include <bits/stdc++.h>
 using namespace std;
 
 class SnakeCharmer {

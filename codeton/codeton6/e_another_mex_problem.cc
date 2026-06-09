@@ -1,21 +1,19 @@
 // Codeforces 1870 (CodeTON Round 6 (Div. 1 + Div. 2, Rated, Prizes!)) — E. Another MEX Problem
 // Submission: https://codeforces.com/contest/1870/submission/307456599
 
-#include <algorithm>
-#include <iostream>
-#include <cstring>
-#include <queue>
-#include <vector>
-#include <unordered_set>
-#define maxn 5005
-#define maxxor 5005
+#include <bits/stdc++.h>
 using namespace std;
 
-int T, n, k;
-int a[maxn];
+namespace {
 
-int min_index[maxn][maxn];
-bool marked[maxn];
+constexpr int k_max_n = 5005;
+#define maxxor 5005
+
+int T, n, k;
+int a[k_max_n];
+
+int min_index[k_max_n][k_max_n];
+bool marked[k_max_n];
 
 int dp[maxxor];
 bool vis[maxxor];
@@ -52,7 +50,7 @@ int solve() {
   }
 
   dp[0] = 0;
-  vector<int> buckets[maxn];
+  vector<int> buckets[k_max_n];
   buckets[0].push_back(0);
 
   for (int pos = 0; pos <= n; pos++) {
@@ -86,9 +84,11 @@ int solve() {
   return 0;
 }
 
+} // namespace
+
 int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
 
   cin >> T;
   while (T--) {

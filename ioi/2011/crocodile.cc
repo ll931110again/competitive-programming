@@ -1,16 +1,15 @@
-#include <algorithm>
-#include <functional>
-#include <iostream>
-#include <queue>
-#include <vector>
-#define maxn 100005
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
+
+constexpr int k_max_n = 100005;
 using QueueItem = pair<int, int>;
 
-vector<QueueItem> adj[maxn];
-QueueItem dist[maxn];
-int ans[maxn];
-bool vis[maxn];
+vector<QueueItem> adj[k_max_n];
+QueueItem dist[k_max_n];
+int ans[k_max_n];
+bool vis[k_max_n];
 int inf = 1e9 + 2;
 
 int travel_plan(int n, int m, int R[][2], int L[], int K, int P[]) {
@@ -28,7 +27,7 @@ int travel_plan(int n, int m, int R[][2], int L[], int K, int P[]) {
     ans[i] = 0;
   }
 
-  priority_queue<QueueItem, vector<QueueItem>, std::greater<QueueItem>> pq;
+  priority_queue<QueueItem, vector<QueueItem>, greater<QueueItem>> pq;
   for (int i = 0; i < K; i++) {
     pq.push({0, P[i]});
   }
@@ -58,3 +57,5 @@ int travel_plan(int n, int m, int R[][2], int L[], int K, int P[]) {
 
   return ans[0];
 }
+
+} // namespace

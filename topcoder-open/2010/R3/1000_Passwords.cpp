@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-using namespace std;
 static const int MOD = 1000000009;
 static const int MAXN = 200005;
 

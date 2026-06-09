@@ -1,10 +1,7 @@
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <iostream>
-#include <vector>
-
 using namespace std;
+
+namespace {
 
 struct DSU {
   vector<int> p, r;
@@ -43,6 +40,8 @@ struct DSU {
 //
 // Note: this ignores subtle Boolean‑gate semantics; it’s the standard practical
 // reduction for this problem shape on polytrees.
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

@@ -4,31 +4,27 @@
 // Optimal caravan path uses only Delaunay edges; the Euclidean MST minimizes
 // the maximum edge weight on any path.  Answer per query = max edge on MST path.
 
-#include <algorithm>
-#include <cmath>
-#include <iomanip>
-#include <iostream>
-#include <numeric>
-#include <tuple>
-#include <utility>
-#include <vector>
+#include <bits/stdc++.h>
+using namespace std;
 
 using ll = long long;
 using ld = long double;
 
-static bool ge(ll a, ll b) {
+namespace {
+
+bool ge(ll a, ll b) {
   return a >= b;
 }
-static bool eq(ll a, ll b) {
+bool eq(ll a, ll b) {
   return a == b;
 }
-static bool gt(ll a, ll b) {
+bool gt(ll a, ll b) {
   return a > b;
 }
-static bool lt(ll a, ll b) {
+bool lt(ll a, ll b) {
   return a < b;
 }
-static int sgn(ll a) {
+int sgn(ll a) {
   return a > 0 ? 1 : (a < 0 ? -1 : 0);
 }
 
@@ -49,7 +45,7 @@ struct Pt {
   ll dot(const Pt& p) const {
     return x * p.x + y * p.y;
   }
-  ll sqrLength() const {
+  ll sqr_length() const {
     return dot(*this);
   }
   bool operator==(const Pt& p) const {
@@ -57,7 +53,7 @@ struct Pt {
   }
 };
 
-static const Pt infPt(1e18, 1e18, -1);
+const Pt inf_pt(1e18, 1e18, -1);
 
 struct QuadEdge {
   Pt origin;
@@ -79,7 +75,7 @@ struct QuadEdge {
 };
 
 struct QuadPool {
-  std::vector<QuadEdge> buf;
+  vector<QuadEdge> buf;
   int ptr = 0;
 
   void reset(int n) {
@@ -90,19 +86,19 @@ struct QuadPool {
 
   QuadEdge* get() {
     if (ptr >= (int)buf.size()) {
-      buf.resize(buf.size() + std::max(1024, (int)buf.size()));
+      buf.resize(buf.size() + max(1024, (int)buf.size()));
     }
     return &buf[ptr++];
   }
 };
 
-static QuadPool pool;
+QuadPool pool;
 
-static QuadEdge* makeEdge(Pt from, Pt to) {
+QuadEdge* make_edge(Pt from, Pt to) {
   QuadEdge *e1 = pool.get(), *e2 = pool.get(), *e3 = pool.get(), *e4 = pool.get();
   e1->origin = from;
   e2->origin = to;
-  e3->origin = e4->origin = infPt;
+  e3->origin = e4->origin = inf_pt;
   e1->rot = e3;
   e2->rot = e4;
   e3->rot = e2;
@@ -114,27 +110,27 @@ static QuadEdge* makeEdge(Pt from, Pt to) {
   return e1;
 }
 
-static void splice(QuadEdge* a, QuadEdge* b) {
-  std::swap(a->onext->rot->onext, b->onext->rot->onext);
-  std::swap(a->onext, b->onext);
+void splice(QuadEdge* a, QuadEdge* b) {
+  swap(a->onext->rot->onext, b->onext->rot->onext);
+  swap(a->onext, b->onext);
 }
 
-static void deleteEdge(QuadEdge* e) {
+void delete_edge(QuadEdge* e) {
   splice(e, e->oprev());
   splice(e->rev(), e->rev()->oprev());
 }
 
-static QuadEdge* connect(QuadEdge* a, QuadEdge* b) {
-  QuadEdge* e = makeEdge(a->dest(), b->origin);
+QuadEdge* connect(QuadEdge* a, QuadEdge* b) {
+  QuadEdge* e = make_edge(a->dest(), b->origin);
   splice(e, a->lnext());
   splice(e->rev(), b);
   return e;
 }
 
-static bool leftOf(Pt p, QuadEdge* e) {
+bool left_of(Pt p, QuadEdge* e) {
   return gt(p.cross(e->origin, e->dest()), 0);
 }
-static bool rightOf(Pt p, QuadEdge* e) {
+bool right_of(Pt p, QuadEdge* e) {
   return lt(p.cross(e->origin, e->dest()), 0);
 }
 
@@ -142,22 +138,23 @@ template <class T> static T det3(T a1, T a2, T a3, T b1, T b2, T b3, T c1, T c2,
   return a1 * (b2 * c3 - c2 * b3) - a2 * (b1 * c3 - c1 * b3) + a3 * (b1 * c2 - c1 * b2);
 }
 
-static bool inCircle(Pt a, Pt b, Pt c, Pt d) {
+bool in_circle(Pt a, Pt b, Pt c, Pt d) {
   using i128 = __int128_t;
-  i128 det = -det3<i128>(b.x, b.y, b.sqrLength(), c.x, c.y, c.sqrLength(), d.x, d.y, d.sqrLength());
-  det += det3<i128>(a.x, a.y, a.sqrLength(), c.x, c.y, c.sqrLength(), d.x, d.y, d.sqrLength());
-  det -= det3<i128>(a.x, a.y, a.sqrLength(), b.x, b.y, b.sqrLength(), d.x, d.y, d.sqrLength());
-  det += det3<i128>(a.x, a.y, a.sqrLength(), b.x, b.y, b.sqrLength(), c.x, c.y, c.sqrLength());
+  i128 det =
+      -det3<i128>(b.x, b.y, b.sqr_length(), c.x, c.y, c.sqr_length(), d.x, d.y, d.sqr_length());
+  det += det3<i128>(a.x, a.y, a.sqr_length(), c.x, c.y, c.sqr_length(), d.x, d.y, d.sqr_length());
+  det -= det3<i128>(a.x, a.y, a.sqr_length(), b.x, b.y, b.sqr_length(), d.x, d.y, d.sqr_length());
+  det += det3<i128>(a.x, a.y, a.sqr_length(), b.x, b.y, b.sqr_length(), c.x, c.y, c.sqr_length());
   return det > 0;
 }
 
-static std::pair<QuadEdge*, QuadEdge*> buildTr(int l, int r, std::vector<Pt>& p) {
+pair<QuadEdge*, QuadEdge*> build_tr(int l, int r, vector<Pt>& p) {
   if (r - l + 1 == 2) {
-    QuadEdge* res = makeEdge(p[l], p[r]);
+    QuadEdge* res = make_edge(p[l], p[r]);
     return {res, res->rev()};
   }
   if (r - l + 1 == 3) {
-    QuadEdge *a = makeEdge(p[l], p[l + 1]), *b = makeEdge(p[l + 1], p[r]);
+    QuadEdge *a = make_edge(p[l], p[l + 1]), *b = make_edge(p[l + 1], p[r]);
     splice(a->rev(), b);
     int sg = sgn(p[l].cross(p[l + 1], p[r]));
     if (sg == 0) {
@@ -171,21 +168,21 @@ static std::pair<QuadEdge*, QuadEdge*> buildTr(int l, int r, std::vector<Pt>& p)
   }
   int mid = (l + r) / 2;
   QuadEdge *ldo, *ldi, *rdo, *rdi;
-  std::tie(ldo, ldi) = buildTr(l, mid, p);
-  std::tie(rdi, rdo) = buildTr(mid + 1, r, p);
+  tie(ldo, ldi) = build_tr(l, mid, p);
+  tie(rdi, rdo) = build_tr(mid + 1, r, p);
   while (true) {
-    if (leftOf(rdi->origin, ldi)) {
+    if (left_of(rdi->origin, ldi)) {
       ldi = ldi->lnext();
       continue;
     }
-    if (rightOf(ldi->origin, rdi)) {
+    if (right_of(ldi->origin, rdi)) {
       rdi = rdi->rev()->onext;
       continue;
     }
     break;
   }
   QuadEdge* basel = connect(rdi->rev(), ldi);
-  auto valid = [&](QuadEdge* e) { return rightOf(e->dest(), basel); };
+  auto valid = [&](QuadEdge* e) { return right_of(e->dest(), basel); };
   if (ldi->origin == ldo->origin) {
     ldo = basel->rev();
   }
@@ -195,17 +192,17 @@ static std::pair<QuadEdge*, QuadEdge*> buildTr(int l, int r, std::vector<Pt>& p)
   while (true) {
     QuadEdge* lcand = basel->rev()->onext;
     if (valid(lcand)) {
-      while (inCircle(basel->dest(), basel->origin, lcand->dest(), lcand->onext->dest())) {
+      while (in_circle(basel->dest(), basel->origin, lcand->dest(), lcand->onext->dest())) {
         QuadEdge* t = lcand->onext;
-        deleteEdge(lcand);
+        delete_edge(lcand);
         lcand = t;
       }
     }
     QuadEdge* rcand = basel->oprev();
     if (valid(rcand)) {
-      while (inCircle(basel->dest(), basel->origin, rcand->dest(), rcand->oprev()->dest())) {
+      while (in_circle(basel->dest(), basel->origin, rcand->dest(), rcand->oprev()->dest())) {
         QuadEdge* t = rcand->oprev();
-        deleteEdge(rcand);
+        delete_edge(rcand);
         rcand = t;
       }
     }
@@ -213,7 +210,7 @@ static std::pair<QuadEdge*, QuadEdge*> buildTr(int l, int r, std::vector<Pt>& p)
       break;
     }
     if (!valid(lcand) ||
-        (valid(rcand) && inCircle(lcand->dest(), lcand->origin, rcand->origin, rcand->dest()))) {
+        (valid(rcand) && in_circle(lcand->dest(), lcand->origin, rcand->origin, rcand->dest()))) {
       basel = connect(rcand, basel->rev());
     } else {
       basel = connect(basel->rev(), lcand->rev());
@@ -222,19 +219,18 @@ static std::pair<QuadEdge*, QuadEdge*> buildTr(int l, int r, std::vector<Pt>& p)
   return {ldo, rdo};
 }
 
-static std::vector<std::pair<int, int>> delaunayEdges(std::vector<Pt>& p) {
+vector<pair<int, int>> delaunay_edges(vector<Pt>& p) {
   pool.reset((int)p.size());
-  std::sort(p.begin(), p.end(), [](const Pt& a, const Pt& b) {
-    return lt(a.x, b.x) || (eq(a.x, b.x) && lt(a.y, b.y));
-  });
-  auto res = buildTr(0, (int)p.size() - 1, p);
+  sort(p.begin(), p.end(),
+       [](const Pt& a, const Pt& b) { return lt(a.x, b.x) || (eq(a.x, b.x) && lt(a.y, b.y)); });
+  auto res = build_tr(0, (int)p.size() - 1, p);
   QuadEdge* e = res.first;
-  std::vector<QuadEdge*> todo = {e};
+  vector<QuadEdge*> todo = {e};
   while (lt(e->onext->dest().cross(e->dest(), e->origin), 0)) {
     e = e->onext;
   }
 
-  std::vector<std::pair<int, int>> out;
+  vector<pair<int, int>> out;
   out.reserve(6 * p.size());
   auto add = [&](QuadEdge* start) {
     QuadEdge* cur = start;
@@ -243,7 +239,7 @@ static std::vector<std::pair<int, int>> delaunayEdges(std::vector<Pt>& p) {
       int u = cur->origin.id, v = cur->dest().id;
       if (u >= 0 && v >= 0) {
         if (u > v) {
-          std::swap(u, v);
+          swap(u, v);
         }
         out.push_back({u, v});
       }
@@ -258,8 +254,8 @@ static std::vector<std::pair<int, int>> delaunayEdges(std::vector<Pt>& p) {
     }
   }
 
-  std::sort(out.begin(), out.end());
-  out.erase(std::unique(out.begin(), out.end()), out.end());
+  sort(out.begin(), out.end());
+  out.erase(unique(out.begin(), out.end()), out.end());
   return out;
 }
 
@@ -273,18 +269,18 @@ struct Edge {
 
 struct Lca {
   int n, lg;
-  std::vector<std::vector<int>> up;
-  std::vector<std::vector<ld>> mx;
-  std::vector<int> depth;
-  std::vector<std::vector<std::pair<int, ld>>> adj;
+  vector<vector<int>> up;
+  vector<vector<ld>> mx;
+  vector<int> depth;
+  vector<vector<pair<int, ld>>> adj;
 
   explicit Lca(int n_) : n(n_) {
     lg = 1;
     while ((1 << lg) <= n) {
       ++lg;
     }
-    up.assign(lg, std::vector<int>(n, -1));
-    mx.assign(lg, std::vector<ld>(n, 0));
+    up.assign(lg, vector<int>(n, -1));
+    mx.assign(lg, vector<ld>(n, 0));
     depth.assign(n, 0);
     adj.assign(n, {});
   }
@@ -311,24 +307,24 @@ struct Lca {
           mx[k][i] = mx[k - 1][i];
         } else {
           up[k][i] = up[k - 1][mid];
-          mx[k][i] = std::max(mx[k - 1][i], mx[k - 1][mid]);
+          mx[k][i] = max(mx[k - 1][i], mx[k - 1][mid]);
         }
       }
     }
   }
 
-  ld queryMax(int a, int b) {
+  ld query_max(int a, int b) {
     if (a == b) {
       return 0;
     }
     ld ans = 0;
     if (depth[a] < depth[b]) {
-      std::swap(a, b);
+      swap(a, b);
     }
     int diff = depth[a] - depth[b];
     for (int k = 0; k < lg; ++k) {
       if (diff >> k & 1) {
-        ans = std::max(ans, mx[k][a]);
+        ans = max(ans, mx[k][a]);
         a = up[k][a];
       }
     }
@@ -337,43 +333,45 @@ struct Lca {
     }
     for (int k = lg - 1; k >= 0; --k) {
       if (up[k][a] != up[k][b]) {
-        ans = std::max({ans, mx[k][a], mx[k][b]});
+        ans = max({ans, mx[k][a], mx[k][b]});
         a = up[k][a];
         b = up[k][b];
       }
     }
-    ans = std::max({ans, mx[0][a], mx[0][b]});
+    ans = max({ans, mx[0][a], mx[0][b]});
     return ans;
   }
 };
 
+} // namespace
+
 int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
 
   int n;
-  std::cin >> n;
-  std::vector<Pt> pts(n);
+  cin >> n;
+  vector<Pt> pts(n);
   for (int i = 0; i < n; ++i) {
-    std::cin >> pts[i].x >> pts[i].y;
+    cin >> pts[i].x >> pts[i].y;
     pts[i].id = i;
   }
 
-  auto edges = delaunayEdges(pts);
+  auto edges = delaunay_edges(pts);
 
-  std::vector<Edge> elist;
+  vector<Edge> elist;
   elist.reserve(edges.size());
   for (const auto& [u, v] : edges) {
     ll dx = pts[u].x - pts[v].x;
     ll dy = pts[u].y - pts[v].y;
     elist.push_back({u, v, dx * dx + dy * dy});
   }
-  std::sort(elist.begin(), elist.end());
+  sort(elist.begin(), elist.end());
 
   struct Dsu {
-    std::vector<int> p;
+    vector<int> p;
     explicit Dsu(int n) : p(n) {
-      std::iota(p.begin(), p.end(), 0);
+      iota(p.begin(), p.end(), 0);
     }
     int find(int x) {
       return p[x] == x ? x : p[x] = find(p[x]);
@@ -396,7 +394,7 @@ int main() {
     if (!dsu.unite(e.u, e.v)) {
       continue;
     }
-    ld w = std::sqrt((ld)e.w2);
+    ld w = sqrt((ld)e.w2);
     lca.adj[e.u].push_back({e.v, w});
     lca.adj[e.v].push_back({e.u, w});
     if (++cnt == n - 1) {
@@ -406,13 +404,13 @@ int main() {
   lca.build(0);
 
   int q;
-  std::cin >> q;
+  cin >> q;
   while (q--) {
     int s, t;
-    std::cin >> s >> t;
+    cin >> s >> t;
     --s;
     --t;
-    std::cout << std::setprecision(15) << lca.queryMax(s, t) << '\n';
+    cout << setprecision(15) << lca.query_max(s, t) << '\n';
   }
   return 0;
 }

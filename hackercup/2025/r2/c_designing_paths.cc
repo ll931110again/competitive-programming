@@ -1,24 +1,14 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <unordered_map>
-#include <vector>
-#define maxn 500005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 500005;
 int T;
 int n, k, m;
 vector<vector<int>> trams;
-unordered_map<int, int> positions[maxn];
+unordered_map<int, int> positions[k_max_n];
 
 priority_queue<pair<int, vector<int>>> q;
 map<vector<int>, int> dist;
@@ -93,6 +83,8 @@ long long solve() {
 
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

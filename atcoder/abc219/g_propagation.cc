@@ -4,14 +4,7 @@
 // Heavy/light by degree (~sqrt(M)): light vertices push to neighbors;
 // heavy vertices store a signboard and neighbors pull lazily.
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <iostream>
-#include <numeric>
-#include <vector>
-
 using namespace std;
 
 int main() {

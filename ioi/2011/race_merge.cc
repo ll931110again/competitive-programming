@@ -3,28 +3,25 @@
 // scanning a full length-K array. Time: O(N log^2 N).
 
 #include "race.h"
-
-#include <algorithm>
-#include <map>
-#include <utility>
-#include <vector>
+#include <bits/stdc++.h>
+using namespace std;
 
 namespace {
 
-constexpr int kInf = 1e9;
-using DistMap = std::map<long long, int>;
+constexpr int k_inf = 1e9;
+using DistMap = map<long long, int>;
 
 struct Edge {
   int to;
   int len;
 };
 
-std::vector<Edge> adj[200005];
+vector<Edge> adj[200005];
 
 int n, target_k;
 int subtree_size[200005];
 bool removed[200005];
-int answer = kInf;
+int answer = k_inf;
 
 int dfs_size(int u, int parent) {
   subtree_size[u] = 1;
@@ -57,7 +54,7 @@ void collect(int u, int parent, int dist, int edges, DistMap& out) {
   if (it == out.end()) {
     out.emplace(dist, edges);
   } else {
-    it->second = std::min(it->second, edges);
+    it->second = min(it->second, edges);
   }
   for (const Edge& edge : adj[u]) {
     if (edge.to == parent || removed[edge.to]) {
@@ -76,7 +73,7 @@ void merge_maps(DistMap& big, DistMap& small) {
     if (it == big.end()) {
       big.emplace(dist, edges);
     } else {
-      it->second = std::min(it->second, edges);
+      it->second = min(it->second, edges);
     }
   }
   small.clear();
@@ -88,7 +85,7 @@ void query_cross(const DistMap& left, const DistMap& right) {
       const long long need = target_k - dist;
       auto it = left.find(need);
       if (it != left.end()) {
-        answer = std::min(answer, it->second + edges);
+        answer = min(answer, it->second + edges);
       }
     }
   } else {
@@ -96,7 +93,7 @@ void query_cross(const DistMap& left, const DistMap& right) {
       const long long need = target_k - dist;
       auto it = right.find(need);
       if (it != right.end()) {
-        answer = std::min(answer, it->second + edges);
+        answer = min(answer, it->second + edges);
       }
     }
   }
@@ -134,11 +131,11 @@ void decompose(int entry) {
 int best_path(int N, int K, int H[][2], int L[]) {
   n = N;
   target_k = K;
-  answer = kInf;
+  answer = k_inf;
   for (int i = 0; i < N; ++i) {
     adj[i].clear();
   }
-  std::fill(removed, removed + N, false);
+  fill(removed, removed + N, false);
 
   for (int i = 0; i < N - 1; ++i) {
     const int u = H[i][0];
@@ -148,26 +145,26 @@ int best_path(int N, int K, int H[][2], int L[]) {
   }
 
   decompose(0);
-  return answer == kInf ? -1 : answer;
+  return answer == k_inf ? -1 : answer;
 }
 
 #ifdef RACE_LOCAL_MAIN
 #include <iostream>
 
 int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
 
   int N, K;
-  if (!(std::cin >> N >> K)) {
+  if (!(cin >> N >> K)) {
     return 0;
   }
-  static int H[200005][2];
-  static int L[200005];
+  int H[200005][2];
+  int L[200005];
   for (int i = 0; i < N - 1; ++i) {
-    std::cin >> H[i][0] >> H[i][1] >> L[i];
+    cin >> H[i][0] >> H[i][1] >> L[i];
   }
-  std::cout << best_path(N, K, H, L) << '\n';
+  cout << best_path(N, K, H, L) << '\n';
   return 0;
 }
 #endif

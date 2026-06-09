@@ -1,13 +1,13 @@
 // Google Code Jam 2011 — Round 2 — C. Expensive Dinner
 
-#include <iostream>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-static vector<int> primes;
+namespace {
 
-static void sieve(int limit) {
+vector<int> primes;
+
+void sieve(int limit) {
   vector<bool> is_prime(limit + 1, true);
   is_prime[0] = is_prime[1] = false;
   for (int i = 2; i * i <= limit; i++) {
@@ -22,7 +22,7 @@ static void sieve(int limit) {
   }
 }
 
-static long long spread(long long N) {
+long long spread(long long N) {
   if (N <= 1)
     return 0;
   long long ans = 1;
@@ -37,6 +37,8 @@ static long long spread(long long N) {
   }
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

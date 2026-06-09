@@ -1,11 +1,16 @@
 #include <bits/stdc++.h>
-#define maxn 105
-#define maxk 6
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 105;
+#define maxk 6
+
 int n;
-int a[maxn];
+int a[k_max_n];
 int occupy_cnt[maxk];
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

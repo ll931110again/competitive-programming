@@ -1,29 +1,21 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
-#define maxn 200055
-#define MAXD 50
+#include <bits/stdc++.h>
 using namespace std;
 
-int T, n, m, Q;
-int a[maxn], bits[maxn];
+namespace {
 
-int tx[4 * maxn], carrier[4 * maxn];
+constexpr int k_max_n = 200055;
+#define MAXD 50
+
+int T, n, m, Q;
+int a[k_max_n], bits[k_max_n];
+
+int tx[4 * k_max_n], carrier[4 * k_max_n];
 
 // strips[i][0] corresponds to value 0
 // strips[i][1] corresponds to value m - 1
-int strips[4 * maxn][2];
-int msb[4 * maxn];
+int strips[4 * k_max_n][2];
+int msb[4 * k_max_n];
 
 bool is_all_zero = true;
 
@@ -145,32 +137,32 @@ int max_right(int i, int low, int high, int lower_bound, int val) {
 }
 
 void add(int pos) {
-  int px = get(1, 0, maxn - 1, pos);
+  int px = get(1, 0, k_max_n - 1, pos);
   if (px < m - 1) {
-    update(1, 0, maxn - 1, pos, pos, px + 1);
+    update(1, 0, k_max_n - 1, pos, pos, px + 1);
     return;
   }
-  int rs = max_right(1, 0, maxn - 1, pos, m - 1);
+  int rs = max_right(1, 0, k_max_n - 1, pos, m - 1);
   rs = max(rs, pos);
-  update(1, 0, maxn - 1, pos, rs, 0);
+  update(1, 0, k_max_n - 1, pos, rs, 0);
 
-  px = get(1, 0, maxn - 1, rs + 1);
-  update(1, 0, maxn - 1, rs + 1, rs + 1, px + 1);
+  px = get(1, 0, k_max_n - 1, rs + 1);
+  update(1, 0, k_max_n - 1, rs + 1, rs + 1, px + 1);
 }
 
 void subtract(int pos) {
-  int px = get(1, 0, maxn - 1, pos);
+  int px = get(1, 0, k_max_n - 1, pos);
   if (px > 0) {
-    update(1, 0, maxn - 1, pos, pos, px - 1);
+    update(1, 0, k_max_n - 1, pos, pos, px - 1);
     return;
   }
 
-  int rs = max_right(1, 0, maxn - 1, pos, 0);
+  int rs = max_right(1, 0, k_max_n - 1, pos, 0);
   rs = max(rs, pos);
-  update(1, 0, maxn - 1, pos, rs, m - 1);
+  update(1, 0, k_max_n - 1, pos, rs, m - 1);
 
-  px = get(1, 0, maxn - 1, rs + 1);
-  update(1, 0, maxn - 1, rs + 1, rs + 1, px - 1);
+  px = get(1, 0, k_max_n - 1, rs + 1);
+  update(1, 0, k_max_n - 1, rs + 1, rs + 1, px - 1);
 }
 
 void get_range(int i, int low, int high, int u, int v) {
@@ -189,6 +181,8 @@ void get_range(int i, int low, int high, int u, int v) {
   get_range(2 * i + 1, mid + 1, high, u, v);
 }
 
+} // namespace
+
 int main() {
   ios_base::sync_with_stdio(false);
   cin.tie(0);
@@ -205,14 +199,14 @@ int main() {
       H = max(H, a[i]);
     }
 
-    for (int i = 0; i < H + MAXD && i < maxn; i++)
+    for (int i = 0; i < H + MAXD && i < k_max_n; i++)
       if (bits[i] >= m) {
         bits[i + 1] += bits[i] / m;
         H = max(H, i + 1);
         bits[i] %= m;
       }
 
-    build(1, 0, maxn - 1);
+    build(1, 0, k_max_n - 1);
 
     while (Q--) {
       int pos, val;
@@ -226,7 +220,7 @@ int main() {
       is_all_zero = true;
       int x = msb[1];
 
-      get_range(1, 0, maxn - 1, 0, x - 1);
+      get_range(1, 0, k_max_n - 1, 0, x - 1);
       if (!is_all_zero) {
         x++;
       }

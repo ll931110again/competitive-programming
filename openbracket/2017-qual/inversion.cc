@@ -1,29 +1,13 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <list>
-#include <map>
-#include <numeric>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <utility>
-#include <vector>
-#define maxn 500005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 500005;
 int n, m;
-pair<int, int> a[maxn], b[maxn];
-int nsmall[maxn], nbig[maxn];
-int tx[4 * maxn];
+pair<int, int> a[k_max_n], b[k_max_n];
+int nsmall[k_max_n], nbig[k_max_n];
+int tx[4 * k_max_n];
 
 void add(int i, int low, int high, int pos) {
   if (low == high) {
@@ -50,7 +34,12 @@ int query(int i, int low, int high, int u, int v) {
   return query(2 * i, low, mid, u, v) + query(2 * i + 1, mid + 1, high, u, v);
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> n >> m;
   for (int i = 1; i <= n; i++) {
     cin >> a[i].first;

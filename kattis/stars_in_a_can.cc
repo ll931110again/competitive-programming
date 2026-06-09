@@ -5,15 +5,12 @@
 // minimum enclosing circle of projected stars and the max height above/below
 // the plane.  Volume = pi * r^2 * h.
 
-#include <algorithm>
-#include <cmath>
-#include <iomanip>
-#include <iostream>
-#include <random>
-#include <utility>
-#include <vector>
+#include <bits/stdc++.h>
+using namespace std;
 
 using ld = long double;
+
+namespace {
 
 struct P3 {
   ld x, y, z;
@@ -23,21 +20,21 @@ struct Face {
   int a, b, c;
 };
 
-static ld dot(const P3& a, const P3& b) {
+ld dot(const P3& a, const P3& b) {
   return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
-static P3 cross(const P3& a, const P3& b) {
+P3 cross(const P3& a, const P3& b) {
   return {a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x};
 }
 
-static ld norm(const P3& a) {
+ld norm(const P3& a) {
   return sqrtl(dot(a, a));
 }
 
-static std::vector<Face> hullFaces(const std::vector<P3>& p) {
+vector<Face> hull_faces(const vector<P3>& p) {
   int n = (int)p.size();
-  std::vector<Face> faces;
+  vector<Face> faces;
   const ld eps = 1e-9L;
   for (int i = 0; i < n; ++i) {
     for (int j = i + 1; j < n; ++j) {
@@ -75,14 +72,14 @@ static std::vector<Face> hullFaces(const std::vector<P3>& p) {
   return faces;
 }
 
-static P3 projToPlane(const P3& p, const P3& a, const P3& nUnit) {
-  ld t = dot({p.x - a.x, p.y - a.y, p.z - a.z}, nUnit);
-  return {p.x - nUnit.x * t, p.y - nUnit.y * t, p.z - nUnit.z * t};
+P3 proj_to_plane(const P3& p, const P3& a, const P3& n_unit) {
+  ld t = dot({p.x - a.x, p.y - a.y, p.z - a.z}, n_unit);
+  return {p.x - n_unit.x * t, p.y - n_unit.y * t, p.z - n_unit.z * t};
 }
 
-static ld mec2d(std::vector<std::pair<ld, ld>> p) {
-  std::mt19937 rng(42);
-  std::shuffle(p.begin(), p.end(), rng);
+ld mec2d(vector<pair<ld, ld>> p) {
+  mt19937 rng(42);
+  shuffle(p.begin(), p.end(), rng);
   ld cx = p[0].first, cy = p[0].second, r = 0;
   const ld eps = 1 + 1e-12L;
   for (size_t i = 0; i < p.size(); ++i) {
@@ -125,21 +122,23 @@ static ld mec2d(std::vector<std::pair<ld, ld>> p) {
   return r;
 }
 
+} // namespace
+
 int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
 
   int n;
-  std::cin >> n;
-  std::vector<P3> pts(n);
+  cin >> n;
+  vector<P3> pts(n);
   for (int i = 0; i < n; ++i) {
-    std::cin >> pts[i].x >> pts[i].y >> pts[i].z;
+    cin >> pts[i].x >> pts[i].y >> pts[i].z;
   }
 
   const ld pi = acosl(-1.0L);
   ld ans = 1e300L;
 
-  for (const Face& f : hullFaces(pts)) {
+  for (const Face& f : hull_faces(pts)) {
     P3 a = pts[f.a], b = pts[f.b], c = pts[f.c];
     P3 ab{b.x - a.x, b.y - a.y, b.z - a.z};
     P3 ac{c.x - a.x, c.y - a.y, c.z - a.z};
@@ -153,18 +152,18 @@ int main() {
     P3 by = cross(nrm, bx);
 
     ld height = 0;
-    std::vector<std::pair<ld, ld>> flat;
+    vector<pair<ld, ld>> flat;
     flat.reserve(n);
     for (const P3& p : pts) {
-      P3 q = projToPlane(p, a, nrm);
-      height = std::max(height, norm({p.x - q.x, p.y - q.y, p.z - q.z}));
+      P3 q = proj_to_plane(p, a, nrm);
+      height = max(height, norm({p.x - q.x, p.y - q.y, p.z - q.z}));
       flat.push_back(
           {dot({q.x - a.x, q.y - a.y, q.z - a.z}, bx), dot({q.x - a.x, q.y - a.y, q.z - a.z}, by)});
     }
     ld r = mec2d(flat);
-    ans = std::min(ans, pi * r * r * height);
+    ans = min(ans, pi * r * r * height);
   }
 
-  std::cout << std::setprecision(10) << ans << '\n';
+  cout << setprecision(10) << ans << '\n';
   return 0;
 }

@@ -1,8 +1,7 @@
-#include <algorithm>
-#include <iostream>
-#include <string>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 vector<int> c;
 long long pw[40][60];
@@ -62,7 +61,12 @@ long long descending(int x) {
   return ans;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   //    freopen("taxid.in","r",stdin);
   //    freopen("taxid.ou","w",stdout);
   cin >> n >> m >> p >> q;

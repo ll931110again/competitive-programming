@@ -1,11 +1,10 @@
 // Codeforces 1810 (CodeTON Round 4 (Div. 1 + Div. 2, Rated, Prizes!)) — B. Candies
 // Submission: https://codeforces.com/contest/1810/submission/201603434
 
-#include <cstdio>
-#include <cstdlib>
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 int T, n;
 
@@ -14,15 +13,15 @@ vector<int> solve(int n) {
     return {-1};
   }
 
-  vector<int> binaryRep;
+  vector<int> binary_rep;
   while (n > 0) {
-    binaryRep.push_back(n % 2);
+    binary_rep.push_back(n % 2);
     n /= 2;
   }
 
   vector<int> ans = {2};
-  for (int i = binaryRep.size() - 2; i > 0; i--) {
-    if (binaryRep[i] == 0) {
+  for (int i = binary_rep.size() - 2; i > 0; i--) {
+    if (binary_rep[i] == 0) {
       ans.push_back(1);
     } else {
       ans.push_back(2);
@@ -31,8 +30,13 @@ vector<int> solve(int n) {
   return ans;
 }
 
+} // namespace
+
 int main() {
-  scanf("%d", &T);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  cin >> T;
   while (T--) {
     cin >> n;
     auto ans = solve(n);

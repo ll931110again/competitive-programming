@@ -1,13 +1,16 @@
 #include <bits/stdc++.h>
-#define maxn 200005
-#define maxk 20
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
+#define maxk 20
+
 int T, n;
-int dp[maxn][maxk];
-int par[maxn];
-vector<int> adj[maxn];
-int deg[maxn];
+int dp[k_max_n][maxk];
+int par[k_max_n];
+vector<int> adj[k_max_n];
+int deg[k_max_n];
 
 void solve(int it) {
   cin >> n;
@@ -37,12 +40,12 @@ void solve(int it) {
     for (int c = 1; c < maxk; c++) {
       dp[u][c] = c;
       for (auto v : adj[u]) {
-        int minCost = 1 << 30;
+        int min_cost = 1 << 30;
         for (int d = 1; d < maxk; d++)
           if (d != c) {
-            minCost = min(minCost, dp[v][d]);
+            min_cost = min(min_cost, dp[v][d]);
           }
-        dp[u][c] += minCost;
+        dp[u][c] += min_cost;
       }
     }
 
@@ -59,7 +62,12 @@ void solve(int it) {
   cout << "Case #" << it << ": " << ret << '\n';
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   for (int it = 1; it <= T; it++) {
     solve(it);

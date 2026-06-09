@@ -6,16 +6,15 @@
 // Then x*y = g^{k+l mod (P-1)}. Cyclic convolution of exponent histograms gives counts per product
 // residue. Sum conv[m] for all m with (g^m mod P) < L.
 
-#include <algorithm>
-#include <iostream>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 using int64 = long long;
 using i128 = __int128_t;
 
-static int64 mod_pow(int64 a, int64 e, int64 mod) {
+namespace {
+
+int64 mod_pow(int64 a, int64 e, int64 mod) {
   int64 r = 1 % mod;
   a %= mod;
   while (e > 0) {
@@ -27,7 +26,7 @@ static int64 mod_pow(int64 a, int64 e, int64 mod) {
   return r;
 }
 
-static int64 mod_inv(int64 a, int64 mod) {
+int64 mod_inv(int64 a, int64 mod) {
   int64 t = 0, nt = 1, r = mod, nr = a % mod;
   while (nr != 0) {
     int64 q = r / nr;
@@ -43,7 +42,7 @@ static int64 mod_inv(int64 a, int64 mod) {
   return t;
 }
 
-static int primitive_root(int p) {
+int primitive_root(int p) {
   if (p == 2)
     return 1;
   int phi = p - 1;
@@ -73,7 +72,7 @@ static int primitive_root(int p) {
 }
 
 // ---------- NTT (power-of-2 length) ----------
-static void ntt(vector<int64>& a, bool invert, int64 mod, int64 root) {
+void ntt(vector<int64>& a, bool invert, int64 mod, int64 root) {
   int n = (int)a.size();
   for (int i = 1, j = 0; i < n; ++i) {
     int bit = n >> 1;
@@ -111,12 +110,12 @@ static void ntt(vector<int64>& a, bool invert, int64 mod, int64 root) {
   }
 }
 
-static const int64 MOD1 = 998244353;
-static const int64 MOD2 = 1004535809;
-static const int64 ROOT1 = 3;
-static const int64 ROOT2 = 3;
+const int64 MOD1 = 998244353;
+const int64 MOD2 = 1004535809;
+const int64 ROOT1 = 3;
+const int64 ROOT2 = 3;
 
-static vector<int64> convolution_ll(const vector<int64>& aa, const vector<int64>& bb) {
+vector<int64> convolution_ll(const vector<int64>& aa, const vector<int64>& bb) {
   int need = (int)aa.size() + (int)bb.size() - 1;
   int n = 1;
   while (n < need)
@@ -159,7 +158,7 @@ static vector<int64> convolution_ll(const vector<int64>& aa, const vector<int64>
 }
 
 // Cyclic convolution of length L: C[k] = sum_{i+j ≡ k (mod L)} A[i]B[j]
-static vector<int64> cyclic_convolution(const vector<int64>& A, const vector<int64>& B, int L) {
+vector<int64> cyclic_convolution(const vector<int64>& A, const vector<int64>& B, int L) {
   int pad = 1;
   while (pad < 2 * L)
     pad <<= 1;
@@ -179,8 +178,8 @@ static vector<int64> cyclic_convolution(const vector<int64>& A, const vector<int
   return C;
 }
 
-static void add_freq_mod(int64 N, int64 P, int64 A1, int64 A2, int64 A3, int64 A4, int64 A5,
-                         vector<int64>& cnt) {
+void add_freq_mod(int64 N, int64 P, int64 A1, int64 A2, int64 A3, int64 A4, int64 A5,
+                  vector<int64>& cnt) {
   cnt.assign((size_t)P, 0);
   int64 x = A1 % P, y = A2 % P;
   cnt[(size_t)x]++;
@@ -193,8 +192,8 @@ static void add_freq_mod(int64 N, int64 P, int64 A1, int64 A2, int64 A3, int64 A
   }
 }
 
-static int64 solve_one(int64 P, int64 L, int64 N, int64 A1, int64 A2, int64 A3, int64 A4, int64 A5,
-                       int64 M, int64 B1, int64 B2, int64 B3, int64 B4, int64 B5) {
+int64 solve_one(int64 P, int64 L, int64 N, int64 A1, int64 A2, int64 A3, int64 A4, int64 A5,
+                int64 M, int64 B1, int64 B2, int64 B3, int64 B4, int64 B5) {
   vector<int64> ca, cb;
   add_freq_mod(N, P, A1, A2, A3, A4, A5, ca);
   add_freq_mod(M, P, B1, B2, B3, B4, B5, cb);
@@ -225,6 +224,8 @@ static int64 solve_one(int64 P, int64 L, int64 N, int64 A1, int64 A2, int64 A3, 
   }
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

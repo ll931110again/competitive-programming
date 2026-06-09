@@ -1,11 +1,16 @@
 #include "bits/stdc++.h"
-#define maxn 200005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
 int n;
-pair<int, int> duration[maxn];
-int events[maxn];
-int interval[maxn];
+pair<int, int> duration[k_max_n];
+int events[k_max_n];
+int interval[k_max_n];
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

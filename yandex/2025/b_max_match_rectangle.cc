@@ -1,13 +1,15 @@
 #include <bits/stdc++.h>
-#define maxn 1005
 using namespace std;
 
-int T, m, n;
-string s1[maxn], s2[maxn];
-bool match[maxn][maxn];
+namespace {
 
-int height[maxn];
-int ls[maxn], rs[maxn];
+constexpr int k_max_n = 1005;
+int T, m, n;
+string s1[k_max_n], s2[k_max_n];
+bool match[k_max_n][k_max_n];
+
+int height[k_max_n];
+int ls[k_max_n], rs[k_max_n];
 
 int solve() {
   for (int i = 0; i < m; i++) {
@@ -54,6 +56,8 @@ int solve() {
 
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

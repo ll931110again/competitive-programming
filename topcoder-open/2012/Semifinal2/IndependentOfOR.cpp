@@ -1,10 +1,4 @@
-#include <algorithm>
-#include <map>
-#include <string>
-#include <unordered_set>
-#include <utility>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 class IndependentOfOR {

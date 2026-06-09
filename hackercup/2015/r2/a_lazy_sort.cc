@@ -1,24 +1,15 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
-#define maxn 50005
+#include <bits/stdc++.h>
 using namespace std;
 
-int T, n;
-int a[maxn];
+namespace {
 
-int longest_suffix[maxn];
-int min_prefix[maxn], max_prefix[maxn], min_suffix[maxn], max_suffix[maxn];
+constexpr int k_max_n = 50005;
+int T, n;
+int a[k_max_n];
+
+int longest_suffix[k_max_n];
+int min_prefix[k_max_n], max_prefix[k_max_n], min_suffix[k_max_n], max_suffix[k_max_n];
 int inf = 1e9;
 
 bool ok() {
@@ -85,6 +76,8 @@ bool ok() {
 
   return false;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

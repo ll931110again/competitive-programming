@@ -1,32 +1,24 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <random>
-#include <set>
-#include <stack>
-#include <unordered_set>
-#include <vector>
-#define maxn 40
-#define maxm 800
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 40;
+#define maxm 800
+
 pair<int, int> edges[maxm];
-int cnt[maxn];
+int cnt[k_max_n];
 int T, n, m;
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);
   cin.tie(0);
 
-  std::random_device rd;
-  std::mt19937 g(rd());
+  random_device rd;
+  mt19937 g(rd());
 
   cin >> T;
   while (T--) {

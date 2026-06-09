@@ -9,9 +9,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-static constexpr int MOD = 998244353;
-static constexpr int INV24 = 291154603; // 24^{-1} mod MOD
-static constexpr int MAX_PREFIX = 600;
+namespace {
+
+constexpr int MOD = 998244353;
+constexpr int INV24 = 291154603; // 24^{-1} mod MOD
+constexpr int MAX_PREFIX = 600;
 
 template <int P> struct ModInt {
   int x;
@@ -86,7 +88,7 @@ template <int P> vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>>& s) 
       continue;
     }
     L = i + 1 - L;
-    B = std::move(T);
+    B = move(T);
     b = d;
     m = 1;
   }
@@ -123,11 +125,11 @@ ModInt<P> kth_linear_recurrence(vector<ModInt<P>> init, const vector<ModInt<P>>&
   for (int i = 0; i < n; ++i)
     res[i][i] = ModInt<P>(1);
   long long e = k - n + 1;
-  M powM = base;
+  M pow_m = base;
   while (e > 0) {
     if (e & 1)
-      res = mat_mul(res, powM);
-    powM = mat_mul(powM, powM);
+      res = mat_mul(res, pow_m);
+    pow_m = mat_mul(pow_m, pow_m);
     e >>= 1;
   }
 
@@ -139,7 +141,7 @@ ModInt<P> kth_linear_recurrence(vector<ModInt<P>> init, const vector<ModInt<P>>&
 
 using Mint = ModInt<MOD>;
 
-static Mint count_fixed(long long S, const vector<int>& cycles) {
+Mint count_fixed(long long S, const vector<int>& cycles) {
   const int k = (int)cycles.size();
   const int cap = (int)min<long long>(S, MAX_PREFIX + 50);
   vector<Mint> dp(cap + 1), ndp(cap + 1);
@@ -158,7 +160,7 @@ static Mint count_fixed(long long S, const vector<int>& cycles) {
   return S <= cap ? dp[(int)S] : Mint(0);
 }
 
-static Mint eval_type(long long S, const vector<int>& cycles) {
+Mint eval_type(long long S, const vector<int>& cycles) {
   if (S <= MAX_PREFIX)
     return count_fixed(S, cycles);
   vector<Mint> seq;
@@ -169,6 +171,8 @@ static Mint eval_type(long long S, const vector<int>& cycles) {
   const vector<Mint> rec = berlekamp_massey(seq);
   return kth_linear_recurrence(seq, rec, S);
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

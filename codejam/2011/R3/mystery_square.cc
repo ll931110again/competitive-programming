@@ -1,14 +1,11 @@
-#include <algorithm>
-#include <functional>
-#include <iostream>
-#include <string>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 using u128 = unsigned __int128;
 
-static string to_binary_u128(u128 x) {
+namespace {
+
+string to_binary_u128(u128 x) {
   if (x == 0)
     return "0";
   string s;
@@ -20,7 +17,7 @@ static string to_binary_u128(u128 x) {
   return s;
 }
 
-static bool matches_pattern(const string& pat, const string& full) {
+bool matches_pattern(const string& pat, const string& full) {
   if (pat.size() != full.size())
     return false;
   for (int i = 0; i < (int)pat.size(); i++) {
@@ -29,6 +26,8 @@ static bool matches_pattern(const string& pat, const string& full) {
   }
   return true;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

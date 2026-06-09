@@ -1,25 +1,15 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <unordered_set>
-#include <vector>
-#define maxn 400005
+#include <bits/stdc++.h>
 using namespace std;
 
-static constexpr unsigned MOD = 1'000'000'007;
+namespace {
+
+constexpr int k_max_n = 400005;
+constexpr unsigned MOD = 1'000'000'007;
 #include "../../lib/modint.h"
 using Mint = ModInt<MOD>;
 
-Mint fact[maxn], inv[maxn];
+Mint fact[k_max_n], inv[k_max_n];
 
 Mint binom(int x, int y) {
   if (x < y) {
@@ -70,16 +60,18 @@ Mint solve(int n, int m) {
   return ans;
 }
 
+} // namespace
+
 int main() {
   ios_base::sync_with_stdio(false);
   cin.tie(0);
 
   fact[0] = 1;
-  for (int i = 1; i < maxn; i++) {
+  for (int i = 1; i < k_max_n; i++) {
     fact[i] = fact[i - 1] * i;
   }
-  inv[maxn - 1] = fact[maxn - 1].inv();
-  for (int i = maxn - 2; i >= 0; i--) {
+  inv[k_max_n - 1] = fact[k_max_n - 1].inv();
+  for (int i = k_max_n - 2; i >= 0; i--) {
     inv[i] = inv[i + 1] * (i + 1);
   }
 

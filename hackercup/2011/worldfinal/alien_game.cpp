@@ -1,12 +1,11 @@
-#include <algorithm>
-#include <cstdint>
-#include <iostream>
-#include <unordered_map>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 // Parity (mod 2) of number of pairs (i < j) with a[j] > a[i].
-static int parityIncreasingPairs(const vector<long long>& a) {
+
+int parity_increasing_pairs(const vector<long long>& a) {
   vector<long long> xs = a;
   sort(xs.begin(), xs.end());
   xs.erase(unique(xs.begin(), xs.end()), xs.end());
@@ -35,7 +34,7 @@ static int parityIncreasingPairs(const vector<long long>& a) {
   return parity;
 }
 
-static long long countWinningX(long long F, int N, int P, const vector<long long>& buckets) {
+long long count_winning_x(long long F, int N, int P, const vector<long long>& buckets) {
   // Only buckets 2..N-1 (1-indexed) can be played; endpoints never affect legality.
   // Let internal array v[1..m] correspond to buckets[2..N-1] (1-indexed).
   int m = max(0, N - 2);
@@ -43,20 +42,20 @@ static long long countWinningX(long long F, int N, int P, const vector<long long
   for (int i = 1; i <= m; i++)
     v[i] = buckets[i + 1];
 
-  auto winningForFixedInternal = [&]() -> bool {
+  auto winning_for_fixed_internal = [&]() -> bool {
     // total moves parity = parity of number of positive subarray sums in v[1..m]
     // which equals parity of number of pairs (i<j) with prefix[j] > prefix[i]
     // where prefix[0]=0, prefix[k]=sum_{t=1..k} v[t]
     vector<long long> pref(m + 1, 0);
     for (int i = 1; i <= m; i++)
       pref[i] = pref[i - 1] + v[i];
-    int parity = parityIncreasingPairs(pref);
+    int parity = parity_increasing_pairs(pref);
     return parity == 1;
   };
 
   // If unknown is on an endpoint, it cannot influence the game at all.
   if (P == 1 || P == N || m == 0) {
-    return winningForFixedInternal() ? (2 * F + 1) : 0;
+    return winning_for_fixed_internal() ? (2 * F + 1) : 0;
   }
 
   // Unknown is an internal position: internal index p = P-1 in [1..m]
@@ -70,18 +69,18 @@ static long long countWinningX(long long F, int N, int P, const vector<long long
   }
 
   // Constant parities A (within first part 0..p-1) and B (within second part p..m)
-  vector<long long> leftPref;
-  leftPref.reserve(p);
+  vector<long long> left_pref;
+  left_pref.reserve(p);
   for (int i = 0; i <= p - 1; i++)
-    leftPref.push_back(T[i]);
+    left_pref.push_back(T[i]);
 
-  vector<long long> rightPref;
-  rightPref.reserve(m - p + 1);
+  vector<long long> right_pref;
+  right_pref.reserve(m - p + 1);
   for (int j = p; j <= m; j++)
-    rightPref.push_back(T[j]);
+    right_pref.push_back(T[j]);
 
-  int A = parityIncreasingPairs(leftPref);
-  int B = parityIncreasingPairs(rightPref);
+  int A = parity_increasing_pairs(left_pref);
+  int B = parity_increasing_pairs(right_pref);
   int K = A ^ B; // C(x) parity = K xor D(x) parity
 
   // Cross-pair parity D(x): for each (i in [0..p-1], j in [p..m]),
@@ -109,7 +108,7 @@ static long long countWinningX(long long F, int N, int P, const vector<long long
   }
   sort(toggles.begin(), toggles.end());
 
-  auto parityAt = [&](long long x) -> int {
+  auto parity_at = [&](long long x) -> int {
     // D(x) parity = (#toggle <= x) mod2 because each odd-mult threshold h contributes for x>=h+1
     long long cnt = (long long)(upper_bound(toggles.begin(), toggles.end(), x) - toggles.begin());
     return (int)(cnt & 1LL);
@@ -118,25 +117,27 @@ static long long countWinningX(long long F, int N, int P, const vector<long long
   long long lo = -F, hi = F;
   long long ans = 0;
 
-  long long curX = lo;
-  int curD = parityAt(curX);
-  int curWin = (K ^ curD);
+  long long cur_x = lo;
+  int cur_d = parity_at(cur_x);
+  int cur_win = (K ^ cur_d);
 
-  size_t idx = upper_bound(toggles.begin(), toggles.end(), curX) - toggles.begin();
-  while (curX <= hi) {
-    long long nextToggle = (idx < toggles.size()) ? toggles[idx] : (hi + 1);
-    long long segR = min(hi, nextToggle - 1);
-    if (segR >= curX && curWin == 1)
-      ans += (segR - curX + 1);
-    curX = nextToggle;
-    if (curX > hi)
+  size_t idx = upper_bound(toggles.begin(), toggles.end(), cur_x) - toggles.begin();
+  while (cur_x <= hi) {
+    long long next_toggle = (idx < toggles.size()) ? toggles[idx] : (hi + 1);
+    long long seg_r = min(hi, next_toggle - 1);
+    if (seg_r >= cur_x && cur_win == 1)
+      ans += (seg_r - cur_x + 1);
+    cur_x = next_toggle;
+    if (cur_x > hi)
       break;
-    curD ^= 1;
-    curWin ^= 1;
+    cur_d ^= 1;
+    cur_win ^= 1;
     idx++;
   }
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -158,7 +159,7 @@ int main() {
         buckets[i] = x;
     }
 
-    long long ans = countWinningX(F, N, P, buckets);
+    long long ans = count_winning_x(F, N, P, buckets);
     cout << "Case #" << tc << ": " << ans << "\n";
   }
   return 0;

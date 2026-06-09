@@ -8,26 +8,27 @@
  * Hole count maps to hieroglyph (W,A,K,J,S,D).
  */
 
-#include <algorithm>
-#include <cstring>
-#include <iostream>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-static int H, W;
-static int grid[410][410];
+namespace {
 
-static const int moves[4][2] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+int H, W;
+int grid[410][410];
 
-static void floodFill(int y, int x, int newValue, int value) {
+const int moves[4][2] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+
+void flood_fill(int y, int x, int new_value, int value) {
   if (x < 0 || x > W || y < 0 || y > H)
     return;
   if (grid[y][x] != value)
     return;
-  grid[y][x] = newValue;
+  grid[y][x] = new_value;
   for (int i = 0; i < 4; ++i)
-    floodFill(y + moves[i][0], x + moves[i][1], newValue, value);
+    flood_fill(y + moves[i][0], x + moves[i][1], new_value, value);
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -63,7 +64,7 @@ int main() {
     for (int i = 0; i < H; ++i) {
       for (int j = 0; j < W; ++j) {
         if (i == 0 || j == 0 || i == H - 1 || j == W - 1)
-          floodFill(i, j, -1, 0);
+          flood_fill(i, j, -1, 0);
       }
     }
 
@@ -72,9 +73,9 @@ int main() {
       for (int j = 0; j < W; ++j) {
         if (grid[i][j] == 0) {
           ++holes[grid[i][j - 1]];
-          floodFill(i, j, grid[i][j - 1], 0);
+          flood_fill(i, j, grid[i][j - 1], 0);
         } else if (grid[i][j] == 1) {
-          floodFill(i, j, id++, 1);
+          flood_fill(i, j, id++, 1);
         }
       }
     }

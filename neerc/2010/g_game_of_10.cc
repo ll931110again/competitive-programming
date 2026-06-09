@@ -3,31 +3,10 @@
  *
  */
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <unordered_set>
-#include <utility>
-#include <vector>
 using namespace std;
+
+namespace {
 
 struct Move {
   int x, y;
@@ -94,6 +73,8 @@ Move check_for_next_move(Move last_move) {
 
   return {.x = last_move.x, .y = N + 1 - last_move.y, .score = N + 1 - last_move.score};
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

@@ -1,12 +1,11 @@
-#include <chrono>
-#include <cstdio>
-#include <dirent.h>
-#include <string>
-#include <vector>
-
 #include "traffic.cc"
+#include <dirent.h>
+#include <bits/stdc++.h>
+using namespace std;
 
-static bool read_traffic(const char* path, int& n, int p[], int s[], int d[], int& expect) {
+namespace {
+
+bool read_traffic(const char* path, int& n, int p[], int s[], int d[], int& expect) {
   FILE* f = fopen(path, "r");
   if (!f) {
     return false;
@@ -29,9 +28,9 @@ static bool read_traffic(const char* path, int& n, int p[], int s[], int d[], in
   }
   fclose(f);
 
-  std::string exp_path = path;
+  string exp_path = path;
   const size_t pos = exp_path.find("grader.in.");
-  if (pos == std::string::npos) {
+  if (pos == string::npos) {
     return false;
   }
   exp_path.replace(pos, 10, "grader.expect.");
@@ -44,23 +43,28 @@ static bool read_traffic(const char* path, int& n, int p[], int s[], int d[], in
   return ok;
 }
 
-static std::vector<std::string> list_inputs(const char* dir) {
-  std::vector<std::string> out;
+vector<string> list_inputs(const char* dir) {
+  vector<string> out;
   DIR* dp = opendir(dir);
   if (!dp) {
     return out;
   }
   for (dirent* ent; (ent = readdir(dp)) != nullptr;) {
     if (strncmp(ent->d_name, "grader.in.", 10) == 0) {
-      out.push_back(std::string(dir) + "/" + ent->d_name);
+      out.push_back(string(dir) + "/" + ent->d_name);
     }
   }
   closedir(dp);
   return out;
 }
 
+} // namespace
+
 int main() {
-  static int p[1000005], s[1000005], d[1000005];
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  int p[1000005], s[1000005], d[1000005];
   long long total_ms = 0;
   int ok = 0, fail = 0;
 
@@ -68,16 +72,16 @@ int main() {
   for (int st = 1; st <= 4; ++st) {
     char dir[256];
     snprintf(dir, sizeof dir, "traffic/appeal/Subtask%d-data", st);
-    for (const std::string& path : list_inputs(dir)) {
+    for (const string& path : list_inputs(dir)) {
       int n = 0, expect = 0;
       if (!read_traffic(path.c_str(), n, p, s, d, expect)) {
         fprintf(stderr, "read fail %s\n", path.c_str());
         return 1;
       }
-      const auto t0 = std::chrono::steady_clock::now();
+      const auto t0 = chrono::steady_clock::now();
       const int got = LocateCentre(n, p, s, d);
-      const auto t1 = std::chrono::steady_clock::now();
-      const long long ms = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
+      const auto t1 = chrono::steady_clock::now();
+      const long long ms = chrono::duration_cast<chrono::milliseconds>(t1 - t0).count();
       total_ms += ms;
 
       const char* name = strrchr(path.c_str(), '/');

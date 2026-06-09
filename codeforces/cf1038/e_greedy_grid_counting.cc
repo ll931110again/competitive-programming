@@ -1,25 +1,18 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <stack>
-#include <vector>
-#define maxn 505
-#define mod 998244353
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
+
+constexpr int k_max_n = 505;
+#define mod 998244353
 
 int T;
 int n, k;
-int a[2][maxn];
+int a[2][k_max_n];
 
-long long dp[2][maxn][maxn];
-long long delta[2 * maxn];
+long long dp[2][k_max_n][k_max_n];
+long long delta[2 * k_max_n];
 
 long long solve() {
   memset(dp, 0, sizeof dp);
@@ -88,7 +81,12 @@ long long solve() {
   return ans;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   while (T--) {
     cin >> n >> k;

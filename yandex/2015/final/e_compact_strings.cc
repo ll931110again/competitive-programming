@@ -1,18 +1,21 @@
 #include <bits/stdc++.h>
-#define maxn 10005
-#define alphabet 26
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 10005;
+#define alphabet 26
+
 int T;
-static constexpr unsigned MOD = 1'000'000'007;
+constexpr unsigned MOD = 1'000'000'007;
 #include "../../../lib/modint.h"
 using Mint = ModInt<MOD>;
 
-Mint dp[maxn][alphabet + 1][2];
-int fill_value[maxn];
-int first_pos[alphabet], last_pos[alphabet], nxt_non_empty[maxn];
+Mint dp[k_max_n][alphabet + 1][2];
+int fill_value[k_max_n];
+int first_pos[alphabet], last_pos[alphabet], nxt_non_empty[k_max_n];
 
-static int solve(const string& s) {
+int solve(const string& s) {
   int n = s.size();
   memset(fill_value, -1, sizeof fill_value);
   memset(first_pos, -1, sizeof first_pos);
@@ -89,6 +92,8 @@ static int solve(const string& s) {
 
   return (int)ans.x;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

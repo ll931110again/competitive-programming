@@ -4,15 +4,10 @@
 // Answer for [l, r] = # connected components in the friendship graph on vertices [l, r].
 // Mo's algorithm on l with rollback DSU for left extension; permanent right extension.
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <iostream>
-#include <vector>
-
 using namespace std;
+
+namespace {
 
 struct RollbackDsu {
   vector<int> p, sz;
@@ -82,6 +77,8 @@ struct RollbackDsu {
 struct Query {
   int l, r, id;
 };
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

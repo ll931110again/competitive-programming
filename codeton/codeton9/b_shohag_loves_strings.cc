@@ -1,9 +1,10 @@
 // Codeforces 2039 (CodeTON Round 9 (Div. 1 + Div. 2, Rated, Prizes!)) — B. Shohag Loves Strings
 // Submission: https://codeforces.com/contest/2039/submission/295467520
 
-#include <algorithm>
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 int T;
 
@@ -24,7 +25,12 @@ string solve(string s) {
   return "-1";
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   while (T--) {
     string s;

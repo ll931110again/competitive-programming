@@ -1,17 +1,15 @@
-#include <algorithm>
-#include <iostream>
-#include <map>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-static void dfs_left(const vector<long long>& d, int pivot, int i, int prev_t, long long sum,
-                     map<int, vector<long long>>& out) {
+namespace {
+
+void dfs_left(const vector<long long>& d, int pivot, int i, int prev_t, long long sum,
+              map<int, vector<long long>>& out) {
   if (i > pivot) {
     out[prev_t].push_back(sum);
     return;
   }
-  static const int delta[3] = {-2, 0, 2};
+  const int delta[3] = {-2, 0, 2};
   for (int dd : delta) {
     int t = prev_t + dd;
     if (t <= 0)
@@ -20,10 +18,10 @@ static void dfs_left(const vector<long long>& d, int pivot, int i, int prev_t, l
   }
 }
 
-static void dfs_right(const vector<long long>& d, int pivot, int i, int cur_t, long long sum,
-                      map<int, vector<long long>>& out) {
+void dfs_right(const vector<long long>& d, int pivot, int i, int cur_t, long long sum,
+               map<int, vector<long long>>& out) {
   // sum already includes contributions for intervals i..m-1, where cur_t = t_i
-  static const int delta[3] = {-2, 0, 2};
+  const int delta[3] = {-2, 0, 2};
   if (i == pivot + 1) {
     // choose t_pivot consistent with t_{pivot+1}=cur_t
     for (int dd : delta) {
@@ -41,6 +39,8 @@ static void dfs_right(const vector<long long>& d, int pivot, int i, int cur_t, l
     dfs_right(d, pivot, i - 1, tprev, sum + (long long)tprev * d[i - 1], out);
   }
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -90,7 +90,7 @@ int main() {
     } else if (pivot == m - 2) {
       // Right half is just the last interval (index m-1 is fixed to 2), so no t_pivot constraint
       // beyond diff. Here pivot+1 == m-1, so we can directly set based on t_{m-1}=2.
-      static const int delta[3] = {-2, 0, 2};
+      const int delta[3] = {-2, 0, 2};
       long long sum = 2LL * d[m - 1];
       for (int dd : delta) {
         int tp = 2 + dd;

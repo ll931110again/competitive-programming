@@ -1,21 +1,14 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <set>
-#include <vector>
-#define maxn 2005
+#include <bits/stdc++.h>
 using namespace std;
 
-int T, n, m;
-int parity[maxn][maxn], value[maxn][maxn];
+namespace {
 
-int par[2 * maxn], ans[2 * maxn];
+constexpr int k_max_n = 2005;
+int T, n, m;
+int parity[k_max_n][k_max_n], value[k_max_n][k_max_n];
+
+int par[2 * k_max_n], ans[2 * k_max_n];
 vector<pair<int, int>> diffs;
 
 int get_root(int x) {
@@ -37,6 +30,8 @@ void link(int u, int v) {
 int min3(int x, int y, int z) {
   return min(min(x, y), z);
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

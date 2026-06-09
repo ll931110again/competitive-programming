@@ -12,11 +12,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-static constexpr int MAXV = 300;
-static constexpr int NEG = -1e9;
+namespace {
+
+constexpr int MAXV = 300;
+constexpr int NEG = -1e9;
 
 // Editorial pruned DP: returns maximal team size S reachable under bounds (may be < optimum).
-static int solve_one_order(const vector<int>& ord, int J, int Sbd) {
+int solve_one_order(const vector<int>& ord, int J, int Sbd) {
   const int Jdim = 2 * J + 1;
   const int Sdim = 2 * Sbd + 1;
   const int oj = J;
@@ -37,20 +39,20 @@ static int solve_one_order(const vector<int>& ord, int J, int Sbd) {
 
         nxt[jj][ss] = max(nxt[jj][ss], val);
 
-        const int jT = j + 1;
-        const int sT = s + ai;
-        if (abs(jT) <= J && abs(sT) <= Sbd) {
-          const int jjT = jT + oj;
-          const int ssT = sT + os;
-          nxt[jjT][ssT] = max(nxt[jjT][ssT], val + 1);
+        const int j_t = j + 1;
+        const int s_t = s + ai;
+        if (abs(j_t) <= J && abs(s_t) <= Sbd) {
+          const int jj_t = j_t + oj;
+          const int ss_t = s_t + os;
+          nxt[jj_t][ss_t] = max(nxt[jj_t][ss_t], val + 1);
         }
 
-        const int jZ = j - 1;
-        const int sZ = s - ai;
-        if (abs(jZ) <= J && abs(sZ) <= Sbd) {
-          const int jjZ = jZ + oj;
-          const int ssZ = sZ + os;
-          nxt[jjZ][ssZ] = max(nxt[jjZ][ssZ], val + 1);
+        const int j_z = j - 1;
+        const int s_z = s - ai;
+        if (abs(j_z) <= J && abs(s_z) <= Sbd) {
+          const int jj_z = j_z + oj;
+          const int ss_z = s_z + os;
+          nxt[jj_z][ss_z] = max(nxt[jj_z][ss_z], val + 1);
         }
       }
     }
@@ -61,11 +63,11 @@ static int solve_one_order(const vector<int>& ord, int J, int Sbd) {
   return drafted >= 0 ? drafted / 2 : 0;
 }
 
-static int editorial_shuffle_pipeline(vector<int> a) {
+int editorial_shuffle_pipeline(vector<int> a) {
   const int N = (int)a.size();
   const vector<int> original = a;
 
-  const int root = (int)std::sqrt((double)N);
+  const int root = (int)sqrt((double)N);
   const int J = root + 10;
   const int Sbd = J * MAXV + MAXV;
 
@@ -85,7 +87,7 @@ static int editorial_shuffle_pipeline(vector<int> a) {
   return best;
 }
 
-static int solve_exact_bitset(const vector<int>& a) {
+int solve_exact_bitset(const vector<int>& a) {
   constexpr int BSZ = 2 * MAXV * MAXV + 1;
   constexpr int OFF = MAXV * MAXV;
 
@@ -126,6 +128,8 @@ static int solve_exact_bitset(const vector<int>& a) {
   }
   return 0;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

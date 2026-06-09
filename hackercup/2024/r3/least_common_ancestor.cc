@@ -1,38 +1,29 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
-#define maxn 3000005
+#include <bits/stdc++.h>
 using namespace std;
 
-static constexpr unsigned MOD = 998'244'353;
+namespace {
+
+constexpr int k_max_n = 3000005;
+constexpr unsigned MOD = 998'244'353;
 #include "../../../lib/modint.h"
 using Mint = ModInt<MOD>;
 
 int T, n;
-int p[maxn];
-string s[maxn];
+int p[k_max_n];
+string s[k_max_n];
 
-int up[maxn], down[maxn];
+int up[k_max_n], down[k_max_n];
 set<string> universes;
 map<string, int> indices;
-vector<int> adj[maxn];
+vector<int> adj[k_max_n];
 
-int occurences[maxn];
+int occurences[k_max_n];
 set<pair<int, int>> values;
 
-int down_ref[maxn];
-unordered_map<int, int> down_occurences[maxn];
-set<pair<int, int>> down_values[maxn];
+int down_ref[k_max_n];
+unordered_map<int, int> down_occurences[k_max_n];
+set<pair<int, int>> down_values[k_max_n];
 
 void update(pair<int, int> old_value, pair<int, int> new_value) {
   values.erase(old_value);
@@ -150,6 +141,8 @@ int solve() {
 
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

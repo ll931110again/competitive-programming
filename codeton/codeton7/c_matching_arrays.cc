@@ -1,31 +1,24 @@
 // Codeforces 1896 (CodeTON Round 7 (Div. 1 + Div. 2, Rated, Prizes!)) — C. Matching Arrays
 // Submission: https://codeforces.com/contest/1896/submission/336567371
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <stack>
-#include <map>
-#include <queue>
-#include <vector>
-#define maxn 200005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
 int T, n, k;
-int a[maxn], b[maxn];
+int a[k_max_n], b[k_max_n];
 
 struct Element {
   int value;
   int pos;
 };
 
-Element sorted_a[maxn], sorted_b[maxn], arranged_b[maxn];
-int ans[maxn];
+Element sorted_a[k_max_n], sorted_b[k_max_n], arranged_b[k_max_n];
+int ans[k_max_n];
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

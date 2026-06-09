@@ -1,15 +1,8 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <set>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 int T, n;
 string s;
@@ -41,6 +34,8 @@ int solve(string s) {
     }
   return -1;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

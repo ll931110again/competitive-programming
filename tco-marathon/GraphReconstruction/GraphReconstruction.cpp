@@ -1,18 +1,9 @@
 // C++11
-#include <algorithm>
-#include <chrono>
-#include <cstdlib>
-#include <ctime>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <random>
-#include <set>
-#include <sstream>
-#include <string>
-#include <vector>
-#define MAXE 25
+
+#include <bits/stdc++.h>
 using namespace std;
+
+#define MAXE 25
 
 struct Path {
   int from;

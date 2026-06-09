@@ -7,24 +7,21 @@
  * V(h) is unimodal (convex); ternary search on h.
  */
 
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <iomanip>
-#include <iostream>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-static const int maxn = 10005;
+namespace {
+
+const int k_max_n = 10005;
 
 struct Point {
   double x, y, z;
 };
 
-static int n;
-static Point a[maxn];
+int n;
+Point a[k_max_n];
 
-static double max_z() {
+double max_z() {
   double m = 0;
   for (int i = 0; i < n; ++i)
     m = max(m, a[i].z);
@@ -32,7 +29,7 @@ static double max_z() {
 }
 
 // Minimal base radius for height h (requires h > z_i for all i).
-static double min_radius(double h) {
+double min_radius(double h) {
   double r = 0;
   for (int i = 0; i < n; ++i) {
     double dz = h - a[i].z;
@@ -43,10 +40,12 @@ static double min_radius(double h) {
 }
 
 // Proportional to cone volume (1/3)π r^2 h; constant dropped for optimization.
-static double vol_scale(double h) {
+double vol_scale(double h) {
   double r = min_radius(h);
   return h * r * r;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

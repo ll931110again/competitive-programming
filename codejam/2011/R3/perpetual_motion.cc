@@ -1,12 +1,9 @@
-#include <algorithm>
-#include <iostream>
-#include <string>
-#include <unordered_map>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-static const int MOD = 1000003;
+namespace {
+
+const int MOD = 1000003;
 
 struct DSU {
   vector<int> p, sz;
@@ -29,7 +26,7 @@ struct DSU {
   }
 };
 
-static int mod_pow2(int e) {
+int mod_pow2(int e) {
   long long r = 1, a = 2;
   while (e > 0) {
     if (e & 1)
@@ -39,6 +36,8 @@ static int mod_pow2(int e) {
   }
   return (int)r;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

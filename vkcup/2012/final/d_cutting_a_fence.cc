@@ -1,12 +1,14 @@
 #include <bits/stdc++.h>
-#define maxn 1000005
 using namespace std;
 
-int n, h[maxn];
-int L[maxn], R[maxn], Q;
-long long d2[maxn], sum[maxn];
+namespace {
 
-void calcL() {
+constexpr int k_max_n = 1000005;
+int n, h[k_max_n];
+int L[k_max_n], R[k_max_n], Q;
+long long d2[k_max_n], sum[k_max_n];
+
+void calc_l() {
   stack<int> s;
   for (int i = 1; i <= n; i++) {
     while (!s.empty() && h[s.top()] > h[i])
@@ -16,7 +18,7 @@ void calcL() {
   }
 }
 
-void calcR() {
+void calc_r() {
   stack<int> s;
   for (int i = n; i > 0; i--) {
     while (!s.empty() && h[s.top()] >= h[i])
@@ -26,12 +28,17 @@ void calcR() {
   }
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> n;
   for (int i = 1; i <= n; i++)
     cin >> h[i];
-  calcL();
-  calcR();
+  calc_l();
+  calc_r();
   for (int i = 1; i <= n; i++) {
     d2[1] += h[i];
     d2[i - L[i] + 2] -= h[i];

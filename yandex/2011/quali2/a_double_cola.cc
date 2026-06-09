@@ -4,11 +4,18 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 string s[5] = {"Sheldon", "Leonard", "Penny", "Rajesh", "Howard"};
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   int n;
-  scanf("%d", &n);
+  cin >> n;
   long long T = 1;
   while (1) {
     for (int iter = 0; iter < 5; iter++)

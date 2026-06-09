@@ -3,35 +3,28 @@
 // Serpentine Hamiltonian path of length-2 belts (<=2 belts/cell). BFS on the path
 // graph routes each box toward the exit; exports as many boxes as fit in 1e5 turns.
 
-#if __has_include(<bits/stdc++.h>)
 #include <bits/stdc++.h>
-#else
-#include <algorithm>
-#include <iostream>
-#include <queue>
-#include <tuple>
-#include <utility>
-#include <vector>
-#endif
 using namespace std;
+
+namespace {
 
 struct Belt {
   int r0, c0, r1, c1;
 };
 
-static int N, EXIT_C, NN, EXIT_IDX;
-static vector<vector<int>> grid;
-static vector<pair<int, int>> pos;
-static vector<Belt> belts;
-static vector<vector<vector<int>>> belt_at;
-static vector<pair<int, int>> path;
-static vector<pair<int, int>> ops;
+int N, EXIT_C, NN, EXIT_IDX;
+vector<vector<int>> grid;
+vector<pair<int, int>> pos;
+vector<Belt> belts;
+vector<vector<vector<int>>> belt_at;
+vector<pair<int, int>> path;
+vector<pair<int, int>> ops;
 
-static int cell_id(int r, int c) {
+int cell_id(int r, int c) {
   return r * N + c;
 }
 
-static void apply_rotate(int m, int d) {
+void apply_rotate(int m, int d) {
   const auto& b = belts[m];
   const int v0 = grid[b.r0][b.c0], v1 = grid[b.r1][b.c1];
   grid[b.r0][b.c0] = v1;
@@ -42,7 +35,7 @@ static void apply_rotate(int m, int d) {
     pos[v1] = {b.r0, b.c0};
 }
 
-static void try_remove(int& cur) {
+void try_remove(int& cur) {
   if (grid[0][EXIT_C] != cur)
     return;
   grid[0][EXIT_C] = -1;
@@ -50,10 +43,10 @@ static void try_remove(int& cur) {
   cur++;
 }
 
-static bool build_path_warn(int seed) {
+bool build_path_warn(int seed) {
   vector<vector<char>> vis(N, vector<char>(N, 0));
-  static constexpr int dr[4] = {-1, 1, 0, 0};
-  static constexpr int dc[4] = {0, 0, -1, 1};
+  constexpr int dr[4] = {-1, 1, 0, 0};
+  constexpr int dc[4] = {0, 0, -1, 1};
   path.clear();
   int r = 0, c = EXIT_C;
   for (int step = 0; step < NN; ++step) {
@@ -84,7 +77,7 @@ static bool build_path_warn(int seed) {
   return (int)path.size() == NN;
 }
 
-static long long estimate_cost() {
+long long estimate_cost() {
   vector<vector<int>> at(N, vector<int>(N, -1));
   for (int i = 0; i < NN; ++i)
     at[path[i].first][path[i].second] = i;
@@ -98,7 +91,7 @@ static long long estimate_cost() {
   return s;
 }
 
-static void build_path_and_belts() {
+void build_path_and_belts() {
   vector<pair<int, int>> best;
   long long best_c = (1LL << 60);
   for (int t = 0; t < 64; ++t) {
@@ -124,7 +117,7 @@ static void build_path_and_belts() {
     const int k = (int)(find(path.begin(), path.end(), pair<int, int>{0, EXIT_C}) - path.begin());
     rotate(path.begin(), path.begin() + k + 1, path.end());
   } else {
-    path = std::move(best);
+    path = move(best);
   }
   EXIT_IDX = NN - 1;
 
@@ -138,12 +131,14 @@ static void build_path_and_belts() {
   }
 }
 
-static int belt_dir(int bid, int fr, int fc, int tr, int tc) {
+int belt_dir(int bid, int fr, int fc, int tr, int tc) {
   const auto& b = belts[bid];
   if (b.r0 == fr && b.c0 == fc && b.r1 == tr && b.c1 == tc)
     return 1;
   return -1;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

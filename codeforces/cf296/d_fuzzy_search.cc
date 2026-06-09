@@ -1,16 +1,12 @@
-#include <algorithm>
-#include <cmath>
-#include <complex>
-#include <iostream>
-#include <string>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 using cd = complex<double>;
-static const double PI = acos(-1.0);
+namespace {
 
-static void fft(vector<cd>& a, bool invert) {
+const double PI = acos(-1.0);
+
+void fft(vector<cd>& a, bool invert) {
   int n = (int)a.size();
 
   for (int i = 1, j = 0; i < n; i++) {
@@ -43,7 +39,7 @@ static void fft(vector<cd>& a, bool invert) {
   }
 }
 
-static vector<long long> convolution01(const vector<int>& a, const vector<int>& b) {
+vector<long long> convolution01(const vector<int>& a, const vector<int>& b) {
   int need = (int)a.size() + (int)b.size() - 1;
   int n = 1;
   while (n < need)
@@ -67,7 +63,7 @@ static vector<long long> convolution01(const vector<int>& a, const vector<int>& 
   return res;
 }
 
-static int idx(char c) {
+int idx(char c) {
   if (c == 'A')
     return 0;
   if (c == 'C')
@@ -76,6 +72,8 @@ static int idx(char c) {
     return 2;
   return 3; // 'T'
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -86,9 +84,9 @@ int main() {
   string s, t;
   cin >> s >> t;
 
-  vector<int> needCount(4, 0);
+  vector<int> need_count(4, 0);
   for (char c : t)
-    needCount[idx(c)]++;
+    need_count[idx(c)]++;
 
   // good[c][i] = 1 iff there exists p with |p-i| <= k and s[p] == c
   vector<vector<int>> good(4, vector<int>(n, 0));
@@ -118,7 +116,7 @@ int main() {
       if (!ok[i])
         continue;
       long long matches = conv[i + m - 1];
-      if (matches != needCount[c])
+      if (matches != need_count[c])
         ok[i] = 0;
     }
   }

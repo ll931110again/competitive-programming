@@ -1,18 +1,12 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <set>
-#include <vector>
-#define maxn 105
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 105;
 int T, n;
-long long a[maxn];
+long long a[k_max_n];
 
 long long query(int i, int j) {
   cout << "? " << i << ' ' << j << endl;
@@ -40,6 +34,8 @@ long long gcd(long long x, long long y) {
   }
   return gcd(y % x, x);
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

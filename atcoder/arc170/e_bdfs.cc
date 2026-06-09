@@ -6,9 +6,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-static constexpr int MOD = 998244353;
+namespace {
 
-static int mod_pow(long long a, long long e) {
+constexpr int MOD = 998244353;
+
+int mod_pow(long long a, long long e) {
   long long r = 1;
   a %= MOD;
   while (e > 0) {
@@ -20,11 +22,11 @@ static int mod_pow(long long a, long long e) {
   return (int)r;
 }
 
-static int mod_inv(int a) {
+int mod_inv(int a) {
   return mod_pow(a, MOD - 2);
 }
 
-static int solve(long long N, int P) {
+int solve(long long N, int P) {
   long long n = N - 1;
   int inv2 = (MOD + 1) / 2;
   int inv100 = mod_inv(100);
@@ -53,6 +55,8 @@ static int solve(long long N, int P) {
   ans = (int)((__int128)ans * inv2 % MOD);
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

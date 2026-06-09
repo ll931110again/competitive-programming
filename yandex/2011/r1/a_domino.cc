@@ -4,6 +4,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 int dx[4] = {-1, 0, 1, 0};
 int dy[4] = {0, 1, 0, -1};
 int c[5][105], n;
@@ -30,11 +32,16 @@ void place(int ax, int ay, int bx, int by) {
     }
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   // freopen("a.in","r",stdin);
   // freopen("a.ou","w",stdout);
 
-  scanf("%d", &n);
+  cin >> n;
   memset(c, -1, sizeof(c));
   if (n % 2 == 0) {
     for (int i = 0; i < n; i += 2) {

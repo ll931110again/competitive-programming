@@ -8,9 +8,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-static constexpr int MOD = 200003;
+namespace {
 
-static int pow_mod(int a, int mod, long long e) {
+constexpr int MOD = 200003;
+
+int pow_mod(int a, int mod, long long e) {
   long long r = 1, b = a % mod;
   while (e > 0) {
     if (e & 1)
@@ -35,7 +37,7 @@ struct CombPrime {
       ifac[i - 1] = int(1LL * ifac[i] * i % p);
   }
 
-  int smallC(int n, int k) const {
+  int small_c(int n, int k) const {
     if (k < 0 || k > n)
       return 0;
     return int(1LL * fac[n] * ifac[k] % p * ifac[n - k] % p);
@@ -50,13 +52,15 @@ struct CombPrime {
       const int ki = int(k % p);
       if (ki > ni)
         return 0;
-      res = res * smallC(ni, ki) % p;
+      res = res * small_c(ni, ki) % p;
       n /= p;
       k /= p;
     }
     return int(res);
   }
 };
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

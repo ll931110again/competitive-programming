@@ -7,7 +7,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-static constexpr unsigned MOD = 1000000007;
+namespace {
+
+constexpr unsigned MOD = 1000000007;
 
 template <unsigned M> struct ModInt {
   unsigned x;
@@ -39,7 +41,9 @@ template <unsigned M> struct ModInt {
 
 using Mint = ModInt<MOD>;
 
-static constexpr int MAXD = 4005;
+constexpr int MAXD = 4005;
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);
@@ -75,7 +79,7 @@ int main() {
     return 0;
   }
 
-  static Mint f[2][2][MAXD], g[2][2][MAXD];
+  Mint f[2][2][MAXD], g[2][2][MAXD];
   f[1][0][0] = 1;
   for (int i = len; i >= 1; i--) {
     const Mint a0 = Mint(1LL * p * (p + 1) / 2);

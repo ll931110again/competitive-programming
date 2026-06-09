@@ -1,10 +1,6 @@
 // Google Code Jam 2011 — Round 2 — A. Airport Walkways
 
-#include <algorithm>
-#include <iomanip>
-#include <iostream>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 int main() {

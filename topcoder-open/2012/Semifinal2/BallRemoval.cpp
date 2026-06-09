@@ -1,10 +1,4 @@
-#include <algorithm>
-#include <cstdint>
-#include <map>
-#include <string>
-#include <utility>
-#include <vector>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 class BallRemoval {

@@ -1,20 +1,17 @@
-#include <algorithm>
-#include <cstdio>
-#include <iostream>
-#include <string>
-#include <unordered_map>
-#include <vector>
-#define maxn 805
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 805;
 int T;
 int m, n;
 long long K;
 
-int a[maxn][maxn];
+int a[k_max_n][k_max_n];
 unordered_map<int, vector<pair<int, int>>> buckets;
 
-int tx[maxn][maxn];
+int tx[k_max_n][k_max_n];
 
 void update(int x, int y, int delta) {
   for (int dx = x; dx <= m; dx += (dx & -dx)) {
@@ -89,6 +86,8 @@ int solve() {
 
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

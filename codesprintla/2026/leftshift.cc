@@ -1,15 +1,11 @@
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <algorithm>
-#include <iostream>
-#include <string>
-#include <vector>
-
 using namespace std;
 
+namespace {
+
 // Char at position p after left-cyclic-shifting S[ls..rs] by 1.
-static inline char char_after_shift(const string& S, int ls, int rs, int p) {
+
+inline char char_after_shift(const string& S, int ls, int rs, int p) {
   if (p < ls || p > rs)
     return S[(size_t)p];
   const int m = rs - ls + 1;
@@ -19,7 +15,7 @@ static inline char char_after_shift(const string& S, int ls, int rs, int p) {
 
 // suffix_even_ub[i] = max even palindrome length centered at any j >= i (loose bound 2*min(j,
 // n-j)). Lets Manacher abort early when no remaining center can beat the running best.
-static vector<int> build_suffix_ub(int n) {
+vector<int> build_suffix_ub(int n) {
   vector<int> ub((size_t)n + 1, 0);
   for (int i = n - 1; i >= 0; --i) {
     const int cap = 2 * min(i, n - i);
@@ -32,8 +28,8 @@ static vector<int> build_suffix_ub(int n) {
 // Initializing best_here to floor_best lets us prune any center whose maximum possible
 // even palindrome length (suffix_even_ub[i]) cannot exceed the global best so far.
 template <class F>
-static int longest_even_manacher(int n, F&& getch, const vector<int>& suffix_even_ub,
-                                 vector<int>& d2, int floor_best) {
+int longest_even_manacher(int n, F&& getch, const vector<int>& suffix_even_ub, vector<int>& d2,
+                          int floor_best) {
   d2.assign((size_t)n, 0);
   int best_here = floor_best;
   int l = 0, r = -1;
@@ -56,6 +52,8 @@ static int longest_even_manacher(int n, F&& getch, const vector<int>& suffix_eve
   }
   return best_here;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

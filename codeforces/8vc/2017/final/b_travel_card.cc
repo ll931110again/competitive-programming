@@ -2,21 +2,25 @@
 // Submission: https://codeforces.com/contest/756/submission/45384891
 
 #include <bits/stdc++.h>
-#include <iomanip>
-#include <list>
-#include <numeric>
-#define maxn 100005
 using namespace std;
 
-int n, ts[maxn], dp[maxn];
+namespace {
+
+constexpr int k_max_n = 100005;
+int n, ts[k_max_n], dp[k_max_n];
 int prices[3] = {20, 50, 120};
 int timediff[3] = {0, 90, 1440};
 int idx[3] = {0, 0, 0};
 
+} // namespace
+
 int main() {
-  scanf("%d", &n);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
+  cin >> n;
   for (int i = 1; i <= n; i++) {
-    scanf("%d", &ts[i]);
+    cin >> ts[i];
   }
 
   for (int i = 1; i <= n; i++) {

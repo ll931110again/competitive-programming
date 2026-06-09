@@ -1,9 +1,10 @@
 // Codeforces 2039 (CodeTON Round 9 (Div. 1 + Div. 2, Rated, Prizes!)) — C1. Shohag Loves XOR (Easy
 // Version) Submission: https://codeforces.com/contest/2039/submission/295468719
 
-#include <algorithm>
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
+
+namespace {
 
 int T;
 long long x, m;
@@ -23,7 +24,12 @@ long long solve(long long x, long long m) {
   return ret;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   while (T--) {
     cin >> x >> m;

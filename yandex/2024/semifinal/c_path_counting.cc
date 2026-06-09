@@ -1,18 +1,26 @@
 #include <bits/stdc++.h>
-#define maxn 205
-#define maxk 30
 using namespace std;
+
+namespace {
+
+constexpr int k_max_n = 205;
+#define maxk 30
 
 int n, m, Q;
 
-static constexpr unsigned MOD = 1'000'000'007;
+constexpr unsigned MOD = 1'000'000'007;
 #include "../../../lib/modint.h"
 using Mint = ModInt<MOD>;
 
-Mint both[maxn][maxn][maxk];
-Mint ones[maxn][maxk];
+Mint both[k_max_n][k_max_n][maxk];
+Mint ones[k_max_n][maxk];
+
+} // namespace
 
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> n >> m >> Q;
   for (int i = 0; i < m; i++) {
     int u, v;
@@ -43,7 +51,7 @@ int main() {
     int u, k;
     cin >> u >> k;
 
-    Mint cur[maxn], nxt[maxn];
+    Mint cur[k_max_n], nxt[k_max_n];
     memset(cur, 0, sizeof cur);
     cur[u] = 1;
 

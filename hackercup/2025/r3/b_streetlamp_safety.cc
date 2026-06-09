@@ -42,30 +42,20 @@
     Time complexity: O(N^2).
  */
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
-#define maxn 6005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 6005;
 int T;
 int n;
-int cost[maxn], len[maxn];
+int cost[k_max_n], len[k_max_n];
 
-long long ss[maxn];
-long long dp[maxn][maxn][2];
+long long ss[k_max_n];
+long long dp[k_max_n][k_max_n][2];
 long long inf = 1e18;
-int max_val[maxn][maxn];
+int max_val[k_max_n][k_max_n];
 
 long long solve() {
   for (int i = 1; i <= n; i++) {
@@ -123,6 +113,8 @@ long long solve() {
 
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

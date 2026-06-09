@@ -1,19 +1,12 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <set>
-#include <vector>
-#define maxn 200005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
 int T, n;
-pair<int, int> a[maxn];
+pair<int, int> a[k_max_n];
 
 bool ok(int mid) {
   int maxy = 0;
@@ -30,6 +23,8 @@ bool ok(int mid) {
   }
   return true;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

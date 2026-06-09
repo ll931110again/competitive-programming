@@ -1,17 +1,19 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-static constexpr int maxn = 100005;
-static constexpr unsigned MOD = 1'000'000'007;
+namespace {
+
+constexpr int k_max_n = 100005;
+constexpr unsigned MOD = 1'000'000'007;
 #include "../../../lib/modint.h"
 using Mint = ModInt<MOD>;
 
 int T, n;
 
-vector<int> adj[maxn];
-Mint dp[maxn];
-int sz[maxn];
-Mint fact[maxn], inv[maxn], p2[maxn];
+vector<int> adj[k_max_n];
+Mint dp[k_max_n];
+int sz[k_max_n];
+Mint fact[k_max_n], inv[k_max_n], p2[k_max_n];
 
 Mint binom(int x, int y) {
   return fact[x] * inv[y] * inv[x - y];
@@ -43,21 +45,23 @@ Mint rec(int u, int p) {
   return dp[u];
 }
 
+} // namespace
+
 int main() {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
 
   fact[0] = 1;
-  for (int i = 1; i < maxn; i++) {
+  for (int i = 1; i < k_max_n; i++) {
     fact[i] = fact[i - 1] * i;
   }
-  inv[maxn - 1] = Mint(1) / fact[maxn - 1];
-  for (int i = maxn - 2; i >= 0; i--) {
+  inv[k_max_n - 1] = Mint(1) / fact[k_max_n - 1];
+  for (int i = k_max_n - 2; i >= 0; i--) {
     inv[i] = inv[i + 1] * (i + 1);
   }
 
   p2[0] = 1;
-  for (int i = 1; i < maxn; i++) {
+  for (int i = 1; i < k_max_n; i++) {
     p2[i] = p2[i - 1] * 2;
   }
 

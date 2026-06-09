@@ -4,22 +4,29 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
 int num[4], wait[4];
 int n;
 int a[100010];
 priority_queue<long long> q[4];
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   // freopen("b.in","r",stdin);
   // freopen("b.ou","w",stdout);
 
   for (int i = 1; i <= 3; i++)
-    scanf("%d", &num[i]);
+    cin >> num[i];
   for (int i = 1; i <= 3; i++)
-    scanf("%d", &wait[i]);
-  scanf("%d", &n);
+    cin >> wait[i];
+  cin >> n;
   for (int i = 0; i < n; i++)
-    scanf("%d", &a[i]);
+    cin >> a[i];
 
   for (int i = 1; i <= 3; i++) {
     num[i] = min(num[i], n);
@@ -29,14 +36,14 @@ int main() {
 
   long long ret = 0;
   for (int i = 0; i < n; i++) {
-    long long waitTime = a[i];
+    long long wait_time = a[i];
     for (int j = 1; j <= 3; j++) {
       long long used = -q[j].top();
       q[j].pop();
-      waitTime = max(waitTime, used) + wait[j];
-      q[j].push(-waitTime);
+      wait_time = max(wait_time, used) + wait[j];
+      q[j].push(-wait_time);
     }
-    ret = max(ret, waitTime - a[i]);
+    ret = max(ret, wait_time - a[i]);
   }
   cout << ret << endl;
 }

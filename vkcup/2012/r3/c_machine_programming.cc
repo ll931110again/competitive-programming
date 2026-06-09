@@ -1,27 +1,12 @@
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <utility>
-#include <vector>
-#define maxm 20002
+#include <bits/stdc++.h>
 using namespace std;
 
+#define maxm 20002
+
+namespace {
+
 int cap[maxm], flow[maxm], cost[maxm], a[maxm], b[maxm], c[maxm];
-int taskIdx[maxm];
+int task_idx[maxm];
 
 int n, k, m, end;
 vector<pair<int, int>> adj[maxm];
@@ -35,8 +20,8 @@ void add(int u, int v, int f, int c) {
   m += 2;
 }
 
-void maxFlow() {
-  int trace[2005], traceEdge[2005], d[2005];
+void max_flow() {
+  int trace[2005], trace_edge[2005], d[2005];
   bool inqueue[2005];
 
   while (1) {
@@ -61,7 +46,7 @@ void maxFlow() {
         if (d[v] > d[u] + fcost) {
           d[v] = d[u] + fcost;
           trace[v] = u;
-          traceEdge[v] = road;
+          trace_edge[v] = road;
 
           if (!inqueue[v])
             q.push(v);
@@ -73,14 +58,19 @@ void maxFlow() {
     if (d[end] >= INF)
       return;
     for (int v = end, u = trace[v]; v != 0; v = u, u = trace[v]) {
-      int x = traceEdge[v];
+      int x = trace_edge[v];
       flow[x]++;
       flow[x ^ 1]--;
     }
   }
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> n >> k;
   for (int i = 0; i < n; i++) {
     cin >> a[i] >> b[i] >> c[i];
@@ -105,12 +95,12 @@ int main() {
   for (int i = 0; i < end; i++)
     add(i, i + 1, k, 0);
   for (int i = 0; i < n; i++) {
-    taskIdx[i] = m;
+    task_idx[i] = m;
     add(a[i], b[i], 1, -c[i]);
   }
-  maxFlow();
+  max_flow();
   for (int i = 0; i < n; i++)
-    if (flow[taskIdx[i]] > 0)
+    if (flow[task_idx[i]] > 0)
       cout << "1 ";
     else
       cout << "0 ";

@@ -1,23 +1,14 @@
-#ifdef ONLINE_JUDGE
-#include <bits/stdc++.h>
-#endif
 
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <stack>
-#include <vector>
-#define maxn 250005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 250005;
 int T, n, Q;
-int a[maxn];
-int nc[maxn][2];
-int next_same[maxn];
+int a[k_max_n];
+int nc[k_max_n][2];
+int next_same[k_max_n];
 
 int solve(int L, int R) {
   int nzeros = nc[R][0] - nc[L - 1][0];
@@ -33,6 +24,8 @@ int solve(int L, int R) {
 
   return ans;
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

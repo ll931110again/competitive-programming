@@ -3,36 +3,15 @@
  *
  */
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <algorithm>
-#include <bitset>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <deque>
-#include <fstream>
-#include <functional>
-#include <iomanip>
-#include <iostream>
-#include <map>
-#include <queue>
-#include <set>
-#include <sstream>
-#include <stack>
-#include <string>
-#include <unordered_set>
-#include <utility>
-#include <vector>
-#define maxn 10005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 10005;
 int m, n;
-vector<int> adj[maxn];
-int color[maxn];
+vector<int> adj[k_max_n];
+int color[k_max_n];
 int ks;
 
 void DFS(int u) {
@@ -52,6 +31,8 @@ void DFS(int u) {
       DFS(v);
     }
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

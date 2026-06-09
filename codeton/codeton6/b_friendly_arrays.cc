@@ -1,17 +1,14 @@
 // Codeforces 1870 (CodeTON Round 6 (Div. 1 + Div. 2, Rated, Prizes!)) — B. Friendly Arrays
 // Submission: https://codeforces.com/contest/1870/submission/307569758
 
-#include <algorithm>
-#include <iostream>
-#include <cstring>
-#include <queue>
-#include <vector>
-#include <unordered_set>
-#define maxn 200005
+#include <bits/stdc++.h>
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
 int T, n, m;
-int a[maxn], b[maxn];
+int a[k_max_n], b[k_max_n];
 
 void solve() {
   int or_value = 0;
@@ -36,9 +33,11 @@ void solve() {
   cout << mini << ' ' << maxi << endl;
 }
 
+} // namespace
+
 int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
 
   cin >> T;
   while (T--) {

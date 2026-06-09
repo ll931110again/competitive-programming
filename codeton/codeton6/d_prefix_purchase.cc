@@ -1,22 +1,15 @@
 // Codeforces 1870 (CodeTON Round 6 (Div. 1 + Div. 2, Rated, Prizes!)) — D. Prefix Purchase
 // Submission: https://codeforces.com/contest/1870/submission/334302925
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-#include <algorithm>
-#include <iostream>
-#include <cstring>
-#include <queue>
-#include <stack>
-#include <vector>
-#include <unordered_set>
-#define maxn 200005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 200005;
 int T, n, k;
-int a[maxn];
-int amount[maxn];
+int a[k_max_n];
+int amount[k_max_n];
 int budget;
 
 void solve() {
@@ -67,9 +60,11 @@ void solve() {
   cout << endl;
 }
 
+} // namespace
+
 int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
 
   cin >> T;
   while (T--) {

@@ -8,10 +8,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-static constexpr int MOD = 998244353;
-static constexpr int LIM = 6;
+namespace {
 
-static long long mod_pow(long long a, long long e) {
+constexpr int MOD = 998244353;
+constexpr int LIM = 6;
+
+long long mod_pow(long long a, long long e) {
   long long r = 1;
   a %= MOD;
   while (e > 0) {
@@ -23,14 +25,14 @@ static long long mod_pow(long long a, long long e) {
   return r;
 }
 
-static int encode(const string& s) {
+int encode(const string& s) {
   int mask = 0;
   for (char c : s)
     mask = mask * 2 + (c == 'b');
   return mask;
 }
 
-static string decode(int mask, int len) {
+string decode(int mask, int len) {
   string s(len, 'a');
   for (int i = len - 1; i >= 0; --i) {
     s[i] = (mask & 1) ? 'b' : 'a';
@@ -39,7 +41,7 @@ static string decode(int mask, int len) {
   return s;
 }
 
-static bool contains_banned(const string& t, const vector<string>& bad) {
+bool contains_banned(const string& t, const vector<string>& bad) {
   for (const string& s : bad)
     if (t.find(s) != string::npos)
       return true;
@@ -56,7 +58,7 @@ struct Mat {
         a[i][i] = 1;
   }
 
-  static Mat mul(const Mat& x, const Mat& y) {
+  Mat mul(const Mat& x, const Mat& y) {
     Mat z(x.n);
     for (int i = 0; i < x.n; ++i)
       for (int k = 0; k < x.n; ++k)
@@ -66,7 +68,7 @@ struct Mat {
     return z;
   }
 
-  static Mat pow(Mat base, long long e) {
+  Mat pow(Mat base, long long e) {
     Mat res(base.n, true);
     while (e > 0) {
       if (e & 1)
@@ -85,6 +87,8 @@ struct Mat {
     return r;
   }
 };
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

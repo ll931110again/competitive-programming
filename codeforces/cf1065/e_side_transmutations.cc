@@ -15,7 +15,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-static constexpr unsigned MOD = 998244353;
+namespace {
+
+constexpr unsigned MOD = 998244353;
 
 template <unsigned M> struct ModInt {
   unsigned x;
@@ -86,7 +88,12 @@ template <unsigned M> struct ModInt {
 
 using Mint = ModInt<MOD>;
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   long long n;
   int m;
   long long alphabet;

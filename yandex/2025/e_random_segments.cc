@@ -1,19 +1,23 @@
 #include <bits/stdc++.h>
-#define maxn 200005
 using namespace std;
 
-static constexpr unsigned MOD = 1'000'000'007;
+namespace {
+
+constexpr int k_max_n = 200005;
+constexpr unsigned MOD = 1'000'000'007;
 #include "../../lib/modint.h"
 using Mint = ModInt<MOD>;
 
-struct event {
+struct Event {
   int l, r;
   Mint p;
 };
 
 int T, n, k;
-event E[maxn];
-Mint ans[maxn];
+event E[k_max_n];
+Mint ans[k_max_n];
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

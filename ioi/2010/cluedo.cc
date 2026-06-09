@@ -1,4 +1,8 @@
 #include "grader.h"
+#include <bits/stdc++.h>
+using namespace std;
+
+namespace {
 
 void Solve() {
   int t[] = {0, 6, 10, 6};
@@ -10,3 +14,5 @@ void Solve() {
     }
   } while (r != 0);
 }
+
+} // namespace

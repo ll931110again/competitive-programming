@@ -6,9 +6,10 @@
 // lazy-update the upper part, reinsert the middle part one-by-one (each at least
 // halves, so O(k log^2 k) total).
 
-#include <algorithm>
-#include <cstdio>
-#include <vector>
+#include <bits/stdc++.h>
+using namespace std;
+
+namespace {
 
 struct Shirt {
   int cost;
@@ -25,9 +26,9 @@ struct Node {
   int lazy_shirts = 0;
 };
 
-constexpr int kMaxNodes = 400005;
+constexpr int k_max_nodes = 400005;
 
-Node pool[kMaxNodes];
+Node pool[k_max_nodes];
 int pool_used = 0;
 int root = 0;
 
@@ -107,7 +108,7 @@ void insert_by_key(int& t, int node) {
   merge_nodes(t, t, right);
 }
 
-void collect(int t, std::vector<int>& out) {
+void collect(int t, vector<int>& out) {
   if (!t) {
     return;
   }
@@ -131,7 +132,7 @@ void buy_shirt(int cost) {
   int high = 0;
   split_key(rest, cost, mid, high);
 
-  std::vector<int> reinsert;
+  vector<int> reinsert;
   collect(mid, reinsert);
   for (int node : reinsert) {
     pool[node].ch[0] = pool[node].ch[1] = 0;
@@ -141,7 +142,7 @@ void buy_shirt(int cost) {
   merge_nodes(root, low, high);
 }
 
-void output(int t, std::vector<int>& answers) {
+void output(int t, vector<int>& answers) {
   if (!t) {
     return;
   }
@@ -151,14 +152,19 @@ void output(int t, std::vector<int>& answers) {
   output(pool[t].ch[1], answers);
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   int n;
-  std::scanf("%d", &n);
-  std::vector<Shirt> shirts(n);
+  cin >> n;
+  vector<Shirt> shirts(n);
   for (int i = 0; i < n; ++i) {
-    std::scanf("%d %d", &shirts[i].cost, &shirts[i].quality);
+    cin >> shirts[i].cost >> shirts[i].quality;
   }
-  std::sort(shirts.begin(), shirts.end(), [](const Shirt& a, const Shirt& b) {
+  sort(shirts.begin(), shirts.end(), [](const Shirt& a, const Shirt& b) {
     if (a.quality != b.quality) {
       return a.quality > b.quality;
     }
@@ -166,14 +172,14 @@ int main() {
   });
 
   int k;
-  std::scanf("%d", &k);
-  std::vector<int> order(k);
+  cin >> k;
+  vector<int> order(k);
   for (int i = 0; i < k; ++i) {
     int balance = 0;
-    std::scanf("%d", &balance);
+    cin >> balance;
     order[i] = new_node(balance, i);
   }
-  std::sort(order.begin(), order.end(), [](int a, int b) { return pool[a].key < pool[b].key; });
+  sort(order.begin(), order.end(), [](int a, int b) { return pool[a].key < pool[b].key; });
   for (int node : order) {
     merge_nodes(root, root, node);
   }
@@ -182,10 +188,10 @@ int main() {
     buy_shirt(shirt.cost);
   }
 
-  std::vector<int> answers(k, 0);
+  vector<int> answers(k, 0);
   output(root, answers);
   for (int i = 0; i < k; ++i) {
-    std::printf("%d%c", answers[i], " \n"[i + 1 == k]);
+    printf("%d%c", answers[i], " \n"[i + 1 == k]);
   }
   return 0;
 }

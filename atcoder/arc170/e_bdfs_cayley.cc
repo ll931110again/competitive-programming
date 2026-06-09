@@ -9,7 +9,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-static constexpr int MOD = 998244353;
+namespace {
+
+constexpr int MOD = 998244353;
 
 template <int P> struct ModInt {
   int x;
@@ -84,7 +86,7 @@ template <int P> vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>>& s) 
       continue;
     }
     L = i + 1 - L;
-    B = std::move(T);
+    B = move(T);
     b = d;
     m = 1;
   }
@@ -121,11 +123,11 @@ ModInt<P> kth_linear_recurrence(vector<ModInt<P>> init, const vector<ModInt<P>>&
   for (int i = 0; i < n; ++i)
     res[i][i] = ModInt<P>(1);
   long long e = k - n + 1;
-  M powM = base;
+  M pow_m = base;
   while (e > 0) {
     if (e & 1)
-      res = mat_mul(res, powM);
-    powM = mat_mul(powM, powM);
+      res = mat_mul(res, pow_m);
+    pow_m = mat_mul(pow_m, pow_m);
     e >>= 1;
   }
 
@@ -137,12 +139,12 @@ ModInt<P> kth_linear_recurrence(vector<ModInt<P>> init, const vector<ModInt<P>>&
 
 using Mint = ModInt<MOD>;
 
-static Mint mod_inv(Mint a) {
+Mint mod_inv(Mint a) {
   return mod_pow(a, MOD - 2);
 }
 
 // Closed form for a_N (valid for all N); used to build the BM prefix quickly.
-static Mint prefix_term(long long N, int P) {
+Mint prefix_term(long long N, int P) {
   long long n = N - 1;
   Mint inv2 = Mint((MOD + 1) / 2);
   Mint r = Mint(2) * Mint(P) * mod_inv(Mint(100)) - Mint(1);
@@ -165,7 +167,7 @@ static Mint prefix_term(long long N, int P) {
 }
 
 #ifdef BDFS_BRUTE_PREFIX
-static Mint brute_expected(int N, int P) {
+Mint brute_expected(int N, int P) {
   const Mint prob_front = Mint(P) * mod_pow(Mint(100), MOD - 2);
   const Mint prob_back = Mint(1) - prob_front;
 
@@ -180,7 +182,7 @@ static Mint brute_expected(int N, int P) {
     int v = Q.front().first, d = Q.front().second;
     Q.pop_front();
     if (D[v] != -1)
-      return dfs(std::move(D), std::move(Q));
+      return dfs(move(D), move(Q));
     D[v] = d;
     vector<int> nbrs;
     for (int dx : {-1, 1}) {
@@ -194,33 +196,33 @@ static Mint brute_expected(int N, int P) {
     }
     sort(nbrs.begin(), nbrs.end());
     Mint sum_exp(0);
-    function<void(int, deque<pair<int, int>>, Mint)> gen = [&](int i, deque<pair<int, int>> curQ,
+    function<void(int, deque<pair<int, int>>, Mint)> gen = [&](int i, deque<pair<int, int>> cur_q,
                                                                Mint prob) {
       if (i == (int)nbrs.size()) {
-        sum_exp += dfs(D, std::move(curQ)).first * prob;
+        sum_exp += dfs(D, move(cur_q)).first * prob;
         return;
       }
       int x = nbrs[i];
-      auto qf = curQ;
+      auto qf = cur_q;
       qf.push_front({x, d + 1});
-      gen(i + 1, std::move(qf), prob * prob_front);
-      auto qb = curQ;
+      gen(i + 1, move(qf), prob * prob_front);
+      auto qb = cur_q;
       qb.push_back({x, d + 1});
-      gen(i + 1, std::move(qb), prob * prob_back);
+      gen(i + 1, move(qb), prob * prob_back);
     };
-    gen(0, std::move(Q), Mint(1));
+    gen(0, move(Q), Mint(1));
     return {sum_exp, Mint(1)};
   };
 
   vector<int> D(N, -1);
   deque<pair<int, int>> Q;
   Q.emplace_back(0, 0);
-  return dfs(D, std::move(Q)).first;
+  return dfs(D, move(Q)).first;
 }
 #endif
 
-static Mint solve_bm(long long N, int P) {
-  static unordered_map<int, pair<vector<Mint>, vector<Mint>>> cache;
+Mint solve_bm(long long N, int P) {
+  unordered_map<int, pair<vector<Mint>, vector<Mint>>> cache;
   auto& entry = cache[P];
   if (entry.first.empty()) {
     constexpr int PREFIX = 64;
@@ -236,6 +238,8 @@ static Mint solve_bm(long long N, int P) {
   }
   return kth_linear_recurrence(entry.first, entry.second, N - 3);
 }
+
+} // namespace
 
 int main() {
   ios::sync_with_stdio(false);

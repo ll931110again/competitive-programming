@@ -1,23 +1,14 @@
 // Codeforces 1810 (CodeTON Round 4 (Div. 1 + Div. 2, Rated, Prizes!)) — G. The Maximum Prefix
 // Submission: https://codeforces.com/contest/1810/submission/331018545
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <stack>
-#include <map>
-#include <queue>
-#include <vector>
-#define maxn 5005
 using namespace std;
 
+namespace {
+
+constexpr int k_max_n = 5005;
 template <unsigned M_> struct ModInt {
-  static constexpr unsigned M = M_;
+  constexpr unsigned M = M_;
   unsigned x;
   constexpr ModInt() : x(0U) {}
   constexpr ModInt(unsigned x_) : x(x_ % M) {}
@@ -107,7 +98,7 @@ template <unsigned M_> struct ModInt {
   bool operator!=(const ModInt& a) const {
     return (x != a.x);
   }
-  friend std::ostream& operator<<(std::ostream& os, const ModInt& a) {
+  friend ostream& operator<<(ostream& os, const ModInt& a) {
     return os << a.x;
   }
 };
@@ -116,10 +107,10 @@ constexpr unsigned MOD = 1'000'000'007;
 using Mint = ModInt<MOD>;
 
 int T, n;
-int x[maxn], y[maxn], h[maxn];
+int x[k_max_n], y[k_max_n], h[k_max_n];
 
-Mint p[maxn];
-Mint dp[maxn][maxn];
+Mint p[k_max_n];
+Mint dp[k_max_n][k_max_n];
 
 void solve() {
   for (int i = 1; i <= n; i++) {
@@ -143,6 +134,8 @@ void solve() {
   }
   cout << endl;
 }
+
+} // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);

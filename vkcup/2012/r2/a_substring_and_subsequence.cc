@@ -1,11 +1,13 @@
 #include <bits/stdc++.h>
-#define maxn 5002
 using namespace std;
 
-int f[maxn][maxn][2];
+namespace {
+
+constexpr int k_max_n = 5002;
+int f[k_max_n][k_max_n][2];
 string a, b;
 
-static constexpr unsigned MOD = 1'000'000'007;
+constexpr unsigned MOD = 1'000'000'007;
 #include "../../../lib/modint.h"
 using Mint = ModInt<MOD>;
 
@@ -25,7 +27,12 @@ int rec(int x, int y, int z) {
   return ans;
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> a;
   cin >> b;
   memset(f, -1, sizeof(f));

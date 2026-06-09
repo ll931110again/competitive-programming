@@ -1,25 +1,16 @@
 // Codeforces 1842 (CodeTON Round 5 (Div. 1 + Div. 2, Rated, Prizes!)) — C. Tenzing and Balls
 // Submission: https://codeforces.com/contest/1842/submission/334342594
 
-#ifdef ONLINE_JUDGE
 #include <bits/stdc++.h>
-#endif
-
-#include <algorithm>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <stack>
-#include <map>
-#include <queue>
-#include <vector>
-#define maxn 200005
 using namespace std;
 
-int T, n;
-int a[maxn];
+namespace {
 
-int dp[maxn], min_val[maxn], min_pos[maxn];
+constexpr int k_max_n = 200005;
+int T, n;
+int a[k_max_n];
+
+int dp[k_max_n], min_val[k_max_n], min_pos[k_max_n];
 
 int solve() {
   for (int i = 1; i <= n; i++) {
@@ -35,7 +26,12 @@ int solve() {
   return n - dp[n];
 }
 
+} // namespace
+
 int main() {
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+
   cin >> T;
   while (T--) {
     cin >> n;
