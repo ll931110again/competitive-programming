@@ -3,80 +3,91 @@
 //
 // Min radius r so disks at every polygon vertex cover the polygon.
 // Answer = max_{p in polygon} min_{vertex v} dist(p, v).
-// Candidates: Voronoi vertices inside the polygon, and intersections of
-// Voronoi edges with polygon edges.
+// Candidates: Delaunay circumcenters inside the polygon, and clipped Voronoi
+// edge segments (not infinite bisectors) intersecting the polygon boundary.
 
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
+#include <map>
+#include <numeric>
+#include <utility>
+#include <vector>
+
 using namespace std;
 
-using ld = long double;
+using ld = double;
+using ll = long long;
 using i128 = __int128_t;
 
 namespace {
 
 struct Pt {
-  long long x, y;
+  ll x, y;
   bool operator<(const Pt& o) const {
     return x < o.x || (x == o.x && y < o.y);
   }
   bool operator==(const Pt& o) const {
     return x == o.x && y == o.y;
   }
-};
-
-i128 orient128(const Pt& a, const Pt& b, const Pt& c) {
-  return (i128)(b.x - a.x) * (c.y - a.y) - (i128)(b.y - a.y) * (c.x - a.x);
-}
-
-i128 incircle128(const Pt& p, const Pt& a, const Pt& b, const Pt& c) {
-  i128 ax = a.x - p.x, ay = a.y - p.y;
-  i128 bx = b.x - p.x, by = b.y - p.y;
-  i128 cx = c.x - p.x, cy = c.y - p.y;
-  i128 nax = ax * ax + ay * ay;
-  i128 nbx = bx * bx + by * by;
-  i128 ncx = cx * cx + cy * cy;
-  return ax * (by * ncx - cy * nbx) - ay * (bx * ncx - cx * nbx) + nax * (bx * cy - by * cx);
-}
-
-bool in_circumcircle(const Pt& p, const Pt& a, const Pt& b, const Pt& c) {
-  i128 o = orient128(a, b, c);
-  if (o == 0) {
-    return false;
+  ll cross(const Pt& a, const Pt& b) const {
+    return (a.x - x) * (b.y - y) - (a.y - y) * (b.x - x);
   }
-  i128 ic = incircle128(p, a, b, c);
-  return (o > 0 && ic > 0) || (o < 0 && ic < 0);
-}
+  ll sqr_len() const {
+    return x * x + y * y;
+  }
+};
 
 struct Tri {
   int a, b, c;
 };
 
-vector<Tri> delaunay(vector<Pt> pts) {
-  int n = (int)pts.size();
-  vector<int> ord(n);
-  for (int i = 0; i < n; ++i) {
-    ord[i] = i;
-  }
-  sort(ord.begin(), ord.end(), [&](int i, int j) { return pts[i] < pts[j]; });
+i128 cross_i(const Pt& o, const Pt& a, const Pt& b) {
+  return (i128)(a.x - o.x) * (b.y - o.y) - (i128)(a.y - o.y) * (b.x - o.x);
+}
 
-  long long mx = pts[0].x, Mx = mx, my = pts[0].y, My = my;
+i128 dist2_i(const Pt& a, const Pt& b) {
+  i128 dx = a.x - b.x, dy = a.y - b.y;
+  return dx * dx + dy * dy;
+}
+
+bool in_circumcircle(const Pt& p, const Pt& a, const Pt& b, const Pt& c) {
+  i128 o = cross_i(a, b, c);
+  if (o == 0) {
+    return false;
+  }
+  i128 val = dist2_i(p, a) * cross_i(b, c, p) + dist2_i(p, b) * cross_i(c, a, p) +
+             dist2_i(p, c) * cross_i(a, b, p);
+  return o * val > 0;
+}
+
+vector<Tri> delaunay_bw(vector<Pt> pts) {
+  int n = (int)pts.size();
+  ll mx = pts[0].x, Mx = mx, my = pts[0].y, My = my;
   for (const Pt& p : pts) {
     mx = min(mx, p.x);
     Mx = max(Mx, p.x);
     my = min(my, p.y);
     My = max(My, p.y);
   }
-  long long d = max(Mx - mx, My - my) * 20 + 10;
+  ll d = max(Mx - mx, My - my) * 20 + 10;
   int s0 = n, s1 = n + 1, s2 = n + 2;
   pts.push_back({mx - d, my - d});
   pts.push_back({Mx + 3 * d, my - d});
   pts.push_back({mx + d, My + 3 * d});
 
   vector<Tri> tris = {{s0, s1, s2}};
+  vector<int> ord(n);
+  iota(ord.begin(), ord.end(), 0);
+  sort(ord.begin(), ord.end(), [&](int i, int j) { return pts[i] < pts[j]; });
+
+  vector<pair<int, int>> edges;
+  vector<char> dead;
   for (int ii = 0; ii < n; ++ii) {
     int i = ord[ii];
-    vector<pair<int, int>> edges;
-    vector<char> dead(tris.size());
+    edges.clear();
+    dead.assign(tris.size(), 0);
     for (size_t t = 0; t < tris.size(); ++t) {
       const Tri& tr = tris[t];
       if (in_circumcircle(pts[i], pts[tr.a], pts[tr.b], pts[tr.c])) {
@@ -103,6 +114,7 @@ vector<Tri> delaunay(vector<Pt> pts) {
       j = k;
     }
     vector<Tri> nxt;
+    nxt.reserve(tris.size() + boundary.size());
     for (size_t t = 0; t < tris.size(); ++t) {
       if (!dead[t]) {
         nxt.push_back(tris[t]);
@@ -115,6 +127,7 @@ vector<Tri> delaunay(vector<Pt> pts) {
   }
 
   vector<Tri> out;
+  out.reserve(tris.size());
   for (const Tri& tr : tris) {
     if (tr.a < n && tr.b < n && tr.c < n) {
       out.push_back(tr);
@@ -123,39 +136,230 @@ vector<Tri> delaunay(vector<Pt> pts) {
   return out;
 }
 
-vector<Tri> naive_delaunay(const vector<Pt>& pts) {
-  int n = (int)pts.size();
-  vector<Tri> out;
-  for (int i = 0; i < n; ++i) {
-    for (int j = i + 1; j < n; ++j) {
-      for (int k = j + 1; k < n; ++k) {
-        if (orient128(pts[i], pts[j], pts[k]) == 0) {
-          continue;
-        }
-        bool ok = true;
-        for (int m = 0; m < n; ++m) {
-          if (m == i || m == j || m == k) {
-            continue;
-          }
-          if (in_circumcircle(pts[m], pts[i], pts[j], pts[k])) {
-            ok = false;
-            break;
-          }
-        }
-        if (ok) {
-          out.push_back({i, j, k});
-        }
+// D&C fallback for near-degenerate input (Bowyer–Watson returns no triangles).
+
+const Pt kInfPt = {1000000000000000000LL, 1000000000000000000LL};
+
+struct QuadEdge {
+  Pt origin;
+  QuadEdge* rot = nullptr;
+  QuadEdge* onext = nullptr;
+  bool used = false;
+  QuadEdge* rev() const {
+    return rot->rot;
+  }
+  QuadEdge* lnext() const {
+    return rot->rev()->onext->rot;
+  }
+  QuadEdge* oprev() const {
+    return rot->onext->rot;
+  }
+  Pt dest() const {
+    return rev()->origin;
+  }
+};
+
+vector<QuadEdge> qpool;
+
+QuadEdge* qalloc() {
+  qpool.emplace_back();
+  return &qpool.back();
+}
+
+QuadEdge* make_edge(Pt from, Pt to) {
+  QuadEdge* e1 = qalloc();
+  QuadEdge* e2 = qalloc();
+  QuadEdge* e3 = qalloc();
+  QuadEdge* e4 = qalloc();
+  e1->origin = from;
+  e2->origin = to;
+  e3->origin = e4->origin = kInfPt;
+  e1->rot = e3;
+  e2->rot = e4;
+  e3->rot = e2;
+  e4->rot = e1;
+  e1->onext = e1;
+  e2->onext = e2;
+  e3->onext = e4;
+  e4->onext = e3;
+  return e1;
+}
+
+void splice(QuadEdge* a, QuadEdge* b) {
+  swap(a->onext->rot->onext, b->onext->rot->onext);
+  swap(a->onext, b->onext);
+}
+
+void unlink_edge(QuadEdge* e) {
+  splice(e, e->oprev());
+  splice(e->rev(), e->rev()->oprev());
+}
+
+QuadEdge* connect(QuadEdge* a, QuadEdge* b) {
+  QuadEdge* e = make_edge(a->dest(), b->origin);
+  splice(e, a->lnext());
+  splice(e->rev(), b);
+  return e;
+}
+
+bool left_of(Pt p, QuadEdge* e) {
+  return p.cross(e->origin, e->dest()) > 0;
+}
+
+bool right_of(Pt p, QuadEdge* e) {
+  return p.cross(e->origin, e->dest()) < 0;
+}
+
+template <class T> T det3(T a1, T a2, T a3, T b1, T b2, T b3, T c1, T c2, T c3) {
+  return a1 * (b2 * c3 - c2 * b3) - a2 * (b1 * c3 - c1 * b3) + a3 * (b1 * c2 - c1 * b2);
+}
+
+bool in_circle(Pt a, Pt b, Pt c, Pt d) {
+  i128 det = -det3<i128>(b.x, b.y, b.sqr_len(), c.x, c.y, c.sqr_len(), d.x, d.y, d.sqr_len());
+  det += det3<i128>(a.x, a.y, a.sqr_len(), c.x, c.y, c.sqr_len(), d.x, d.y, d.sqr_len());
+  det -= det3<i128>(a.x, a.y, a.sqr_len(), b.x, b.y, b.sqr_len(), d.x, d.y, d.sqr_len());
+  det += det3<i128>(a.x, a.y, a.sqr_len(), b.x, b.y, b.sqr_len(), c.x, c.y, c.sqr_len());
+  return det > 0;
+}
+
+pair<QuadEdge*, QuadEdge*> build_tr(int l, int r, vector<Pt>& p) {
+  if (r - l + 1 == 2) {
+    QuadEdge* res = make_edge(p[l], p[r]);
+    return {res, res->rev()};
+  }
+  if (r - l + 1 == 3) {
+    QuadEdge *a = make_edge(p[l], p[l + 1]), *b = make_edge(p[l + 1], p[r]);
+    splice(a->rev(), b);
+    int sg = (p[l].cross(p[l + 1], p[r]) > 0) - (p[l].cross(p[l + 1], p[r]) < 0);
+    if (sg == 0) {
+      return {a, b->rev()};
+    }
+    QuadEdge* c = connect(b, a);
+    if (sg > 0) {
+      return {a, b->rev()};
+    }
+    return {c->rev(), c};
+  }
+  int mid = (l + r) / 2;
+  QuadEdge *ldo, *ldi, *rdo, *rdi;
+  tie(ldo, ldi) = build_tr(l, mid, p);
+  tie(rdi, rdo) = build_tr(mid + 1, r, p);
+  while (true) {
+    if (left_of(rdi->origin, ldi)) {
+      ldi = ldi->lnext();
+      continue;
+    }
+    if (right_of(ldi->origin, rdi)) {
+      rdi = rdi->rev()->onext;
+      continue;
+    }
+    break;
+  }
+  QuadEdge* basel = connect(rdi->rev(), ldi);
+  auto valid = [&basel](QuadEdge* e) { return right_of(e->dest(), basel); };
+  if (ldi->origin == ldo->origin) {
+    ldo = basel->rev();
+  }
+  if (rdi->origin == rdo->origin) {
+    rdo = basel;
+  }
+  while (true) {
+    QuadEdge* lcand = basel->rev()->onext;
+    if (valid(lcand)) {
+      while (in_circle(basel->dest(), basel->origin, lcand->dest(), lcand->onext->dest())) {
+        QuadEdge* t = lcand->onext;
+        unlink_edge(lcand);
+        lcand = t;
       }
     }
+    QuadEdge* rcand = basel->oprev();
+    if (valid(rcand)) {
+      while (in_circle(basel->dest(), basel->origin, rcand->dest(), rcand->oprev()->dest())) {
+        QuadEdge* t = rcand->oprev();
+        unlink_edge(rcand);
+        rcand = t;
+      }
+    }
+    if (!valid(lcand) && !valid(rcand)) {
+      break;
+    }
+    if (!valid(lcand) ||
+        (valid(rcand) && in_circle(lcand->dest(), lcand->origin, rcand->origin, rcand->dest()))) {
+      basel = connect(rcand, basel->rev());
+    } else {
+      basel = connect(basel->rev(), lcand->rev());
+    }
+  }
+  return {ldo, rdo};
+}
+
+vector<Tri> delaunay_dc(vector<Pt> p) {
+  qpool.clear();
+  qpool.reserve(24 * p.size());
+  sort(p.begin(), p.end());
+  auto res = build_tr(0, (int)p.size() - 1, p);
+  QuadEdge* e = res.first;
+  vector<QuadEdge*> edges = {e};
+  while (e->onext->dest().cross(e->dest(), e->origin) < 0) {
+    e = e->onext;
+  }
+  vector<Pt> verts;
+  auto add_face = [&]() {
+    QuadEdge* curr = e;
+    do {
+      curr->used = true;
+      verts.push_back(curr->origin);
+      edges.push_back(curr->rev());
+      curr = curr->lnext();
+    } while (curr != e);
+  };
+  add_face();
+  verts.clear();
+  for (size_t kek = 0; kek < edges.size(); ++kek) {
+    e = edges[kek];
+    if (!e->used) {
+      add_face();
+    }
+  }
+  vector<Tri> out;
+  out.reserve(verts.size() / 3);
+  for (size_t i = 0; i + 2 < verts.size(); i += 3) {
+    const Pt &a = verts[i], &b = verts[i + 1], &c = verts[i + 2];
+    int ia = lower_bound(p.begin(), p.end(), a) - p.begin();
+    int ib = lower_bound(p.begin(), p.end(), b) - p.begin();
+    int ic = lower_bound(p.begin(), p.end(), c) - p.begin();
+    out.push_back({ia, ib, ic});
   }
   return out;
 }
 
-struct LdP {
+vector<Tri> delaunay(const vector<Pt>& poly) {
+  vector<Tri> tris = delaunay_bw(poly);
+  if (!tris.empty()) {
+    return tris;
+  }
+  int n = (int)poly.size();
+  vector<int> ord(n);
+  iota(ord.begin(), ord.end(), 0);
+  sort(ord.begin(), ord.end(), [&](int i, int j) { return poly[i] < poly[j]; });
+  vector<Pt> sorted(n);
+  for (int i = 0; i < n; ++i) {
+    sorted[i] = poly[ord[i]];
+  }
+  vector<Tri> local = delaunay_dc(sorted);
+  vector<Tri> out;
+  out.reserve(local.size());
+  for (const Tri& tr : local) {
+    out.push_back({ord[tr.a], ord[tr.b], ord[tr.c]});
+  }
+  return out;
+}
+
+struct P2 {
   ld x, y;
 };
 
-LdP circumcenter(const Pt& a, const Pt& b, const Pt& c) {
+P2 circumcenter(const Pt& a, const Pt& b, const Pt& c) {
   ld ax = a.x, ay = a.y, bx = b.x, by = b.y, cx = c.x, cy = c.y;
   ld d = 2 * ((bx - ax) * (cy - ay) - (by - ay) * (cx - ax));
   ld na = ax * ax + ay * ay;
@@ -165,98 +369,21 @@ LdP circumcenter(const Pt& a, const Pt& b, const Pt& c) {
           (ax * (nb - nc) + bx * (nc - na) + cx * (na - nb)) / d};
 }
 
-ld cross_l(const LdP& o, const LdP& a, const LdP& b) {
-  return (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
-}
-
-ld dot_l(const LdP& a, const LdP& b) {
-  return a.x * b.x + a.y * b.y;
-}
-
-ld dist2_l(const LdP& a, const LdP& b) {
+ld dist2(const P2& a, const Pt& b) {
   ld dx = a.x - b.x, dy = a.y - b.y;
   return dx * dx + dy * dy;
 }
 
-ld dist2_l(const LdP& a, const Pt& b) {
-  ld dx = a.x - b.x, dy = a.y - b.y;
-  return dx * dx + dy * dy;
-}
-
-struct VEdge {
-  LdP a, b;
-};
-
-vector<VEdge> build_voronoi(const vector<Pt>& poly, const vector<Tri>& tris) {
-  map<pair<int, int>, vector<pair<LdP, int>>> half;
-  for (const Tri& tr : tris) {
-    LdP cc = circumcenter(poly[tr.a], poly[tr.b], poly[tr.c]);
-    auto add = [&](int i, int j, int opp) {
-      if (i > j) {
-        swap(i, j);
-      }
-      half[{i, j}].push_back({cc, opp});
-    };
-    add(tr.a, tr.b, tr.c);
-    add(tr.a, tr.c, tr.b);
-    add(tr.b, tr.c, tr.a);
-  }
-
-  const ld K = 4e6L;
-  vector<VEdge> edges;
-  for (auto& [st, lst] : half) {
-    if (lst.size() == 2) {
-      edges.push_back({lst[0].first, lst[1].first});
-    } else if (lst.size() == 1) {
-      LdP x = lst[0].first;
-      int u = lst[0].second;
-      LdP m{(ld)(poly[st.first].x + poly[st.second].x) / 2,
-            (ld)(poly[st.first].y + poly[st.second].y) / 2};
-      LdP dir{m.x - x.x, m.y - x.y};
-      LdP far1{x.x + K * dir.x, x.y + K * dir.y};
-      LdP far2{x.x - K * dir.x, x.y - K * dir.y};
-      LdP pu{(ld)poly[u].x, (ld)poly[u].y};
-      if (dot_l({pu.x - m.x, pu.y - m.y}, {far1.x - m.x, far1.y - m.y}) < 0) {
-        edges.push_back({x, far1});
-      } else {
-        edges.push_back({x, far2});
-      }
-    }
-  }
-  return edges;
-}
-
-bool on_segment(const LdP& a, const LdP& b, const LdP& p) {
-  const ld eps = 1e-11L;
-  return min(a.x, b.x) - eps <= p.x && p.x <= max(a.x, b.x) + eps && min(a.y, b.y) - eps <= p.y &&
-         p.y <= max(a.y, b.y) + eps &&
-         fabsl(cross_l(a, b, p)) <=
-             eps * max({1.0L, fabsl(a.x), fabsl(b.x), fabsl(a.y), fabsl(b.y)});
-}
-
-bool seg_intersect(const LdP& p1, const LdP& p2, const LdP& p3, const LdP& p4, LdP& out) {
-  ld x1 = p1.x, y1 = p1.y, x2 = p2.x, y2 = p2.y;
-  ld x3 = p3.x, y3 = p3.y, x4 = p4.x, y4 = p4.y;
-  ld a = y2 - y1, b = x1 - x2, c = a * x1 + b * y1;
-  ld d = y4 - y3, e = x3 - x4, f = d * x3 + e * y3;
-  ld det = a * e - b * d;
-  if (fabsl(det) > 1e-12L) {
-    out = {(e * c - b * f) / det, (a * f - d * c) / det};
-    return on_segment(p1, p2, out) && on_segment(p3, p4, out);
-  }
-  return false;
-}
-
-int point_in_poly(const LdP& p, const vector<Pt>& poly) {
+int point_in_poly(const P2& p, const vector<Pt>& poly) {
   int n = (int)poly.size();
   int inside = 0;
-  const ld eps = 1e-9L;
+  const ld eps = 1e-9;
   for (int i = 0; i < n; ++i) {
     ld ax = poly[i].x - p.x, ay = poly[i].y - p.y;
     ld bx = poly[(i + 1) % n].x - p.x, by = poly[(i + 1) % n].y - p.y;
     ld cr = ax * by - ay * bx;
-    ld scale = max({1.0L, fabsl(ax), fabsl(bx), fabsl(ay), fabsl(by)});
-    if (fabsl(cr) <= eps * scale && ax * bx + ay * by <= eps * scale) {
+    ld scale = max({1.0, fabs(ax), fabs(bx), fabs(ay), fabs(by)});
+    if (fabs(cr) <= eps * scale && ax * bx + ay * by <= eps * scale) {
       return 1;
     }
     if (ay > by) {
@@ -270,12 +397,46 @@ int point_in_poly(const LdP& p, const vector<Pt>& poly) {
   return inside;
 }
 
-ld min_dist2(const LdP& q, const vector<Pt>& poly) {
-  ld best = 1e300L;
-  for (const Pt& v : poly) {
-    best = min(best, dist2_l(q, v));
+// Segment (a,b) vs segment (c,d); return true if proper intersection at out.
+bool seg_seg(const P2& a, const P2& b, const P2& c, const P2& d, P2& out) {
+  ld x1 = a.x, y1 = a.y, x2 = b.x, y2 = b.y;
+  ld x3 = c.x, y3 = c.y, x4 = d.x, y4 = d.y;
+  ld a1 = y2 - y1, b1 = x1 - x2, c1 = a1 * x1 + b1 * y1;
+  ld a2 = y4 - y3, b2 = x3 - x4, c2 = a2 * x3 + b2 * y3;
+  ld det = a1 * b2 - b1 * a2;
+  if (fabs(det) < 1e-12) {
+    return false;
   }
-  return best;
+  out = {(b2 * c1 - b1 * c2) / det, (a1 * c2 - a2 * c1) / det};
+  const ld eps = 1e-11;
+  auto on = [&](ld px, ld py, ld qx, ld qy, ld rx, ld ry) {
+    return min(px, qx) - eps <= rx && rx <= max(px, qx) + eps && min(py, qy) - eps <= ry &&
+           ry <= max(py, qy) + eps;
+  };
+  return on(x1, y1, x2, y2, out.x, out.y) && on(x3, y3, x4, y4, out.x, out.y);
+}
+
+// On a Voronoi edge between sites i and j, the closest site distance equals dist(q, i).
+void consider_voro_point(const P2& q, int i, const vector<Pt>& poly, ld& best) {
+  ld d = dist2(q, poly[i]);
+  if (d > best) {
+    best = d;
+  }
+}
+
+void consider_voro_segment(const P2& a, const P2& b, int i, const vector<Pt>& poly,
+                           const vector<pair<P2, P2>>& poly_edges, ld& best) {
+  P2 tmp;
+  for (const auto& [c, d] : poly_edges) {
+    if (seg_seg(a, b, c, d, tmp)) {
+      consider_voro_point(tmp, i, poly, best);
+    }
+  }
+}
+
+void consider_voro_ray(const P2& origin, const P2& far, int i, const vector<Pt>& poly,
+                       const vector<pair<P2, P2>>& poly_edges, ld& best) {
+  consider_voro_segment(origin, far, i, poly, poly_edges, best);
 }
 
 } // namespace
@@ -292,104 +453,64 @@ int main() {
   }
 
   auto tris = delaunay(poly);
-  if (tris.empty() && n <= 400) {
-    tris = naive_delaunay(poly);
-  }
-  auto voro = build_voronoi(poly, tris);
 
-  vector<pair<LdP, LdP>> poly_edges;
+  vector<pair<P2, P2>> poly_edges(n);
   for (int i = 0; i < n; ++i) {
-    poly_edges.push_back(
-        {{(ld)poly[i].x, (ld)poly[i].y}, {(ld)poly[(i + 1) % n].x, (ld)poly[(i + 1) % n].y}});
+    poly_edges[i] = {{(ld)poly[i].x, (ld)poly[i].y},
+                     {(ld)poly[(i + 1) % n].x, (ld)poly[(i + 1) % n].y}};
+  }
+
+  map<pair<int, int>, vector<pair<P2, int>>> half;
+  for (const Tri& tr : tris) {
+    P2 cc = circumcenter(poly[tr.a], poly[tr.b], poly[tr.c]);
+    auto add = [&](int i, int j, int opp) {
+      if (i > j) {
+        swap(i, j);
+      }
+      half[{i, j}].push_back({cc, opp});
+    };
+    add(tr.a, tr.b, tr.c);
+    add(tr.a, tr.c, tr.b);
+    add(tr.b, tr.c, tr.a);
   }
 
   ld best = 0;
-  auto consider = [&](const LdP& q) {
-    if (point_in_poly(q, poly)) {
-      best = max(best, min_dist2(q, poly));
-    }
-  };
-
   for (const Tri& tr : tris) {
-    consider(circumcenter(poly[tr.a], poly[tr.b], poly[tr.c]));
-  }
-
-  LdP tmp;
-  for (const VEdge& e : voro) {
-    consider(e.a);
-    consider(e.b);
-    for (const auto& [p3, p4] : poly_edges) {
-      if (seg_intersect(e.a, e.b, p3, p4, tmp)) {
-        consider(tmp);
+    P2 cc = circumcenter(poly[tr.a], poly[tr.b], poly[tr.c]);
+    if (point_in_poly(cc, poly)) {
+      ld d = dist2(cc, poly[tr.a]);
+      if (d > best) {
+        best = d;
       }
     }
   }
 
-  // Bisector of each Delaunay edge vs polygon edges (guards clipped/infinite rays).
-  set<pair<int, int>> del_edges;
-  for (const Tri& tr : tris) {
-    int e[3][2] = {{tr.a, tr.b}, {tr.b, tr.c}, {tr.c, tr.a}};
-    for (auto& ed : e) {
-      if (ed[0] > ed[1]) {
-        swap(ed[0], ed[1]);
-      }
-      del_edges.insert({ed[0], ed[1]});
-    }
+  ld span = 0;
+  for (const Pt& p : poly) {
+    span = max(span, ld(max(abs(p.x), abs(p.y))));
   }
-  for (const auto& [i, j] : del_edges) {
-    LdP pi{(ld)poly[i].x, (ld)poly[i].y};
-    LdP pj{(ld)poly[j].x, (ld)poly[j].y};
-    LdP mid{(pi.x + pj.x) / 2, (pi.y + pj.y) / 2};
-    LdP dir{-(pj.y - pi.y), pj.x - pi.x};
-    for (const auto& [s1, s2] : poly_edges) {
-      ld dx = s2.x - s1.x, dy = s2.y - s1.y;
-      ld det = dir.x * dy - dir.y * dx;
-      if (fabsl(det) < 1e-12L) {
-        continue;
+  const ld K = max(span * 4, 4e6) + 1e6;
+
+  for (auto& [st, lst] : half) {
+    int i = st.first, j = st.second;
+    if (lst.size() == 2) {
+      consider_voro_segment(lst[0].first, lst[1].first, i, poly, poly_edges, best);
+    } else if (lst.size() == 1) {
+      P2 x = lst[0].first;
+      int u = lst[0].second;
+      P2 m{(ld)(poly[i].x + poly[j].x) / 2, (ld)(poly[i].y + poly[j].y) / 2};
+      P2 dir{m.x - x.x, m.y - x.y};
+      P2 pu{(ld)poly[u].x, (ld)poly[u].y};
+      P2 far_pt;
+      if ((pu.x - m.x) * (x.x + K * dir.x - m.x) + (pu.y - m.y) * (x.y + K * dir.y - m.y) < 0) {
+        far_pt = {x.x + K * dir.x, x.y + K * dir.y};
+      } else {
+        far_pt = {x.x - K * dir.x, x.y - K * dir.y};
       }
-      ld sx = s1.x - mid.x, sy = s1.y - mid.y;
-      ld u = (sx * dir.y - sy * dir.x) / det;
-      if (u >= -1e-12L && u <= 1 + 1e-12L) {
-        ld t = (sx * dy - sy * dx) / det;
-        consider({mid.x + t * dir.x, mid.y + t * dir.y});
-      }
+      consider_voro_ray(x, far_pt, i, poly, poly_edges, best);
     }
   }
 
-  if (tris.empty()) {
-    for (int i = 0; i < n; ++i) {
-      for (int j = i + 1; j < n; ++j) {
-        LdP pi{(ld)poly[i].x, (ld)poly[i].y};
-        LdP pj{(ld)poly[j].x, (ld)poly[j].y};
-        LdP mid{(pi.x + pj.x) / 2, (pi.y + pj.y) / 2};
-        LdP dir{-(pj.y - pi.y), pj.x - pi.x};
-        for (const auto& [s1, s2] : poly_edges) {
-          ld dx = s2.x - s1.x, dy = s2.y - s1.y;
-          ld det = dir.x * dy - dir.y * dx;
-          if (fabsl(det) < 1e-12L) {
-            continue;
-          }
-          ld sx = s1.x - mid.x, sy = s1.y - mid.y;
-          ld u = (sx * dir.y - sy * dir.x) / det;
-          if (u >= -1e-12L && u <= 1 + 1e-12L) {
-            ld t = (sx * dy - sy * dx) / det;
-            consider({mid.x + t * dir.x, mid.y + t * dir.y});
-          }
-        }
-      }
-    }
-    for (int i = 0; i < n; ++i) {
-      for (int j = i + 1; j < n; ++j) {
-        for (int k = j + 1; k < n; ++k) {
-          if (orient128(poly[i], poly[j], poly[k]) == 0) {
-            continue;
-          }
-          consider(circumcenter(poly[i], poly[j], poly[k]));
-        }
-      }
-    }
-  }
-
-  cout << fixed << setprecision(12) << sqrtl(best) << '\n';
+  cout << fixed << setprecision(12) << sqrt(best) << '\n';
   return 0;
 }
