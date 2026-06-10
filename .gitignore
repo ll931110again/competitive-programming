@@ -5,6 +5,7 @@ deps/googletest/
 tools/buck2
 tools/*.zst
 kinetic_data_structures/target/
+kotlin/**/BUCK
 **/.DS_Store
 *.zip
 *.o

@@ -28,3 +28,10 @@ cxx_test(
 ```
 
 Add Rust integration tests in [`kinetic_data_structures/BUCK`](kinetic_data_structures/BUCK) (`rust_test` + `deps = [":lib"]`). `cargo test` still works for local Rust-only iteration.
+
+Kotlin solutions under `kotlin/` are compile-checked via Buck2 (`kotlin_library` per file). Regenerate `kotlin/**/BUCK` after adding sources:
+
+```bash
+make gen-kotlin-buck
+./tools/buck2 build //kotlin/kotlin1:a_three_integers_again --config java.java_home="$JAVA_HOME"
+```

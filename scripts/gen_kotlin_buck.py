@@ -26,9 +26,10 @@ def write_buck(contest_dir: pathlib.Path, kt_files: list[pathlib.Path]) -> None:
         lines.append("kotlin_library(\n")
         lines.append(f'    name = "{name}",\n')
         lines.append(f'    srcs = ["{kt.name}"],\n')
-        lines.append(")\n\n")
+        lines.append(")\n")
+        lines.append("\n")
     buck = contest_dir / "BUCK"
-    buck.write_text("".join(lines), encoding="utf-8")
+    buck.write_text("".join(lines).rstrip() + "\n", encoding="utf-8")
 
 
 def main() -> None:
