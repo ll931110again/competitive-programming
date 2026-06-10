@@ -1,0 +1,43 @@
+# Kinetic data structures crate (Rust). C++ tests live under //tests/.
+
+rust_library(
+    name = "lib",
+    srcs = glob(["src/**/*.rs"]),
+    crate = "kinetic_data_structures",
+    crate_root = "src/lib.rs",
+    edition = "2021",
+    visibility = ["PUBLIC"],
+)
+
+# #[cfg(test)] modules under src/.
+rust_test(
+    name = "unit",
+    srcs = glob(["src/**/*.rs"]),
+    crate = "kinetic_data_structures",
+    crate_root = "src/lib.rs",
+    edition = "2021",
+)
+
+rust_test(
+    name = "integration",
+    srcs = ["tests/integration.rs"],
+    crate_root = "tests/integration.rs",
+    edition = "2021",
+    deps = [":lib"],
+)
+
+rust_test(
+    name = "kinetic_motion",
+    srcs = ["tests/kinetic_motion.rs"],
+    crate_root = "tests/kinetic_motion.rs",
+    edition = "2021",
+    deps = [":lib"],
+)
+
+rust_test(
+    name = "stress",
+    srcs = ["tests/stress.rs"],
+    crate_root = "tests/stress.rs",
+    edition = "2021",
+    deps = [":lib"],
+)

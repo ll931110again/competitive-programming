@@ -1,0 +1,54 @@
+name: cpp-tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.cc'
+      - '**.hh'
+      - '**.h'
+      - '**.rs'
+      - '.buckconfig'
+      - '.buckroot'
+      - '**/BUCK'
+      - 'tests/**'
+      - 'deps/**'
+      - 'toolchains/**'
+      - 'lib/**'
+      - 'kinetic_data_structures/**'
+      - 'scripts/fetch_googletest.sh'
+      - 'scripts/bootstrap_buck2.sh'
+      - 'Makefile'
+      - '.github/workflows/cpp-tests.yml'
+  pull_request:
+    paths:
+      - '**.cc'
+      - '**.hh'
+      - '**.h'
+      - '**.rs'
+      - '.buckconfig'
+      - '.buckroot'
+      - '**/BUCK'
+      - 'tests/**'
+      - 'deps/**'
+      - 'toolchains/**'
+      - 'lib/**'
+      - 'kinetic_data_structures/**'
+      - 'scripts/fetch_googletest.sh'
+      - 'scripts/bootstrap_buck2.sh'
+      - 'Makefile'
+      - '.github/workflows/cpp-tests.yml'
+
+jobs:
+  gtest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install zstd
+        run: sudo apt-get update && sudo apt-get install -y zstd unzip
+
+      - name: Test
+        run: make test

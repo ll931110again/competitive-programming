@@ -1,4 +1,10 @@
 .DS_Store
+build/
+buck-out/
+deps/googletest/
+tools/buck2
+tools/*.zst
+kinetic_data_structures/target/
 **/.DS_Store
 *.zip
 *.o

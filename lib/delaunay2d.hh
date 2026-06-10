@@ -56,6 +56,9 @@ inline bool inCircumcircle(const Pt& p, const Pt& a, const Pt& b, const Pt& c) {
 
 inline std::vector<Tri> delaunay(std::vector<Pt> pts) {
   int n = (int)pts.size();
+  if (n == 0) {
+    return {};
+  }
   long long mx = pts[0].x, Mx = mx, my = pts[0].y, My = my;
   for (const Pt& p : pts) {
     mx = std::min(mx, p.x);

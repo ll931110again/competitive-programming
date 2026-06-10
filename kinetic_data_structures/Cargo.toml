@@ -1,0 +1,11 @@
+[package]
+name = "kinetic_data_structures"
+version = "0.1.0"
+edition = "2021"
+description = "Kinetic data structures (2005–2012 literature implementations)"
+license = "MIT"
+
+[dependencies]
+
+[dev-dependencies]
+approx = "0.5"

@@ -1,0 +1,54 @@
+COMPATIBLE_WITH = [
+    "config//os:macos",
+    "config//os:linux",
+]
+
+cxx_test(
+    name = "maxflow_test",
+    srcs = [
+        "maxflow_test.cc",
+    ],
+    headers = [
+        "support/maxflow_test_helpers.hh",
+    ],
+    include_directories = [
+        ".",
+        "..",
+    ],
+    compiler_flags = [
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+    ],
+    compatible_with = COMPATIBLE_WITH,
+    link_style = "static",
+    deps = [
+        "//deps:gtest",
+        "//deps:gtest_main",
+    ],
+)
+
+cxx_test(
+    name = "delaunay2d_test",
+    srcs = [
+        "delaunay2d_test.cc",
+    ],
+    headers = [
+        "support/delaunay2d_test_helpers.hh",
+    ],
+    include_directories = [
+        ".",
+        "..",
+    ],
+    compiler_flags = [
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+    ],
+    compatible_with = COMPATIBLE_WITH,
+    link_style = "static",
+    deps = [
+        "//deps:gtest",
+        "//deps:gtest_main",
+    ],
+)

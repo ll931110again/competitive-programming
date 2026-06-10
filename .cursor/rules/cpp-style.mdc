@@ -42,6 +42,14 @@ Use the repo `bits/stdc++.h` when the system header is missing. Do **not** paste
 - `bash scripts/format_cpp.sh` — clang-format all C++ files.
 - `python3 scripts/normalize_headers.py` — collapse STL includes to `bits/stdc++.h` + `using namespace std`.
 - `python3 scripts/refactor_swe_style.py` — anonymous namespace, `kMaxN` constants, PascalCase structs, `snake_case` helpers, fast I/O in `main`.
+- `make test` — build and run C++ library tests (Google Test + Buck2).
+
+## Library tests (`tests/`)
+
+- Use Google Test (`TEST(Suite, Name)`), not custom `main` harnesses or shell wrappers.
+- Shared helpers live in `tests/support/`.
+- Register new executables with `cxx_test(...)` in `tests/BUCK`.
+- Test sources: explicit includes + `gtest/gtest.h`; no `bits/stdc++.h`.
 
 ## Exceptions
 

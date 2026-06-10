@@ -1,0 +1,3 @@
+load(":local.bzl", "cp_toolchains")
+
+cp_toolchains()
