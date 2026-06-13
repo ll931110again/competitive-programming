@@ -29,6 +29,47 @@ cxx_test(
 )
 
 cxx_test(
+    name = "maxflow_christiano_test",
+    srcs = [
+        "maxflow_christiano_test.cc",
+    ],
+    include_directories = [
+        ".",
+        "..",
+    ],
+    compiler_flags = [
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+    ],
+    compatible_with = COMPATIBLE_WITH,
+    link_style = "static",
+    deps = [
+        "//deps:gtest",
+        "//deps:gtest_main",
+    ],
+)
+
+cxx_binary(
+    name = "maxflow_christiano_bench",
+    srcs = [
+        "maxflow_christiano_bench.cc",
+    ],
+    include_directories = [
+        ".",
+        "..",
+    ],
+    compiler_flags = [
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+        "-O2",
+    ],
+    compatible_with = COMPATIBLE_WITH,
+    link_style = "static",
+)
+
+cxx_test(
     name = "delaunay2d_test",
     srcs = [
         "delaunay2d_test.cc",
