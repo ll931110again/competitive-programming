@@ -5,6 +5,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr unsigned MOD = 998244353;
@@ -18,8 +19,8 @@ inline unsigned mul_mod(unsigned a, unsigned b) {
   return unsigned((unsigned long long)a * b % MOD);
 }
 
-inline unsigned pow_mod_factor(long long e) {
-  long long v = (e + 1) % (long long)MOD;
+inline unsigned pow_mod_factor(i64 e) {
+  i64 v = (e + 1) % (i64)MOD;
   if (v < 0)
     v += MOD;
   return unsigned(v);
@@ -31,7 +32,7 @@ int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-  long long N;
+  i64 N;
   int K;
   cin >> N >> K;
 
@@ -59,8 +60,8 @@ int main() {
   for (int i = 1; i <= K; i++)
     den[i] = i;
 
-  const long long L = N - K + 1;
-  vector<long long> num(K);
+  const i64 L = N - K + 1;
+  vector<i64> num(K);
   for (int i = 0; i < K; i++)
     num[i] = L + i;
 
@@ -87,7 +88,7 @@ int main() {
     }
   }
 
-  vector<long long> big;
+  vector<i64> big;
   big.reserve(70000);
   for (int i = 0; i < K; i++) {
     if (num[i] > 1)
@@ -104,9 +105,9 @@ int main() {
   if (!big.empty()) {
     sort(big.begin(), big.end());
     big.erase(unique(big.begin(), big.end()), big.end());
-    const long long M = N - K;
-    for (long long p : big) {
-      const long long e = N / p - K / p - M / p;
+    const i64 M = N - K;
+    for (i64 p : big) {
+      const i64 e = N / p - K / p - M / p;
       if (e > 0)
         ans = mul_mod(ans, pow_mod_factor(e));
     }

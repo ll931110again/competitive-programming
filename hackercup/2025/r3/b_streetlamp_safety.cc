@@ -45,6 +45,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 6005;
@@ -52,12 +53,12 @@ int T;
 int n;
 int cost[k_max_n], len[k_max_n];
 
-long long ss[k_max_n];
-long long dp[k_max_n][k_max_n][2];
-long long inf = 1e18;
+i64 ss[k_max_n];
+i64 dp[k_max_n][k_max_n][2];
+i64 inf = 1e18;
 int max_val[k_max_n][k_max_n];
 
-long long solve() {
+i64 solve() {
   for (int i = 1; i <= n; i++) {
     for (int j = i; j <= n; j++) {
       max_val[i][j] = len[j];
@@ -104,7 +105,7 @@ long long solve() {
     }
   }
 
-  long long ans = inf;
+  i64 ans = inf;
   for (int j = 0; j <= n; j++) {
     for (int k = 0; k < 2; k++) {
       ans = min(ans, dp[n][j][k]);

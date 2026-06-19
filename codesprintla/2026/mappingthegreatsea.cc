@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct Rect {
@@ -172,7 +173,7 @@ int main() {
   }
 
   const int R = (int)rects.size();
-  vector<long long> d_flat((size_t)(n + 2) * (size_t)(n + 2), 0);
+  vector<i64> d_flat((size_t)(n + 2) * (size_t)(n + 2), 0);
 #define DI(ii, jj) (d_flat[(size_t)(ii) * (size_t)(n + 2) + (size_t)(jj)])
 
   for (const Rect& re : rects) {
@@ -182,12 +183,12 @@ int main() {
     DI(re.r2 + 1, re.c2 + 1) += 1;
   }
 
-  vector<long long> cov_flat((size_t)n * (size_t)n);
+  vector<i64> cov_flat((size_t)n * (size_t)n);
 #define CI(ii, jj) (cov_flat[(size_t)(ii) * (size_t)n + (size_t)(jj)])
 
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < n; j++) {
-      long long v = DI(i, j);
+      i64 v = DI(i, j);
       if (i > 0) {
         v += CI(i - 1, j);
       }
@@ -215,8 +216,8 @@ int main() {
     return EI(r2 + 1, c2 + 1) - EI(r1, c2 + 1) - EI(r2 + 1, c1) + EI(r1, c1);
   };
 
-  long long type1 = R;
-  long long type2 = 0;
+  i64 type1 = R;
+  i64 type2 = 0;
   for (const Rect& re : rects) {
     if (exclusive_sum(re.r1, re.c1, re.r2, re.c2) > 0) {
       type2++;

@@ -2,13 +2,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr unsigned MOD = 1'000'000'007;
 #include "../../../lib/modint.h"
 using Mint = ModInt<MOD>;
 
-Mint binom(long long x, long long y) {
+Mint binom(i64 x, i64 y) {
   if (x < y) {
     return 0;
   }
@@ -21,9 +22,9 @@ Mint binom(long long x, long long y) {
 }
 
 int T;
-long long n, a, b;
+i64 n, a, b;
 
-vector<pair<long long, int>> mp;
+vector<pair<i64, int>> mp;
 vector<int> divisors;
 
 Mint ans;
@@ -36,7 +37,7 @@ vector<int> complement_divisors(vector<int> x) {
   return y;
 }
 
-Mint steps(long long n, vector<int> divisors) {
+Mint steps(i64 n, vector<int> divisors) {
   Mint value = 1;
   for (auto x : divisors) {
     value *= binom(n + x - 1, x);
@@ -44,7 +45,7 @@ Mint steps(long long n, vector<int> divisors) {
   return value;
 }
 
-void rec(int idx, long long prod) {
+void rec(int idx, i64 prod) {
   if (prod > a) {
     return;
   }
@@ -61,11 +62,11 @@ void rec(int idx, long long prod) {
   }
 }
 
-Mint solve(long long n, long long a, long long b) {
+Mint solve(i64 n, i64 a, i64 b) {
   mp.clear();
-  long long tmp = b;
+  i64 tmp = b;
 
-  for (long long i = 2; i * i <= b; i++)
+  for (i64 i = 2; i * i <= b; i++)
     if (tmp % i == 0) {
       int cnt = 0;
       while (tmp % i == 0) {

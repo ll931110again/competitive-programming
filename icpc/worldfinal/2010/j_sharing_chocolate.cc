@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 /*
@@ -88,7 +89,7 @@ bool can_fill(int mask, int w, int h) {
 
 bool solve_case(int x, int y, const vector<int>& parts) {
   int n = (int)parts.size();
-  long long total = 0;
+  i64 total = 0;
   for (int a : parts)
     total += a;
   if (total != 1LL * x * y)

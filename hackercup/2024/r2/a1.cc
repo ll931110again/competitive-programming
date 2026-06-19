@@ -1,16 +1,17 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 1000005;
 int T, n;
 
-long long solve() {
-  long long A, B, M;
+i64 solve() {
+  i64 A, B, M;
   cin >> A >> B >> M;
 
-  long long ret = 0;
+  i64 ret = 0;
   for (int d = 1; d < 19; d += 2) {
     for (int st = 1; st < 10; st++) {
       vector<int> digits;
@@ -24,7 +25,7 @@ long long solve() {
         }
       }
 
-      long long x = 0;
+      i64 x = 0;
       bool ok = true;
       for (auto d : digits) {
         if (d > 9) {

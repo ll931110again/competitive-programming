@@ -1,13 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 50005;
 #define maxk 505
 
 int n, k, f[k_max_n][maxk];
-long long ret = 0;
+i64 ret = 0;
 vector<int> adj[k_max_n];
 
 void DFS(int u, int pre) {

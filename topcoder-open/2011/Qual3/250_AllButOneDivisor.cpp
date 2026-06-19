@@ -1,16 +1,17 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class AllButOneDivisor {
-  long long gcd(long long a, long long b) {
+  i64 gcd(i64 a, i64 b) {
     while (b) {
-      long long t = a % b;
+      i64 t = a % b;
       a = b;
       b = t;
     }
     return a;
   }
-  long long lcm(long long a, long long b) {
+  i64 lcm(i64 a, i64 b) {
     return a / gcd(a, b) * b;
   }
 
@@ -19,7 +20,7 @@ public:
     int k = divisors.size();
     int best = -1;
     for (int e = 0; e < k; e++) {
-      long long L = 1;
+      i64 L = 1;
       for (int i = 0; i < k; i++)
         if (i != e)
           L = lcm(L, divisors[i]);

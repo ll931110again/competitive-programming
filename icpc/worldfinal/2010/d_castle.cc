@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct Castle {
@@ -10,23 +11,23 @@ struct Castle {
 };
 
 struct Task {
-  long long req;  // soldiers needed before starting this subtree
-  long long cost; // soldiers lost after conquering this subtree
+  i64 req;  // soldiers needed before starting this subtree
+  i64 cost; // soldiers lost after conquering this subtree
 };
 
-long long min_initial_for_tasks(vector<Task>& tasks) {
+i64 min_initial_for_tasks(vector<Task>& tasks) {
   // Given tasks where each requires current >= req and then reduces by cost,
   // the minimal starting value is minimized by sorting by (req - cost)
   // descending.
   sort(tasks.begin(), tasks.end(), [](const Task& x, const Task& y) {
-    long long dx = x.req - x.cost;
-    long long dy = y.req - y.cost;
+    i64 dx = x.req - x.cost;
+    i64 dy = y.req - y.cost;
     if (dx != dy)
       return dx > dy;
     return x.req > y.req;
   });
-  long long need = 0;
-  long long spent = 0;
+  i64 need = 0;
+  i64 spent = 0;
   for (const auto& t : tasks) {
     need = max(need, t.req + spent);
     spent += t.cost;
@@ -35,14 +36,14 @@ long long min_initial_for_tasks(vector<Task>& tasks) {
 }
 
 struct DpRes {
-  long long need; // minimal soldiers needed upon arriving (before attacking
-                  // this castle)
-  long long loss; // total soldiers removed in this subtree (deaths+garrisons)
+  i64 need; // minimal soldiers needed upon arriving (before attacking
+            // this castle)
+  i64 loss; // total soldiers removed in this subtree (deaths+garrisons)
 };
 
 DpRes dfs_solve(int u, int parent, const vector<Castle>& castles, const vector<vector<int>>& adj) {
   vector<Task> tasks;
-  long long loss_sum = 0;
+  i64 loss_sum = 0;
 
   for (int v : adj[u]) {
     if (v == parent)
@@ -52,10 +53,10 @@ DpRes dfs_solve(int u, int parent, const vector<Castle>& castles, const vector<v
     loss_sum += child.loss;
   }
 
-  long long self_cost = (long long)castles[u].m + (long long)castles[u].g;
-  long long need_after_capture = min_initial_for_tasks(tasks);
-  long long need_before_attack = max<long long>(castles[u].a, self_cost + need_after_capture);
-  long long total_loss = self_cost + loss_sum;
+  i64 self_cost = (i64)castles[u].m + (i64)castles[u].g;
+  i64 need_after_capture = min_initial_for_tasks(tasks);
+  i64 need_before_attack = max<i64>(castles[u].a, self_cost + need_after_capture);
+  i64 total_loss = self_cost + loss_sum;
   return DpRes{need_before_attack, total_loss};
 }
 
@@ -85,7 +86,7 @@ int main() {
       adj[y].push_back(x);
     }
 
-    long long best = (1LL << 62);
+    i64 best = (1LL << 62);
     for (int root = 0; root < n; root++) {
       DpRes res = dfs_solve(root, -1, castles, adj);
       best = min(best, res.need);

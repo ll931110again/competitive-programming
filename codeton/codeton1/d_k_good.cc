@@ -4,13 +4,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 int T;
-long long n;
+i64 n;
 
-long long solve(long long n) {
-  long long even = 2, odd = n;
+i64 solve(i64 n) {
+  i64 even = 2, odd = n;
   while (odd % 2 == 0) {
     even *= 2;
     odd /= 2;

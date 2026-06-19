@@ -26,14 +26,15 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 const int MOD = 100003;
 const int MAXN = 100;
 
-long long fac[MOD], inv[MOD];
+i64 fac[MOD], inv[MOD];
 
 struct Matrix {
   int n;
-  long long a[MAXN][MAXN];
+  i64 a[MAXN][MAXN];
 
   Matrix() : n(0) {
     memset(a, 0, sizeof(a));
@@ -59,7 +60,7 @@ struct Matrix {
     return res;
   }
 
-  Matrix pow(long long exp) const {
+  Matrix pow(i64 exp) const {
     Matrix base = *this;
     Matrix res = identity(n);
     while (exp > 0) {
@@ -81,31 +82,31 @@ struct ShrooksOnTheBoard {
       inv[i] = power(fac[i], MOD - 2);
     }
 
-    long long one = (K <= MAXN) ? matrix_method(K, W) : comb_method(K, W);
+    i64 one = (K <= MAXN) ? matrix_method(K, W) : comb_method(K, W);
     // H independent rows; exclude the placement with zero shrooks overall.
     return (int)(power(one, H) + MOD - 1) % MOD;
   }
 
-  long long power(long long x, long long p) {
+  i64 power(i64 x, i64 p) {
     if (!p)
       return 1;
-    long long q = power(x, p / 2);
+    i64 q = power(x, p / 2);
     q = (q * q) % MOD;
     if (p & 1)
       q = (q * x) % MOD;
     return q;
   }
 
-  long long C(int n, int k) {
+  i64 C(int n, int k) {
     if (n < k)
       return 0;
-    long long ret = (inv[k] * inv[n - k]) % MOD;
+    i64 ret = (inv[k] * inv[n - k]) % MOD;
     return (ret * fac[n]) % MOD;
   }
 
   // Binomial mod prime when n, k may exceed MOD (Lucas theorem).
-  long long bigC(int n, int k) {
-    long long ret = 1;
+  i64 bigC(int n, int k) {
+    i64 ret = 1;
     while (n || k) {
       ret = (ret * C(n % MOD, k % MOD)) % MOD;
       n /= MOD;
@@ -115,15 +116,15 @@ struct ShrooksOnTheBoard {
   }
 
   // F(W) for large K': empty row (1) plus i ≥ 1 shrooks with enough horizontal gap.
-  long long comb_method(int K, int W) {
-    long long ret = 1;
+  i64 comb_method(int K, int W) {
+    i64 ret = 1;
     for (int i = 1; K * (i - 1) <= W; i++)
       ret = (ret + bigC(W - K * (i - 1) + i - 1, i)) % MOD;
     return ret;
   }
 
   // F(W) for small K' via K'×K' transition matrix (one column = one multiply).
-  long long matrix_method(int K, int W) {
+  i64 matrix_method(int K, int W) {
     if (K >= W)
       return (W + 1) % MOD; // only 0 or 1 shrook per row
 
@@ -136,7 +137,7 @@ struct ShrooksOnTheBoard {
 
     Matrix pw = base.pow(W - K);
     // Weight (i + 2) encodes empty / placement accounting per start state i.
-    long long ret = 0;
+    i64 ret = 0;
     for (int i = 0; i < K; i++)
       ret = (ret + 1LL * (i + 2) * pw.a[i][K - 1]) % MOD;
     return ret;

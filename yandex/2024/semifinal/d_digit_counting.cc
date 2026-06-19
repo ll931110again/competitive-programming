@@ -1,13 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr unsigned MOD = 1'000'000'007;
 #include "../../../lib/modint.h"
 using Mint = ModInt<MOD>;
 
-Mint solve(long long R) {
+Mint solve(i64 R) {
   if (R < 2) {
     return 0;
   }
@@ -16,7 +17,7 @@ Mint solve(long long R) {
   auto ans = Mint(R - 1) * Mint(R) / 2 * 2;
 
   // three digits
-  long long n = sqrt(R);
+  i64 n = sqrt(R);
   auto threes = Mint(R + 1) * (n - 1);
   // subtract 2^2 + .. + n^2
   threes -= Mint(n) * Mint(n + 1) * Mint(n * 2 + 1) / 6 - 1;
@@ -24,9 +25,9 @@ Mint solve(long long R) {
   ans += threes;
 
   // four digits
-  long long low = 1, high = 1e6;
+  i64 low = 1, high = 1e6;
   while (low <= high) {
-    long long mid = (low + high) / 2;
+    i64 mid = (low + high) / 2;
     if (mid * mid * mid <= R) {
       n = mid;
       low = mid + 1;
@@ -47,7 +48,7 @@ Mint solve(long long R) {
   low = 1;
   high = 32000;
   while (low <= high) {
-    long long mid = (low + high) / 2;
+    i64 mid = (low + high) / 2;
     if (mid * mid * mid * mid <= R) {
       n = mid;
       low = mid + 1;
@@ -64,7 +65,7 @@ Mint solve(long long R) {
 
   for (int x = 2;; x++) {
     bool found = false;
-    long long value = 1, d = 0;
+    i64 value = 1, d = 0;
 
     while (true) {
       if (R / x < value) {
@@ -98,7 +99,7 @@ int main() {
 
   cin >> T;
   while (T--) {
-    long long L, R;
+    i64 L, R;
     cin >> L >> R;
     cout << solve(R) - solve(L - 1) << endl;
   }

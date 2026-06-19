@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 #define maxn 15
 #define maxd 105
 
-long long ways[maxn][maxd];
+i64 ways[maxn][maxd];
 
 class SingleOrDouble {
 public:
@@ -20,7 +21,7 @@ public:
         }
     }
 
-    long long total_ways = 0;
+    i64 total_ways = 0;
     for (int i = 0; i <= N * D; i++) {
       total_ways += ways[N][i];
     }

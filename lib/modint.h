@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <iostream>
 
+using i64 = long long;
+
 // Header-only modular arithmetic helper for competitive programming.
 // Intended usage:
 //   static constexpr unsigned MOD = 1'000'000'007;
@@ -15,8 +17,7 @@ template <unsigned M_> struct ModInt {
   constexpr ModInt(unsigned v) : x(v % M) {}
   constexpr ModInt(unsigned long long v) : x(static_cast<unsigned>(v % M)) {}
   constexpr ModInt(int v) : x(((v %= static_cast<int>(M)) < 0) ? (v + static_cast<int>(M)) : v) {}
-  constexpr ModInt(long long v)
-      : x(((v %= static_cast<long long>(M)) < 0) ? (v + static_cast<long long>(M)) : v) {}
+  constexpr ModInt(i64 v) : x(((v %= static_cast<i64>(M)) < 0) ? (v + static_cast<i64>(M)) : v) {}
 
   static constexpr unsigned mod() {
     return M;
@@ -38,7 +39,7 @@ template <unsigned M_> struct ModInt {
     return (*this *= a.inv());
   }
 
-  ModInt pow(long long e) const {
+  ModInt pow(i64 e) const {
     if (e < 0)
       return inv().pow(-e);
     ModInt a = *this, b = 1U;

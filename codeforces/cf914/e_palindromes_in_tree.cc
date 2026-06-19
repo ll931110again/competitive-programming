@@ -7,6 +7,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200010;
@@ -14,7 +15,7 @@ constexpr int k_max_n = 200010;
 int valc[k_max_n];
 int sz[k_max_n];
 int freq[1 << 20];
-long long ans[k_max_n];
+i64 ans[k_max_n];
 bool dead[k_max_n];
 
 vector<int> adj[k_max_n];
@@ -49,8 +50,8 @@ void upd(int u, int p, int mask, int delta) {
   }
 }
 
-long long get_paths(int u, int p, int mask) {
-  long long res = freq[mask];
+i64 get_paths(int u, int p, int mask) {
+  i64 res = freq[mask];
   for (int i = 0; i < 20; ++i) {
     res += freq[mask ^ (1 << i)];
   }

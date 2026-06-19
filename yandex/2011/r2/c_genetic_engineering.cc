@@ -4,6 +4,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 #define mod 1000000009
 namespace {
 
@@ -19,7 +20,7 @@ int jump_idx[maxk][max_alphabet];
 unordered_map<string, int> prefix_idx;
 int finish_len[maxk];
 
-long long cur[maxk][k_max_n], nxt[maxk][k_max_n];
+i64 cur[maxk][k_max_n], nxt[maxk][k_max_n];
 map<char, int> dna = {
     {'A', 0},
     {'C', 1},
@@ -122,7 +123,7 @@ int main() {
     }
   }
 
-  long long ans = 0;
+  i64 ans = 0;
   for (int state = 0; state < node_cnt; state++) {
     ans += cur[state][0];
     ans %= mod;

@@ -2,6 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 3000005;
@@ -130,7 +131,7 @@ int solve() {
   recurse_up(1);
   recurse_down(1);
 
-  long long ans = 0;
+  i64 ans = 0;
   int ux = universes.size();
   for (int i = 1; i <= n; i++) {
     ans = ans * (ux + 1) + up[i];

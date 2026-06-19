@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
-void dfs_left(const vector<long long>& d, int pivot, int i, int prev_t, long long sum,
-              map<int, vector<long long>>& out) {
+void dfs_left(const vector<i64>& d, int pivot, int i, int prev_t, i64 sum,
+              map<int, vector<i64>>& out) {
   if (i > pivot) {
     out[prev_t].push_back(sum);
     return;
@@ -14,12 +15,12 @@ void dfs_left(const vector<long long>& d, int pivot, int i, int prev_t, long lon
     int t = prev_t + dd;
     if (t <= 0)
       continue;
-    dfs_left(d, pivot, i + 1, t, sum + (long long)t * d[i], out);
+    dfs_left(d, pivot, i + 1, t, sum + (i64)t * d[i], out);
   }
 }
 
-void dfs_right(const vector<long long>& d, int pivot, int i, int cur_t, long long sum,
-               map<int, vector<long long>>& out) {
+void dfs_right(const vector<i64>& d, int pivot, int i, int cur_t, i64 sum,
+               map<int, vector<i64>>& out) {
   // sum already includes contributions for intervals i..m-1, where cur_t = t_i
   const int delta[3] = {-2, 0, 2};
   if (i == pivot + 1) {
@@ -36,7 +37,7 @@ void dfs_right(const vector<long long>& d, int pivot, int i, int cur_t, long lon
     int tprev = cur_t + dd;
     if (tprev <= 0)
       continue;
-    dfs_right(d, pivot, i - 1, tprev, sum + (long long)tprev * d[i - 1], out);
+    dfs_right(d, pivot, i - 1, tprev, sum + (i64)tprev * d[i - 1], out);
   }
 }
 
@@ -51,22 +52,22 @@ int main() {
   for (int tc = 1; tc <= T; tc++) {
     int N;
     cin >> N;
-    vector<long long> X(N);
+    vector<i64> X(N);
     for (int i = 0; i < N; i++)
       cin >> X[i];
-    long long F;
+    i64 F;
     cin >> F;
 
     sort(X.begin(), X.end());
 
     const int m = N - 1; // number of intervals
-    vector<long long> d(m);
+    vector<i64> d(m);
     for (int i = 0; i < m; i++)
       d[i] = X[i + 1] - X[i];
 
     // Special case: N==2 (one interval, must have t=2).
     if (m == 1) {
-      long long need = 2LL * d[0];
+      i64 need = 2LL * d[0];
       if (need <= F) {
         cout << "Case #" << tc << ": " << need << "\n";
       } else {
@@ -77,7 +78,7 @@ int main() {
 
     const int pivot = m / 2; // 0-based interval index included in the left half
 
-    map<int, vector<long long>> left, right;
+    map<int, vector<i64>> left, right;
 
     // Left enumeration: t0 is forced to 2 (this is t1 in the analysis).
     // We start from i=1 since we already include interval 0.
@@ -91,7 +92,7 @@ int main() {
       // Right half is just the last interval (index m-1 is fixed to 2), so no t_pivot constraint
       // beyond diff. Here pivot+1 == m-1, so we can directly set based on t_{m-1}=2.
       const int delta[3] = {-2, 0, 2};
-      long long sum = 2LL * d[m - 1];
+      i64 sum = 2LL * d[m - 1];
       for (int dd : delta) {
         int tp = 2 + dd;
         if (tp <= 0)
@@ -103,7 +104,7 @@ int main() {
       dfs_right(d, pivot, m - 1, 2, 2LL * d[m - 1], right);
     }
 
-    long long best = -1;
+    i64 best = -1;
     for (auto& [tp, A] : left) {
       auto it = right.find(tp);
       if (it == right.end())
@@ -111,10 +112,10 @@ int main() {
       auto& B = it->second;
 
       sort(B.begin(), B.end());
-      for (long long a : A) {
+      for (i64 a : A) {
         if (a > F)
           continue;
-        long long rem = F - a;
+        i64 rem = F - a;
         auto ub = upper_bound(B.begin(), B.end(), rem);
         if (ub == B.begin())
           continue;

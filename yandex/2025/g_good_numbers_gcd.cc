@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
@@ -86,7 +87,7 @@ int main() {
       }
     }
 
-    long long ans = 0;
+    i64 ans = 0;
     for (int i = 0; i < n; i++)
       if (good[i]) {
         int j = i, value = a[i];

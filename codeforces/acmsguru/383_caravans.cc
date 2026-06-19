@@ -6,46 +6,45 @@
 
 #include <bits/stdc++.h>
 using namespace std;
-
-using ll = long long;
+using i64 = long long;
 using ld = long double;
 
 namespace {
 
-bool ge(ll a, ll b) {
+bool ge(i64 a, i64 b) {
   return a >= b;
 }
-bool eq(ll a, ll b) {
+bool eq(i64 a, i64 b) {
   return a == b;
 }
-bool gt(ll a, ll b) {
+bool gt(i64 a, i64 b) {
   return a > b;
 }
-bool lt(ll a, ll b) {
+bool lt(i64 a, i64 b) {
   return a < b;
 }
-int sgn(ll a) {
+int sgn(i64 a) {
   return a > 0 ? 1 : (a < 0 ? -1 : 0);
 }
 
 struct Pt {
-  ll x, y;
+  i64 x, y;
   int id;
   Pt() = default;
-  Pt(ll x_, ll y_, int id_) : x(x_), y(y_), id(id_) {}
+  Pt(i64 x_, i64 y_, int id_) : x(x_), y(y_), id(id_) {}
   Pt operator-(const Pt& p) const {
     return Pt(x - p.x, y - p.y, id);
   }
-  ll cross(const Pt& p) const {
+  i64 cross(const Pt& p) const {
     return x * p.y - y * p.x;
   }
-  ll cross(const Pt& a, const Pt& b) const {
+  i64 cross(const Pt& a, const Pt& b) const {
     return (a - *this).cross(b - *this);
   }
-  ll dot(const Pt& p) const {
+  i64 dot(const Pt& p) const {
     return x * p.x + y * p.y;
   }
-  ll sqr_length() const {
+  i64 sqr_length() const {
     return dot(*this);
   }
   bool operator==(const Pt& p) const {
@@ -261,7 +260,7 @@ vector<pair<int, int>> delaunay_edges(vector<Pt>& p) {
 
 struct Edge {
   int u, v;
-  ll w2;
+  i64 w2;
   bool operator<(const Edge& o) const {
     return w2 < o.w2;
   }
@@ -362,8 +361,8 @@ int main() {
   vector<Edge> elist;
   elist.reserve(edges.size());
   for (const auto& [u, v] : edges) {
-    ll dx = pts[u].x - pts[v].x;
-    ll dy = pts[u].y - pts[v].y;
+    i64 dx = pts[u].x - pts[v].x;
+    i64 dy = pts[u].y - pts[v].y;
     elist.push_back({u, v, dx * dx + dy * dy});
   }
   sort(elist.begin(), elist.end());

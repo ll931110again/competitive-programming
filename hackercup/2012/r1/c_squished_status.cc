@@ -1,13 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 int T, m;
 char s[1005];
 string encode;
-long long f[1005];
-long long mod = 4207849484LL;
+i64 f[1005];
+i64 mod = 4207849484LL;
 
 int convert(string s) {
   stringstream w;
@@ -17,7 +18,7 @@ int convert(string s) {
   return x;
 }
 
-long long rec(int pos) {
+i64 rec(int pos) {
   if (pos < 0)
     return 1;
   if (f[pos] >= 0)

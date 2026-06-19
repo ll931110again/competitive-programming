@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 vector<pair<int, int>> v, contain;
@@ -50,7 +51,7 @@ int main() {
         contain.push_back(v[i]);
     }
   }
-  long long ret = m;
+  i64 ret = m;
   for (int i = 0; i < contain.size(); i++)
     ret += 2LL * abs(contain[i].first - contain[i].second);
   cout << ret << '\n';

@@ -9,13 +9,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int MOD = 998244353;
 
 template <int P> struct ModInt {
   int x;
-  ModInt(long long v = 0) : x(int((v % P + P) % P)) {}
+  ModInt(i64 v = 0) : x(int((v % P + P) % P)) {}
   ModInt& operator+=(ModInt o) {
     x += o.x;
     if (x >= P)
@@ -29,7 +30,7 @@ template <int P> struct ModInt {
     return *this;
   }
   ModInt& operator*=(ModInt o) {
-    x = int((long long)x * o.x % P);
+    x = int((i64)x * o.x % P);
     return *this;
   }
   friend ModInt operator+(ModInt a, ModInt b) {
@@ -52,7 +53,7 @@ template <int P> struct ModInt {
   }
 };
 
-template <int P> ModInt<P> mod_pow(ModInt<P> a, long long e) {
+template <int P> ModInt<P> mod_pow(ModInt<P> a, i64 e) {
   ModInt<P> r(1);
   while (e > 0) {
     if (e & 1)
@@ -97,8 +98,7 @@ template <int P> vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>>& s) 
 }
 
 template <int P>
-ModInt<P> kth_linear_recurrence(vector<ModInt<P>> init, const vector<ModInt<P>>& trans,
-                                long long k) {
+ModInt<P> kth_linear_recurrence(vector<ModInt<P>> init, const vector<ModInt<P>>& trans, i64 k) {
   const int n = (int)trans.size();
   if (k < n)
     return init[(int)k];
@@ -122,7 +122,7 @@ ModInt<P> kth_linear_recurrence(vector<ModInt<P>> init, const vector<ModInt<P>>&
   M res(n, vector<ModInt<P>>(n));
   for (int i = 0; i < n; ++i)
     res[i][i] = ModInt<P>(1);
-  long long e = k - n + 1;
+  i64 e = k - n + 1;
   M pow_m = base;
   while (e > 0) {
     if (e & 1)
@@ -144,8 +144,8 @@ Mint mod_inv(Mint a) {
 }
 
 // Closed form for a_N (valid for all N); used to build the BM prefix quickly.
-Mint prefix_term(long long N, int P) {
-  long long n = N - 1;
+Mint prefix_term(i64 N, int P) {
+  i64 n = N - 1;
   Mint inv2 = Mint((MOD + 1) / 2);
   Mint r = Mint(2) * Mint(P) * mod_inv(Mint(100)) - Mint(1);
   Mint nn = Mint(n % MOD), n1 = Mint((n - 1) % MOD);
@@ -221,7 +221,7 @@ Mint brute_expected(int N, int P) {
 }
 #endif
 
-Mint solve_bm(long long N, int P) {
+Mint solve_bm(i64 N, int P) {
   unordered_map<int, pair<vector<Mint>, vector<Mint>>> cache;
   auto& entry = cache[P];
   if (entry.first.empty()) {
@@ -248,7 +248,7 @@ int main() {
   int T;
   cin >> T;
   while (T--) {
-    long long N;
+    i64 N;
     int P;
     cin >> N >> P;
     cout << solve_bm(N, P).x << '\n';

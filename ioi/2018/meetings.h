@@ -3,6 +3,8 @@
 
 #include <vector>
 
-std::vector<long long> minimum_costs(std::vector<int> H, std::vector<int> L, std::vector<int> R);
+using i64 = long long;
+
+std::vector<i64> minimum_costs(std::vector<int> H, std::vector<int> L, std::vector<int> R);
 
 #endif

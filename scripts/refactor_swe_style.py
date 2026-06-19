@@ -23,7 +23,7 @@ STRUCT_LOWER_RE = re.compile(r"^(\s*)struct\s+([a-z][a-z0-9_]*)\s*\{")
 FUNC_DEF_RE = re.compile(
     r"^(\s*)(?:static\s+)?(?:inline\s+)?"
     r"(?:const\s+)?(?:unsigned\s+)?(?:long\s+long|long\s+double|bool|int|void|char|"
-    r"double|float|auto|ll|ld|size_t|string)\s+"
+    r"double|float|auto|i64|ll|ld|size_t|string)\s+"
     r"([a-z][a-zA-Z0-9_]*)\s*\([^;]*\)\s*(?:const\s*)?\{"
 )
 DEFINE_MAXN_RE = re.compile(r"^#define\s+maxn\s+(\d+)\s*$", re.MULTILINE)

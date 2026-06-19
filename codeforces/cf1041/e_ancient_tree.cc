@@ -2,6 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
@@ -107,7 +108,7 @@ void solve() {
     }
   }
 
-  long long ans = 0;
+  i64 ans = 0;
   for (auto it : color_set) {
     if (it.second.size() > 1) {
       ans += weight[it.first];

@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
@@ -27,7 +28,7 @@ int main() {
   }
 
   int tick = 0;
-  long long ans = 0;
+  i64 ans = 0;
 
   while (true) {
     auto it = mp.upper_bound(tick);
@@ -37,7 +38,7 @@ int main() {
 
     tick = it->first;
 
-    long long entry_sum = 0;
+    i64 entry_sum = 0;
     priority_queue<int> pq;
     for (auto entry : mp[tick]) {
       pq.push(entry);

@@ -4,12 +4,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 int num[4], wait[4];
 int n;
 int a[100010];
-priority_queue<long long> q[4];
+priority_queue<i64> q[4];
 
 } // namespace
 
@@ -34,11 +35,11 @@ int main() {
       q[i].push(0);
   }
 
-  long long ret = 0;
+  i64 ret = 0;
   for (int i = 0; i < n; i++) {
-    long long wait_time = a[i];
+    i64 wait_time = a[i];
     for (int j = 1; j <= 3; j++) {
-      long long used = -q[j].top();
+      i64 used = -q[j].top();
       q[j].pop();
       wait_time = max(wait_time, used) + wait[j];
       q[j].push(-wait_time);

@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class RepresentableNumbers {
   static const int ODD[5];
   static const int SUM2[25];
@@ -165,7 +166,7 @@ public:
       }
     }
 
-    long long p10 = 1;
+    i64 p10 = 1;
     for (int i = 0; i < n; i++)
       p10 *= 10;
     if (p10 >= X && p10 <= 2000000000LL && canRepresent(toLsb((int)p10)))

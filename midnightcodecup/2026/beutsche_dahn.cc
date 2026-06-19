@@ -17,6 +17,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct Passenger {
@@ -82,7 +83,7 @@ bool rat_lt(const RationalCandidate& a, const RationalCandidate& b) {
 // Empty-train staging: minimize dist(from, target) / (slack+1), where slack is ticks until
 // appearance for future passengers; slack=0 for cities that already have waiting passengers.
 // Returns ranked list of distinct goal cities (best first) for diversification across trains.
-vector<int> staging_goals_ranked(int from, long long tick, const vector<vector<int>>& waiting_at) {
+vector<int> staging_goals_ranked(int from, i64 tick, const vector<vector<int>>& waiting_at) {
   vector<RationalCandidate> cand;
   cand.reserve((size_t)V + (size_t)N);
 
@@ -186,11 +187,11 @@ int main() {
   vector<vector<int>> onboard(Ttr + 1); // passenger ids per train
 
   vector<Tick> plan;
-  long long total_moves = 0;
-  const long long MAX_TICKS = 1000000LL;
-  const long long MAX_MOVES = 2000000LL;
+  i64 total_moves = 0;
+  const i64 MAX_TICKS = 1000000LL;
+  const i64 MAX_MOVES = 2000000LL;
 
-  for (long long tick = 1;; ++tick) {
+  for (i64 tick = 1;; ++tick) {
     if (tick > MAX_TICKS) {
       cerr << "error: exceeded tick limit\n";
       return 1;
@@ -337,7 +338,7 @@ int main() {
       train_pos[j] = nxt;
     }
 
-    total_moves += (long long)cur.moves.size();
+    total_moves += (i64)cur.moves.size();
     if (total_moves > MAX_MOVES) {
       cerr << "error: exceeded move budget\n";
       return 1;

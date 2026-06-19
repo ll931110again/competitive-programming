@@ -1,9 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
-const long long MOD = 1000000007LL;
+const i64 MOD = 1000000007LL;
 
 // Restricted assembly-line counting with checkpoint toggles (seizethemeans).
 // Placeholder — needs digit DP / matrix exponentiation across checkpoint ranges.

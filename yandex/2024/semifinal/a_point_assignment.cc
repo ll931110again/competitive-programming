@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 100005;
@@ -20,7 +21,7 @@ int main() {
   sort(x, x + n);
   sort(y, y + n);
 
-  long long ret = 0;
+  i64 ret = 0;
   for (int i = 0; i < n; i++) {
     ret += abs(x[i] - (i + 1)) + abs(y[i] - (i + 1));
   }

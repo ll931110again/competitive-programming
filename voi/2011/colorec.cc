@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 int a[402][402];
@@ -33,7 +34,7 @@ int main() {
           f[i][j][mask]++;
         }
 
-  long long ret = 0;
+  i64 ret = 0;
   for (int i = 0; i <= 400; i++)
     for (int j = i + 1; j <= 400; j++)
       for (int t = 0; t < 16; t++)

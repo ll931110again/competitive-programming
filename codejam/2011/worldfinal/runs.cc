@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 const int MOD = 1000003; // prime
@@ -17,12 +18,12 @@ int mod_sub(int a, int b) {
     a += MOD;
   return a;
 }
-long long mod_mul(long long a, long long b) {
+i64 mod_mul(i64 a, i64 b) {
   return (a * b) % MOD;
 }
 
-int mod_pow(int a, long long e) {
-  long long r = 1, x = a;
+int mod_pow(int a, i64 e) {
+  i64 r = 1, x = a;
   while (e > 0) {
     if (e & 1)
       r = (r * x) % MOD;

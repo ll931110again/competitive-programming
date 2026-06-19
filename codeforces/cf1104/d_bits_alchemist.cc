@@ -2,15 +2,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 int T, n;
 string s;
 int cnt[3];
 
-long long solve() {
+i64 solve() {
   memset(cnt, 0, sizeof cnt);
   cnt[0] = 1;
 
-  long long ans = 0;
+  i64 ans = 0;
   int alternating_len = 0;
   int smod = 0;
 

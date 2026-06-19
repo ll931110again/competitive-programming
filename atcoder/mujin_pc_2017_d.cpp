@@ -11,6 +11,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 const int MOD = int(1e9 + 7);
@@ -79,15 +80,15 @@ int main() {
   int diam = br2.dist[v];
   vector<int> path = diameter_path_from_parent(v, br2.parent);
 
-  long long answer = 0;
+  i64 answer = 0;
 
   auto combine_children = [&](int v, int p, int hv,
-                              const function<long long(int, int, int)>& dfs) -> long long {
-    long long prod = 1;
+                              const function<i64(int, int, int)>& dfs) -> i64 {
+    i64 prod = 1;
     for (int c : adj[v]) {
       if (c == p)
         continue;
-      long long sm = (dfs(c, v, hv - 1) + dfs(c, v, hv + 1)) % MOD;
+      i64 sm = (dfs(c, v, hv - 1) + dfs(c, v, hv + 1)) % MOD;
       prod = prod * sm % MOD;
     }
     return prod;
@@ -99,11 +100,11 @@ int main() {
     const vector<int>& dist_r = dd.dist;
     int half = diam / 2;
 
-    vector<vector<long long>> memo(N + 1, vector<long long>(2 * N + 5, -1));
+    vector<vector<i64>> memo(N + 1, vector<i64>(2 * N + 5, -1));
 
-    function<long long(int, int, int)> dfs = [&](int v, int p, int hv) -> long long {
+    function<i64(int, int, int)> dfs = [&](int v, int p, int hv) -> i64 {
       int idx = hv + N + 2;
-      long long& mem = memo[v][idx];
+      i64& mem = memo[v][idx];
       if (mem != -1)
         return mem;
 
@@ -133,8 +134,8 @@ int main() {
 
     int half = diam / 2; // floor
 
-    auto run_case = [&](bool swap_bw, bool intersection) -> long long {
-      vector<vector<long long>> memo(N + 1, vector<long long>(2 * N + 5, -1));
+    auto run_case = [&](bool swap_bw, bool intersection) -> i64 {
+      vector<vector<i64>> memo(N + 1, vector<i64>(2 * N + 5, -1));
 
       auto ok = [&](int vertex, int hv) -> bool {
         int klim = half - ec[vertex];
@@ -150,9 +151,9 @@ int main() {
         return abs(hv + 1) <= klim;
       };
 
-      function<long long(int, int, int)> dfs = [&](int v, int p, int hv) -> long long {
+      function<i64(int, int, int)> dfs = [&](int v, int p, int hv) -> i64 {
         int idx = hv + N + 2;
-        long long& mem = memo[v][idx];
+        i64& mem = memo[v][idx];
         if (mem != -1)
           return mem;
         if (!ok(v, hv))
@@ -160,7 +161,7 @@ int main() {
         return mem = combine_children(v, p, hv, dfs);
       };
 
-      long long sum = 0;
+      i64 sum = 0;
       for (int hv = -N; hv <= N; ++hv)
         sum = (sum + dfs(s, -1, hv)) % MOD;
       return sum;
@@ -169,9 +170,9 @@ int main() {
     // Case 1 / case 2 count valid integer labelings h under two symmetric bounds.
     // Their union (as orientations) satisfies |O1 ∪ O2| = L1 + L2 − 2·L12 where L12
     // is the number of labelings satisfying *both* bound systems (intersection).
-    long long L1 = run_case(false, false);
-    long long L2 = run_case(true, false);
-    long long L12 = run_case(false, true);
+    i64 L1 = run_case(false, false);
+    i64 L2 = run_case(true, false);
+    i64 L12 = run_case(false, true);
     answer = (L1 + L2 - (2 * L12) % MOD + MOD) % MOD;
   }
 

@@ -2,6 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 1000005;
@@ -18,7 +19,7 @@ bool get(int mid) {
     return false;
   }
 
-  long long balance = 0;
+  i64 balance = 0;
   for (int i = mid; i < m; i++) {
     balance += stockpile[i];
   }

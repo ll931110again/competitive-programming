@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 vector<int> adj[1000005];
-long long sub[1000005];
+i64 sub[1000005];
 int weight[1000005];
 
 int LocateCentre(int n, int p[], int s[], int d[]) {
@@ -38,7 +39,7 @@ int LocateCentre(int n, int p[], int s[], int d[]) {
   }
   reverse(order.begin(), order.end());
 
-  long long total = 0;
+  i64 total = 0;
   for (int u : order) {
     sub[u] = weight[u];
     for (int v : adj[u]) {
@@ -49,12 +50,12 @@ int LocateCentre(int n, int p[], int s[], int d[]) {
     total += weight[u];
   }
 
-  long long best_val = (1LL << 60);
+  i64 best_val = (1LL << 60);
   int best_node = 0;
   struct Frame {
     int u;
     int p;
-    long long up;
+    i64 up;
   };
   vector<Frame> st;
   st.push_back({0, -1, 0});
@@ -62,7 +63,7 @@ int LocateCentre(int n, int p[], int s[], int d[]) {
     const frame cur = st.back();
     st.pop_back();
 
-    long long worst = cur.p == -1 ? 0 : cur.up;
+    i64 worst = cur.p == -1 ? 0 : cur.up;
     for (int v : adj[cur.u]) {
       if (v == cur.p) {
         continue;

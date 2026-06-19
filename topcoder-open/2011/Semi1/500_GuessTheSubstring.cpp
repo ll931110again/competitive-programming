@@ -1,13 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class GuessTheSubstring {
   struct SAM {
     struct State {
       int next[26];
       int link;
       int len;
-      long long occ;
+      i64 occ;
       State() : link(-1), len(0), occ(0) {
         memset(next, -1, sizeof(next));
       }

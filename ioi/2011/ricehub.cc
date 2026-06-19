@@ -1,12 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 100005;
-long long ss[k_max_n];
+i64 ss[k_max_n];
 
-int besthub(int R, int L, int X[], long long B) {
+int besthub(int R, int L, int X[], i64 B) {
   ss[0] = X[0];
   for (int i = 1; i < R; i++) {
     ss[i] = ss[i - 1] + X[i];
@@ -16,8 +17,8 @@ int besthub(int R, int L, int X[], long long B) {
 
   auto compute_cost = [&](int i, int j) {
     int k = (i + j) / 2;
-    long long dist_left = 1LL * (k - i + 1) * X[k] - ss_sum(i, k);
-    long long dist_right = ss_sum(k, j) - 1LL * (j - k + 1) * X[k];
+    i64 dist_left = 1LL * (k - i + 1) * X[k] - ss_sum(i, k);
+    i64 dist_right = ss_sum(k, j) - 1LL * (j - k + 1) * X[k];
     return dist_left + dist_right;
   };
 

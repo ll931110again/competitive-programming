@@ -3,9 +3,7 @@
 
 #include <bits/stdc++.h>
 using namespace std;
-
-using int64 = long long;
-
+using i64 = long long;
 namespace {
 
 int domino_index(int a, int b) {
@@ -114,7 +112,7 @@ int main() {
 
   constexpr uint32_t FULL_DOMINO_MASK = (1u << 28) - 1;
 
-  int64 total_ways = 0;
+  i64 total_ways = 0;
   vector<string> answer_grid;
 
   for (const auto& squares_top_left : tilings) {
@@ -149,7 +147,7 @@ int main() {
 
     array<int, 7> cnt{};
     vector<int> assign(R, -1);
-    int64 ways = 0;
+    i64 ways = 0;
 
     auto dfs = [&](auto&& self, int k, uint32_t used_mask) -> void {
       if (k == R) {

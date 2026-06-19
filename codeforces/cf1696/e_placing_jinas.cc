@@ -8,6 +8,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr unsigned MOD = 1'000'000'007;
@@ -37,8 +38,8 @@ using Mint = ModInt<MOD>;
 
 constexpr int MAXN = 400005;
 
-int pow_mod(int a, long long e) {
-  long long r = 1, b = a % MOD;
+int pow_mod(int a, i64 e) {
+  i64 r = 1, b = a % MOD;
   while (e > 0) {
     if (e & 1)
       r = r * b % MOD;

@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 #define mod 1000000009
 
 int m, n;
@@ -8,13 +9,13 @@ int numRed[44][44], numBlue[44][44], numGreen[44][44];
 int maxGreen[1940][1940];
 int c[1940][1940], sumDelta[1940][1940];
 int totalRed, totalBlue, totalGreen;
-long long inv;
+i64 inv;
 
 struct ColorfulJewelry {
-  long long power(int x, int p) {
+  i64 power(int x, int p) {
     if (!p)
       return 1;
-    long long q = power(x, p / 2);
+    i64 q = power(x, p / 2);
     q = (q * q) % mod;
     if (p & 1)
       q = (1LL * q * x) % mod;
@@ -72,7 +73,7 @@ struct ColorfulJewelry {
           for (int d = 0; d < n; d++)
             update(a, b, c, d, k);
 
-    long long ret = 0;
+    i64 ret = 0;
     inv = power(2, mod - 2);
     for (int i = m * n; i >= 0; i--)
       for (int j = m * n - i; j >= 0; j--)
@@ -134,9 +135,9 @@ struct ColorfulJewelry {
     maxGreen[totalRed][totalBlue] = max(maxGreen[totalRed][totalBlue], totalGreen);
   }
 
-  long long compute(int R, int B) {
+  i64 compute(int R, int B) {
     int G = maxGreen[R][B];
-    long long ans = (1LL * c[R + B][R] * sumDelta[R + B][G]) % mod;
+    i64 ans = (1LL * c[R + B][R] * sumDelta[R + B][G]) % mod;
     if (R % 2 && B % 2 == 0)
       ans = (ans + 1LL * c[R / 2 + B / 2][R / 2] * sumDelta[R / 2 + B / 2][G / 2]) % mod;
     if (R % 2 == 0 && B % 2)

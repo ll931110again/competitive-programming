@@ -5,15 +5,14 @@
 
 #include <bits/stdc++.h>
 using namespace std;
-
-using ll = long long;
-constexpr ll k_inf = numeric_limits<ll>::max() / 4;
+using i64 = long long;
+constexpr i64 k_inf = numeric_limits<i64>::max() / 4;
 
 namespace {
 
 struct Top2 {
-  ll b1 = k_inf;
-  ll b2 = k_inf;
+  i64 b1 = k_inf;
+  i64 b2 = k_inf;
   int i1 = -1;
   int i2 = -1;
 
@@ -22,7 +21,7 @@ struct Top2 {
     i1 = i2 = -1;
   }
 
-  void add(ll val, int id) {
+  void add(i64 val, int id) {
     if (val < b1) {
       if (i1 != id) {
         b2 = b1;
@@ -36,7 +35,7 @@ struct Top2 {
     }
   }
 
-  ll best_excluding(int id) const {
+  i64 best_excluding(int id) const {
     if (i1 != id) {
       return b1;
     }
@@ -46,20 +45,20 @@ struct Top2 {
 
 struct ChainEntry {
   int centroid;
-  ll dist;
+  i64 dist;
 };
 
 struct CentroidDecomp {
   int n;
-  vector<vector<pair<int, ll>>> adj;
+  vector<vector<pair<int, i64>>> adj;
   vector<int> sz;
   vector<char> dead;
   vector<vector<ChainEntry>> chain;
   vector<int> verts;
-  vector<ll> dists;
+  vector<i64> dists;
   vector<int> pending_v;
   vector<int> pending_l2;
-  vector<ll> pending_self;
+  vector<i64> pending_self;
 
   explicit CentroidDecomp(int n_) : n(n_), adj(n_), sz(n_), dead(n_), chain(n_) {
     verts.reserve(n);
@@ -69,7 +68,7 @@ struct CentroidDecomp {
     }
   }
 
-  void add_edge(int u, int v, ll w) {
+  void add_edge(int u, int v, i64 w) {
     adj[u].push_back({v, w});
     adj[v].push_back({u, w});
   }
@@ -97,7 +96,7 @@ struct CentroidDecomp {
     return u;
   }
 
-  void collect(int u, int p, ll d) {
+  void collect(int u, int p, i64 d) {
     verts.push_back(u);
     dists.push_back(d);
     for (const auto& [v, w] : adj[u]) {
@@ -128,7 +127,7 @@ struct CentroidDecomp {
   }
 
   void decompose_with_callback(int entry, const vector<vector<ChainEntry>>& chain2,
-                               vector<Top2>& bucket, vector<int>& touched, vector<ll>& ans) {
+                               vector<Top2>& bucket, vector<int>& touched, vector<i64>& ans) {
     const int tot = calc_sz(entry, -1);
     const int c = find_centroid(entry, -1, tot);
 
@@ -146,7 +145,7 @@ struct CentroidDecomp {
     pending_self.clear();
     for (int idx = 0; idx < m; ++idx) {
       const int v = verts[idx];
-      const ll d1 = dists[idx];
+      const i64 d1 = dists[idx];
       for (const ChainEntry& e : chain2[v]) {
         Top2& t = bucket[e.centroid];
         if (t.b1 == k_inf) {
@@ -161,9 +160,9 @@ struct CentroidDecomp {
 
     for (int i = 0; i < (int)pending_v.size(); ++i) {
       const int v = pending_v[i];
-      const ll other = bucket[pending_l2[i]].best_excluding(v);
+      const i64 other = bucket[pending_l2[i]].best_excluding(v);
       if (other < k_inf) {
-        const ll cand = pending_self[i] + other;
+        const i64 cand = pending_self[i] + other;
         if (cand < ans[v]) {
           ans[v] = cand;
         }
@@ -195,20 +194,20 @@ int main() {
   CentroidDecomp t1(n), t2(n);
   for (int i = 0; i < n - 1; ++i) {
     int u, v;
-    ll w;
+    i64 w;
     cin >> u >> v >> w;
     t1.add_edge(u - 1, v - 1, w);
   }
   for (int i = 0; i < n - 1; ++i) {
     int u, v;
-    ll w;
+    i64 w;
     cin >> u >> v >> w;
     t2.add_edge(u - 1, v - 1, w);
   }
 
   t2.decompose(0);
 
-  vector<ll> ans(n, k_inf);
+  vector<i64> ans(n, k_inf);
   vector<Top2> bucket(n);
   vector<int> touched;
   touched.reserve(64);

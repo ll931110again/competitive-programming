@@ -4,12 +4,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 #define MAXK 2000000
 
 namespace {
 
 int tree[5 * MAXK];
-long long ret = 1;
+i64 ret = 1;
 int n, k, start = 0;
 
 void add_tree(int i, int low, int high, int pos) {

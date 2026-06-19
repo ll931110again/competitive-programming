@@ -3,6 +3,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 int m, n;
@@ -28,7 +29,7 @@ int main() {
       delta = m / cnt;
       a[i] -= delta;
       m %= cnt;
-      long long ret = 0;
+      i64 ret = 0;
       for (int j = 1; j < i; j++)
         ret += 1LL * a[j] * a[j];
       ret += 1LL * m * (a[i] - 1) * (a[i] - 1) + 1LL * (cnt - m) * a[i] * a[i];

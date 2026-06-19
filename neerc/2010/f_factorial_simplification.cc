@@ -9,12 +9,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 bool is_prime(int x) {
   if (x < 2)
     return false;
-  for (int d = 2; (long long)d * d <= x; ++d)
+  for (int d = 2; (i64)d * d <= x; ++d)
     if (x % d == 0)
       return false;
   return true;
@@ -31,7 +32,7 @@ vector<int> primes;
 
 void sieve(int lim) {
   vector<char> comp(lim + 1, 0);
-  for (int i = 2; (long long)i * i <= lim; ++i) {
+  for (int i = 2; (i64)i * i <= lim; ++i) {
     if (!comp[i])
       for (int j = i * i; j <= lim; j += i)
         comp[j] = 1;
@@ -42,9 +43,9 @@ void sieve(int lim) {
       primes.push_back(i);
 }
 
-long long vp_fact(int p, int n) {
-  long long s = 0;
-  long long x = n;
+i64 vp_fact(int p, int n) {
+  i64 s = 0;
+  i64 x = n;
   while (x) {
     x /= p;
     s += x;
@@ -52,7 +53,7 @@ long long vp_fact(int p, int n) {
   return s;
 }
 
-void add_factorial(vector<long long>& exp, int n, int sign) {
+void add_factorial(vector<i64>& exp, int n, int sign) {
   for (int p : primes) {
     if (p > n)
       break;
@@ -87,7 +88,7 @@ int main() {
   int lim = max(r_hi, mxv) + 50;
   sieve(lim);
 
-  vector<long long> exp(lim + 2, 0);
+  vector<i64> exp(lim + 2, 0);
   for (int v : pnum)
     add_factorial(exp, v, +1);
   for (int v : qnum)
@@ -102,13 +103,13 @@ int main() {
     }
   }
 
-  vector<pair<int, long long>> out;
+  vector<pair<int, i64>> out;
   for (int r = r_hi; r >= 2; --r) {
-    long long take = LLONG_MAX;
+    i64 take = LLONG_MAX;
     for (int p : primes) {
       if (p > r)
         break;
-      long long vp = vp_fact(p, r);
+      i64 vp = vp_fact(p, r);
       if (vp == 0)
         continue;
       take = min(take, exp[p] / vp);
@@ -119,9 +120,9 @@ int main() {
     for (int p : primes) {
       if (p > r)
         break;
-      long long vp = vp_fact(p, r);
+      i64 vp = vp_fact(p, r);
       __int128 dec = (__int128)take * (__int128)vp;
-      exp[p] -= (long long)dec;
+      exp[p] -= (i64)dec;
     }
   }
 

@@ -1,14 +1,15 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-map<long long, long long> hiMap, loMap;
-long long hi, lo, hi2, lo2;
+using i64 = long long;
+map<i64, i64> hiMap, loMap;
+i64 hi, lo, hi2, lo2;
 string allDigits;
 
 int maxD = 60, maxV = 15;
 
 struct FourDistinctDigits {
-  string find(long long N, int D, int B) {
+  string find(i64 N, int D, int B) {
     srand(time(NULL));
     for (int i = 0; i < 10; i++) {
       allDigits += ('0' + i);
@@ -22,7 +23,7 @@ struct FourDistinctDigits {
 
     while (true) {
       generateRandomBits(D);
-      long long rem = getRemainder(N, B);
+      i64 rem = getRemainder(N, B);
       if (hiMap.count(rem)) {
         if (hi == hiMap[rem] && lo == loMap[rem]) {
           continue;
@@ -87,8 +88,8 @@ struct FourDistinctDigits {
     }
   }
 
-  long long getRemainder(long long N, int B) {
-    long long ans = 0;
+  i64 getRemainder(i64 N, int B) {
+    i64 ans = 0;
     for (int i = maxD - 1; i >= 0; i--) {
       ans *= B;
       if (hi & (1LL << i))
@@ -105,8 +106,8 @@ struct FourDistinctDigits {
     return ans;
   }
 
-  long long genLongRand() {
-    long long ans = 0;
+  i64 genLongRand() {
+    i64 ans = 0;
     for (int i = 0; i < maxD / maxV; i++) {
       int bits = rand() % ((1 << maxV) - 1);
       ans <<= maxV;

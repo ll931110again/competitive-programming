@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 int diff[55];
 
 struct XorGame {
@@ -19,7 +20,7 @@ struct XorGame {
       return 0;
     }
 
-    long long mask = 0;
+    i64 mask = 0;
     for (int i = 0; i < n; i++)
       if (diff[i]) {
         mask |= 1LL << i;

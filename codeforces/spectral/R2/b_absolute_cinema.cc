@@ -2,6 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 100005;
@@ -30,7 +31,7 @@ int main() {
     }
 
     int max_a = 0;
-    long long ans = 0;
+    i64 ans = 0;
     for (int i = 0; i < n; i++) {
       max_a = max(max_a, a[i]);
       ans += b[i];

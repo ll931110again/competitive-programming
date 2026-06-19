@@ -7,6 +7,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct Change {
@@ -59,10 +60,10 @@ struct Interval {
 
 EdgeOp ops[400010];
 vector<Interval> intervals;
-unordered_map<long long, int> edge_idx;
+unordered_map<i64, int> edge_idx;
 int n, last_ans;
 
-long long pack_edge(int x, int y) {
+i64 pack_edge(int x, int y) {
   if (x > y) {
     swap(x, y);
   }
@@ -129,7 +130,7 @@ int main() {
     if (l > r) {
       return;
     }
-    const long long key = pack_edge(from, to);
+    const i64 key = pack_edge(from, to);
     if (!edge_idx.count(key)) {
       edge_idx[key] = static_cast<int>(intervals.size());
       intervals.push_back({from, to, l, r});
@@ -152,7 +153,7 @@ int main() {
   intervals.clear();
 
   auto register_toggle = [&](int i, int x, int y) {
-    const long long key = pack_edge(x, y);
+    const i64 key = pack_edge(x, y);
     if (!edge_idx.count(key)) {
       edge_idx[key] = static_cast<int>(intervals.size());
       intervals.push_back({x, y, i + 1, m - 1});

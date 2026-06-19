@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 500005;
@@ -93,7 +94,7 @@ int main() {
     high = low;
   }
 
-  long long ret = 0, inv_count = 0;
+  i64 ret = 0, inv_count = 0;
   memset(tx, 0, sizeof tx);
   for (int i = 1; i <= m; i++) {
     inv_count += query(1, 1, n, b[i].second + 1, m);

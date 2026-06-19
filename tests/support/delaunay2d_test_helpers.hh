@@ -12,6 +12,8 @@
 #include <string>
 #include <vector>
 
+using i64 = long long;
+
 namespace delaunay2d_test {
 
 constexpr int kStressSeeds = 8;
@@ -35,7 +37,7 @@ struct StressRng {
     return lo + static_cast<int>(next_u64() % static_cast<uint64_t>(hi - lo + 1));
   }
 
-  long long coord() {
+  i64 coord() {
     return rand_int(-500, 500);
   }
 

@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct Wall {
@@ -36,7 +37,7 @@ int main() {
 
     vector<Wall> walls;
     walls.reserve(w);
-    long long blocked_cells = 0;
+    i64 blocked_cells = 0;
 
     vector<int> xs, ys;
     xs.push_back(0);
@@ -52,7 +53,7 @@ int main() {
       ww.x2 = x2;
       ww.y = y1;
       walls.push_back(ww);
-      blocked_cells += (long long)(x2 - x1 + 1);
+      blocked_cells += (i64)(x2 - x1 + 1);
 
       xs.push_back(x1);
       xs.push_back(x2 + 1);
@@ -114,20 +115,20 @@ int main() {
       }
     }
 
-    long long reachable = 0;
+    i64 reachable = 0;
     for (int iy = 0; iy < Y; iy++) {
-      long long h = (long long)ys[iy + 1] - ys[iy];
+      i64 h = (i64)ys[iy + 1] - ys[iy];
       for (int ix = 0; ix < X; ix++) {
         if (!vis[id(ix, iy)])
           continue;
-        long long wdt = (long long)xs[ix + 1] - xs[ix];
+        i64 wdt = (i64)xs[ix + 1] - xs[ix];
         reachable += wdt * h;
       }
     }
 
-    long long total_cells = 1LL * m * n;
-    long long empty_cells = total_cells - blocked_cells;
-    long long stuck = empty_cells - reachable;
+    i64 total_cells = 1LL * m * n;
+    i64 empty_cells = total_cells - blocked_cells;
+    i64 stuck = empty_cells - reachable;
 
     cout << "Case " << case_num++ << ": " << stuck << "\n";
   }

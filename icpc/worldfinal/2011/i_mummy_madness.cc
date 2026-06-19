@@ -1,21 +1,22 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct SegTreeCoverLen {
-  int nseg = 0;                // number of elementary segments (m-1)
-  vector<int> cover_count;     // lazy cover count
-  vector<long long> cover_len; // covered length in this node
-  vector<long long> ys;        // coordinate breaks, size m
+  int nseg = 0;            // number of elementary segments (m-1)
+  vector<int> cover_count; // lazy cover count
+  vector<i64> cover_len;   // covered length in this node
+  vector<i64> ys;          // coordinate breaks, size m
 
   SegTreeCoverLen() = default;
 
-  explicit SegTreeCoverLen(vector<long long> ys_) {
+  explicit SegTreeCoverLen(vector<i64> ys_) {
     init(move(ys_));
   }
 
-  void init(vector<long long> ys_) {
+  void init(vector<i64> ys_) {
     ys = move(ys_);
     nseg = max(0, (int)ys.size() - 1);
     cover_count.assign(4 * max(1, nseg), 0);
@@ -52,33 +53,33 @@ struct SegTreeCoverLen {
     pull(v, l, r);
   }
 
-  inline long long total_covered_len() const {
+  inline i64 total_covered_len() const {
     return nseg == 0 ? 0 : cover_len[1];
   }
 };
 
 struct Event {
-  long long x;
-  long long y1;
-  long long y2; // half-open [y1, y2)
+  i64 x;
+  i64 y1;
+  i64 y2; // half-open [y1, y2)
   int delta;
 };
 
-inline vector<long long> sorted_unique(vector<long long> v) {
+inline vector<i64> sorted_unique(vector<i64> v) {
   sort(v.begin(), v.end());
   v.erase(unique(v.begin(), v.end()), v.end());
   return v;
 }
 
-bool covered_at_x(const vector<pair<long long, long long>>& mummies, long long X) {
-  const long long L = -X;
-  const long long R = X;
-  const long long target_y_len = (R + 1) - L; // = 2X+1, in half-open representation
+bool covered_at_x(const vector<pair<i64, i64>>& mummies, i64 X) {
+  const i64 L = -X;
+  const i64 R = X;
+  const i64 target_y_len = (R + 1) - L; // = 2X+1, in half-open representation
 
   vector<Event> events;
   events.reserve(mummies.size() * 2);
-  vector<long long> xs;
-  vector<long long> ys;
+  vector<i64> xs;
+  vector<i64> ys;
   xs.reserve(mummies.size() * 2 + 2);
   ys.reserve(mummies.size() * 2 + 2);
 
@@ -88,19 +89,19 @@ bool covered_at_x(const vector<pair<long long, long long>>& mummies, long long X
   ys.push_back(R + 1);
 
   for (auto [mx, my] : mummies) {
-    long long x1 = max(L, mx - X);
-    long long x2 = min(R, mx + X);
+    i64 x1 = max(L, mx - X);
+    i64 x2 = min(R, mx + X);
     if (x1 > x2)
       continue;
-    long long y1 = max(L, my - X);
-    long long y2 = min(R, my + X);
+    i64 y1 = max(L, my - X);
+    i64 y2 = min(R, my + X);
     if (y1 > y2)
       continue;
 
-    long long xs0 = x1;
-    long long xe0 = x2 + 1; // half-open
-    long long ys0 = y1;
-    long long ye0 = y2 + 1; // half-open
+    i64 xs0 = x1;
+    i64 xe0 = x2 + 1; // half-open
+    i64 ys0 = y1;
+    i64 ye0 = y2 + 1; // half-open
 
     events.push_back(Event{xs0, ys0, ye0, +1});
     events.push_back(Event{xe0, ys0, ye0, -1});
@@ -125,8 +126,8 @@ bool covered_at_x(const vector<pair<long long, long long>>& mummies, long long X
 
   size_t ei = 0;
   for (size_t xi = 0; xi + 1 < xs.size(); xi++) {
-    const long long x = xs[xi];
-    const long long nx = xs[xi + 1];
+    const i64 x = xs[xi];
+    const i64 nx = xs[xi + 1];
 
     while (ei < events.size() && events[ei].x == x) {
       int l = (int)(lower_bound(ys.begin(), ys.end(), events[ei].y1) - ys.begin());
@@ -157,10 +158,10 @@ int main() {
     if (n == -1)
       break;
 
-    vector<pair<long long, long long>> mummies;
+    vector<pair<i64, i64>> mummies;
     mummies.reserve(n);
     for (int i = 0; i < n; i++) {
-      long long x, y;
+      i64 x, y;
       cin >> x >> y;
       mummies.push_back({x, y});
     }
@@ -191,7 +192,7 @@ int main() {
       continue;
     }
 
-    long long lo = 0, hi = 1;
+    i64 lo = 0, hi = 1;
     while (!covered_at_x(mummies, hi)) {
       hi <<= 1;
       // With the quadrant condition, hi will eventually work. Guard anyway.
@@ -200,7 +201,7 @@ int main() {
     }
 
     while (lo + 1 < hi) {
-      long long mid = lo + ((hi - lo) >> 1);
+      i64 mid = lo + ((hi - lo) >> 1);
       if (covered_at_x(mummies, mid))
         hi = mid;
       else

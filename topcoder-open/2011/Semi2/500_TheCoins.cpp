@@ -1,8 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class TheCoins {
-  long long gcdll(long long a, long long b) {
+  i64 gcdll(i64 a, i64 b) {
     while (b) {
       a %= b;
       swap(a, b);
@@ -10,55 +11,55 @@ class TheCoins {
     return a;
   }
 
-  long long countParity(long long n, long long m, int parity) {
-    long long total = n * m;
-    long long even = ((n + 1) / 2) * ((m + 1) / 2) + (n / 2) * (m / 2);
-    long long odd = total - even;
+  i64 countParity(i64 n, i64 m, int parity) {
+    i64 total = n * m;
+    i64 even = ((n + 1) / 2) * ((m + 1) / 2) + (n / 2) * (m / 2);
+    i64 odd = total - even;
     return parity ? odd : even;
   }
 
 public:
-  long long find(int n, int m, int dr, int dc, vector<int> row, vector<int> column) {
+  i64 find(int n, int m, int dr, int dc, vector<int> row, vector<int> column) {
     int k = (int)row.size();
     if ((dr + dc) % 2 == 1) {
-      long long even = countParity(n, m, 0);
-      long long odd = countParity(n, m, 1);
-      long long pairs = min(even, odd);
+      i64 even = countParity(n, m, 0);
+      i64 odd = countParity(n, m, 1);
+      i64 pairs = min(even, odd);
       return 2 * pairs;
     }
 
     // same parity: use residue classes modulo g = gcd(dr, dc)
-    long long g = gcdll(dr, dc);
-    long long pr = dr / g;
-    long long pc = dc / g;
+    i64 g = gcdll(dr, dc);
+    i64 pr = dr / g;
+    i64 pc = dc / g;
 
     // count cells per residue (r mod pr, c mod pc) in [1..n]x[1..m]
-    map<pair<long long, long long>, long long> cnt;
-    for (long long r = 1; r <= n; r++) {
-      long long rr = (r - 1) % pr;
-      for (long long c = 1; c <= m; c++) {
-        long long cc = (c - 1) % pc;
+    map<pair<i64, i64>, i64> cnt;
+    for (i64 r = 1; r <= n; r++) {
+      i64 rr = (r - 1) % pr;
+      for (i64 c = 1; c <= m; c++) {
+        i64 cc = (c - 1) % pc;
         cnt[{rr, cc}]++;
       }
     }
 
     // edges between (r,c) and (r+dr,c+dc) connect residues
-    map<pair<long long, long long>, long long> partner;
+    map<pair<i64, i64>, i64> partner;
     for (auto& e : cnt) {
-      long long r = e.first.first;
-      long long c = e.first.second;
-      long long r2 = (r + pr) % pr;
-      long long c2 = (c + pc) % pc;
+      i64 r = e.first.first;
+      i64 c = e.first.second;
+      i64 r2 = (r + pr) % pr;
+      i64 c2 = (c + pc) % pc;
       partner[e.first] = cnt[{r2, c2}];
     }
 
-    long long pairs = 0;
-    set<pair<long long, long long>> seen;
+    i64 pairs = 0;
+    set<pair<i64, i64>> seen;
     for (auto& e : cnt) {
       if (seen.count(e.first))
         continue;
-      long long r2 = (e.first.first + pr) % pr;
-      long long c2 = (e.first.second + pc) % pc;
+      i64 r2 = (e.first.first + pr) % pr;
+      i64 c2 = (e.first.second + pc) % pc;
       auto key2 = make_pair(r2, c2);
       if (!cnt.count(key2))
         continue;
@@ -67,7 +68,7 @@ public:
       pairs += min(e.second, cnt[key2]);
     }
 
-    long long ans = 2 * pairs;
+    i64 ans = 2 * pairs;
 
     // subtract blocked cells (small k)
     set<pair<int, int>> blocked;
@@ -80,7 +81,7 @@ public:
       for (auto p : blocked)
         occ[p.first][p.second] = 1;
       vector<vector<char>> used(n + 1, vector<char>(m + 1, 0));
-      long long local = 0;
+      i64 local = 0;
       for (int r = 1; r <= n; r++) {
         for (int c = 1; c <= m; c++) {
           if (occ[r][c] || used[r][c])

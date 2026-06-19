@@ -1,13 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 100005;
 int T;
 int a, b, p;
 string s;
-long long costs[k_max_n];
+i64 costs[k_max_n];
 int nxt_differ[k_max_n];
 
 } // namespace

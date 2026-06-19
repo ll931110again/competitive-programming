@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 #define mod 998244353
 #define maxm 2000005
 
-long long fact[maxm], inv[maxm];
+i64 fact[maxm], inv[maxm];
 
 struct SpanningNoLine {
   int countSpanning(int n, int m) {
@@ -17,11 +18,11 @@ struct SpanningNoLine {
       inv[i] = inv[i + 1] * (i + 1) % mod;
     }
 
-    long long nx = get_power(n, n - 2), ni = get_power(n, mod - 2);
+    i64 nx = get_power(n, n - 2), ni = get_power(n, mod - 2);
 
-    long long ret = 0;
+    i64 ret = 0;
     for (int k = 0; k < m; k++) {
-      long long val = binom(2 * m - k - 1, k);
+      i64 val = binom(2 * m - k - 1, k);
       val = val * nx % mod;
       if (k % 2 == 0) {
         ret = (ret + val) % mod;
@@ -33,20 +34,20 @@ struct SpanningNoLine {
     return ret;
   }
 
-  long long binom(int x, int y) {
+  i64 binom(int x, int y) {
     if (x < y) {
       return 0;
     }
-    long long up = fact[x];
-    long long down = inv[y] * inv[x - y] % mod;
+    i64 up = fact[x];
+    i64 down = inv[y] * inv[x - y] % mod;
     return (up * down) % mod;
   }
 
-  long long get_power(int x, int p) {
+  i64 get_power(int x, int p) {
     if (!p) {
       return 1;
     }
-    long long q = get_power(x, p / 2);
+    i64 q = get_power(x, p / 2);
     q = (q * q) % mod;
     if (p & 1) {
       q = (q * x) % mod;

@@ -2,27 +2,28 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct Machine {
-  long long day_available;
-  long long buy_price;
-  long long resale_price;
-  long long daily_profit;
+  i64 day_available;
+  i64 buy_price;
+  i64 resale_price;
+  i64 daily_profit;
 };
 
 struct Line {
-  long long slope = 0;
-  long long intercept = -(1LL << 60);
+  i64 slope = 0;
+  i64 intercept = -(1LL << 60);
   Line() = default;
-  Line(long long slope_, long long intercept_) : slope(slope_), intercept(intercept_) {}
-  inline long long value(long long x) const {
+  Line(i64 slope_, i64 intercept_) : slope(slope_), intercept(intercept_) {}
+  inline i64 value(i64 x) const {
     __int128 v = (__int128)slope * (__int128)x + (__int128)intercept;
     if (v < (__int128)LLONG_MIN)
       return LLONG_MIN;
     if (v > (__int128)LLONG_MAX)
       return LLONG_MAX;
-    return (long long)v;
+    return (i64)v;
   }
 };
 
@@ -34,22 +35,22 @@ struct LiChaoMax {
     explicit Node(Line line_) : line(line_) {}
   };
 
-  long long min_x, max_x;
+  i64 min_x, max_x;
   Node* root = nullptr;
 
-  LiChaoMax(long long minX_, long long maxX_) : min_x(minX_), max_x(maxX_) {}
+  LiChaoMax(i64 minX_, i64 maxX_) : min_x(minX_), max_x(maxX_) {}
 
   void add_line(Line new_line) {
     add_line_rec(root, min_x, max_x, new_line);
   }
 
-  void add_line_rec(Node*& node, long long seg_left, long long seg_right, Line new_line) {
+  void add_line_rec(Node*& node, i64 seg_left, i64 seg_right, Line new_line) {
     if (!node) {
       node = new Node(new_line);
       return;
     }
 
-    long long mid = seg_left + ((seg_right - seg_left) >> 1);
+    i64 mid = seg_left + ((seg_right - seg_left) >> 1);
     bool better_at_left = new_line.value(seg_left) > node->line.value(seg_left);
     bool better_at_mid = new_line.value(mid) > node->line.value(mid);
     if (better_at_mid)
@@ -63,17 +64,17 @@ struct LiChaoMax {
       add_line_rec(node->right, mid + 1, seg_right, new_line);
   }
 
-  long long query(long long x) const {
+  i64 query(i64 x) const {
     return query_rec(root, min_x, max_x, x);
   }
 
-  long long query_rec(Node* node, long long seg_left, long long seg_right, long long x) const {
+  i64 query_rec(Node* node, i64 seg_left, i64 seg_right, i64 x) const {
     if (!node)
       return LLONG_MIN;
-    long long best = node->line.value(x);
+    i64 best = node->line.value(x);
     if (seg_left == seg_right)
       return best;
-    long long mid = seg_left + ((seg_right - seg_left) >> 1);
+    i64 mid = seg_left + ((seg_right - seg_left) >> 1);
     if (x <= mid)
       return max(best, query_rec(node->left, seg_left, mid, x));
     return max(best, query_rec(node->right, mid + 1, seg_right, x));
@@ -89,7 +90,7 @@ int main() {
   int case_no = 1;
 
   int machine_count;
-  long long initial_cash, last_day;
+  i64 initial_cash, last_day;
   while (cin >> machine_count >> initial_cash >> last_day) {
     if (machine_count == 0 && initial_cash == 0 && last_day == 0)
       break;
@@ -112,8 +113,8 @@ int main() {
     cash_at_day.add_line(Line(0, initial_cash)); // keep cash, no machine
 
     for (int i = 0; i < machine_count;) {
-      long long day = machines[i].day_available;
-      long long cash_today = cash_at_day.query(day);
+      i64 day = machines[i].day_available;
+      i64 cash_today = cash_at_day.query(day);
 
       vector<Line> to_add;
       for (; i < machine_count && machines[i].day_available == day; i++) {
@@ -123,8 +124,8 @@ int main() {
         // If we buy this machine on 'day' using 'money' cash, then selling on
         // day x yields: money - p + r + g*(x - day - 1) = g*x + (money - p + r
         // - g*(day+1))
-        long long intercept = cash_today - machine.buy_price + machine.resale_price -
-                              machine.daily_profit * (day + 1);
+        i64 intercept = cash_today - machine.buy_price + machine.resale_price -
+                        machine.daily_profit * (day + 1);
         to_add.push_back(Line(machine.daily_profit, intercept));
       }
 
@@ -132,7 +133,7 @@ int main() {
         cash_at_day.add_line(line);
     }
 
-    long long max_cash_end = cash_at_day.query(last_day + 1);
+    i64 max_cash_end = cash_at_day.query(last_day + 1);
     cout << "Case " << case_no++ << ": " << max_cash_end << "\n";
   }
 

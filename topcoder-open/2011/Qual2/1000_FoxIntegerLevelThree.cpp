@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class FoxIntegerLevelThree {
   int gcd(int a, int b) {
     return b ? gcd(b, a % b) : a;
@@ -17,7 +18,7 @@ public:
       int dr = i % 9;
       if (dr == 0)
         dr = 9;
-      long long k = 1LL * i * dr;
+      i64 k = 1LL * i * dr;
       if (dr == 9)
         k = 1LL * i * 9;
       if (k < m)

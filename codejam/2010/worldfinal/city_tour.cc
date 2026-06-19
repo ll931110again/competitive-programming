@@ -1,24 +1,25 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
-inline long long edge_key(int a, int b) {
+inline i64 edge_key(int a, int b) {
   if (a > b)
     swap(a, b);
-  return (static_cast<long long>(a) << 32) ^ static_cast<unsigned int>(b);
+  return (static_cast<i64>(a) << 32) ^ static_cast<unsigned int>(b);
 }
 
 struct Solver {
   int n = 0;
-  unordered_map<long long, vector<int>> children; // edge -> nodes added on that edge
-  unordered_map<long long, int> memo;             // edge -> best downward cycle length
+  unordered_map<i64, vector<int>> children; // edge -> nodes added on that edge
+  unordered_map<i64, int> memo;             // edge -> best downward cycle length
   int best_cycle = 0;
 
   int best_edge(int x, int y) {
     if (x > y)
       swap(x, y);
-    long long key = edge_key(x, y);
+    i64 key = edge_key(x, y);
     auto it = memo.find(key);
     if (it != memo.end())
       return it->second;

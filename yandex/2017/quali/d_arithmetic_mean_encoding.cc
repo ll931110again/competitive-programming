@@ -1,15 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 #define maxk 60
 
 namespace {
 
 int T;
-long long n;
+i64 n;
 
-bool found_solution(long long n, int k) {
-  long long value = n * k;
+bool found_solution(i64 n, int k) {
+  i64 value = n * k;
 
   priority_queue<int> pq;
   for (int i = 0; i < maxk; i++)
@@ -39,7 +40,7 @@ bool found_solution(long long n, int k) {
   return true;
 }
 
-void solve(long long n) {
+void solve(i64 n) {
   for (int k = 1;; k++) {
     if (found_solution(n, k)) {
       return;

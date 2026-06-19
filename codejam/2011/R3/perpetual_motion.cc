@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 const int MOD = 1000003;
@@ -27,7 +28,7 @@ struct DSU {
 };
 
 int mod_pow2(int e) {
-  long long r = 1, a = 2;
+  i64 r = 1, a = 2;
   while (e > 0) {
     if (e & 1)
       r = (r * a) % MOD;

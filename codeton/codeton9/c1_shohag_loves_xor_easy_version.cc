@@ -4,18 +4,19 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 int T;
-long long x, m;
+i64 x, m;
 
-long long solve(long long x, long long m) {
-  long long ret = 0;
-  for (long long y = 1; y <= m && y <= x * 2; y++) {
+i64 solve(i64 x, i64 m) {
+  i64 ret = 0;
+  for (i64 y = 1; y <= m && y <= x * 2; y++) {
     if (x == y) {
       continue;
     }
-    long long d = x ^ y;
+    i64 d = x ^ y;
     if (x % d == 0 || y % d == 0) {
       ret++;
     }

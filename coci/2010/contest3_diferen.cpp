@@ -3,9 +3,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
-long long f1[300010], f2[300010];
+i64 f1[300010], f2[300010];
 int a[300010];
 int n;
 
@@ -43,7 +44,7 @@ int main() {
       f2[i] = f2[s.top()] + 1LL * (i - s.top()) * a[i];
     s.push(i);
   }
-  long long ret = 0;
+  i64 ret = 0;
   for (int i = 1; i <= n; i++)
     ret += (f2[i] - f1[i]);
   cout << ret << endl;

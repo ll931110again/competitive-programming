@@ -3,9 +3,7 @@
 
 #include <bits/stdc++.h>
 using namespace std;
-
-using ll = long long;
-
+using i64 = long long;
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
@@ -13,11 +11,11 @@ int main() {
   if (!(cin >> N >> K))
     return 0;
   const int g = N / K;
-  vector<ll> s(N);
+  vector<i64> s(N);
   for (int i = 0; i < N; ++i)
     cin >> s[i];
 
-  ll mn = s[0], mx = s[0];
+  i64 mn = s[0], mx = s[0];
   for (int i = 1; i < N; ++i) {
     mn = min(mn, s[i]);
     mx = max(mx, s[i]);

@@ -8,6 +8,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct Room {
@@ -63,7 +64,7 @@ int main() {
   sort(pairings.begin(), pairings.end(),
        [](const Pairing& lhs, const Pairing& rhs) { return lhs.profit > rhs.profit; });
 
-  long long profit = 0;
+  i64 profit = 0;
   for (int i = 0; i < min(o, static_cast<int>(pairings.size())); i++) {
     if (pairings[i].profit > 0) {
       profit += pairings[i].profit;

@@ -1,16 +1,17 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 int n, h, a[100010];
 int module = 1000000000, phi = module / 10 * 4;
-long long ret = 1, p2 = 0, p5 = 0;
+i64 ret = 1, p2 = 0, p5 = 0;
 
-long long power(int x, int p, int mod) {
+i64 power(int x, int p, int mod) {
   if (!p)
     return 1;
-  long long q = power(x, p / 2, mod);
+  i64 q = power(x, p / 2, mod);
   q = (q * q) % mod;
   if (p & 1)
     q = (q * x) % mod;

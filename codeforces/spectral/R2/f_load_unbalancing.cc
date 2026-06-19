@@ -2,21 +2,22 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 18;
 int T, n, k;
 vector<int> a;
-pair<int, long long> dp[1 << k_max_n];
+pair<int, i64> dp[1 << k_max_n];
 
-long long solve() {
+i64 solve() {
   int extra = a.back();
   a.pop_back();
   n--;
 
-  long long low = 0, high = 1LL * extra * n, ans = low;
+  i64 low = 0, high = 1LL * extra * n, ans = low;
   while (low <= high) {
-    long long mid = (low + high) / 2;
+    i64 mid = (low + high) / 2;
     dp[0] = {0, 0};
     for (int mask = 1; mask < (1 << n); mask++) {
       dp[mask] = {0, 0};

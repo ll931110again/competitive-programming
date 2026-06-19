@@ -4,11 +4,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
 int n, k, A;
-long long inf = 1e18;
+i64 inf = 1e18;
 
 struct Point {
   int x, y, c;
@@ -16,11 +17,11 @@ struct Point {
 
 Point pts[k_max_n];
 vector<int> buckets[k_max_n];
-long long dp[k_max_n];
+i64 dp[k_max_n];
 
 struct Node {
-  long long value;
-  long long carry;
+  i64 value;
+  i64 carry;
 };
 
 Node tx[5 * k_max_n];
@@ -49,7 +50,7 @@ void update(int i, int low, int high, int u, int v, int delta) {
   tx[i].value = max(tx[2 * i].value, tx[2 * i + 1].value);
 }
 
-long long get(int i, int low, int high, int u, int v) {
+i64 get(int i, int low, int high, int u, int v) {
   if (v < low || high < u) {
     return -inf;
   }
@@ -67,7 +68,7 @@ int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-  long long total_sum = 0;
+  i64 total_sum = 0;
 
   cin >> n >> k >> A;
   for (int i = 0; i < n; i++) {
@@ -81,11 +82,11 @@ int main() {
     for (auto idx : buckets[i]) {
       update(1, 0, k, 0, pts[idx].x, pts[idx].c);
     }
-    long long v = get(1, 0, k, 0, k);
+    i64 v = get(1, 0, k, 0, k);
     dp[i] = max(dp[i - 1], v);
 
     // set the value of i to v
-    long long tmp = get(1, 0, k, i, i);
+    i64 tmp = get(1, 0, k, i, i);
     update(1, 0, k, i, i, dp[i] - tmp);
   }
 

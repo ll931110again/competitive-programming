@@ -8,12 +8,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 int n, target;
 vector<array<int, 4>> pins;
 
-long long count_pairs_matching_mask(int mask) {
+i64 count_pairs_matching_mask(int mask) {
   unordered_map<string, int> freq;
   freq.reserve(n * 2);
   for (const auto& pin : pins) {
@@ -27,7 +28,7 @@ long long count_pairs_matching_mask(int mask) {
     freq[key]++;
   }
 
-  long long total = 0;
+  i64 total = 0;
   for (const auto& [_, cnt] : freq) {
     total += 1LL * cnt * (cnt - 1) / 2;
   }
@@ -50,12 +51,12 @@ int main() {
     }
   }
 
-  long long match_count[16];
+  i64 match_count[16];
   for (int mask = 0; mask < 16; mask++) {
     match_count[mask] = count_pairs_matching_mask(mask);
   }
 
-  long long exact[16];
+  i64 exact[16];
   memcpy(exact, match_count, sizeof exact);
   for (int mask = 0; mask < 16; mask++) {
     for (int superset = 0; superset < 16; superset++) {
@@ -71,7 +72,7 @@ int main() {
     }
   }
 
-  long long answer = 0;
+  i64 answer = 0;
   for (int mask = 0; mask < 16; mask++) {
     if (__builtin_popcount(mask) == 4 - target) {
       answer += exact[mask];

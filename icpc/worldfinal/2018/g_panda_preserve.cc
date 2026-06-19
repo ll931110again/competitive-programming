@@ -18,23 +18,23 @@
 using namespace std;
 
 using ld = double;
-using ll = long long;
+using i64 = long long;
 using i128 = __int128_t;
 
 namespace {
 
 struct Pt {
-  ll x, y;
+  i64 x, y;
   bool operator<(const Pt& o) const {
     return x < o.x || (x == o.x && y < o.y);
   }
   bool operator==(const Pt& o) const {
     return x == o.x && y == o.y;
   }
-  ll cross(const Pt& a, const Pt& b) const {
+  i64 cross(const Pt& a, const Pt& b) const {
     return (a.x - x) * (b.y - y) - (a.y - y) * (b.x - x);
   }
-  ll sqr_len() const {
+  i64 sqr_len() const {
     return x * x + y * y;
   }
 };
@@ -64,14 +64,14 @@ bool in_circumcircle(const Pt& p, const Pt& a, const Pt& b, const Pt& c) {
 
 vector<Tri> delaunay_bw(vector<Pt> pts) {
   int n = (int)pts.size();
-  ll mx = pts[0].x, Mx = mx, my = pts[0].y, My = my;
+  i64 mx = pts[0].x, Mx = mx, my = pts[0].y, My = my;
   for (const Pt& p : pts) {
     mx = min(mx, p.x);
     Mx = max(Mx, p.x);
     my = min(my, p.y);
     My = max(My, p.y);
   }
-  ll d = max(Mx - mx, My - my) * 20 + 10;
+  i64 d = max(Mx - mx, My - my) * 20 + 10;
   int s0 = n, s1 = n + 1, s2 = n + 2;
   pts.push_back({mx - d, my - d});
   pts.push_back({Mx + 3 * d, my - d});

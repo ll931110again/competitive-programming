@@ -2,10 +2,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 250005;
-using pi = array<long long, 2>;
+using pi = array<i64, 2>;
 
 struct Edge {
   int w, u, v;
@@ -15,12 +16,12 @@ edge edges[k_max_n];
 
 int T, n, Q;
 int par[2 * k_max_n];
-long long cost[2 * k_max_n];
+i64 cost[2 * k_max_n];
 pair<int, int> ch[2 * k_max_n];
-long long dp[2 * k_max_n];
+i64 dp[2 * k_max_n];
 
 pair<int, int> queries[k_max_n];
-long long ans[k_max_n];
+i64 ans[k_max_n];
 
 int get(int u) {
   if (u != par[u]) {
@@ -97,7 +98,7 @@ int main() {
         continue;
       }
 
-      long long A = 0, B = 0, pv = -1;
+      i64 A = 0, B = 0, pv = -1;
       while (!pq[idx[i]].empty()) {
         auto [point, slope] = pq[idx[i]].top();
         pq[idx[i]].pop();
@@ -106,12 +107,12 @@ int main() {
         pv = point;
         A += slope;
 
-        long long U = A * pv - B - cost[i];
-        long long L = A - 1;
+        i64 U = A * pv - B - cost[i];
+        i64 L = A - 1;
         if (L > 0) {
           if (pq[idx[i]].empty() || U < pq[idx[i]].top()[0] * L) {
-            long long f1 = U / L - cost[i];
-            long long f2 = (U / L + 1 - pv) * A + B;
+            i64 f1 = U / L - cost[i];
+            i64 f2 = (U / L + 1 - pv) * A + B;
 
             pq[idx[i]].push({cost[i], 1});
             pq[idx[i]].push({U / L, f2 - f1 - 1});
@@ -132,7 +133,7 @@ int main() {
     }
     sort(queries, queries + Q);
 
-    long long A = 0, B = 0, pv = -1;
+    i64 A = 0, B = 0, pv = -1;
     int tx = idx[2 * n - 2];
     for (int i = 0; i < Q; i++) {
       int x = queries[i].first, pos = queries[i].second;

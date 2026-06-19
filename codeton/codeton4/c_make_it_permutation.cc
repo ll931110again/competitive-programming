@@ -4,13 +4,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 100005;
 int T, n, delete_cost, insert_cost;
 int a[k_max_n];
 
-long long solve() {
+i64 solve() {
   scanf("%d %d %d", &n, &delete_cost, &insert_cost);
   for (int i = 0; i < n; i++) {
     scanf("%d", &a[i]);
@@ -18,7 +19,7 @@ long long solve() {
   sort(a, a + n);
 
   // first case corresponds to delete everything and insert 1.
-  long long min_cost = 1LL * n * delete_cost + insert_cost;
+  i64 min_cost = 1LL * n * delete_cost + insert_cost;
   unordered_set<int> reps;
   for (int i = 0; i < n; i++) {
     reps.insert(a[i]);

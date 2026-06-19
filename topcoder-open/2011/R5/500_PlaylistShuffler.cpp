@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class PlaylistShuffler {
-  long long gcdll(long long a, long long b) {
+  i64 gcdll(i64 a, i64 b) {
     while (b) {
-      long long t = a % b;
+      i64 t = a % b;
       a = b;
       b = t;
     }
@@ -12,9 +13,9 @@ class PlaylistShuffler {
   }
 
 public:
-  long long bestShuffle(int N, int X, int Y, long long K1, long long K2) {
-    vector<long long> prob(K2 - K1 + 1);
-    for (long long K = K1; K <= K2; K++) {
+  i64 bestShuffle(int N, int X, int Y, i64 K1, i64 K2) {
+    vector<i64> prob(K2 - K1 + 1);
+    for (i64 K = K1; K <= K2; K++) {
       long double p = 0.0L;
       if (X == Y) {
         for (int L = 1; L <= N; L++)
@@ -29,13 +30,13 @@ public:
           p += add;
         }
       }
-      prob[K - K1] = (long long)(p * 1000000000.0L);
+      prob[K - K1] = (i64)(p * 1000000000.0L);
     }
 
-    long long bestK = K1;
-    long long bestP = prob[0];
-    for (long long K = K1 + 1; K <= K2; K++) {
-      long long val = prob[K - K1];
+    i64 bestK = K1;
+    i64 bestP = prob[0];
+    for (i64 K = K1 + 1; K <= K2; K++) {
+      i64 val = prob[K - K1];
       if (val > bestP) {
         bestP = val;
         bestK = K;

@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 1000005;
@@ -86,8 +87,8 @@ void update(string s, int sign) {
     fenwick[i] -= delta;
 }
 
-long long compute_node(int u) {
-  long long ret = 0;
+i64 compute_node(int u) {
+  i64 ret = 0;
   int idx = begin[u];
   if (idx)
     for (int i = idx; i < cnt; i += i & -i)
@@ -96,7 +97,7 @@ long long compute_node(int u) {
 }
 
 void query(string s) {
-  long long ret = 0;
+  i64 ret = 0;
   int start = 0;
   for (int i = 0; i < s.size(); i++) {
     while (start) {

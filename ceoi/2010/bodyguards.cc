@@ -8,32 +8,33 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
-vector<long long> expand(int groups) {
-  vector<long long> values;
+vector<i64> expand(int groups) {
+  vector<i64> values;
   for (int i = 0; i < groups; i++) {
-    long long need, count;
+    i64 need, count;
     cin >> need >> count;
     values.insert(values.end(), count, need);
   }
-  sort(values.begin(), values.end(), greater<long long>());
+  sort(values.begin(), values.end(), greater<i64>());
   return values;
 }
 
-bool feasible(const vector<long long>& rows, const vector<long long>& cols) {
+bool feasible(const vector<i64>& rows, const vector<i64>& cols) {
   int n = rows.size();
   int m = cols.size();
-  vector<long long> col_prefix(m + 1);
+  vector<i64> col_prefix(m + 1);
   for (int j = 0; j < m; j++) {
     col_prefix[j + 1] = col_prefix[j] + cols[j];
   }
 
   for (int k = 1; k <= m; k++) {
-    long long need = col_prefix[k];
-    long long have = 0;
-    for (long long row_need : rows) {
-      have += min(row_need, static_cast<long long>(k));
+    i64 need = col_prefix[k];
+    i64 have = 0;
+    for (i64 row_need : rows) {
+      have += min(row_need, static_cast<i64>(k));
     }
     if (have < need) {
       return false;

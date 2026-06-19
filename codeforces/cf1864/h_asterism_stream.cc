@@ -22,14 +22,15 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int MOD = 998244353;
 
-long long power(long long x, long long p) {
+i64 power(i64 x, i64 p) {
   if (p < 0)
     return power(power(x, MOD - 2), -p);
-  long long ans = 1;
+  i64 ans = 1;
   x %= MOD;
   while (p > 0) {
     if (p & 1)
@@ -40,25 +41,25 @@ long long power(long long x, long long p) {
   return ans;
 }
 
-void solve_one(long long n) {
-  const long long k = power(2, MOD - 2);
-  long long l = n;
-  long long r = max(1LL, (n - 1) * 2);
-  long long n0 = 0;
-  vector<long long> Q;
+void solve_one(i64 n) {
+  const i64 k = power(2, MOD - 2);
+  i64 l = n;
+  i64 r = max(1LL, (n - 1) * 2);
+  i64 n0 = 0;
+  vector<i64> Q;
 
   while (l > 1) {
-    vector<long long> P;
+    vector<i64> P;
     l = (l + 1) / 2;
     r /= 2;
-    long long s = n0;
+    i64 s = n0;
     for (int i = 0; i < (int)Q.size(); ++i) {
       s = (s + Q[i] * power(power(k, -(1LL << i)), r + 1)) % MOD;
     }
     P.push_back(((power(k, r + 1) * s - power(k, r)) % MOD + MOD) % MOD);
     for (int i = 0; i < (int)Q.size(); ++i) {
-      const long long base = power(k, 1 - (1LL << (i + 1)));
-      const long long inv = power((base - 1 + MOD) % MOD, MOD - 2);
+      const i64 base = power(k, 1 - (1LL << (i + 1)));
+      const i64 inv = power((base - 1 + MOD) % MOD, MOD - 2);
       P[0] = (P[0] + inv * Q[i] % MOD * power(base, r + 1) % MOD * k) % MOD;
       P.push_back(((MOD - Q[i] * k % MOD * inv) % MOD + MOD) % MOD);
     }
@@ -69,7 +70,7 @@ void solve_one(long long n) {
     n0 += 2;
   }
 
-  long long s = n0;
+  i64 s = n0;
   for (int i = 0; i < (int)Q.size(); ++i) {
     s = (s + Q[i] * power(power(k, -(1LL << i)), 1)) % MOD;
   }
@@ -85,7 +86,7 @@ int main() {
   int T;
   cin >> T;
   while (T--) {
-    long long n;
+    i64 n;
     cin >> n;
     solve_one(n);
   }

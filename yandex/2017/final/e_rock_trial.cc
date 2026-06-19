@@ -1,18 +1,19 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 template <int MOD = 1000000007> struct Modular {
   int value;
   const int MOD_value = MOD;
 
-  Modular(long long v = 0) {
+  Modular(i64 v = 0) {
     value = v % MOD;
     if (value < 0)
       value += MOD;
   }
-  Modular(long long a, long long b) : value(0) {
+  Modular(i64 a, i64 b) : value(0) {
     *this += a;
     *this /= b;
   }
@@ -30,11 +31,11 @@ template <int MOD = 1000000007> struct Modular {
     return *this;
   }
   Modular& operator*=(Modular const& b) {
-    value = (long long)value * b.value % MOD;
+    value = (i64)value * b.value % MOD;
     return *this;
   }
 
-  friend Modular mexp(Modular a, long long e) {
+  friend Modular mexp(Modular a, i64 e) {
     Modular res = 1;
     while (e) {
       if (e & 1)

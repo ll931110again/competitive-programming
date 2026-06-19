@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class BreakingChocolate {
   vector<int> xs, ys;
   vector<pair<int, int>> special;
@@ -13,7 +14,7 @@ class BreakingChocolate {
     return ((xi * nx + xj) * ny + yi) * ny + yj;
   }
 
-  long long area(int xi, int xj, int yi, int yj) const {
+  i64 area(int xi, int xj, int yi, int yj) const {
     return 1LL * (xs[xj] - xs[xi]) * (ys[yj] - ys[yi]);
   }
 

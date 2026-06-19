@@ -8,13 +8,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int MOD = 998244353;
 constexpr int LIM = 6;
 
-long long mod_pow(long long a, long long e) {
-  long long r = 1;
+i64 mod_pow(i64 a, i64 e) {
+  i64 r = 1;
   a %= MOD;
   while (e > 0) {
     if (e & 1)
@@ -64,11 +65,11 @@ struct Mat {
       for (int k = 0; k < x.n; ++k)
         if (x.a[i][k])
           for (int j = 0; j < x.n; ++j)
-            z.a[i][j] = (z.a[i][j] + (long long)x.a[i][k] * y.a[k][j]) % MOD;
+            z.a[i][j] = (z.a[i][j] + (i64)x.a[i][k] * y.a[k][j]) % MOD;
     return z;
   }
 
-  Mat pow(Mat base, long long e) {
+  Mat pow(Mat base, i64 e) {
     Mat res(base.n, true);
     while (e > 0) {
       if (e & 1)
@@ -83,7 +84,7 @@ struct Mat {
     vector<int> r(n);
     for (int i = 0; i < n; ++i)
       for (int j = 0; j < n; ++j)
-        r[i] = (r[i] + (long long)a[i][j] * v[j]) % MOD;
+        r[i] = (r[i] + (i64)a[i][j] * v[j]) % MOD;
     return r;
   }
 };
@@ -94,7 +95,7 @@ int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-  long long N;
+  i64 N;
   int M;
   cin >> N >> M;
   vector<string> bad(M);
@@ -146,7 +147,7 @@ int main() {
   if (N > 0)
     vec = Mat::pow(trans, N).apply(vec);
 
-  long long ans = 0;
+  i64 ans = 0;
   for (int x : vec)
     ans += x;
   cout << ans % MOD << '\n';

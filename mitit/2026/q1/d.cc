@@ -2,12 +2,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
 int T;
 int n, Q, K;
-long long a[k_max_n];
+i64 a[k_max_n];
 
 struct Node {
   int cnt;
@@ -20,7 +21,7 @@ struct Node {
 vector<Node> nodes;
 unordered_set<int> unallocated;
 
-void rec(int idx, long long x, int i, int delta) {
+void rec(int idx, i64 x, int i, int delta) {
   if (i < K) {
     int branch = (x & (1LL << i)) ? 1 : 0;
     if (nodes[idx].nxt[branch] < 0) {
@@ -87,11 +88,11 @@ void rec(int idx, long long x, int i, int delta) {
   }
 }
 
-void add(long long x) {
+void add(i64 x) {
   rec(0, x, 0, 1);
 }
 
-void remove(long long x) {
+void remove(i64 x) {
   rec(0, x, 0, -1);
 }
 
@@ -108,7 +109,7 @@ void solve() {
   cout << nodes[0].max_sum << endl;
   while (Q--) {
     int pos;
-    long long val;
+    i64 val;
     cin >> pos >> val;
 
     remove(a[pos]);

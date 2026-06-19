@@ -1,11 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class OverlappingConcatenation {
   int n, m;
   string A, B;
 
-  long long limitSubset() const {
+  i64 limitSubset() const {
     return 1LL << n;
   }
 
@@ -57,8 +58,8 @@ class OverlappingConcatenation {
 
   double bySubsets() {
     double expectOverlap = 0.0;
-    long long limit = 1LL << n;
-    for (long long mask = 1; mask < limit; ++mask) {
+    i64 limit = 1LL << n;
+    for (i64 mask = 1; mask < limit; ++mask) {
       vector<int> overlaps;
       int minOv = n + 1;
       for (int j = 0; j < (n); ++j) {
@@ -114,7 +115,7 @@ class OverlappingConcatenation {
     };
     dfs(0);
 
-    long long ways = 1;
+    i64 ways = 1;
     for (int i = 0; i < (u); ++i)
       ways *= m;
     return 2.0 * n - sumMo / (double)ways;
@@ -135,7 +136,7 @@ public:
         unknowns++;
     }
 
-    long long assignWays = 1;
+    i64 assignWays = 1;
     bool tooManyAssign = false;
     for (int i = 0; i < (unknowns); ++i) {
       assignWays *= m;

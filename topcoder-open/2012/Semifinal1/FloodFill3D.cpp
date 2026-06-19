@@ -1,9 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class FloodFill3D {
 public:
-  long long countBlack(vector<string> SArray, vector<string> TArray, vector<string> UArray) {
+  i64 countBlack(vector<string> SArray, vector<string> TArray, vector<string> UArray) {
     string S, T, U;
     for (const string& p : SArray)
       S += p;
@@ -12,16 +13,16 @@ public:
     for (const string& p : UArray)
       U += p;
     const int n = (int)S.size(), m = (int)T.size(), l = (int)U.size();
-    long long total = 1LL * n * m * l;
+    i64 total = 1LL * n * m * l;
 
-    long long white = 0;
-    long long interiorWhite = 0;
+    i64 white = 0;
+    i64 interiorWhite = 0;
 
     for (char c : {'o', 'x'}) {
-      long long cntS = 0, cntT = 0, cntU = 0;
-      long long inS = 0, inT = 0, inU = 0;
+      i64 cntS = 0, cntT = 0, cntU = 0;
+      i64 inS = 0, inT = 0, inU = 0;
 
-      auto scan = [&](const string& X, int len, long long& cnt, long long& interiorSum) {
+      auto scan = [&](const string& X, int len, i64& cnt, i64& interiorSum) {
         for (int i = 0; i < len;) {
           if (X[i] != c) {
             ++i;

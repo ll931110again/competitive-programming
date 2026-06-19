@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct V2 {
@@ -30,7 +31,7 @@ struct EdgeInfo {
   EdgeInfo() : t1_third(-1), t2_third(-1), len(0) {}
 };
 
-long long sum_k(long long k1, long long k2) {
+i64 sum_k(i64 k1, i64 k2) {
   return (k1 + k2) * (k2 - k1 + 1) / 2;
 }
 
@@ -192,13 +193,13 @@ int main() {
         // Two lows equal. For L in (h0,h2): segment is parallel to
         // edge(lo,mid), length(L) = (h2 - L)/(h2 - h0) * |lo-mid|.
         double base_len = dist2(P[lo], P[mid]);
-        long long k1 = (h0 / h_inc) + 1;
-        long long k2 = (h2 - 1) / h_inc;
+        i64 k1 = (h0 / h_inc) + 1;
+        i64 k2 = (h2 - 1) / h_inc;
         if (k1 <= k2) {
           double alpha = -base_len / (double)(h2 - h0);
           double beta = -alpha * (double)h2;
-          long long cnt = k2 - k1 + 1;
-          long long sumk = sum_k(k1, k2);
+          i64 cnt = k2 - k1 + 1;
+          i64 sumk = sum_k(k1, k2);
           total_len += alpha * (double)h_inc * (double)sumk + beta * (double)cnt;
         }
         continue;
@@ -208,13 +209,13 @@ int main() {
         // Two highs equal. For L in (h0,h2): segment parallel to edge(mid,hi),
         // length(L) = (L - h0)/(h2 - h0) * |mid-hi|.
         double base_len = dist2(P[mid], P[hi]);
-        long long k1 = (h0 / h_inc) + 1;
-        long long k2 = (h2 - 1) / h_inc;
+        i64 k1 = (h0 / h_inc) + 1;
+        i64 k2 = (h2 - 1) / h_inc;
         if (k1 <= k2) {
           double alpha = base_len / (double)(h2 - h0);
           double beta = -alpha * (double)h0;
-          long long cnt = k2 - k1 + 1;
-          long long sumk = sum_k(k1, k2);
+          i64 cnt = k2 - k1 + 1;
+          i64 sumk = sum_k(k1, k2);
           total_len += alpha * (double)h_inc * (double)sumk + beta * (double)cnt;
         }
         continue;
@@ -228,13 +229,13 @@ int main() {
         double Lmax = dist2(P[mid], pc);
 
         // (h0, h1): len = (L - h0)/(h1 - h0) * Lmax
-        long long k1 = (h0 / h_inc) + 1;
-        long long k2 = (h1 - 1) / h_inc;
+        i64 k1 = (h0 / h_inc) + 1;
+        i64 k2 = (h1 - 1) / h_inc;
         if (k1 <= k2) {
           double alpha = Lmax / (double)(h1 - h0);
           double beta = -alpha * (double)h0;
-          long long cnt = k2 - k1 + 1;
-          long long sumk = sum_k(k1, k2);
+          i64 cnt = k2 - k1 + 1;
+          i64 sumk = sum_k(k1, k2);
           total_len += alpha * (double)h_inc * (double)sumk + beta * (double)cnt;
         }
 
@@ -244,8 +245,8 @@ int main() {
         if (k1 <= k2) {
           double alpha = -Lmax / (double)(h2 - h1);
           double beta = -alpha * (double)h2;
-          long long cnt = k2 - k1 + 1;
-          long long sumk = sum_k(k1, k2);
+          i64 cnt = k2 - k1 + 1;
+          i64 sumk = sum_k(k1, k2);
           total_len += alpha * (double)h_inc * (double)sumk + beta * (double)cnt;
         }
 
@@ -257,7 +258,7 @@ int main() {
       }
     }
 
-    long long ans = (long long)floor(total_len + 0.5);
+    i64 ans = (i64)floor(total_len + 0.5);
     cout << "Case " << case_num++ << ": " << ans << "\n";
   }
   return 0;

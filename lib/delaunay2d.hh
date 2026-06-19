@@ -8,13 +8,15 @@
 #include <utility>
 #include <vector>
 
+using i64 = long long;
+
 namespace delaunay2d {
 
 using ld = long double;
 using i128 = __int128_t;
 
 struct Pt {
-  long long x, y;
+  i64 x, y;
   bool operator<(const Pt& o) const {
     return x < o.x || (x == o.x && y < o.y);
   }
@@ -59,14 +61,14 @@ inline std::vector<Tri> delaunay(std::vector<Pt> pts) {
   if (n == 0) {
     return {};
   }
-  long long mx = pts[0].x, Mx = mx, my = pts[0].y, My = my;
+  i64 mx = pts[0].x, Mx = mx, my = pts[0].y, My = my;
   for (const Pt& p : pts) {
     mx = std::min(mx, p.x);
     Mx = std::max(Mx, p.x);
     my = std::min(my, p.y);
     My = std::max(My, p.y);
   }
-  long long d = std::max(Mx - mx, My - my) * 20 + 10;
+  i64 d = std::max(Mx - mx, My - my) * 20 + 10;
   int s0 = n, s1 = n + 1, s2 = n + 2;
   pts.push_back({mx - d, my - d});
   pts.push_back({Mx + 3 * d, my - d});

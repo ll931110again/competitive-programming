@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct AdjEdge {
@@ -144,8 +145,8 @@ int main() {
       }
     }
 
-    long long shafts = 0;
-    long long ways = 1;
+    i64 shafts = 0;
+    i64 ways = 1;
     int leaf_blocks = 0;
 
     // Recompute comp_art_cnt now that root articulation status is finalized.
@@ -243,13 +244,13 @@ int main() {
       if (ac == 1) {
         leaf_blocks++;
         shafts++;
-        ways *= (long long)verts.size() - 1LL;
+        ways *= (i64)verts.size() - 1LL;
       }
     }
 
     if (leaf_blocks == 0) {
       shafts = 2;
-      ways = (long long)V * (long long)(V - 1) / 2LL;
+      ways = (i64)V * (i64)(V - 1) / 2LL;
     }
 
     cout << "Case " << tc++ << ": " << shafts << " " << ways << "\n";

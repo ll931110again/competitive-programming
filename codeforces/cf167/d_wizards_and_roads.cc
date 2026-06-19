@@ -7,6 +7,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct Node {
@@ -143,8 +144,8 @@ int main() {
   int d = 0;
   scanf("%d %d %d %d", &a, &b, &c, &d);
   for (int i = k; i < n; ++i) {
-    x = (static_cast<long long>(a) * x + b) % k_mod;
-    y = (static_cast<long long>(c) * y + d) % k_mod;
+    x = (static_cast<i64>(a) * x + b) % k_mod;
+    y = (static_cast<i64>(c) * y + d) % k_mod;
     insert(root, new_node(x, y));
   }
 

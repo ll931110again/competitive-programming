@@ -4,6 +4,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
@@ -24,13 +25,13 @@ bool cmp(Query A, Query B) {
 int n, Q, block;
 int a[k_max_n], cnt[k_max_v];
 vector<Query> bucket[k_max_n];
-long long ret[k_max_n];
-long long sum;
+i64 ret[k_max_n];
+i64 sum;
 
 void modify(int pos, int delta) {
-  long long prev = 1LL * cnt[pos] * cnt[pos] * pos;
+  i64 prev = 1LL * cnt[pos] * cnt[pos] * pos;
   cnt[pos] += delta;
-  long long next = 1LL * cnt[pos] * cnt[pos] * pos;
+  i64 next = 1LL * cnt[pos] * cnt[pos] * pos;
   sum += (next - prev);
 }
 

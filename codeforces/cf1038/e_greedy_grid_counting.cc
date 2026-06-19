@@ -2,6 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 505;
@@ -11,10 +12,10 @@ int T;
 int n, k;
 int a[2][k_max_n];
 
-long long dp[2][k_max_n][k_max_n];
-long long delta[2 * k_max_n];
+i64 dp[2][k_max_n][k_max_n];
+i64 delta[2 * k_max_n];
 
-long long solve() {
+i64 solve() {
   memset(dp, 0, sizeof dp);
   dp[0][0][k] = 1;
 
@@ -57,7 +58,7 @@ long long solve() {
     }
   }
 
-  long long ans = 0;
+  i64 ans = 0;
   for (int reset = 0; reset < 2; reset++) {
     for (int j = 0; j <= k; j++) {
       ans += dp[reset][n - 1][j];
@@ -65,7 +66,7 @@ long long solve() {
     }
   }
 
-  long long first_choice = 0, last_choice = 0;
+  i64 first_choice = 0, last_choice = 0;
   for (int u = 1; u <= k; u++)
     if (a[0][0] == -1 || a[0][0] == u) {
       first_choice++;

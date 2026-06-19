@@ -1,9 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-map<long long, pair<long long, long long>> mp_a, mp_b;
+using i64 = long long;
+map<i64, pair<i64, i64>> mp_a, mp_b;
 
-void build(vector<int> values, map<long long, pair<long long, long long>>& ans) {
+void build(vector<int> values, map<i64, pair<i64, i64>>& ans) {
   ans.clear();
   int N = values.size();
 
@@ -12,7 +13,7 @@ void build(vector<int> values, map<long long, pair<long long, long long>>& ans) 
     p3 *= 3;
   }
   for (int mask = 0; mask < p3; mask++) {
-    long long delta = 0, a = 0;
+    i64 delta = 0, a = 0;
     int m = mask;
     for (int i = 0; i < N; i++) {
       int mi = m % 3;
@@ -45,12 +46,12 @@ public:
     build(part_a, mp_a);
     build(part_b, mp_b);
 
-    long long ret = 0, pos_a = 0, pos_b = 0;
+    i64 ret = 0, pos_a = 0, pos_b = 0;
     for (auto it : mp_a) {
-      long long d = it.first;
+      i64 d = it.first;
       if (mp_b.count(-d)) {
-        long long xa = mp_a[d].first, pa = mp_a[d].second;
-        long long xb = mp_b[-d].first, pb = mp_b[-d].second;
+        i64 xa = mp_a[d].first, pa = mp_a[d].second;
+        i64 xb = mp_b[-d].first, pb = mp_b[-d].second;
         if (xa + xb > ret) {
           ret = xa + xb;
           pos_a = pa;

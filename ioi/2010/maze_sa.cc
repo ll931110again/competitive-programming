@@ -11,6 +11,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 205;
@@ -266,7 +267,7 @@ int main(int argc, char** argv) {
 
   const char* in_path = argv[1];
   const char* out_path = argv[2];
-  long long max_iters = -1;
+  i64 max_iters = -1;
   const char* warm_path = nullptr;
   unsigned seed =
       static_cast<unsigned>(chrono::high_resolution_clock::now().time_since_epoch().count());
@@ -309,7 +310,7 @@ int main(int argc, char** argv) {
   unsigned int cnt = 0;
   const auto t_start = chrono::steady_clock::now();
 
-  while (max_iters < 0 || static_cast<long long>(cnt) < max_iters) {
+  while (max_iters < 0 || static_cast<i64>(cnt) < max_iters) {
     if ((cnt & k_save_mask) == 0) {
       fprintf(stderr, "%.12g %d\n", t, cur_energy);
       write_grid(bestg, best_src, out_path);
@@ -359,6 +360,6 @@ int main(int argc, char** argv) {
   const auto elapsed =
       chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - t_start);
   fprintf(stderr, "best_energy=%d  iters=%u  elapsed_ms=%lld  seed=%u  -> %s\n", best_energy, cnt,
-          static_cast<long long>(elapsed.count()), seed, out_path);
+          static_cast<i64>(elapsed.count()), seed, out_path);
   return 0;
 }

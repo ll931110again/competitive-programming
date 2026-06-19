@@ -2,6 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 1000005;
@@ -11,13 +12,13 @@ int a[k_max_n];
 
 struct Item {
   int cnt;
-  long long sum;
+  i64 sum;
 };
 
 item zeroes[k_max_n], nonzeroes[k_max_n];
 int nxt[k_max_n];
 
-long long solve() {
+i64 solve() {
   unordered_map<int, int> mp;
   mp[0] = n + 1;
   int xr = 0;
@@ -38,7 +39,7 @@ long long solve() {
   zeroes[n + 1] = {.cnt = 0, .sum = 0};
   nonzeroes[n + 1] = {.cnt = 0, .sum = 0};
 
-  long long ans = 0;
+  i64 ans = 0;
   for (int i = n; i > 0; i--) {
     int x_value = nxt[i];
     if (x_value >= 0) {

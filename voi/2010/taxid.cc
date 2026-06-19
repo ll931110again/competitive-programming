@@ -1,16 +1,17 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 vector<int> c;
-long long pw[40][60];
-long long n, q;
+i64 pw[40][60];
+i64 n, q;
 int m, p;
 char a[36];
 
-long long calc(long long x, int base) {
-  vector<long long> digit;
+i64 calc(i64 x, int base) {
+  vector<i64> digit;
   while (1) {
     digit.push_back(x % 36);
     x /= 36;
@@ -24,18 +25,18 @@ long long calc(long long x, int base) {
       for (int j = i; j < sz; j++)
         digit[j] = base - 1;
 
-  long long ans = 0;
+  i64 ans = 0;
   for (int i = 0; i < sz; i++)
     ans += 1LL * digit[i] * pw[base][sz - i - 1];
   ans++;
   return ans;
 }
 
-long long ascending(int x) {
-  long long low = 1, high = n, ans = -1;
+i64 ascending(int x) {
+  i64 low = 1, high = n, ans = -1;
   while (low <= high) {
-    long long med = (low + high) / 2;
-    long long tmp = calc(med, c[x]) - calc(med, c[x - 1]);
+    i64 med = (low + high) / 2;
+    i64 tmp = calc(med, c[x]) - calc(med, c[x - 1]);
     if (tmp >= q) {
       ans = med;
       high = med - 1;
@@ -45,13 +46,13 @@ long long ascending(int x) {
   return ans;
 }
 
-long long descending(int x) {
-  long long s1 = calc(n, c[x]), s2 = calc(n, c[x - 1]);
-  long long low = 1, high = n, ans = -1;
+i64 descending(int x) {
+  i64 s1 = calc(n, c[x]), s2 = calc(n, c[x - 1]);
+  i64 low = 1, high = n, ans = -1;
   while (low <= high) {
-    long long med = (low + high) / 2;
-    long long t1 = calc(med - 1, c[x]), t2 = calc(med - 1, c[x - 1]);
-    long long tmp = (s1 - t1) - (s2 - t2);
+    i64 med = (low + high) / 2;
+    i64 t1 = calc(med - 1, c[x]), t2 = calc(med - 1, c[x - 1]);
+    i64 tmp = (s1 - t1) - (s2 - t2);
     if (tmp >= q) {
       ans = med;
       low = med + 1;
@@ -89,7 +90,7 @@ int main() {
   for (int i = 10; i < 36; i++)
     a[i] = i - 10 + 'a';
 
-  long long ret = (p & 1) ? ascending((p + 1) / 2) : descending((p + 1) / 2);
+  i64 ret = (p & 1) ? ascending((p + 1) / 2) : descending((p + 1) / 2);
   string fin;
   while (ret) {
     fin += a[ret % 36];

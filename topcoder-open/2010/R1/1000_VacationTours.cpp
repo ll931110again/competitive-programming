@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class VacationTours {
 public:
   int getIncome(vector<string> c, vector<string> d, int fee) {
@@ -27,7 +28,7 @@ public:
           mcmf.addEdge(out, 2 + 2 * j, 1, cost[i + 1][j + 1]);
     }
 
-    long long totalCost = 0;
+    i64 totalCost = 0;
     while (true) {
       int pathCost = mcmf.augment(S, T);
       if (pathCost >= 0)

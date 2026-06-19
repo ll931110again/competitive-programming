@@ -1,20 +1,21 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 105;
 int T;
 int n;
-long long k;
-long long fib[k_max_n];
-long long inf = 1e18;
+i64 k;
+i64 fib[k_max_n];
+i64 inf = 1e18;
 int fib_count;
 
 int opt_value;
 vector<int> pos, ans;
 
-void rec(long long prod, int sum_value, int idx) {
+void rec(i64 prod, int sum_value, int idx) {
   if (idx > fib_count) {
     return;
   }

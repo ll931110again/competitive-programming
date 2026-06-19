@@ -2,6 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 22;
@@ -13,7 +14,7 @@ double p;
 int N = 20;
 double dp[maxl][k_max_n];
 double pin[k_max_n], pout[k_max_n];
-long long binom[k_max_n][k_max_n];
+i64 binom[k_max_n][k_max_n];
 
 double solve(double p) {
   pin[0] = 1;

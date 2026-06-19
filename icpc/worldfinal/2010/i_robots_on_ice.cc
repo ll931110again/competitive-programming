@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 int M, N;
@@ -11,7 +12,7 @@ int cp_time[3];
 
 vector<int> nbr[64];
 uint64_t visited;
-long long ways;
+i64 ways;
 
 inline int id(int r, int c) {
   return r * N + c;

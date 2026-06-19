@@ -2,6 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
@@ -10,17 +11,17 @@ pair<int, int> a[k_max_n];
 
 multiset<pair<int, int>> s;
 
-long long delta(pair<int, int> x, pair<int, int> y) {
-  long long old_value = x.second - x.first + y.second - y.first;
+i64 delta(pair<int, int> x, pair<int, int> y) {
+  i64 old_value = x.second - x.first + y.second - y.first;
   vector<int> new_values = {x.first, x.second, y.first, y.second};
   sort(new_values.begin(), new_values.end());
-  long long new_value = new_values[2] - new_values[0] + new_values[3] - new_values[1];
+  i64 new_value = new_values[2] - new_values[0] + new_values[3] - new_values[1];
 
   return new_value - old_value;
 }
 
-long long solve() {
-  long long value = 0;
+i64 solve() {
+  i64 value = 0;
   for (int i = 0; i < n; i++) {
     value += a[i].second - a[i].first;
   }
@@ -33,7 +34,7 @@ long long solve() {
     max_right = max(max_right, it.second);
   }
 
-  long long ans = 1e18;
+  i64 ans = 1e18;
   for (int i = 0; i < n; i++) {
     auto it = s.find(a[i]);
     if (it != s.begin()) {

@@ -4,6 +4,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 int T, n;
@@ -26,7 +27,7 @@ void rec(__int128 n, __int128 a, __int128 b, __int128 c, __int128& f) {
   }
 }
 
-long long solve(int n) {
+i64 solve(int n) {
   // Find the first moment that (n - x/phi <= 2x)
   int low = 0, high = n, pv = 0;
   while (low <= high) {
@@ -49,7 +50,7 @@ long long solve(int n) {
   rec((n - 2) / 2, x, y, z, c);
   rec((pv - 2) / 2, x, y, z, d);
 
-  long long ans = pv + (pv % 2 ? -1 : 1) * ((a - b) - (c - d));
+  i64 ans = pv + (pv % 2 ? -1 : 1) * ((a - b) - (c - d));
   if ((n - pv) % 2) {
     ans = n - ans;
   }

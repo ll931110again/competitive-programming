@@ -1,21 +1,22 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define point pair<long long, long long>
+using i64 = long long;
+#define point pair<i64, i64>
 #define PI acos(-1.0)
 
 point P[1202];
 
 class LineSegments {
 public:
-  long long intersections(int N, int xFirst, int xAdd, int xProd, int xMod, int yFirst, int yAdd,
-                          int yProd, int yMod) {
+  i64 intersections(int N, int xFirst, int xAdd, int xProd, int xMod, int yFirst, int yAdd,
+                    int yProd, int yMod) {
     P[0] = make_pair(xFirst, yFirst);
     for (int i = 1; i < N; i++) {
       P[i].first = (P[i - 1].first * xProd + xAdd) % xMod;
       P[i].second = (P[i - 1].second * yProd + yAdd) % yMod;
     }
-    long long total = 1LL * N * (N - 1) * (N - 2) * (N - 3) / 24, contain = 0;
+    i64 total = 1LL * N * (N - 1) * (N - 2) * (N - 3) / 24, contain = 0;
     for (int center = 0; center < N; center++) {
       contain += 1LL * (N - 1) * (N - 2) * (N - 3) / 6;
       vector<double> store;

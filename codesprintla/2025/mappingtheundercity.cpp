@@ -10,12 +10,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
-const long long MOD = 1000000007LL;
+const i64 MOD = 1000000007LL;
 
-long long mod_pow(long long a, long long e) {
-  long long r = 1 % MOD;
+i64 mod_pow(i64 a, i64 e) {
+  i64 r = 1 % MOD;
   while (e > 0) {
     if (e & 1)
       r = r * a % MOD;
@@ -58,18 +59,18 @@ int main() {
   int on_path = 0;
 
   for (int i = 0; i < N; ++i) {
-    long long sum = (long long)a[i] + b[i];
-    long long excess = sum - L;
+    i64 sum = (i64)a[i] + b[i];
+    i64 excess = sum - L;
     if (excess < 0 || (excess & 1LL)) {
       cout << 0 << '\n';
       return 0;
     }
-    long long unum = (long long)a[i] + L - b[i];
+    i64 unum = (i64)a[i] + L - b[i];
     if (unum < 0 || (unum & 1LL)) {
       cout << 0 << '\n';
       return 0;
     }
-    long long u = unum / 2;
+    i64 u = unum / 2;
     if (u < 0 || u > L) {
       cout << 0 << '\n';
       return 0;
@@ -84,7 +85,7 @@ int main() {
     return 0;
   }
 
-  long long ans = 1;
+  i64 ans = 1;
 
   for (int u = 0; u <= L; ++u) {
     if (bucket[u].empty()) {

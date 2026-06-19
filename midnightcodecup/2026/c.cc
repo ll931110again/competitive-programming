@@ -13,6 +13,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 int N;
@@ -166,8 +167,8 @@ vector<pair<int, int>> build_landmarks() {
 
 // At most min(5000, T_total) exploration asks: corridors first, then pad with room probes.
 void exploration_phase() {
-  const long long explore_cap = min(5000, max(0, T_total));
-  long long done = 0;
+  const i64 explore_cap = min(5000, max(0, T_total));
+  i64 done = 0;
 
   for (int r = 2; r <= N - 1 && done < explore_cap && queries_left > 0; ++r) {
     for (int c = 2; c <= N - 1 && done < explore_cap && queries_left > 0; ++c) {

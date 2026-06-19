@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct Pt {
-  long long x = 0, y = 0;
+  i64 x = 0, y = 0;
   bool operator<(const Pt& o) const {
     return x != o.x ? x < o.x : y < o.y;
   }
@@ -13,7 +14,7 @@ struct Pt {
   }
 };
 
-inline long long cross_ll(const Pt& a, const Pt& b, const Pt& c) {
+inline i64 cross_ll(const Pt& a, const Pt& b, const Pt& c) {
   // cross((b-a),(c-a))
   return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
 }
@@ -72,8 +73,8 @@ long double min_width_convex_polygon(const vector<Pt>& h) {
     // advance j while area increases
     while (true) {
       int nj = (j + 1) % m;
-      long long cur = llabs(cross_ll(h[i], h[ni], h[j]));
-      long long nxt = llabs(cross_ll(h[i], h[ni], h[nj]));
+      i64 cur = llabs(cross_ll(h[i], h[ni], h[j]));
+      i64 nxt = llabs(cross_ll(h[i], h[ni], h[nj]));
       if ((long double)nxt > (long double)cur + EPS)
         j = nj;
       else

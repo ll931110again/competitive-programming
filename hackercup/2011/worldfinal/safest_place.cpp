@@ -1,22 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct Bomb {
   int x, y, z;
 };
 
-inline long long sq(long long v) {
+inline i64 sq(i64 v) {
   return v * v;
 }
 
-inline long long dist2(int x, int y, int z, const Bomb& b) {
-  return sq((long long)x - b.x) + sq((long long)y - b.y) + sq((long long)z - b.z);
+inline i64 dist2(int x, int y, int z, const Bomb& b) {
+  return sq((i64)x - b.x) + sq((i64)y - b.y) + sq((i64)z - b.z);
 }
 
-inline long long value_at(int x, int y, int z, const vector<Bomb>& bombs) {
-  long long best = (1LL << 62);
+inline i64 value_at(int x, int y, int z, const vector<Bomb>& bombs) {
+  i64 best = (1LL << 62);
   for (const auto& b : bombs)
     best = min(best, dist2(x, y, z, b));
   return best;
@@ -24,16 +25,16 @@ inline long long value_at(int x, int y, int z, const vector<Bomb>& bombs) {
 
 struct Box {
   int x0, x1, y0, y1, z0, z1; // inclusive
-  long long ub;               // upper bound on max min-dist^2 inside this box
+  i64 ub;                     // upper bound on max min-dist^2 inside this box
 };
 
-inline long long upper_bound(const Box& box, const vector<Bomb>& bombs) {
-  long long bound = (1LL << 62);
+inline i64 upper_bound(const Box& box, const vector<Bomb>& bombs) {
+  i64 bound = (1LL << 62);
   for (const auto& b : bombs) {
-    long long dx = max(llabs((long long)b.x - box.x0), llabs((long long)b.x - box.x1));
-    long long dy = max(llabs((long long)b.y - box.y0), llabs((long long)b.y - box.y1));
-    long long dz = max(llabs((long long)b.z - box.z0), llabs((long long)b.z - box.z1));
-    long long far = dx * dx + dy * dy + dz * dz;
+    i64 dx = max(llabs((i64)b.x - box.x0), llabs((i64)b.x - box.x1));
+    i64 dy = max(llabs((i64)b.y - box.y0), llabs((i64)b.y - box.y1));
+    i64 dz = max(llabs((i64)b.z - box.z0), llabs((i64)b.z - box.z1));
+    i64 far = dx * dx + dy * dy + dz * dz;
     bound = min(bound, far);
   }
   return bound;
@@ -45,25 +46,25 @@ struct CmpBox {
   }
 };
 
-long long solve_case(const vector<Bomb>& bombs) {
+i64 solve_case(const vector<Bomb>& bombs) {
   // Get a decent initial lower bound via a deterministic multi-start local search
   // (helps pruning, but correctness comes from the box search).
-  auto improve_from = [&](int sx, int sy, int sz) -> long long {
+  auto improve_from = [&](int sx, int sy, int sz) -> i64 {
     int x = sx, y = sy, z = sz;
-    long long best = value_at(x, y, z, bombs);
+    i64 best = value_at(x, y, z, bombs);
     for (int step = 512; step >= 1; step >>= 1) {
       bool changed = true;
       while (changed) {
         changed = false;
         int bx = x, by = y, bz = z;
-        long long bv = best;
+        i64 bv = best;
         for (int dx : {-step, 0, step}) {
           for (int dy : {-step, 0, step}) {
             for (int dz : {-step, 0, step}) {
               int nx = x + dx, ny = y + dy, nz = z + dz;
               if (nx < 0 || nx > 1000 || ny < 0 || ny > 1000 || nz < 0 || nz > 1000)
                 continue;
-              long long nv = value_at(nx, ny, nz, bombs);
+              i64 nv = value_at(nx, ny, nz, bombs);
               if (nv > bv) {
                 bv = nv;
                 bx = nx;
@@ -85,7 +86,7 @@ long long solve_case(const vector<Bomb>& bombs) {
     return best;
   };
 
-  long long best = 0;
+  i64 best = 0;
   // corners + center
   for (int cx : {0, 1000})
     for (int cy : {0, 1000})
@@ -178,7 +179,7 @@ int main() {
     for (int i = 0; i < N; i++) {
       cin >> bombs[i].x >> bombs[i].y >> bombs[i].z;
     }
-    long long ans = solve_case(bombs);
+    i64 ans = solve_case(bombs);
     cout << "Case #" << tc << ": " << ans << "\n";
   }
   return 0;

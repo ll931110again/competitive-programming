@@ -1,17 +1,18 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 1000005;
 int T, n;
-vector<long long> nums;
+vector<i64> nums;
 
-long long solve() {
-  long long A, B, M;
+i64 solve() {
+  i64 A, B, M;
   cin >> A >> B >> M;
 
-  long long ret = 0;
+  i64 ret = 0;
   for (auto num : nums) {
     if (num >= A && num <= B && num % M == 0) {
       ret++;
@@ -21,7 +22,7 @@ long long solve() {
   return ret;
 }
 
-void rec(int pos, int d, long long val, int last_digit) {
+void rec(int pos, int d, i64 val, int last_digit) {
   if (pos >= d) {
     nums.push_back(val);
     return;

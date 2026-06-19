@@ -1,10 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 struct BagsOfNumbers {
-  long long wonByAlice(int n, vector<long long> a, vector<long long> b, vector<long long> c,
-                       vector<long long> d) {
-    long long nimber[55];
+  i64 wonByAlice(int n, vector<i64> a, vector<i64> b, vector<i64> c, vector<i64> d) {
+    i64 nimber[55];
     for (int i = 0; i < n; i++) {
       nimber[i] = getNimber(a[i], b[i], c[i], d[i]);
     }
@@ -37,9 +37,9 @@ struct BagsOfNumbers {
     return (1LL << n) - (1LL << (n - rank));
   }
 
-  long long getNimber(long long n1, long long n2, long long n3, long long n4) {
-    long long res = n4 + n2 / 2 + min(n1, n3);
-    long long extra = max(n1, n3) - min(n1, n3);
+  i64 getNimber(i64 n1, i64 n2, i64 n3, i64 n4) {
+    i64 res = n4 + n2 / 2 + min(n1, n3);
+    i64 extra = max(n1, n3) - min(n1, n3);
 
     if (n2 % 2 == 0) {
       res += extra / 4;

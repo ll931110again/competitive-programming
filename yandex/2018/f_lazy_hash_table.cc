@@ -1,15 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-using ll = long long;
-
+using i64 = long long;
 namespace {
 
 const int MOD = 998244353;
 const int G = 3;
 
-int mod_pow(ll a, ll e) {
-  ll r = 1;
+int mod_pow(i64 a, i64 e) {
+  i64 r = 1;
   while (e) {
     if (e & 1)
       r = r * a % MOD;

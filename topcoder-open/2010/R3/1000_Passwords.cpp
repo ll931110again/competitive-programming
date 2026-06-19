@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 static const int MOD = 1000000009;
 static const int MAXN = 200005;
 
@@ -20,12 +21,12 @@ static int submod(int a, int b) {
   return s;
 }
 
-static int mulmod(long long a, long long b) {
+static int mulmod(i64 a, i64 b) {
   return int((a * b) % MOD);
 }
 
-static int modpow(int a, long long e) {
-  long long r = 1, x = a;
+static int modpow(int a, i64 e) {
+  i64 r = 1, x = a;
   while (e) {
     if (e & 1)
       r = r * x % MOD;
@@ -117,7 +118,7 @@ public:
     vector<int> ab = convolve(va, vb);
     vector<int> abc = convolve(ab, vc);
 
-    long long ans = abc[E];
+    i64 ans = abc[E];
     ans = ans * fact[N] % MOD;
     ans = ans * fact[E] % MOD;
     ans = ans * pow26[L] % MOD;

@@ -15,9 +15,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
-constexpr long long k_inf = 4'000'000'000'000'000'000LL;
+constexpr i64 k_inf = 4'000'000'000'000'000'000LL;
 
 struct Rmq {
   int lim = 1;
@@ -68,11 +69,11 @@ struct QueryAt {
 // sums in a link-cut tree).
 struct CostPath {
   int n = 0;
-  vector<long long> min_left;
-  vector<long long> min_right;
-  vector<long long> lazy_add;
-  vector<long long> line_k;
-  vector<long long> line_b;
+  vector<i64> min_left;
+  vector<i64> min_right;
+  vector<i64> lazy_add;
+  vector<i64> line_k;
+  vector<i64> line_b;
   vector<unsigned char> has_line;
 
   explicit CostPath(int n_) : n(n_) {
@@ -84,17 +85,17 @@ struct CostPath {
     has_line.assign(4 * n + 4, 0);
   }
 
-  long long line_at(long long k, long long b, int x) {
+  i64 line_at(i64 k, i64 b, int x) {
     return k * x + b;
   }
 
-  void push_add(int rt, long long delta) {
+  void push_add(int rt, i64 delta) {
     min_left[rt] += delta;
     min_right[rt] += delta;
     lazy_add[rt] += delta;
   }
 
-  void push_line(int rt, long long k, long long b, int l, int r) {
+  void push_line(int rt, i64 k, i64 b, int l, int r) {
     lazy_add[rt] = 0;
     has_line[rt] = 1;
     line_k[rt] = k;
@@ -125,15 +126,15 @@ struct CostPath {
     min_right[rt] = min_right[rt << 1 | 1];
   }
 
-  void range_update(int L, int R, long long k, long long b, long long add, int l, int r, int rt) {
+  void range_update(int L, int R, i64 k, i64 b, i64 add, int l, int r, int rt) {
     if (R < l || r < L) {
       return;
     }
     if (L <= l && r <= R) {
-      const long long with_add_l = min_left[rt] + add;
-      const long long with_add_r = min_right[rt] + add;
-      const long long line_l = line_at(k, b, l);
-      const long long line_r = line_at(k, b, r);
+      const i64 with_add_l = min_left[rt] + add;
+      const i64 with_add_r = min_right[rt] + add;
+      const i64 line_l = line_at(k, b, l);
+      const i64 line_r = line_at(k, b, r);
       if (with_add_l >= line_l && with_add_r >= line_r) {
         push_line(rt, k, b, l, r);
         return;
@@ -150,14 +151,14 @@ struct CostPath {
     pullup(rt);
   }
 
-  void range_update(int L, int R, long long k, long long b, long long add) {
+  void range_update(int L, int R, i64 k, i64 b, i64 add) {
     if (L > R) {
       return;
     }
     range_update(L, R, k, b, add, 0, n - 1, 1);
   }
 
-  long long point_query(int pos, int l, int r, int rt) {
+  i64 point_query(int pos, int l, int r, int rt) {
     if (l == r) {
       return min_left[rt];
     }
@@ -169,7 +170,7 @@ struct CostPath {
     return point_query(pos, mid + 1, r, rt << 1 | 1);
   }
 
-  long long point_query(int pos) {
+  i64 point_query(int pos) {
     return point_query(pos, 0, n - 1, 1);
   }
 };
@@ -179,8 +180,7 @@ struct Solver {
   vector<vector<QueryAt>> queries_at;
   Rmq rmq;
 
-  void dfs(int left, int right, CostPath& left_costs, CostPath& right_costs,
-           vector<long long>& answers) {
+  void dfs(int left, int right, CostPath& left_costs, CostPath& right_costs, vector<i64>& answers) {
     if (left > right) {
       return;
     }
@@ -188,9 +188,9 @@ struct Solver {
     dfs(left, node - 1, left_costs, right_costs, answers);
     dfs(node + 1, right, left_costs, right_costs, answers);
 
-    const long long h = height[node];
+    const i64 h = height[node];
     for (const QueryAt& query : queries_at[node]) {
-      long long best = (query.right - query.left + 1LL) * h;
+      i64 best = (query.right - query.left + 1LL) * h;
       if (query.left < node) {
         best = min(best, left_costs.point_query(query.left) + (query.right - node + 1LL) * h);
       }
@@ -200,8 +200,8 @@ struct Solver {
       answers[query.id] = min(answers[query.id], best);
     }
 
-    long long left_seed = 0;
-    long long right_seed = 0;
+    i64 left_seed = 0;
+    i64 right_seed = 0;
     if (left < node) {
       left_seed = left_costs.point_query(left);
     }
@@ -214,7 +214,7 @@ struct Solver {
                             (right - node + 1LL) * h);
   }
 
-  vector<long long> solve(const vector<int>& left, const vector<int>& right) {
+  vector<i64> solve(const vector<int>& left, const vector<int>& right) {
     const int n = static_cast<int>(height.size());
     rmq.build(height);
 
@@ -224,7 +224,7 @@ struct Solver {
       queries_at[peak].push_back({i, left[i], right[i]});
     }
 
-    vector<long long> answers(left.size(), k_inf);
+    vector<i64> answers(left.size(), k_inf);
     CostPath left_costs(n);
     CostPath right_costs(n);
     dfs(0, n - 1, left_costs, right_costs, answers);
@@ -232,10 +232,10 @@ struct Solver {
   }
 };
 
-long long brute_query(const vector<int>& h, int L, int R) {
-  long long best = k_inf;
+i64 brute_query(const vector<int>& h, int L, int R) {
+  i64 best = k_inf;
   for (int x = L; x <= R; ++x) {
-    long long cost = 0;
+    i64 cost = 0;
     for (int y = L; y <= R; ++y) {
       const int lo = min(x, y);
       const int hi = max(x, y);
@@ -252,7 +252,7 @@ long long brute_query(const vector<int>& h, int L, int R) {
 
 } // namespace
 
-vector<long long> minimum_costs(vector<int> H, vector<int> L, vector<int> R) {
+vector<i64> minimum_costs(vector<int> H, vector<int> L, vector<int> R) {
   Solver solver;
   solver.height = move(H);
   return solver.solve(L, R);
@@ -275,8 +275,8 @@ int main() {
     }
     const int ql = static_cast<int>(rng() % n);
     const int qr = ql + static_cast<int>(rng() % (n - ql));
-    const long long expected = brute_query(h, ql, qr);
-    const long long got = minimum_costs(h, {ql}, {qr})[0];
+    const i64 expected = brute_query(h, ql, qr);
+    const i64 got = minimum_costs(h, {ql}, {qr})[0];
     if (expected != got) {
       cerr << "FAIL tc=" << tc << " n=" << n << " [" << ql << "," << qr << "]"
            << " expected=" << expected << " got=" << got << '\n';
@@ -299,8 +299,8 @@ int main() {
     for (int i = 0; i < q; ++i) {
       cin >> l[i] >> r[i];
     }
-    const vector<long long> ans = minimum_costs(h, l, r);
-    for (long long value : ans) {
+    const vector<i64> ans = minimum_costs(h, l, r);
+    for (i64 value : ans) {
       cout << value << '\n';
     }
   } else {

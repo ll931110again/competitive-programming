@@ -7,6 +7,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_side = 6;
@@ -16,7 +17,7 @@ constexpr int k_max_configs = 10000;
 char side_views[k_max_layers][2][k_max_side + 1];
 int support_masks[k_max_layers + 1][k_max_configs];
 int config_count[k_max_layers + 1];
-long long ways[k_max_layers + 1][k_max_configs];
+i64 ways[k_max_layers + 1][k_max_configs];
 int layer_count;
 int piece_positions[k_max_side * k_max_side];
 int board[k_max_side][k_max_side];
@@ -125,7 +126,7 @@ int main() {
   ways[0][0] = 1;
   support_masks[0][0] = ~0;
 
-  long long answer = 0;
+  i64 answer = 0;
   for (int layer = 0; layer < layer_count; layer++) {
     for (int x = 0; x < k_max_side; x++) {
       for (int y = 0; y < k_max_side; y++) {

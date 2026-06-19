@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct Pt {
@@ -53,14 +54,14 @@ int simulate(const vector<Pt>& pts, double r0) {
 
   // Heuristic loop guard.
   // If we see a very similar state again, assume we are orbiting in a loop.
-  vector<tuple<long long, long long, long long>> seen;
+  vector<tuple<i64, i64, i64>> seen;
   seen.reserve(2048);
   for (int step = 0; step < 5000; step++) {
     {
-      long long qx = llround(pivot.x * 1e6);
-      long long qy = llround(pivot.y * 1e6);
-      long long ql = llround(L * 1e6);
-      long long qt = llround(norm_angle(theta) * 1e6);
+      i64 qx = llround(pivot.x * 1e6);
+      i64 qy = llround(pivot.y * 1e6);
+      i64 ql = llround(L * 1e6);
+      i64 qt = llround(norm_angle(theta) * 1e6);
       auto key = make_tuple((qx << 20) ^ qy, ql, qt);
       // linear scan is fine for heuristic; keep it cheap by limiting.
       for (int i = max(0, (int)seen.size() - 200); i < (int)seen.size(); i++) {
@@ -143,11 +144,11 @@ int main() {
   cin >> T;
   for (int tc = 1; tc <= T; tc++) {
     int N;
-    long long Rll;
+    i64 Rll;
     cin >> N >> Rll;
     vector<Pt> pts(N);
     for (int i = 0; i < N; i++) {
-      long long x, y;
+      i64 x, y;
       cin >> x >> y;
       pts[i] = Pt{(double)x, (double)y};
     }

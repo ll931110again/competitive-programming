@@ -1,19 +1,20 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class RadarSabotage {
   int W, H;
   vector<int> rx, ry, pw;
 
-  long long cellCost(int x, int y) const {
-    long long cost = 0;
+  i64 cellCost(int x, int y) const {
+    i64 cost = 0;
     for (int i = 0; i < (int)rx.size(); i++) {
-      long long dx = x - rx[i];
-      long long dy = y - ry[i];
-      long long d2 = dx * dx + dy * dy;
-      long long maxP = 0;
+      i64 dx = x - rx[i];
+      i64 dy = y - ry[i];
+      i64 d2 = dx * dx + dy * dy;
+      i64 maxP = 0;
       while (maxP < pw[i]) {
-        long long p = maxP + 1;
+        i64 p = maxP + 1;
         if (p * p * p * p >= d2)
           break;
         maxP = p;
@@ -33,10 +34,10 @@ public:
     ry = radarY;
     pw = radarPower;
 
-    const long long INF = (1LL << 60);
-    vector<vector<long long>> dist(W + 1, vector<long long>(H + 1, INF));
-    priority_queue<pair<long long, pair<int, int>>, vector<pair<long long, pair<int, int>>>,
-                   greater<pair<long long, pair<int, int>>>>
+    const i64 INF = (1LL << 60);
+    vector<vector<i64>> dist(W + 1, vector<i64>(H + 1, INF));
+    priority_queue<pair<i64, pair<int, int>>, vector<pair<i64, pair<int, int>>>,
+                   greater<pair<i64, pair<int, int>>>>
         pq;
 
     for (int x = 0; x <= W; x++) {
@@ -50,7 +51,7 @@ public:
     while (!pq.empty()) {
       auto cur = pq.top();
       pq.pop();
-      long long d = cur.first;
+      i64 d = cur.first;
       int x = cur.second.first;
       int y = cur.second.second;
       if (d != dist[x][y])
@@ -62,7 +63,7 @@ public:
         int ny = y + dy[k];
         if (nx < 0 || nx > W || ny < 0 || ny > H)
           continue;
-        long long nd = d + cellCost(nx, ny);
+        i64 nd = d + cellCost(nx, ny);
         if (nd < dist[nx][ny]) {
           dist[nx][ny] = nd;
           pq.push({nd, {nx, ny}});
@@ -70,7 +71,7 @@ public:
       }
     }
 
-    long long ans = INF;
+    i64 ans = INF;
     for (int x = 0; x <= W; x++)
       ans = min(ans, dist[x][H]);
     return (int)ans;

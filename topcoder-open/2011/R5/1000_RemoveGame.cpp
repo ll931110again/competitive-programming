@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class RemoveGame {
   string f;
   int R;
@@ -120,11 +121,11 @@ class RemoveGame {
   }
 
 public:
-  long long countWinning(string field, int R) {
+  i64 countWinning(string field, int R) {
     this->R = R;
     f = field;
     n = (int)f.size();
-    long long ans = 0;
+    i64 ans = 0;
     int q = 0;
     for (char c : f)
       if (c == '?')

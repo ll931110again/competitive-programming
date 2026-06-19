@@ -8,6 +8,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 vector<int> parent_nodes = {0, 1};
@@ -36,7 +37,7 @@ void add_node(int previous) {
   rebuild_ancestors();
 }
 
-int go_up(int node, long long steps) {
+int go_up(int node, i64 steps) {
   for (int level = 0; steps > 0; level++) {
     if ((steps & 1LL) != 0) {
       node = ancestors[node][level];
@@ -84,8 +85,8 @@ void path(int start, int steps) {
 
 int dig(int left, int right) {
   int ancestor = lca(left, right);
-  long long path_length = depth_nodes[left] + depth_nodes[right] - 2 * depth_nodes[ancestor];
-  long long half = path_length / 2;
+  i64 path_length = depth_nodes[left] + depth_nodes[right] - 2 * depth_nodes[ancestor];
+  i64 half = path_length / 2;
   if (half <= depth_nodes[left] - depth_nodes[ancestor]) {
     return go_up(left, half);
   }

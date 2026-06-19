@@ -6,12 +6,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int MOD = 998244353;
 
-int mod_pow(long long a, long long e) {
-  long long r = 1;
+int mod_pow(i64 a, i64 e) {
+  i64 r = 1;
   a %= MOD;
   while (e > 0) {
     if (e & 1)
@@ -26,8 +27,8 @@ int mod_inv(int a) {
   return mod_pow(a, MOD - 2);
 }
 
-int solve(long long N, int P) {
-  long long n = N - 1;
+int solve(i64 N, int P) {
+  i64 n = N - 1;
   int inv2 = (MOD + 1) / 2;
   int inv100 = mod_inv(100);
 
@@ -65,7 +66,7 @@ int main() {
   int T;
   cin >> T;
   while (T--) {
-    long long N;
+    i64 N;
     int P;
     cin >> N >> P;
     cout << solve(N, P) << '\n';

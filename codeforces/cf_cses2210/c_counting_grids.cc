@@ -7,6 +7,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr unsigned MOD = 1000000007;
@@ -33,7 +34,7 @@ template <unsigned M> struct ModInt {
     return *this *= a.inv();
   }
 
-  ModInt pow(long long e) const {
+  ModInt pow(i64 e) const {
     e %= (M - 1); // Fermat, MOD prime
     if (e < 0)
       e += (M - 1);
@@ -83,18 +84,18 @@ int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-  long long n;
+  i64 n;
   cin >> n;
 
-  const long long n2 = n * n;
+  const i64 n2 = n * n;
   Mint sum;
   if (n % 2 == 0) {
     // Cycle exponents for C_4 on n×n cells: n^2, n^2/4, n^2/2, n^2/4.
     sum = Mint(2).pow(n2) + Mint(2) * Mint(2).pow(n2 / 4) + Mint(2).pow(n2 / 2);
   } else {
     // n^2, (n^2+3)/4, (n^2+n)/2 - n/2, (n^2+3)/4.
-    const long long e90 = (n2 + 3) / 4;
-    const long long e180 = (n2 + n) / 2 - n / 2;
+    const i64 e90 = (n2 + 3) / 4;
+    const i64 e180 = (n2 + n) / 2 - n / 2;
     sum = Mint(2).pow(n2) + Mint(2) * Mint(2).pow(e90) + Mint(2).pow(e180);
   }
 

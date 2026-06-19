@@ -21,14 +21,15 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
-long long smallest_odd_prime_factor(long long n) {
+i64 smallest_odd_prime_factor(i64 n) {
   while (n % 2 == 0)
     n /= 2;
   if (n == 1)
     return 0; // N was a power of 2
-  for (long long d = 3; d * d <= n; d += 2) {
+  for (i64 d = 3; d * d <= n; d += 2) {
     if (n % d == 0)
       return d;
   }
@@ -40,7 +41,7 @@ long long smallest_odd_prime_factor(long long n) {
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
-  long long N, M;
+  i64 N, M;
   if (!(cin >> N >> M))
     return 0;
   if (M == 1 || M == N - 1) {
@@ -52,7 +53,7 @@ int main() {
     return 0;
   }
   // odd M, 1 < M < N−1
-  long long p = smallest_odd_prime_factor(N);
+  i64 p = smallest_odd_prime_factor(N);
   if (p == 0) {
     cout << "No\n";
     return 0;

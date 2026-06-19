@@ -6,6 +6,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct Belt {
@@ -77,11 +78,11 @@ bool build_path_warn(int seed) {
   return (int)path.size() == NN;
 }
 
-long long estimate_cost() {
+i64 estimate_cost() {
   vector<vector<int>> at(N, vector<int>(N, -1));
   for (int i = 0; i < NN; ++i)
     at[path[i].first][path[i].second] = i;
-  long long s = 0;
+  i64 s = 0;
   for (int v = 0; v < NN; ++v) {
     const auto [r, c] = pos[v];
     const int i = at[r][c];
@@ -93,11 +94,11 @@ long long estimate_cost() {
 
 void build_path_and_belts() {
   vector<pair<int, int>> best;
-  long long best_c = (1LL << 60);
+  i64 best_c = (1LL << 60);
   for (int t = 0; t < 64; ++t) {
     if (!build_path_warn(t))
       continue;
-    const long long c = estimate_cost();
+    const i64 c = estimate_cost();
     if (c < best_c) {
       best_c = c;
       best = path;

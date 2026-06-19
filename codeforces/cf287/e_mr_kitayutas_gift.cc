@@ -67,17 +67,18 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int MOD = 10007;
 
 struct Mint;
 
-Mint mod_pow(Mint a, long long e);
+Mint mod_pow(Mint a, i64 e);
 
 struct Mint {
   int x;
-  Mint(long long v = 0) : x(int((v % MOD + MOD) % MOD)) {}
+  Mint(i64 v = 0) : x(int((v % MOD + MOD) % MOD)) {}
   Mint& operator+=(Mint o) {
     x += o.x;
     if (x >= MOD)
@@ -91,7 +92,7 @@ struct Mint {
     return *this;
   }
   Mint& operator*=(Mint o) {
-    x = int((long long)x * o.x % MOD);
+    x = int((i64)x * o.x % MOD);
     return *this;
   }
   friend Mint operator+(Mint a, Mint b) {
@@ -114,7 +115,7 @@ struct Mint {
   }
 };
 
-Mint mod_pow(Mint a, long long e) {
+Mint mod_pow(Mint a, i64 e) {
   Mint r(1);
   while (e > 0) {
     if (e & 1)
@@ -163,15 +164,15 @@ void mat_mul_dense_int(int n, vector<vector<int>>& A, vector<vector<int>>& B,
                        vector<vector<int>>& C) {
   for (int i = 0; i < n; ++i) {
     for (int j = 0; j < n; ++j) {
-      long long sum = 0;
+      i64 sum = 0;
       for (int t = 0; t < n; ++t)
-        sum += (long long)A[i][t] * B[t][j];
+        sum += (i64)A[i][t] * B[t][j];
       C[i][j] = (int)(sum % MOD);
     }
   }
 }
 
-int kth_linear_recurrence_int(const vector<int>& init, const vector<int>& trans, long long k) {
+int kth_linear_recurrence_int(const vector<int>& init, const vector<int>& trans, i64 k) {
   const int n = (int)trans.size();
   if (k < n)
     return init[(int)k];
@@ -186,7 +187,7 @@ int kth_linear_recurrence_int(const vector<int>& init, const vector<int>& trans,
   for (int i = 0; i < n; ++i)
     res[i][i] = 1;
 
-  long long e = k - n + 1;
+  i64 e = k - n + 1;
   while (e > 0) {
     if (e & 1) {
       mat_mul_dense_int(n, res, base, tmp);
@@ -197,9 +198,9 @@ int kth_linear_recurrence_int(const vector<int>& init, const vector<int>& trans,
     e >>= 1;
   }
 
-  long long ans = 0;
+  i64 ans = 0;
   for (int i = 0; i < n; ++i)
-    ans += (long long)res[0][i] * init[n - 1 - i];
+    ans += (i64)res[0][i] * init[n - 1 - i];
   return (int)(ans % MOD);
 }
 
@@ -209,9 +210,9 @@ int mod_pow_int(int x, int n) {
   if (n <= 1)
     return n ? x : 1;
   int t = mod_pow_int(x, n / 2);
-  t = (int)((long long)t * t % MOD);
+  t = (int)((i64)t * t % MOD);
   if (n & 1)
-    t = (int)((long long)t * x % MOD);
+    t = (int)((i64)t * x % MOD);
   return t;
 }
 
@@ -242,9 +243,9 @@ void mat_mul_int(const Mat& A, const Mat& B, Mat& R) {
   const int dim = A.n;
   for (int i = 0; i < dim; ++i) {
     for (int j = 0; j < dim; ++j) {
-      long long sum = 0;
+      i64 sum = 0;
       for (int t = 0; t < dim; ++t)
-        sum += (long long)A.a[i][t] * B.a[t][j];
+        sum += (i64)A.a[i][t] * B.a[t][j];
       R.a[i][j] = (int)(sum % MOD);
     }
   }
@@ -253,17 +254,17 @@ void mat_mul_int(const Mat& A, const Mat& B, Mat& R) {
 void mat_vec_int(const Mat& A, const vector<int>& in, vector<int>& out) {
   const int dim = A.n;
   for (int i = 0; i < dim; ++i) {
-    long long sum = 0;
+    i64 sum = 0;
     for (int j = 0; j < dim; ++j) {
       if (A.a[i][j])
-        sum += (long long)A.a[i][j] * in[j];
+        sum += (i64)A.a[i][j] * in[j];
     }
     out[i] = (int)(sum % MOD);
   }
 }
 
 // Used in main: binary exponentiation on the automaton.
-int getnum_bm(const Mat& p, int st, int ed, long long K) {
+int getnum_bm(const Mat& p, int st, int ed, i64 K) {
   const int dim = p.n;
   vector<int> vec(dim), nxt(dim);
   vec[st] = 1;
@@ -283,7 +284,7 @@ int getnum_bm(const Mat& p, int st, int ed, long long K) {
 }
 
 // Explicit BM pipeline (correct; slower than getnum_bm on large dim).
-int getnum_via_berlekamp_massey(const Mat& p, int st, int ed, long long K) {
+int getnum_via_berlekamp_massey(const Mat& p, int st, int ed, i64 K) {
   const int dim = p.n;
   vector<Mint> cur(dim), nxt(dim);
   cur[st] = Mint(1);
@@ -310,7 +311,7 @@ char s[MAXN];
 int dp[MAXN][MAXN][MAXN];
 int t[MAXN][MAXN];
 
-int solve(int* d, int n, long long K, int type) {
+int solve(int* d, int n, i64 K, int type) {
   memset(t, 0, sizeof(t));
   const int ha = (n + 1) / 2;
   for (int i = 0; i <= n; ++i)
@@ -376,14 +377,14 @@ int main() {
   cin.tie(nullptr);
 
   string input;
-  long long m_add;
+  i64 m_add;
   cin >> input >> m_add;
   const int n = (int)input.size();
   for (int i = 1; i <= n; ++i)
     s[i] = input[i - 1];
 
   palindrome_dp(n, 1);
-  const long long K = (n + m_add + 1) / 2;
+  const i64 K = (n + m_add + 1) / 2;
   int ans = solve(dp[1][n], n, K, 1);
 
   if (n == 1 || (n + m_add) % 2 == 0) {

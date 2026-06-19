@@ -8,12 +8,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int MOD = 200003;
 
-int pow_mod(int a, int mod, long long e) {
-  long long r = 1, b = a % mod;
+int pow_mod(int a, int mod, i64 e) {
+  i64 r = 1, b = a % mod;
   while (e > 0) {
     if (e & 1)
       r = r * b % mod;
@@ -43,10 +44,10 @@ struct CombPrime {
     return int(1LL * fac[n] * ifac[k] % p * ifac[n - k] % p);
   }
 
-  int lucas(long long n, long long k) const {
+  int lucas(i64 n, i64 k) const {
     if (k < 0 || n < k)
       return 0;
-    long long res = 1;
+    i64 res = 1;
     while (n > 0 || k > 0) {
       const int ni = int(n % p);
       const int ki = int(k % p);
@@ -66,25 +67,25 @@ int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-  long long n, m;
+  i64 n, m;
   cin >> n >> m;
   CombPrime comb(MOD);
 
-  long long ans = 0;
-  const long long lim = m - n;
+  i64 ans = 0;
+  const i64 lim = m - n;
 
-  for (long long i = 0;; i++) {
-    const long long j = i * (3 * i + 1) / 2;
+  for (i64 i = 0;; i++) {
+    const i64 j = i * (3 * i + 1) / 2;
     if (j > lim)
       break;
-    const long long sign = (i & 1) ? -1 : 1;
+    const i64 sign = (i & 1) ? -1 : 1;
     ans = (ans + sign * comb.lucas(m + n - j - 1, 2 * n - 1)) % MOD;
   }
-  for (long long i = 1;; i++) {
-    const long long j = i * (3 * i - 1) / 2;
+  for (i64 i = 1;; i++) {
+    const i64 j = i * (3 * i - 1) / 2;
     if (j > lim)
       break;
-    const long long sign = (i & 1) ? -1 : 1;
+    const i64 sign = (i & 1) ? -1 : 1;
     ans = (ans + sign * comb.lucas(m + n - j - 1, 2 * n - 1)) % MOD;
   }
   if (ans < 0)

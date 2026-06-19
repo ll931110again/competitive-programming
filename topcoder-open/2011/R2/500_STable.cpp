@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class STable {
   string s, t;
 
@@ -43,7 +44,7 @@ class STable {
     return r;
   }
 
-  Mat power(Mat base, long long exp) const {
+  Mat power(Mat base, i64 exp) const {
     Mat res;
     res.a = s;
     res.b = t;
@@ -56,7 +57,7 @@ class STable {
     return res;
   }
 
-  long long len(long long n, long long m) const {
+  i64 len(i64 n, i64 m) const {
     if (n == 0)
       return m;
     if (m == 0)
@@ -64,23 +65,23 @@ class STable {
     return len(n - 1, m) + len(n, m - 1) + 1;
   }
 
-  string build(long long n, long long m, long long pos, long long lim) const {
+  string build(i64 n, i64 m, i64 pos, i64 lim) const {
     if (n == 0) {
       string r;
-      for (long long i = 0; i < m && (int)r.size() < lim; i++)
+      for (i64 i = 0; i < m && (int)r.size() < lim; i++)
         r.push_back(t[i]);
       return r.substr(pos, lim);
     }
     if (m == 0) {
       string r;
-      for (long long i = 0; i < n && (int)r.size() < lim; i++)
+      for (i64 i = 0; i < n && (int)r.size() < lim; i++)
         r.push_back(s[i]);
       return r.substr(pos, lim);
     }
-    long long l1 = len(n - 1, m);
-    long long l2 = len(n, m - 1);
-    long long l3 = 1;
-    long long total = l1 + l2 + l3;
+    i64 l1 = len(n - 1, m);
+    i64 l2 = len(n, m - 1);
+    i64 l3 = 1;
+    i64 total = l1 + l2 + l3;
     if (pos < l1)
       return build(n - 1, m, pos, lim);
     pos -= l1;
@@ -96,12 +97,12 @@ class STable {
   }
 
 public:
-  string getString(string s_, string t_, long long pos) {
+  string getString(string s_, string t_, i64 pos) {
     s = s_;
     t = t_;
-    long long n = s.size(), m = t.size();
-    long long L = len(n, m);
-    long long take = min(50LL, L - pos);
+    i64 n = s.size(), m = t.size();
+    i64 L = len(n, m);
+    i64 take = min(50LL, L - pos);
     return build(n, m, pos, take);
   }
 };

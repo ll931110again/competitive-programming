@@ -4,6 +4,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 #define mod 1000000007
 
 namespace {
@@ -12,12 +13,12 @@ int n;
 pair<int, int> p[5002];
 int side[5002];
 bool flag;
-long long way;
+i64 way;
 
-long long power(int x, int p) {
+i64 power(int x, int p) {
   if (!p)
     return 1;
-  long long q = power(x, p / 2);
+  i64 q = power(x, p / 2);
   q = (q * q) % mod;
   if (p & 1)
     q = (q * x) % mod;
@@ -71,7 +72,7 @@ cin.tie(nullptr);
 
   int low = 0, high = 10000, ans = high;
   while (low <= high) {
-    long long mid = (low + high) / 2;
+    i64 mid = (low + high) / 2;
     if (ok(mid)) {
       ans = mid;
       high = mid - 1;

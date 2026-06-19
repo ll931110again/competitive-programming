@@ -9,6 +9,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int MOD = 998244353;
@@ -17,7 +18,7 @@ constexpr int MAX_PREFIX = 600;
 
 template <int P> struct ModInt {
   int x;
-  ModInt(long long v = 0) : x(int((v % P + P) % P)) {}
+  ModInt(i64 v = 0) : x(int((v % P + P) % P)) {}
   ModInt& operator+=(ModInt o) {
     x += o.x;
     if (x >= P)
@@ -31,7 +32,7 @@ template <int P> struct ModInt {
     return *this;
   }
   ModInt& operator*=(ModInt o) {
-    x = int((long long)x * o.x % P);
+    x = int((i64)x * o.x % P);
     return *this;
   }
   friend ModInt operator+(ModInt a, ModInt b) {
@@ -54,7 +55,7 @@ template <int P> struct ModInt {
   }
 };
 
-template <int P> ModInt<P> mod_pow(ModInt<P> a, long long e) {
+template <int P> ModInt<P> mod_pow(ModInt<P> a, i64 e) {
   ModInt<P> r(1);
   while (e > 0) {
     if (e & 1)
@@ -99,8 +100,7 @@ template <int P> vector<ModInt<P>> berlekamp_massey(const vector<ModInt<P>>& s) 
 }
 
 template <int P>
-ModInt<P> kth_linear_recurrence(vector<ModInt<P>> init, const vector<ModInt<P>>& trans,
-                                long long k) {
+ModInt<P> kth_linear_recurrence(vector<ModInt<P>> init, const vector<ModInt<P>>& trans, i64 k) {
   const int n = (int)trans.size();
   if (k < n)
     return init[(int)k];
@@ -124,7 +124,7 @@ ModInt<P> kth_linear_recurrence(vector<ModInt<P>> init, const vector<ModInt<P>>&
   M res(n, vector<ModInt<P>>(n));
   for (int i = 0; i < n; ++i)
     res[i][i] = ModInt<P>(1);
-  long long e = k - n + 1;
+  i64 e = k - n + 1;
   M pow_m = base;
   while (e > 0) {
     if (e & 1)
@@ -141,9 +141,9 @@ ModInt<P> kth_linear_recurrence(vector<ModInt<P>> init, const vector<ModInt<P>>&
 
 using Mint = ModInt<MOD>;
 
-Mint count_fixed(long long S, const vector<int>& cycles) {
+Mint count_fixed(i64 S, const vector<int>& cycles) {
   const int k = (int)cycles.size();
-  const int cap = (int)min<long long>(S, MAX_PREFIX + 50);
+  const int cap = (int)min<i64>(S, MAX_PREFIX + 50);
   vector<Mint> dp(cap + 1), ndp(cap + 1);
   dp[0] = Mint(1);
   for (int ci : cycles) {
@@ -160,7 +160,7 @@ Mint count_fixed(long long S, const vector<int>& cycles) {
   return S <= cap ? dp[(int)S] : Mint(0);
 }
 
-Mint eval_type(long long S, const vector<int>& cycles) {
+Mint eval_type(i64 S, const vector<int>& cycles) {
   if (S <= MAX_PREFIX)
     return count_fixed(S, cycles);
   vector<Mint> seq;
@@ -178,7 +178,7 @@ int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-  long long S;
+  i64 S;
   cin >> S;
 
   const vector<int> counts = {1, 6, 3, 8, 6};

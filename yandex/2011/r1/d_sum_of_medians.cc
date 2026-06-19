@@ -4,6 +4,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 100005;
@@ -16,7 +17,7 @@ map<int, int> mp;
 
 struct Node {
   int num;
-  long long total[5];
+  i64 total[5];
 } tx[6 * k_max_n];
 
 void add(int i, int low, int high, int pos, int value) {

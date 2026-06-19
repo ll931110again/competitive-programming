@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-using int64 = long long;
-
+using i64 = long long;
 namespace {
 
 int floor_log2_u64(unsigned long long x) {
@@ -16,12 +14,12 @@ int floor_log2_u64(unsigned long long x) {
 
 struct Points {
   // strict all-in points, increasing, always includes 1, all <= V/2
-  vector<int64> xs;
+  vector<i64> xs;
   vector<long double> P; // probability to reach V from xs[i]
-  vector<int64> all_in;  // strict + optional all-in points (subset of inflections)
+  vector<i64> all_in;    // strict + optional all-in points (subset of inflections)
 };
 
-int max_doubles_k(int64 x, int64 M) {
+int max_doubles_k(i64 x, i64 M) {
   // Maximum k >= 1 such that x * 2^(k-1) <= M.
   if (x <= 0)
     return 0;
@@ -31,7 +29,7 @@ int max_doubles_k(int64 x, int64 M) {
   return floor_log2_u64(t) + 1;
 }
 
-long double lose_value_ld(int64 x, int64 M) {
+long double lose_value_ld(i64 x, i64 M) {
   int k = max_doubles_k(x, M);
   // lose after k consecutive losses: x - (2^k - 1) * x = -(2^k - 2) * x
   // compute as -x * (2^k - 2) in long double without overflow
@@ -45,8 +43,8 @@ long double interp(long double x, long double x0, long double y0, long double x1
   return y0 + (x - x0) * (y1 - y0) / (x1 - x0);
 }
 
-long double eval_P(const vector<int64>& strict_x, const vector<long double>& strict_p, int from_idx,
-                   int64 V, int64 x) {
+long double eval_P(const vector<i64>& strict_x, const vector<long double>& strict_p, int from_idx,
+                   i64 V, i64 x) {
   if (x <= 0)
     return 0.0L;
   if (x >= V)
@@ -74,12 +72,12 @@ long double eval_P(const vector<int64>& strict_x, const vector<long double>& str
   return interp((long double)x, x0, y0, x1, y1);
 }
 
-Points build_strategy(int64 M, int64 V) {
+Points build_strategy(i64 M, i64 V) {
   // Build strict all-in points by scanning inflection points.
-  vector<int64> inf;
+  vector<i64> inf;
   inf.reserve(128);
   for (int i = 0;; i++) {
-    int64 x = (i >= 63) ? 0 : (M >> i);
+    i64 x = (i >= 63) ? 0 : (M >> i);
     if (x <= 0)
       break;
     if (x <= V / 2)
@@ -94,7 +92,7 @@ Points build_strategy(int64 M, int64 V) {
   res.all_in.clear();
 
   long double best_lose = 0.0L; // "lowest total yet" (most negative) seen among strict points
-  for (int64 x : inf) {
+  for (i64 x : inf) {
     if (x < 1)
       continue;
     long double lv = lose_value_ld(x, M);
@@ -124,8 +122,8 @@ Points build_strategy(int64 M, int64 V) {
   res.P.assign(n, 0.0L);
 
   for (int idx = n - 1; idx >= 0; idx--) {
-    int64 y = res.xs[idx];
-    int64 z = (idx + 1 < n) ? res.xs[idx + 1] : V;
+    i64 y = res.xs[idx];
+    i64 z = (idx + 1 < n) ? res.xs[idx + 1] : V;
     int k = max_doubles_k(y, M);
     long double q = ldexpl(1.0L, -k); // 2^{-k}
     long double p = 1.0L - q;
@@ -146,7 +144,7 @@ Points build_strategy(int64 M, int64 V) {
   return res;
 }
 
-long double probability_from(int64 A, int64 M, int64 V, const Points& st) {
+long double probability_from(i64 A, i64 M, i64 V, const Points& st) {
   if (A <= 0)
     return 0.0L;
   if (A >= V)
@@ -158,15 +156,15 @@ long double probability_from(int64 A, int64 M, int64 V, const Points& st) {
   }
   // interpolate between surrounding strict points (or 0/V)
   int idx = (int)(it - st.xs.begin());
-  int64 left_x = (idx == 0) ? 0 : st.xs[idx - 1];
+  i64 left_x = (idx == 0) ? 0 : st.xs[idx - 1];
   long double left_p = (idx == 0) ? 0.0L : st.P[idx - 1];
-  int64 right_x = (idx == (int)st.xs.size()) ? V : st.xs[idx];
+  i64 right_x = (idx == (int)st.xs.size()) ? V : st.xs[idx];
   long double right_p = (idx == (int)st.xs.size()) ? 1.0L : st.P[idx];
   return interp((long double)A, (long double)left_x, left_p, (long double)right_x, right_p);
 }
 
-int64 max_first_bet(int64 A, int64 M, int64 V, const Points& st) {
-  int64 cap = min<int64>({A, M, V - A});
+i64 max_first_bet(i64 A, i64 M, i64 V, const Points& st) {
+  i64 cap = min<i64>({A, M, V - A});
   if (cap <= 0)
     return 0;
   // If A is an all-in point (strict or optional), bet all.
@@ -178,9 +176,9 @@ int64 max_first_bet(int64 A, int64 M, int64 V, const Points& st) {
   // until we hit a strict point on either side.
   auto it = lower_bound(st.xs.begin(), st.xs.end(), A);
   int idx = (int)(it - st.xs.begin());
-  int64 left = (idx == 0) ? 0 : st.xs[idx - 1];
-  int64 right = (idx == (int)st.xs.size()) ? V : st.xs[idx];
-  int64 room = min(A - left, right - A);
+  i64 left = (idx == 0) ? 0 : st.xs[idx - 1];
+  i64 right = (idx == (int)st.xs.size()) ? V : st.xs[idx];
+  i64 room = min(A - left, right - A);
   return min(cap, room);
 }
 
@@ -196,12 +194,12 @@ int main() {
   cout << setprecision(9);
 
   for (int tc = 1; tc <= T; tc++) {
-    int64 A, M, V;
+    i64 A, M, V;
     cin >> A >> M >> V;
 
     Points st = build_strategy(M, V);
     long double p = probability_from(A, M, V, st);
-    int64 z = max_first_bet(A, M, V, st);
+    i64 z = max_first_bet(A, M, V, st);
 
     cout << "Case #" << tc << ": " << (double)p << " " << z << "\n";
   }

@@ -4,12 +4,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
 int T, n;
-long long K;
-unordered_set<long long> elems;
+i64 K;
+unordered_set<i64> elems;
 
 } // namespace
 
@@ -23,7 +24,7 @@ int main() {
     elems.clear();
     scanf("%d %lld", &n, &K);
     for (int i = 0; i < n; i++) {
-      long long x;
+      i64 x;
       scanf("%lld", &x);
       if (elems.count(x + K) || elems.count(x - K)) {
         ok = true;

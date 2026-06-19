@@ -7,6 +7,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {} // namespace
 
 int main() {
@@ -21,7 +22,7 @@ int main() {
   }
   sort(sizes.begin(), sizes.end());
 
-  long long pairs = 0;
+  i64 pairs = 0;
   for (int left = 0, right = 0; left < file_count; left++) {
     while (right < file_count && 10LL * sizes[right] < 9LL * sizes[left]) {
       right++;

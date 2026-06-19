@@ -4,13 +4,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
 int T, n;
 int INF = 1e6;
 int a[k_max_n], b[k_max_n];
-long long ss[k_max_n];
+i64 ss[k_max_n];
 
 } // namespace
 
@@ -33,7 +34,7 @@ int main() {
       for (int i = 1; i <= n; i++) {
         ss[i] = ss[i - 1] + b[i];
       }
-      long long ans = 1e18;
+      i64 ans = 1e18;
       for (int i = 1; i < n; i++) {
         ans = min(ans, 1LL * b[n] * ss[i] + 1LL * b[1] * (ss[n] - ss[i]));
       }
@@ -41,10 +42,10 @@ int main() {
     };
 
     int low = -INF, high = INF, pos = INF;
-    long long value = -1e18;
+    i64 value = -1e18;
     while (low <= high - 10) {
       int m1 = (low + low + high) / 3, m2 = (low + high + high) / 3;
-      long long v1 = f(m1), v2 = f(m2);
+      i64 v1 = f(m1), v2 = f(m2);
       if (value < v1) {
         value = v1;
         pos = m1;
@@ -60,7 +61,7 @@ int main() {
       }
     }
     for (int i = low; i <= high; i++) {
-      long long v = f(i);
+      i64 v = f(i);
       if (value < v) {
         pos = i;
         value = v;

@@ -2,6 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
@@ -11,7 +12,7 @@ int T, n;
 vector<int> adj[k_max_n];
 int max_child[k_max_n];
 
-long long dp[k_max_n], prefix[k_max_n];
+i64 dp[k_max_n], prefix[k_max_n];
 bool reachable[k_max_n];
 
 void DFS(int u, int p) {
@@ -113,7 +114,7 @@ int main() {
       cur.clear();
     }
 
-    long long ans = 0;
+    i64 ans = 0;
     for (int i = 1; i < n; i++)
       if (reachable[i]) {
         ans = (ans + dp[i]) % mod;

@@ -1,11 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class IPv444 {
   struct Node {
     map<int, int> child;
     int star = -1;
-    long long starCap = 0;
+    i64 starCap = 0;
   };
 
   vector<Node> trie;
@@ -51,7 +52,7 @@ class IPv444 {
     return parts;
   }
 
-  long long assign(int u, const vector<int>& parts, int depth, long long take, long long price) {
+  i64 assign(int u, const vector<int>& parts, int depth, i64 take, i64 price) {
     if (take <= 0)
       return 0;
     if (depth == 4)
@@ -59,12 +60,12 @@ class IPv444 {
 
     if (parts[depth] == -1) {
       if (depth == 3) {
-        long long used = min(take, trie[u].starCap);
+        i64 used = min(take, trie[u].starCap);
         trie[u].starCap -= used;
         return used * price;
       }
       int v = goStar(u);
-      long long used = min(take, trie[u].starCap);
+      i64 used = min(take, trie[u].starCap);
       trie[u].starCap -= used;
       return assign(v, parts, depth + 1, used, price);
     }
@@ -77,7 +78,7 @@ class IPv444 {
   }
 
 public:
-  long long getMaximumMoney(vector<string> request, vector<int> price) {
+  i64 getMaximumMoney(vector<string> request, vector<int> price) {
     int m = request.size();
     vector<int> order(m);
     iota(order.begin(), order.end(), 0);
@@ -86,10 +87,10 @@ public:
     trie.clear();
     trie.push_back(Node());
 
-    long long ans = 0;
+    i64 ans = 0;
     for (int idx : order) {
       vector<int> parts = parse(request[idx]);
-      long long ways = 1;
+      i64 ways = 1;
       for (int p : parts)
         if (p == -1)
           ways *= 1000;

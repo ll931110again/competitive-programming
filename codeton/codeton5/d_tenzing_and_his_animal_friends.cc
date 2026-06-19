@@ -4,15 +4,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 105;
 int n, m;
-long long dist[k_max_n][k_max_n];
-long long inf = 1e18;
+i64 dist[k_max_n][k_max_n];
+i64 inf = 1e18;
 
 int orders[k_max_n];
-vector<pair<string, long long>> ops;
+vector<pair<string, i64>> ops;
 
 } // namespace
 
@@ -60,7 +61,7 @@ int main() {
   }
 
   for (int i = 1; i < n; i++) {
-    long long diffs = dist[1][orders[i + 1]] - dist[1][orders[i]];
+    i64 diffs = dist[1][orders[i + 1]] - dist[1][orders[i]];
     s[orders[i] - 1] = '1';
 
     if (diffs > 0) {

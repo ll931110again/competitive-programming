@@ -7,6 +7,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr unsigned MOD = 1000000007;
@@ -15,7 +16,7 @@ template <unsigned M> struct ModInt {
   unsigned x;
   ModInt() : x(0) {}
   ModInt(unsigned long long v) : x(unsigned(v % M)) {}
-  ModInt(long long v) : x(unsigned(((v %= (long long)M) < 0) ? (v + (long long)M) : v)) {}
+  ModInt(i64 v) : x(unsigned(((v %= (i64)M) < 0) ? (v + (i64)M) : v)) {}
   ModInt(int v) : x(((v %= int(M)) < 0) ? (v + int(M)) : v) {}
 
   ModInt& operator+=(ModInt a) {
@@ -57,7 +58,7 @@ int main() {
   for (int i = 1; i <= n; i++)
     a[i] = s[n - i] - '0';
 
-  vector<long long> b(MAXD + 1);
+  vector<i64> b(MAXD + 1);
   for (int i = n; i >= 1; i--) {
     for (int j = 1; j < MAXD; j++)
       b[j] *= 10;

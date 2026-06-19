@@ -15,6 +15,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr unsigned MOD = 998244353;
@@ -26,8 +27,7 @@ template <unsigned M> struct ModInt {
   ModInt(unsigned v) : x(v % M) {}
   ModInt(unsigned long long v) : x(unsigned(v % M)) {}
   ModInt(int v) : x(((v %= static_cast<int>(M)) < 0) ? (v + static_cast<int>(M)) : v) {}
-  ModInt(long long v)
-      : x(((v %= static_cast<long long>(M)) < 0) ? (v + static_cast<long long>(M)) : v) {}
+  ModInt(i64 v) : x(((v %= static_cast<i64>(M)) < 0) ? (v + static_cast<i64>(M)) : v) {}
 
   ModInt& operator+=(ModInt a) {
     x = ((x += a.x) >= M) ? (x - M) : x;
@@ -45,7 +45,7 @@ template <unsigned M> struct ModInt {
     return *this *= a.inv();
   }
 
-  ModInt pow(long long e) const {
+  ModInt pow(i64 e) const {
     if (e < 0)
       return inv().pow(-e);
     ModInt a = *this, b = 1;
@@ -94,9 +94,9 @@ int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-  long long n;
+  i64 n;
   int m;
-  long long alphabet;
+  i64 alphabet;
   cin >> n >> m >> alphabet;
 
   vector<int> b(m);

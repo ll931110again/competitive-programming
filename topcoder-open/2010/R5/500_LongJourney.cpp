@@ -1,9 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class LongJourney {
 public:
-  long long minimumCost(vector<int> fuelPrices, int fuelTank, vector<string> roads) {
+  i64 minimumCost(vector<int> fuelPrices, int fuelTank, vector<string> roads) {
     int N = fuelPrices.size();
     vector<vector<pair<int, int>>> adj(N);
     string s;
@@ -27,9 +28,9 @@ public:
       adj[v].push_back(make_pair(u, w));
     }
 
-    const long long INF = (1LL << 62);
-    vector<vector<long long>> dist(N, vector<long long>(fuelTank + 1, INF));
-    typedef pair<long long, pair<int, int>> State;
+    const i64 INF = (1LL << 62);
+    vector<vector<i64>> dist(N, vector<i64>(fuelTank + 1, INF));
+    typedef pair<i64, pair<int, int>> State;
     priority_queue<State, vector<State>, greater<State>> pq;
 
     dist[0][0] = 0;
@@ -38,7 +39,7 @@ public:
     while (!pq.empty()) {
       State cur = pq.top();
       pq.pop();
-      long long c = cur.first;
+      i64 c = cur.first;
       int v = cur.second.first;
       int f = cur.second.second;
       if (c != dist[v][f])
@@ -47,7 +48,7 @@ public:
         continue;
 
       for (int g = f; g <= fuelTank; g++) {
-        long long nc = c + (long long)(g - f) * fuelPrices[v];
+        i64 nc = c + (i64)(g - f) * fuelPrices[v];
         if (nc < dist[v][g]) {
           dist[v][g] = nc;
           pq.push(make_pair(nc, make_pair(v, g)));
@@ -69,7 +70,7 @@ public:
       }
     }
 
-    long long ans = INF;
+    i64 ans = INF;
     for (int f = 0; f <= fuelTank; f++)
       ans = min(ans, dist[1][f]);
     if (ans >= INF)

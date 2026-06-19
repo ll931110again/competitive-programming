@@ -7,29 +7,30 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int MOD = 998244353;
 constexpr int G = 3;
 
-int mod_pow_int(int a, long long e) {
-  long long r = 1;
+int mod_pow_int(int a, i64 e) {
+  i64 r = 1;
   a %= MOD;
   while (e > 0) {
     if (e & 1)
       r = r * a % MOD;
-    a = (int)((long long)a * a % MOD);
+    a = (int)((i64)a * a % MOD);
     e >>= 1;
   }
   return (int)r;
 }
 
 template <int P> struct ModInt;
-template <int P> ModInt<P> mod_pow(ModInt<P> a, long long e);
+template <int P> ModInt<P> mod_pow(ModInt<P> a, i64 e);
 
 template <int P> struct ModInt {
   int x;
-  ModInt(long long v = 0) : x(int((v % P + P) % P)) {}
+  ModInt(i64 v = 0) : x(int((v % P + P) % P)) {}
   ModInt& operator+=(ModInt o) {
     x += o.x;
     if (x >= P)
@@ -43,7 +44,7 @@ template <int P> struct ModInt {
     return *this;
   }
   ModInt& operator*=(ModInt o) {
-    x = int((long long)x * o.x % P);
+    x = int((i64)x * o.x % P);
     return *this;
   }
   friend ModInt operator+(ModInt a, ModInt b) {
@@ -56,7 +57,7 @@ template <int P> struct ModInt {
     return a *= b;
   }
   friend ModInt operator/(ModInt a, ModInt b) {
-    return a * mod_pow(b, (long long)P - 2);
+    return a * mod_pow(b, (i64)P - 2);
   }
   bool operator==(ModInt o) const {
     return x == o.x;
@@ -66,7 +67,7 @@ template <int P> struct ModInt {
   }
 };
 
-template <int P> ModInt<P> mod_pow(ModInt<P> a, long long e) {
+template <int P> ModInt<P> mod_pow(ModInt<P> a, i64 e) {
   ModInt<P> r(1);
   while (e > 0) {
     if (e & 1)
@@ -134,7 +135,7 @@ void ntt(vector<int>& a, bool invert) {
       int w = 1;
       for (int j = 0; j < len; ++j) {
         const int u = a[i + j];
-        const int v = (int)((long long)a[i + j + len] * w % MOD);
+        const int v = (int)((i64)a[i + j + len] * w % MOD);
         int x = u + v;
         if (x >= MOD)
           x -= MOD;
@@ -143,14 +144,14 @@ void ntt(vector<int>& a, bool invert) {
           y += MOD;
         a[i + j] = x;
         a[i + j + len] = y;
-        w = (int)((long long)w * wlen % MOD);
+        w = (int)((i64)w * wlen % MOD);
       }
     }
   }
   if (invert) {
     const int inv_n = mod_pow_int(n, MOD - 2);
     for (int& x : a)
-      x = (int)((long long)x * inv_n % MOD);
+      x = (int)((i64)x * inv_n % MOD);
   }
 }
 
@@ -167,7 +168,7 @@ vector<int> poly_conv(const vector<int>& a, const vector<int>& b, int lim) {
   ntt(fa, false);
   ntt(fb, false);
   for (int i = 0; i < n; ++i)
-    fa[i] = (int)((long long)fa[i] * fb[i] % MOD);
+    fa[i] = (int)((i64)fa[i] * fb[i] % MOD);
   ntt(fa, true);
   fa.resize(need);
   return fa;

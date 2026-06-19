@@ -4,6 +4,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 5005;
@@ -15,8 +16,8 @@ template <unsigned M_> struct ModInt {
   constexpr ModInt(unsigned long long x_) : x(x_ % M) {}
   constexpr ModInt(int x_)
       : x(((x_ %= static_cast<int>(M)) < 0) ? (x_ + static_cast<int>(M)) : x_) {}
-  constexpr ModInt(long long x_)
-      : x(((x_ %= static_cast<long long>(M)) < 0) ? (x_ + static_cast<long long>(M)) : x_) {}
+  constexpr ModInt(i64 x_)
+      : x(((x_ %= static_cast<i64>(M)) < 0) ? (x_ + static_cast<i64>(M)) : x_) {}
   ModInt& operator+=(const ModInt& a) {
     x = ((x += a.x) >= M) ? (x - M) : x;
     return *this;
@@ -32,7 +33,7 @@ template <unsigned M_> struct ModInt {
   ModInt& operator/=(const ModInt& a) {
     return (*this *= a.inv());
   }
-  ModInt pow(long long e) const {
+  ModInt pow(i64 e) const {
     if (e < 0)
       return inv().pow(-e);
     ModInt a = *this, b = 1U;

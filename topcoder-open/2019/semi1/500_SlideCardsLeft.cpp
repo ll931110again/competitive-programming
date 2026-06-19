@@ -1,9 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class SlideCardsLeft {
 public:
-  vector<int> getPosition(int N, long long steps) {
+  vector<int> getPosition(int N, i64 steps) {
     vector<int> ans(N);
     for (int i = 0; i < N; i++) {
       ans[i] = i;

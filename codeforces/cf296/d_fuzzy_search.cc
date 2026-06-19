@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 using cd = complex<double>;
 namespace {
 
@@ -39,7 +40,7 @@ void fft(vector<cd>& a, bool invert) {
   }
 }
 
-vector<long long> convolution01(const vector<int>& a, const vector<int>& b) {
+vector<i64> convolution01(const vector<int>& a, const vector<int>& b) {
   int need = (int)a.size() + (int)b.size() - 1;
   int n = 1;
   while (n < need)
@@ -57,9 +58,9 @@ vector<long long> convolution01(const vector<int>& a, const vector<int>& b) {
     fa[i] *= fb[i];
   fft(fa, true);
 
-  vector<long long> res(need);
+  vector<i64> res(need);
   for (int i = 0; i < need; i++)
-    res[i] = (long long)llround(fa[i].real());
+    res[i] = (i64)llround(fa[i].real());
   return res;
 }
 
@@ -110,12 +111,12 @@ int main() {
     for (int j = 0; j < m; j++)
       b[m - 1 - j] = (idx(t[j]) == c) ? 1 : 0;
 
-    vector<long long> conv = convolution01(a, b);
+    vector<i64> conv = convolution01(a, b);
 
     for (int i = 0; i <= n - m; i++) {
       if (!ok[i])
         continue;
-      long long matches = conv[i + m - 1];
+      i64 matches = conv[i + m - 1];
       if (matches != need_count[c])
         ok[i] = 0;
     }

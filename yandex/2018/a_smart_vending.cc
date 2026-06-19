@@ -1,18 +1,19 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 int M = 1e6;
-long long b, c, r, d;
+i64 b, c, r, d;
 
-long long solve() {
-  long long z = (b * M + c) / r;
+i64 solve() {
+  i64 z = (b * M + c) / r;
   if (c + d >= M - 1) {
     return z;
   }
 
-  unordered_set<long long> seen;
+  unordered_set<i64> seen;
   seen.insert(c);
 
   for (int it = 0;; it++) {
@@ -20,7 +21,7 @@ long long solve() {
       return it;
     }
 
-    long long new_b = b - r / M, new_c = c, new_d = d;
+    i64 new_b = b - r / M, new_c = c, new_d = d;
     if (c >= r % M) {
       new_c = c - r % M;
       new_d = d + r % M;

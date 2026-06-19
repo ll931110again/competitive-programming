@@ -2,13 +2,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
 int T, n, Q;
 int a[k_max_n];
 
-long long tx[4 * k_max_n];
+i64 tx[4 * k_max_n];
 int min_index[4 * k_max_n];
 
 void init(int i, int low, int high) {
@@ -45,7 +46,7 @@ void update(int i, int low, int high, int pos) {
       (a[min_index[2 * i]] <= a[min_index[2 * i + 1]]) ? min_index[2 * i] : min_index[2 * i + 1];
 }
 
-long long get_sum(int i, int low, int high, int u, int v) {
+i64 get_sum(int i, int low, int high, int u, int v) {
   if (v < low || high < u) {
     return 0;
   }
@@ -77,16 +78,16 @@ int get_min_index(int i, int low, int high, int u, int v) {
   return (a[lindex] <= a[rindex]) ? lindex : rindex;
 }
 
-pair<long long, long long> solve() {
+pair<i64, i64> solve() {
   int first_turn = (n + 1) / 2, second_turn = n - first_turn;
   first_turn--;
   second_turn--;
 
-  long long first_sum = get_sum(1, 1, n, 1, first_turn + 1);
+  i64 first_sum = get_sum(1, 1, n, 1, first_turn + 1);
   int first_index = get_min_index(1, 1, n, 1, first_turn + 1);
   first_sum -= a[first_index];
 
-  long long second_sum = get_sum(1, 1, n, n - second_turn, n);
+  i64 second_sum = get_sum(1, 1, n, n - second_turn, n);
   int second_index = get_min_index(1, 1, n, n - second_turn, n);
   second_sum -= a[second_index];
 

@@ -6,10 +6,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_inf = 1e9;
-using DistMap = map<long long, int>;
+using DistMap = map<i64, int>;
 
 struct Edge {
   int to;
@@ -82,7 +83,7 @@ void merge_maps(DistMap& big, DistMap& small) {
 void query_cross(const DistMap& left, const DistMap& right) {
   if (left.size() > right.size()) {
     for (const auto& [dist, edges] : right) {
-      const long long need = target_k - dist;
+      const i64 need = target_k - dist;
       auto it = left.find(need);
       if (it != left.end()) {
         answer = min(answer, it->second + edges);
@@ -90,7 +91,7 @@ void query_cross(const DistMap& left, const DistMap& right) {
     }
   } else {
     for (const auto& [dist, edges] : left) {
-      const long long need = target_k - dist;
+      const i64 need = target_k - dist;
       auto it = right.find(need);
       if (it != right.end()) {
         answer = min(answer, it->second + edges);

@@ -7,6 +7,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_inf = 1e9;
@@ -27,10 +28,10 @@ vector<int> answers;
 vector<pair<int, int>> dist_stack;
 deque<int> bfs_q;
 
-unordered_map<long long, int> cell_id;
+unordered_map<i64, int> cell_id;
 
-long long pack_cell(int x, int y) {
-  return static_cast<long long>(x) * 300001LL + y;
+i64 pack_cell(int x, int y) {
+  return static_cast<i64>(x) * 300001LL + y;
 }
 
 int city_at(int x, int y) {

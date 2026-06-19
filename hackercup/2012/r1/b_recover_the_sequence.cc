@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 10005;
@@ -59,7 +60,7 @@ int main() {
     merge_sort(0, n);
     for (int i = 0; i < n; i++)
       opt[arr[i]] = i;
-    long long ret = 1;
+    i64 ret = 1;
     for (int i = 0; i < n; i++)
       ret = (ret * 31 + opt[i] + 1) % mod;
     cout << "Case #" << it << ": " << ret << '\n';

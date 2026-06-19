@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct Best {
-  long long cost;
+  i64 cost;
   int cnt;
 };
 
@@ -20,16 +21,16 @@ inline Best add_best(const Best& a, const Best& b) {
 
 struct Edge {
   int to;
-  long long w;
+  i64 w;
   int add_cnt;
 };
 
-const long long INF_COST = (1LL << 62);
+const i64 INF_COST = (1LL << 62);
 const int INF_CNT = (1 << 29);
 
 void dijkstra(int V, const vector<vector<Edge>>& g, vector<Best>& dist) {
   struct Node {
-    long long cost;
+    i64 cost;
     int cnt;
     int v;
   };
@@ -106,7 +107,7 @@ int main() {
     vector<vector<Edge>> g(V);
     g.assign(V, {});
     for (int i = 0; i < N; i++) {
-      g[2 * i].push_back(Edge{2 * i + 1, (long long)food[i], 1});
+      g[2 * i].push_back(Edge{2 * i + 1, (i64)food[i], 1});
     }
     for (auto [u, v] : edges) {
       g[2 * u + 1].push_back(Edge{2 * v, 0LL, 0});
@@ -118,7 +119,7 @@ int main() {
 
     for (int i = 0; i < F; i++) {
       int out = 2 * i + 1;
-      dp[1 << i][out] = Best{(long long)food[i], 1};
+      dp[1 << i][out] = Best{(i64)food[i], 1};
     }
 
     for (int mask = 1; mask <= FULL; mask++) {
@@ -135,7 +136,7 @@ int main() {
           if (a.cost >= INF_COST || b.cost >= INF_COST)
             continue;
           int orig = v / 2;
-          Best comb{a.cost + b.cost - (long long)food[orig], a.cnt + b.cnt - 1};
+          Best comb{a.cost + b.cost - (i64)food[orig], a.cnt + b.cnt - 1};
           if (better(comb, dp[mask][v]))
             dp[mask][v] = comb;
         }

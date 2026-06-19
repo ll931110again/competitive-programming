@@ -1,13 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class CalculationCards {
-  map<tuple<vector<int>, long long, long long>, double> memo;
+  map<tuple<vector<int>, i64, i64>, double> memo;
   vector<char> ops;
   vector<int> digs;
   int tTypes;
 
-  double solve(vector<int> cnt, long long sf, long long term) {
+  double solve(vector<int> cnt, i64 sf, i64 term) {
     int rem = 0;
     for (int x : cnt)
       rem += x;
@@ -22,8 +23,8 @@ class CalculationCards {
       if (cnt[i] == 0)
         continue;
       cnt[i]--;
-      long long nsf = sf;
-      long long nterm = term;
+      i64 nsf = sf;
+      i64 nterm = term;
       char op = ops[i];
       int d = digs[i];
       if (op == '+') {

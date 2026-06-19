@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 int correct = 0, total = 0;
@@ -50,7 +51,7 @@ int main() {
   }
   fclose(f);
   const auto t1 = chrono::steady_clock::now();
-  const long long ms = chrono::duration_cast<chrono::milliseconds>(t1 - t0).count();
+  const i64 ms = chrono::duration_cast<chrono::milliseconds>(t1 - t0).count();
 
   printf("%d/%d correct (%.3f accuracy), %lld ms\n", correct, total,
          total ? 1.0 * correct / total : 0.0, ms);

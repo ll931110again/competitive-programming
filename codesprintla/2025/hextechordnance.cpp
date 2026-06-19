@@ -13,12 +13,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
-long long count_at_most_k(const vector<int>& a, long long K) {
+i64 count_at_most_k(const vector<int>& a, i64 K) {
   const int n = (int)a.size();
   deque<int> dq_min, dq_max;
-  long long ans = 0;
+  i64 ans = 0;
   int l = 0;
   for (int r = 0; r < n; ++r) {
     while (!dq_min.empty() && a[dq_min.back()] >= a[r])
@@ -29,7 +30,7 @@ long long count_at_most_k(const vector<int>& a, long long K) {
     dq_max.push_back(r);
 
     while (!dq_min.empty() && !dq_max.empty() &&
-           (long long)a[dq_max.front()] - (long long)a[dq_min.front()] > K) {
+           (i64)a[dq_max.front()] - (i64)a[dq_min.front()] > K) {
       if (dq_min.front() == l)
         dq_min.pop_front();
       if (dq_max.front() == l)
@@ -38,7 +39,7 @@ long long count_at_most_k(const vector<int>& a, long long K) {
     }
     const int len = r - l + 1;
     if (len >= 2)
-      ans += (long long)(len - 1);
+      ans += (i64)(len - 1);
   }
   return ans;
 }
@@ -60,11 +61,11 @@ int main() {
     mx = max(mx, a[i]);
   }
 
-  const long long D = (long long)mx - (long long)mn;
-  const long long total_pairs = 1LL * n * (n - 1) / 2;
+  const i64 D = (i64)mx - (i64)mn;
+  const i64 total_pairs = 1LL * n * (n - 1) / 2;
 
-  for (long long k = 1; k <= n; ++k) {
-    long long cnt = (k >= D) ? total_pairs : count_at_most_k(a, k);
+  for (i64 k = 1; k <= n; ++k) {
+    i64 cnt = (k >= D) ? total_pairs : count_at_most_k(a, k);
     if (cnt < k) {
       cout << "unstable\n";
       return 0;

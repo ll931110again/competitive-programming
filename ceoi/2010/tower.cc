@@ -9,6 +9,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 #include "../../lib/modint.h"
 
 namespace {
@@ -23,9 +24,9 @@ int main() {
   cin.tie(nullptr);
 
   int n;
-  long long d;
+  i64 d;
   cin >> n >> d;
-  vector<long long> sizes(n);
+  vector<i64> sizes(n);
   for (int i = 0; i < n; i++) {
     cin >> sizes[i];
   }
@@ -38,7 +39,7 @@ int main() {
     while (left < i && sizes[left] + d < sizes[i]) {
       left++;
     }
-    long long insert_positions = 1 + (i - left);
+    i64 insert_positions = 1 + (i - left);
     ways *= Mint(static_cast<unsigned>(insert_positions));
   }
 

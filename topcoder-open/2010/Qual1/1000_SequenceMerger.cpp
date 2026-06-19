@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 typedef unsigned long long ull;
 typedef __int128 i128;
 
-static const long long LIM = 1000000000LL;
+static const i64 LIM = 1000000000LL;
 
 static i128 parse128(const string& s) {
   i128 v = 0;
@@ -16,14 +17,14 @@ static i128 parse128(const string& s) {
 struct Seq {
   char type;
   i128 a, b;
-  long long c;
+  i64 c;
   vector<i128> vals;
 };
 
 class SequenceMerger {
   vector<Seq> seqs;
 
-  long long arithCount(const Seq& s, i128 v) const {
+  i64 arithCount(const Seq& s, i128 v) const {
     if (s.c == 0)
       return 0;
     if (s.b == 0)
@@ -33,19 +34,19 @@ class SequenceMerger {
     i128 cnt = (v - s.a) / s.b + 1;
     if (cnt > (i128)s.c)
       cnt = s.c;
-    return (long long)cnt;
+    return (i64)cnt;
   }
 
-  long long geomCount(const Seq& s, i128 v) const {
+  i64 geomCount(const Seq& s, i128 v) const {
     if (s.c == 0)
       return 0;
     if (s.a > v)
       return 0;
     if (s.b == 1)
       return s.c;
-    long long cnt = 0;
+    i64 cnt = 0;
     i128 term = s.a;
-    for (long long i = 0; i < s.c; ++i) {
+    for (i64 i = 0; i < s.c; ++i) {
       if (term > v)
         break;
       ++cnt;
@@ -56,14 +57,14 @@ class SequenceMerger {
     return cnt;
   }
 
-  long long explicitCount(const Seq& s, i128 v) const {
+  i64 explicitCount(const Seq& s, i128 v) const {
     return upper_bound(s.vals.begin(), s.vals.end(), v) - s.vals.begin();
   }
 
-  long long countLE(i128 v) const {
-    long long sum = 0;
+  i64 countLE(i128 v) const {
+    i64 sum = 0;
     for (const Seq& s : seqs) {
-      long long add = 0;
+      i64 add = 0;
       if (s.type == 'A')
         add = arithCount(s, v);
       else if (s.type == 'G')
@@ -77,21 +78,21 @@ class SequenceMerger {
     return sum;
   }
 
-  long long totalSize() const {
-    long long sum = 0;
+  i64 totalSize() const {
+    i64 sum = 0;
     for (const Seq& s : seqs) {
-      long long len = (s.type == 'E') ? (long long)s.vals.size() : s.c;
-      if (sum + len < sum || sum + len > (long long)2e18)
-        return (long long)2e18;
+      i64 len = (s.type == 'E') ? (i64)s.vals.size() : s.c;
+      if (sum + len < sum || sum + len > (i64)2e18)
+        return (i64)2e18;
       sum += len;
     }
     return sum;
   }
 
-  long long kth(long long k) const {
-    long long lo = 1, hi = LIM;
+  i64 kth(i64 k) const {
+    i64 lo = 1, hi = LIM;
     while (lo < hi) {
-      long long mid = lo + (hi - lo) / 2;
+      i64 mid = lo + (hi - lo) / 2;
       if (countLE((i128)mid) >= k)
         hi = mid;
       else
@@ -127,12 +128,12 @@ public:
     for (const string& line : seqLines)
       parse(line);
 
-    long long total = totalSize();
+    i64 total = totalSize();
     vector<int> ans;
     ans.reserve(positions.size());
 
     for (int pos : positions) {
-      long long k = pos;
+      i64 k = pos;
       if (k > total) {
         ans.push_back(-1);
         continue;
@@ -141,7 +142,7 @@ public:
         ans.push_back(-1);
         continue;
       }
-      long long val = kth(k);
+      i64 val = kth(k);
       ans.push_back((int)val);
     }
     return ans;

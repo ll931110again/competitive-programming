@@ -3,13 +3,12 @@
 
 #include <bits/stdc++.h>
 using namespace std;
-
-using int64 = long long;
+using i64 = long long;
 using i128 = __int128_t;
 
 namespace {
 
-int trailing_pow2(int64 v) {
+int trailing_pow2(i64 v) {
   int t = 0;
   while (v % 2 == 0) {
     v /= 2;
@@ -25,7 +24,7 @@ int main() {
   cin.tie(nullptr);
   int n, q;
   cin >> n >> q;
-  vector<int64> a(n);
+  vector<i64> a(n);
   for (int i = 0; i < n; ++i)
     cin >> a[i];
 
@@ -57,9 +56,9 @@ int main() {
       }
       pref += cnt_leaf[i];
     }
-    int64 v = a[pos];
+    i64 v = a[pos];
     int t = trailing_pow2(v);
-    int64 odd = v;
+    i64 odd = v;
     for (int j = 0; j < t; ++j)
       odd /= 2;
     cout << odd << '\n';

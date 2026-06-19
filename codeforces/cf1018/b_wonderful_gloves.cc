@@ -2,6 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 1005;
@@ -15,7 +16,7 @@ unordered_set<int> adj[maxk];
 int cnt[maxk], low[maxk], nodes = 0;
 
 int rep[maxk], scc = 0;
-long long sum_sc[maxk];
+i64 sum_sc[maxk];
 stack<int> ss;
 unordered_set<int> adj_sc[maxk], rev_sc[maxk];
 int deg_sc[maxk];
@@ -48,7 +49,7 @@ void DFS(int u) {
   }
 }
 
-long long solve() {
+i64 solve() {
   int K = 4 * n;
   for (int i = 0; i < K; i++) {
     adj[i].clear();
@@ -128,7 +129,7 @@ long long solve() {
     }
   }
 
-  long long ans = 0;
+  i64 ans = 0;
   while (!qs.empty()) {
     int u = qs.front(), v = -1;
     q.pop();

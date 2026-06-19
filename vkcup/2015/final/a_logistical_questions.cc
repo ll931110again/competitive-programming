@@ -20,6 +20,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
@@ -29,7 +30,7 @@ int n;
 int weight[k_max_n];
 vector<pair<int, int>> adj[k_max_n];
 int par[k_max_n], ventry[k_max_n], vexit[k_max_n], vcount = 0;
-long long depth[k_max_n];
+i64 depth[k_max_n];
 int level[k_max_n][maxk];
 bool marked[k_max_n];
 
@@ -69,7 +70,7 @@ int lca(int u, int v) {
   return par[u];
 }
 
-long long dist(int u, int v) {
+i64 dist(int u, int v) {
   int z = lca(u, v);
   return depth[u] + depth[v] - 2 * depth[z];
 }

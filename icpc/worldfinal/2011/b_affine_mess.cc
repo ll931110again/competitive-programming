@@ -7,13 +7,11 @@
 
 #include <bits/stdc++.h>
 using namespace std;
-
-using int64 = long long;
-
+using i64 = long long;
 namespace {
 
-inline int64 java_round(double a) {
-  return (int64)floor(a + 0.5);
+inline i64 java_round(double a) {
+  return (i64)floor(a + 0.5);
 }
 
 struct Aff2 {
@@ -36,7 +34,7 @@ Aff2 multiply(const Aff2& A, const Aff2& B) {
   return R;
 }
 
-Aff2 rotate_instance(int64 vx, int64 vy) {
+Aff2 rotate_instance(i64 vx, i64 vy) {
   double L = hypot((double)vx, (double)vy);
   double c = (double)vx / L, s = (double)vy / L;
   Aff2 R{};

@@ -8,6 +8,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr unsigned MOD = 1000000007;
@@ -34,7 +35,7 @@ template <unsigned M> struct ModInt {
     return *this *= a.inv();
   }
 
-  ModInt pow(long long e) const {
+  ModInt pow(i64 e) const {
     if (e < 0)
       return inv().pow(-e);
     ModInt a = *this, b = 1;
@@ -83,12 +84,12 @@ int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
 
-  long long n, m;
+  i64 n, m;
   cin >> n >> m;
 
-  auto euler_phi = [](long long x) {
-    long long r = x;
-    for (long long p = 2; p * p <= x; p++) {
+  auto euler_phi = [](i64 x) {
+    i64 r = x;
+    for (i64 p = 2; p * p <= x; p++) {
       if (x % p)
         continue;
       while (x % p == 0)
@@ -101,11 +102,11 @@ int main() {
   };
 
   Mint sum = 0;
-  for (long long d = 1; d * d <= n; d++) {
+  for (i64 d = 1; d * d <= n; d++) {
     if (n % d)
       continue;
-    const long long d1 = d;
-    const long long d2 = n / d;
+    const i64 d1 = d;
+    const i64 d2 = n / d;
     sum += Mint((unsigned long long)euler_phi(d1)) * Mint((unsigned long long)m).pow(d2);
     if (d1 != d2)
       sum += Mint((unsigned long long)euler_phi(d2)) * Mint((unsigned long long)m).pow(d1);

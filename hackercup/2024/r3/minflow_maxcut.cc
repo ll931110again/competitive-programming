@@ -2,6 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
@@ -11,10 +12,10 @@ int T, n, m;
 int a[k_max_n];
 vector<int> adj[k_max_n];
 
-long long ans = 0;
+i64 ans = 0;
 
-vector<long long> DFS(int u, int p) {
-  vector<long long> values;
+vector<i64> DFS(int u, int p) {
+  vector<i64> values;
   for (auto v : adj[u])
     if (v != p) {
       auto tmp = DFS(v, u);
@@ -30,7 +31,7 @@ vector<long long> DFS(int u, int p) {
   if (values.empty()) {
     values.resize(m + 1);
   }
-  vector<long long> tmp = values;
+  vector<i64> tmp = values;
   for (int i = 1; i <= m; i++) {
     values[i] = max(values[i], tmp[i - 1] + a[u]);
   }
@@ -43,7 +44,7 @@ vector<long long> DFS(int u, int p) {
   return values;
 }
 
-long long solve() {
+i64 solve() {
   ans = 0;
   DFS(1, -1);
 

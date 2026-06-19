@@ -14,14 +14,13 @@
 
 #include <bits/stdc++.h>
 using namespace std;
-
-using int64 = long long;
+using i64 = long long;
 using i128 = __int128_t;
 
 namespace {
 
-int64 mod_pow(int64 a, int64 e, int64 mod) {
-  int64 r = 1 % mod;
+i64 mod_pow(i64 a, i64 e, i64 mod) {
+  i64 r = 1 % mod;
   a %= mod;
   while (e > 0) {
     if (e & 1)
@@ -32,11 +31,11 @@ int64 mod_pow(int64 a, int64 e, int64 mod) {
   return r;
 }
 
-int64 mod_inv(int64 a, int64 mod) {
-  int64 t = 0, nt = 1, r = mod, nr = a % mod;
+i64 mod_inv(i64 a, i64 mod) {
+  i64 t = 0, nt = 1, r = mod, nr = a % mod;
   while (nr != 0) {
-    int64 q = r / nr;
-    int64 tmp = t - q * nt;
+    i64 q = r / nr;
+    i64 tmp = t - q * nt;
     t = nt;
     nt = tmp;
     tmp = r - q * nr;
@@ -54,7 +53,7 @@ int primitive_root(int p) {
   int phi = p - 1;
   vector<int> fac;
   int x = phi;
-  for (int i = 2; (int64)i * i <= x; ++i) {
+  for (int i = 2; (i64)i * i <= x; ++i) {
     if (x % i == 0) {
       fac.push_back(i);
       while (x % i == 0)
@@ -77,7 +76,7 @@ int primitive_root(int p) {
   return -1;
 }
 
-void ntt(vector<int64>& a, bool invert, int64 mod, int64 root) {
+void ntt(vector<i64>& a, bool invert, i64 mod, i64 root) {
   int n = (int)a.size();
   for (int i = 1, j = 0; i < n; ++i) {
     int bit = n >> 1;
@@ -88,15 +87,15 @@ void ntt(vector<int64>& a, bool invert, int64 mod, int64 root) {
       swap(a[i], a[j]);
   }
   for (int len = 2; len <= n; len <<= 1) {
-    int64 wlen = mod_pow(root, (mod - 1) / len, mod);
+    i64 wlen = mod_pow(root, (mod - 1) / len, mod);
     if (invert)
       wlen = mod_inv(wlen, mod);
     for (int i = 0; i < n; i += len) {
-      int64 w = 1;
+      i64 w = 1;
       for (int j = 0; j < len / 2; ++j) {
-        int64 u = a[i + j];
-        int64 v = (i128)a[i + j + len / 2] * w % mod;
-        int64 x = u + v;
+        i64 u = a[i + j];
+        i64 v = (i128)a[i + j + len / 2] * w % mod;
+        i64 x = u + v;
         if (x >= mod)
           x -= mod;
         a[i + j] = x;
@@ -109,22 +108,22 @@ void ntt(vector<int64>& a, bool invert, int64 mod, int64 root) {
     }
   }
   if (invert) {
-    int64 inv_n = mod_inv(n, mod);
-    for (int64& x : a)
+    i64 inv_n = mod_inv(n, mod);
+    for (i64& x : a)
       x = (i128)x * inv_n % mod;
   }
 }
 
 // q = 19086·2^21 + 1 > 200000² and 2^21 | (q−1); primitive root 5 (q−1 = 2^21·3·3181).
-const int64 MOD = 40026243073LL;
-const int64 ROOT = 5;
+const i64 MOD = 40026243073LL;
+const i64 ROOT = 5;
 
-vector<int64> convolution_ll(const vector<int64>& aa, const vector<int64>& bb) {
+vector<i64> convolution_ll(const vector<i64>& aa, const vector<i64>& bb) {
   int need = (int)aa.size() + (int)bb.size() - 1;
   int n = 1;
   while (n < need)
     n <<= 1;
-  vector<int64> fa(n), fb(n);
+  vector<i64> fa(n), fb(n);
   for (int i = 0; i < (int)aa.size(); ++i)
     fa[i] = aa[i] % MOD;
   for (int i = 0; i < (int)bb.size(); ++i)
@@ -135,24 +134,24 @@ vector<int64> convolution_ll(const vector<int64>& aa, const vector<int64>& bb) {
     fa[i] = (i128)fa[i] * fb[i] % MOD;
   ntt(fa, true, MOD, ROOT);
 
-  vector<int64> res(need);
+  vector<i64> res(need);
   copy(fa.begin(), fa.begin() + need, res.begin());
   return res;
 }
 
-vector<int64> cyclic_convolution(const vector<int64>& A, const vector<int64>& B, int L) {
+vector<i64> cyclic_convolution(const vector<i64>& A, const vector<i64>& B, int L) {
   int pad = 1;
   while (pad < 2 * L)
     pad <<= 1;
-  vector<int64> aa(pad), bb(pad);
+  vector<i64> aa(pad), bb(pad);
   for (int i = 0; i < L; ++i) {
     aa[i] = A[i];
     bb[i] = B[i];
   }
-  vector<int64> lin = convolution_ll(aa, bb);
-  vector<int64> C(L);
+  vector<i64> lin = convolution_ll(aa, bb);
+  vector<i64> C(L);
   for (int k = 0; k < L; ++k) {
-    int64 v = lin[k];
+    i64 v = lin[k];
     if (k + L < (int)lin.size())
       v += lin[k + L];
     C[k] = v;
@@ -171,7 +170,7 @@ int main() {
   if (!(cin >> N))
     return 0;
 
-  vector<int64> cnt(P, 0);
+  vector<i64> cnt(P, 0);
   for (int i = 0; i < N; ++i) {
     int x;
     cin >> x;
@@ -182,15 +181,15 @@ int main() {
   int g = primitive_root(P);
 
   // H[k] = how many A_i equal g^k mod P (nonzero values only)
-  vector<int64> H(L, 0);
+  vector<i64> H(L, 0);
   for (int k = 0; k < L; ++k) {
-    int64 v = mod_pow(g, k, P);
+    i64 v = mod_pow(g, k, P);
     H[k] = cnt[(size_t)v];
   }
 
-  vector<int64> R = cyclic_convolution(H, H, L);
+  vector<i64> R = cyclic_convolution(H, H, L);
 
-  vector<int64> diag(L, 0);
+  vector<i64> diag(L, 0);
   for (int e = 0; e < L; ++e) {
     int m = (2 * e) % L;
     diag[m] += H[e];
@@ -198,12 +197,12 @@ int main() {
 
   i128 sum_ordered = 0;
   for (int m = 0; m < L; ++m) {
-    int64 val = mod_pow(g, m, P);
+    i64 val = mod_pow(g, m, P);
     i128 pairs = (i128)R[m] - (i128)diag[m];
     sum_ordered += (i128)val * pairs;
   }
 
   i128 ans = sum_ordered / 2;
-  cout << (int64)ans << '\n';
+  cout << (i64)ans << '\n';
   return 0;
 }

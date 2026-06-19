@@ -1,12 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 1000005;
 int n, h[k_max_n];
 int L[k_max_n], R[k_max_n], Q;
-long long d2[k_max_n], sum[k_max_n];
+i64 d2[k_max_n], sum[k_max_n];
 
 void calc_l() {
   stack<int> s;

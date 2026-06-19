@@ -4,6 +4,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 int T, n;
@@ -38,7 +39,7 @@ int main() {
       max_gap = max(max_gap, gap);
     }
 
-    long long ret = max(1LL * c0 * c1, 1LL * max_gap * max_gap);
+    i64 ret = max(1LL * c0 * c1, 1LL * max_gap * max_gap);
     cout << ret << endl;
   }
   return 0;

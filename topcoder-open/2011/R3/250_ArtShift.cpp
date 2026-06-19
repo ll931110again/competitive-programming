@@ -1,31 +1,32 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class ArtShift {
-  long long gcdll(long long a, long long b) {
+  i64 gcdll(i64 a, i64 b) {
     while (b) {
-      long long t = a % b;
+      i64 t = a % b;
       a = b;
       b = t;
     }
     return a;
   }
 
-  long long lcmll(long long a, long long b) {
+  i64 lcmll(i64 a, i64 b) {
     return a / gcdll(a, b) * b;
   }
 
   int n, t;
-  long long best;
+  i64 best;
 
-  void dfs(int rem, int cycles, long long curLcm, int minSize) {
+  void dfs(int rem, int cycles, i64 curLcm, int minSize) {
     if (cycles > t)
       return;
     best = max(best, curLcm);
     if (rem == 0 || cycles == t)
       return;
     for (int s = minSize; s <= rem; s++) {
-      long long nl = lcmll(curLcm, s);
+      i64 nl = lcmll(curLcm, s);
       dfs(rem - s, cycles + 1, nl, s);
     }
   }

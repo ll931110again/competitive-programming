@@ -32,6 +32,8 @@ Use the repo `bits/stdc++.h` when the system header is missing. Do **not** paste
 
 ## Structure (SWE)
 
+- Integer alias: `using i64 = long long;` after `using namespace std;` (or with other type aliases in `lib/`).
+- Use `i64` instead of raw `long long` or `ll` / `int64` aliases.
 - Types: `PascalCase`. Functions/variables: `snake_case`. Constants: `kPascalCase` or `constexpr`.
 - Internal helpers in an anonymous `namespace { ... }`.
 - Prefer small structs and named functions over large global arrays when reasonable.
@@ -40,6 +42,7 @@ Use the repo `bits/stdc++.h` when the system header is missing. Do **not** paste
 ## Tooling
 
 - `bash scripts/format_cpp.sh` — clang-format all C++ files.
+- `python3 scripts/normalize_i64.py` — replace `long long` / `ll` with `i64`.
 - `python3 scripts/normalize_headers.py` — collapse STL includes to `bits/stdc++.h` + `using namespace std`.
 - `python3 scripts/refactor_swe_style.py` — anonymous namespace, `kMaxN` constants, PascalCase structs, `snake_case` helpers, fast I/O in `main`.
 - `make test` — build and run C++ library tests (Google Test + Buck2).

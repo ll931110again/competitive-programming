@@ -1,12 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
-long long r[6];
+i64 r[6];
 string p;
 
-long long gcd(long long x, long long y) {
+i64 gcd(i64 x, i64 y) {
   if (x > y)
     swap(x, y);
   return (!x) ? y : gcd(y % x, x);
@@ -21,17 +22,17 @@ int main() {
   //  freopen("prosjek.in","r",stdin);
   //  freopen("prosjek.ou","w",stdout);
   cin >> p;
-  long long a = 1, b = 1;
+  i64 a = 1, b = 1;
   a = p[0] - '0';
   for (int i = 2; i < p.size(); i++)
     if ('0' <= p[i] && p[i] <= '9') {
       b *= 10LL;
       a = a * 10LL + p[i] - '0';
     }
-  long long s = gcd(a, b);
+  i64 s = gcd(a, b);
   a /= s;
   b /= s;
-  long long tmp = a - b;
+  i64 tmp = a - b;
   for (int i = 5; i > 1; i--) {
     r[i] = tmp / (i - 1);
     tmp %= (i - 1);

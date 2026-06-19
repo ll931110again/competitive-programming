@@ -5,6 +5,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 1005;
@@ -22,12 +23,12 @@ int main() {
     cin >> num_arrows[i];
   }
 
-  long long cnt_small = 0;
+  i64 cnt_small = 0;
   for (int i = 1; i < 5; i++) {
     cnt_small += num_arrows[i];
   }
 
-  long long total_large = 0;
+  i64 total_large = 0;
   for (int i = 5; i <= n; i++) {
     total_large += i * num_arrows[i];
   }
@@ -71,16 +72,16 @@ int main() {
     }
   }
 
-  long long total_damage = 0;
+  i64 total_damage = 0;
   for (int t = 0; t <= bound && t <= total_large; t++)
     if (cur[t]) {
       // use smallest number of light arrows to exceed b - t damages
-      long long rem = b - t, cnt = 0;
+      i64 rem = b - t, cnt = 0;
       for (int j = 4; j > 0; j--) {
         if (rem < 0) {
           break;
         }
-        int amount = min(rem, (long long)num_arrows[j] * j) / j;
+        int amount = min(rem, (i64)num_arrows[j] * j) / j;
         cnt += amount;
         rem -= amount * j;
         if (amount < num_arrows[j]) {
@@ -93,7 +94,7 @@ int main() {
         continue;
       }
 
-      long long damage = 0;
+      i64 damage = 0;
       if (t > b) {
         damage = (total_large - t) + 5 + cnt_small * 5;
       } else {

@@ -11,6 +11,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(nullptr);
@@ -53,7 +54,7 @@ int main() {
 
     DsuRollbackMarked graph_dsu(n, color_id);
     Dsu color_dsu(colors);
-    long long ans = 0;
+    i64 ans = 0;
 
     function<void(int, int)> solve = [&](int left, int right) {
       if (right - left == 1) {

@@ -1,15 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 100000;
 bool prime[k_max_n + 3];
 int num_prime[k_max_n + 3][6];
 int board[8][8], T, digit;
-long long ans;
+i64 ans;
 
-inline void attempt(int x, int y, long long way) {
+inline void attempt(int x, int y, i64 way) {
   if (x >= digit) {
     ans += way;
     return;
@@ -31,7 +32,7 @@ inline void attempt(int x, int y, long long way) {
     }
 }
 
-long long solve(int n) {
+i64 solve(int n) {
   memset(board, 0, sizeof(board));
   digit = 0;
   while (n) {

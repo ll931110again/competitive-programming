@@ -4,13 +4,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 int L, R;
 
-long long revert(long long x) {
+i64 revert(i64 x) {
   int tmp = x;
-  long long sum = 0;
+  i64 sum = 0;
   while (tmp) {
     sum = sum * 10LL + 9;
     tmp /= 10;
@@ -27,9 +28,9 @@ int main() {
   // freopen("a.in","r",stdin);
 
   cin >> L >> R;
-  long long ret = max(1LL * L * revert(L), 1LL * R * revert(R));
+  i64 ret = max(1LL * L * revert(L), 1LL * R * revert(R));
 
-  for (long long sum = 9, start = 1; sum <= 99999999999LL; sum = sum * 10LL + 9, start *= 10LL) {
+  for (i64 sum = 9, start = 1; sum <= 99999999999LL; sum = sum * 10LL + 9, start *= 10LL) {
     if (L <= start && start <= R)
       ret = max(ret, start * revert(start));
     if (L <= sum / 2 && sum / 2 <= R)

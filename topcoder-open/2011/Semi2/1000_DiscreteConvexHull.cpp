@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class DiscreteConvexHull {
 public:
-  long long minArea(vector<string> cells) {
-    vector<pair<long long, long long>> pts;
+  i64 minArea(vector<string> cells) {
+    vector<pair<i64, i64>> pts;
     for (const string& row : cells) {
       string s = row;
       for (int i = 0; i < (int)s.size();) {
@@ -17,8 +18,8 @@ public:
           j++;
         string tok = s.substr(i, j - i);
         int comma = (int)tok.find(',');
-        long long x = stoll(tok.substr(0, comma));
-        long long y = stoll(tok.substr(comma + 1));
+        i64 x = stoll(tok.substr(0, comma));
+        i64 y = stoll(tok.substr(comma + 1));
         pts.push_back({x, y});
         i = j;
       }
@@ -29,7 +30,7 @@ public:
     if (pts.size() == 1)
       return 1;
 
-    vector<long long> xs, ys;
+    vector<i64> xs, ys;
     for (auto p : pts) {
       xs.push_back(p.first);
       ys.push_back(p.second);
@@ -42,12 +43,8 @@ public:
     int nx = (int)xs.size();
     int ny = (int)ys.size();
     vector<vector<char>> in(nx, vector<char>(ny, 0));
-    auto getX = [&](long long v) {
-      return (int)(lower_bound(xs.begin(), xs.end(), v) - xs.begin());
-    };
-    auto getY = [&](long long v) {
-      return (int)(lower_bound(ys.begin(), ys.end(), v) - ys.begin());
-    };
+    auto getX = [&](i64 v) { return (int)(lower_bound(xs.begin(), xs.end(), v) - xs.begin()); };
+    auto getY = [&](i64 v) { return (int)(lower_bound(ys.begin(), ys.end(), v) - ys.begin()); };
     for (auto p : pts)
       in[getX(p.first)][getY(p.second)] = 1;
 
@@ -86,13 +83,13 @@ public:
       }
     }
 
-    long long area = 0;
+    i64 area = 0;
     for (int i = 0; i + 1 < nx; i++) {
-      long long dx = xs[i + 1] - xs[i];
+      i64 dx = xs[i + 1] - xs[i];
       for (int j = 0; j + 1 < ny; j++) {
         if (!in[i][j])
           continue;
-        long long dy = ys[j + 1] - ys[j];
+        i64 dy = ys[j + 1] - ys[j];
         area += dx * dy;
       }
     }

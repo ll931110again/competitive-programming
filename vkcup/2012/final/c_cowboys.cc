@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 105;
-long long f[k_max_n], g[k_max_n];
+i64 f[k_max_n], g[k_max_n];
 int n;
 string s;
 
@@ -36,7 +37,7 @@ int main() {
   cin >> s;
   n = s.size();
 
-  long long ans = 0;
+  i64 ans = 0;
   f[0] = 1;
   populate();
 

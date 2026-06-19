@@ -8,6 +8,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct Node {
@@ -15,8 +16,8 @@ struct Node {
   int prior = 0;
   int key = 0;
   int size = 1;
-  long long sum = 0;
-  long long pairs = 0;
+  i64 sum = 0;
+  i64 pairs = 0;
 };
 
 constexpr int k_max_nodes = 200005;
@@ -39,10 +40,10 @@ int new_node(int coord) {
 int size(int t) {
   return t ? pool[t].size : 0;
 }
-long long sum(int t) {
+i64 sum(int t) {
   return t ? pool[t].sum : 0;
 }
-long long pairs(int t) {
+i64 pairs(int t) {
   return t ? pool[t].pairs : 0;
 }
 
@@ -55,10 +56,9 @@ void pull(int t) {
   const int right = node.ch[1];
   node.size = size(left) + 1 + size(right);
   node.sum = sum(left) + sum(right) + node.key;
-  node.pairs = pairs(left) + pairs(right) + static_cast<long long>(size(left)) * sum(right) -
-               static_cast<long long>(size(right)) * sum(left) +
-               static_cast<long long>(node.key) * (size(left) - size(right)) + sum(right) -
-               sum(left);
+  node.pairs = pairs(left) + pairs(right) + static_cast<i64>(size(left)) * sum(right) -
+               static_cast<i64>(size(right)) * sum(left) +
+               static_cast<i64>(node.key) * (size(left) - size(right)) + sum(right) - sum(left);
 }
 
 void merge_nodes(int& t, int left, int right) {
@@ -112,13 +112,13 @@ void erase(int coord) {
   merge_nodes(root, left, rest);
 }
 
-long long query_range(int l, int r) {
+i64 query_range(int l, int r) {
   int left = 0;
   int middle = 0;
   int right = 0;
   split_key(root, l - 1, left, middle);
   split_key(middle, r, middle, right);
-  const long long answer = pairs(middle);
+  const i64 answer = pairs(middle);
   merge_nodes(root, left, middle);
   merge_nodes(root, root, right);
   return answer;

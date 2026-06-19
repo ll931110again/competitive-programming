@@ -1,13 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 55;
 int n;
 int a[k_max_n];
 vector<int> dependencies[k_max_n];
-long long cnt[k_max_n];
+i64 cnt[k_max_n];
 
 } // namespace
 
@@ -28,7 +29,7 @@ int main() {
     }
   }
 
-  long long run_1 = 0;
+  i64 run_1 = 0;
   for (int i = 1; i <= n; i++) {
     run_1 += a[i];
   }
@@ -45,7 +46,7 @@ int main() {
     }
   }
 
-  long long run_2 = 0;
+  i64 run_2 = 0;
   for (int i = 1; i <= n; i++) {
     run_2 += cnt[i] * a[i];
   }

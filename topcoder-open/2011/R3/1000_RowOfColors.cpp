@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class RowOfColors {
 public:
   int countWays(int w, int h, int K) {
@@ -39,7 +40,7 @@ public:
       swap(dp, tdp);
     }
 
-    long long ans = tdp[0][K];
+    i64 ans = tdp[0][K];
     for (int i = 2; i <= K; i++)
       ans = ans * i % MOD;
     return (int)ans;

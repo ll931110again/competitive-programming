@@ -5,6 +5,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int MOD = 1000000007;
@@ -23,7 +24,7 @@ void sieve_mobius(int limit) {
       mu_arr[i] = -1;
     }
     for (int p : primes) {
-      long long v = 1LL * i * p;
+      i64 v = 1LL * i * p;
       if (v > limit)
         break;
       comp[v] = true;
@@ -36,8 +37,8 @@ void sieve_mobius(int limit) {
   }
 }
 
-int mod_pow(long long a, long long e) {
-  long long r = 1 % MOD;
+int mod_pow(i64 a, i64 e) {
+  i64 r = 1 % MOD;
   a %= MOD;
   while (e > 0) {
     if (e & 1)
@@ -62,7 +63,7 @@ int range_sum(const vector<int>& pref, int lo, int hi) {
 int count_min_max(int a, int b, int c, int dmax, const vector<int>& pref) {
   if (a > b || c > dmax)
     return 0;
-  long long total = 0;
+  i64 total = 0;
   for (int m = a; m <= b; ++m) {
     int L = max(0, c - m);
     int R = dmax - m;
@@ -91,7 +92,7 @@ void build_h_prefix(int n, int max_k, vector<int>& pref) {
   vector<int> h(max_k + 1);
   h[0] = 1;
   for (int k = 1; k <= max_k; ++k) {
-    long long v = pow_tab[k + 1] - 2LL * pow_tab[k] + pow_tab[k - 1];
+    i64 v = pow_tab[k + 1] - 2LL * pow_tab[k] + pow_tab[k - 1];
     v %= MOD;
     if (v < 0)
       v += MOD;
@@ -99,7 +100,7 @@ void build_h_prefix(int n, int max_k, vector<int>& pref) {
   }
 
   pref.resize(max_k + 1);
-  long long s = 0;
+  i64 s = 0;
   for (int k = 0; k <= max_k; ++k) {
     s += h[k];
     if (s >= MOD)
@@ -116,13 +117,13 @@ int solve_one(int n, int A, int B, int C, int D) {
   vector<int> pref;
   build_h_prefix(n, max_gap, pref);
 
-  long long ans = 0;
+  i64 ans = 0;
   for (int d = 1; d <= B; ++d) {
     int mu = mu_arr[d];
     if (mu == 0)
       continue;
     int fd = f_multiple_of_d(A, B, C, D, d, pref);
-    ans += (long long)mu * fd;
+    ans += (i64)mu * fd;
     ans = (ans % MOD + MOD) % MOD;
   }
   return (int)ans;

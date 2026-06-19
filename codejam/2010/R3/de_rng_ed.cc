@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-using int64 = long long;
-
+using i64 = long long;
 namespace {
 
 vector<int> sieve_primes(int n) {
@@ -21,22 +19,22 @@ vector<int> sieve_primes(int n) {
   return primes;
 }
 
-int64 mod_norm(int64 x, int64 mod) {
+i64 mod_norm(i64 x, i64 mod) {
   x %= mod;
   if (x < 0)
     x += mod;
   return x;
 }
 
-int64 mod_inv(int64 a, int64 mod) {
-  int64 t = 0, newt = 1;
-  int64 r = mod, newr = mod_norm(a, mod);
+i64 mod_inv(i64 a, i64 mod) {
+  i64 t = 0, newt = 1;
+  i64 r = mod, newr = mod_norm(a, mod);
   while (newr != 0) {
-    int64 q = r / newr;
-    int64 nt = newt;
+    i64 q = r / newr;
+    i64 nt = newt;
     newt = t - q * newt;
     t = nt;
-    int64 nr = newr;
+    i64 nr = newr;
     newr = r - q * newr;
     r = nr;
   }
@@ -47,7 +45,7 @@ int64 mod_inv(int64 a, int64 mod) {
   return t;
 }
 
-bool verify(const vector<int64>& s, int64 P, int64 A, int64 B) {
+bool verify(const vector<i64>& s, i64 P, i64 A, i64 B) {
   int K = (int)s.size();
   for (int i = 0; i < K - 1; i++) {
     if (((A * s[i] + B) % P + P) % P != s[i + 1])
@@ -70,15 +68,15 @@ int main() {
   for (int tc = 1; tc <= T; tc++) {
     int D, K;
     cin >> D >> K;
-    int64 max_p = 1;
+    i64 max_p = 1;
     for (int i = 0; i < D; i++)
       max_p *= 10;
 
-    vector<int64> s(K);
+    vector<i64> s(K);
     for (int i = 0; i < K; i++)
       cin >> s[i];
 
-    set<int64> cand_next;
+    set<i64> cand_next;
 
     bool all_equal = true;
     for (int i = 1; i < K; i++) {
@@ -87,7 +85,7 @@ int main() {
     }
 
     for (int P : primes) {
-      if ((int64)P > max_p)
+      if ((i64)P > max_p)
         break;
 
       bool ok_range = true;
@@ -105,24 +103,24 @@ int main() {
       }
 
       if (all_equal) {
-        int64 c = s[0];
+        i64 c = s[0];
         cand_next.insert(c);
         continue;
       }
 
       if (K == 2) {
-        int64 d = mod_norm(s[1] - s[0], P);
+        i64 d = mod_norm(s[1] - s[0], P);
         if (d == 0)
           continue;
-        int64 g = gcd(d, (int64)P);
+        i64 g = gcd(d, (i64)P);
         if (g == 1) {
-          int64 n0 = mod_norm(s[1], P);
-          int64 n1 = mod_norm(d + s[1], P);
+          i64 n0 = mod_norm(s[1], P);
+          i64 n1 = mod_norm(d + s[1], P);
           cand_next.insert(n0);
           cand_next.insert(n1);
         } else {
-          for (int64 A = 0; A < P; A++) {
-            int64 B = mod_norm(s[1] - A * s[0], P);
+          for (i64 A = 0; A < P; A++) {
+            i64 B = mod_norm(s[1] - A * s[0], P);
             if (!verify(s, P, A, B))
               continue;
             cand_next.insert((A * s[1] + B) % P);
@@ -131,16 +129,16 @@ int main() {
         continue;
       }
 
-      int64 d = mod_norm(s[1] - s[0], P);
-      int64 e = mod_norm(s[2] - s[1], P);
+      i64 d = mod_norm(s[1] - s[0], P);
+      i64 e = mod_norm(s[2] - s[1], P);
 
       if (d == 0) {
         if (e != 0)
           continue;
         bool bad = false;
         for (int i = 1; i < K - 1; i++) {
-          int64 di = mod_norm(s[i] - s[i - 1], P);
-          int64 ei = mod_norm(s[i + 1] - s[i], P);
+          i64 di = mod_norm(s[i] - s[i - 1], P);
+          i64 ei = mod_norm(s[i + 1] - s[i], P);
           if (di == 0 && ei != 0) {
             bad = true;
             break;
@@ -148,9 +146,9 @@ int main() {
         }
         if (bad)
           continue;
-        int64 c = s[0];
-        for (int64 A = 0; A < P; A++) {
-          int64 B = mod_norm(c - A * c, P);
+        i64 c = s[0];
+        for (i64 A = 0; A < P; A++) {
+          i64 B = mod_norm(c - A * c, P);
           if (!verify(s, P, A, B))
             continue;
           cand_next.insert((A * s[K - 1] + B) % P);
@@ -158,15 +156,15 @@ int main() {
         continue;
       }
 
-      int64 inv = mod_inv(d, P);
+      i64 inv = mod_inv(d, P);
       if (inv < 0)
         continue;
-      int64 A = (e * inv) % P;
+      i64 A = (e * inv) % P;
 
       bool eq_ok = true;
       for (int i = 2; i < K - 1; i++) {
-        int64 di = mod_norm(s[i] - s[i - 1], P);
-        int64 ei = mod_norm(s[i + 1] - s[i], P);
+        i64 di = mod_norm(s[i] - s[i - 1], P);
+        i64 ei = mod_norm(s[i + 1] - s[i], P);
         if ((A * di) % P != ei) {
           eq_ok = false;
           break;
@@ -175,11 +173,11 @@ int main() {
       if (!eq_ok)
         continue;
 
-      int64 B = mod_norm(s[1] - A * s[0], P);
+      i64 B = mod_norm(s[1] - A * s[0], P);
       if (!verify(s, P, A, B))
         continue;
 
-      int64 nxt = (A * s[K - 1] + B) % P;
+      i64 nxt = (A * s[K - 1] + B) % P;
       cand_next.insert(nxt);
     }
 

@@ -13,18 +13,19 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct Pt {
-  long long x, y;
+  i64 x, y;
 };
 
-long long cross(const Pt& o, const Pt& a, const Pt& b) {
+i64 cross(const Pt& o, const Pt& a, const Pt& b) {
   return (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
 }
 
-long long dist2(const Pt& a, const Pt& b) {
-  long long dx = a.x - b.x, dy = a.y - b.y;
+i64 dist2(const Pt& a, const Pt& b) {
+  i64 dx = a.x - b.x, dy = a.y - b.y;
   return dx * dx + dy * dy;
 }
 
@@ -40,14 +41,14 @@ struct Tri {
 
 vector<Tri> delaunay(vector<Pt> pts) {
   int n = (int)pts.size();
-  long long mx = pts[0].x, Mx = mx, my = pts[0].y, My = my;
+  i64 mx = pts[0].x, Mx = mx, my = pts[0].y, My = my;
   for (const Pt& p : pts) {
     mx = min(mx, p.x);
     Mx = max(Mx, p.x);
     my = min(my, p.y);
     My = max(My, p.y);
   }
-  long long d = max(Mx - mx, My - my) * 20 + 10;
+  i64 d = max(Mx - mx, My - my) * 20 + 10;
   int s0 = n, s1 = n + 1, s2 = n + 2;
   pts.push_back({mx - d, my - d});
   pts.push_back({Mx + 3 * d, my - d});
@@ -129,7 +130,7 @@ struct Voronoi {
   // q lies in the closure of cell i iff it is not strictly closer to any
   // Delaunay neighbor of i (Voronoi cell = intersection of neighbor bisectors).
   bool in_cell(int i, const Pt& q) const {
-    long long di = dist2(q, site[i]);
+    i64 di = dist2(q, site[i]);
     for (int j : adj[i]) {
       if (di > dist2(q, site[j])) {
         return false;
@@ -138,14 +139,14 @@ struct Voronoi {
     return true;
   }
 
-  long long min_dist2(const Pt& q) const {
+  i64 min_dist2(const Pt& q) const {
     int cur = 0;
-    long long best = dist2(q, site[cur]);
+    i64 best = dist2(q, site[cur]);
     bool improved = true;
     while (improved) {
       improved = false;
       for (int u : adj[cur]) {
-        long long d = dist2(q, site[u]);
+        i64 d = dist2(q, site[u]);
         if (d < best) {
           best = d;
           cur = u;
@@ -157,7 +158,7 @@ struct Voronoi {
   }
 
   vector<int> regions(const Pt& q) const {
-    long long md = min_dist2(q);
+    i64 md = min_dist2(q);
     vector<int> ans;
     for (int i = 0; i < (int)site.size(); ++i) {
       if (dist2(q, site[i]) == md && in_cell(i, q)) {

@@ -2,6 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
@@ -21,7 +22,7 @@ int main() {
       cin >> a[i];
     }
     sort(a, a + n);
-    long long ans = 0;
+    i64 ans = 0;
     for (int i = 0; i + 1 < n; i++) {
       ans += max(a[i] - a[0], a[n - 1] - a[i]);
     }

@@ -7,6 +7,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 unsigned PMOD;
@@ -33,7 +34,7 @@ struct Mint {
     return *this *= a.inv();
   }
 
-  Mint pow(long long e) const {
+  Mint pow(i64 e) const {
     if (e < 0)
       return inv().pow(-e);
     Mint a = *this, b = 1;
@@ -83,7 +84,7 @@ Mint count_at_most(int C) {
   const auto go = [&](auto&& self, int rem, int max_part) -> void {
     if (rem == 0) {
       const int m = (int)part.size();
-      long long exp = 0;
+      i64 exp = 0;
       for (int i = 0; i < m; i++) {
         exp += part[i] / 2;
         for (int j = 0; j < i; j++)

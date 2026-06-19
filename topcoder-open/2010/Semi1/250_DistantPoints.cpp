@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class DistantPoints {
   int cnt(int n) const {
     if (n == 2)
@@ -101,8 +102,8 @@ class DistantPoints {
       return fixed(n, k);
     if (k <= cnt(n - 1))
       return trans(getKthRec(n - 1, k));
-    long long lim = (long long)(1 << n) + 1;
-    if ((long long)k * lim * lim <= 120000000LL)
+    i64 lim = (i64)(1 << n) + 1;
+    if ((i64)k * lim * lim <= 120000000LL)
       return simulate(n, k);
     vector<pair<int, int>> prefix;
     for (int i = 1; i <= cnt(n - 1); i++)
@@ -110,7 +111,7 @@ class DistantPoints {
     int M = (1 << n) + 1;
     int h = (M + 1) / 2;
     int subN = n - 1;
-    long long prog[4] = {0, 0, 0, 0};
+    i64 prog[4] = {0, 0, 0, 0};
     vector<pair<int, int>> painted = prefix;
 
     auto globalPt = [&](int q, pair<int, int> p) {

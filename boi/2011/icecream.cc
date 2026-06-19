@@ -7,6 +7,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_flavors = 205;
@@ -29,7 +30,7 @@ int main() {
     forbidden[first][second] = forbidden[second][first] = true;
   }
 
-  long long answer = 0;
+  i64 answer = 0;
   for (int first = 1; first <= flavor_count; first++) {
     for (int second = first + 1; second <= flavor_count; second++) {
       for (int third = second + 1; third <= flavor_count; third++) {

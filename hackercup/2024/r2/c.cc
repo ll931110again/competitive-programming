@@ -1,12 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 805;
 int T;
 int m, n;
-long long K;
+i64 K;
 
 int a[k_max_n][k_max_n];
 unordered_map<int, vector<pair<int, int>>> buckets;
@@ -21,8 +22,8 @@ void update(int x, int y, int delta) {
   }
 }
 
-long long get_single(int x, int y) {
-  long long ans = 0;
+i64 get_single(int x, int y) {
+  i64 ans = 0;
   for (int dx = x; dx > 0; dx -= (dx & -dx)) {
     for (int dy = y; dy > 0; dy -= (dy & -dy)) {
       ans += tx[dx][dy];
@@ -31,19 +32,19 @@ long long get_single(int x, int y) {
   return ans;
 }
 
-long long get(int x, int y, int mid) {
+i64 get(int x, int y, int mid) {
   int lx = max(1, x - mid);
   int ly = max(1, y - mid);
   int rx = min(m, x + mid);
   int ry = min(n, y + mid);
 
-  long long ans = get_single(rx, ry) - get_single(lx - 1, ry) - get_single(rx, ly - 1) +
-                  get_single(lx - 1, ly - 1);
+  i64 ans = get_single(rx, ry) - get_single(lx - 1, ry) - get_single(rx, ly - 1) +
+            get_single(lx - 1, ly - 1);
   return (rx - lx + 1) * (ry - ly + 1) - ans;
 }
 
-long long count_valid_configuration(int mid) {
-  long long ret = 0;
+i64 count_valid_configuration(int mid) {
+  i64 ret = 0;
   for (auto bucket : buckets) {
     for (auto item : bucket.second) {
       update(item.first, item.second, 1);

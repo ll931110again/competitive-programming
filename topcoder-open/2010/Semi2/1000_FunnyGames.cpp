@@ -1,21 +1,22 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class FunnyGames {
   struct Fenwick {
-    vector<long long> f;
+    vector<i64> f;
     explicit Fenwick(int n) : f(n + 1) {}
-    void add(int i, long long v) {
+    void add(int i, i64 v) {
       for (++i; i < (int)f.size(); i += i & -i)
         f[i] += v;
     }
-    long long sumPrefix(int i) const {
-      long long s = 0;
+    i64 sumPrefix(int i) const {
+      i64 s = 0;
       for (++i; i > 0; i -= i & -i)
         s += f[i];
       return s;
     }
-    long long sumAbove(long long y, const vector<long long>& ys) const {
+    i64 sumAbove(i64 y, const vector<i64>& ys) const {
       int i = upper_bound(ys.begin(), ys.end(), y) - ys.begin();
       if (i >= (int)ys.size())
         return 0;
@@ -23,14 +24,14 @@ class FunnyGames {
     }
   };
 
-  static long long countWinningAnySize(const vector<long long>& dx, const vector<long long>& dy) {
+  static i64 countWinningAnySize(const vector<i64>& dx, const vector<i64>& dy) {
     const int n = (int)dx.size();
     const int n1 = n / 2;
     const int n2 = n - n1;
 
-    map<pair<long long, long long>, long long> left;
+    map<pair<i64, i64>, i64> left;
     for (int mask = 0; mask < (1 << n1); mask++) {
-      long long x = 0, y = 0;
+      i64 x = 0, y = 0;
       for (int i = 0; i < n1; i++)
         if (mask & (1 << i)) {
           x += dx[i];
@@ -39,7 +40,7 @@ class FunnyGames {
       left[{x, y}]++;
     }
 
-    vector<long long> ys;
+    vector<i64> ys;
     ys.reserve(left.size());
     for (const auto& kv : left)
       ys.push_back(kv.first.second);
@@ -47,11 +48,11 @@ class FunnyGames {
     ys.erase(unique(ys.begin(), ys.end()), ys.end());
 
     struct Pt {
-      long long x, y;
-      long long cnt;
+      i64 x, y;
+      i64 cnt;
     };
     struct Q {
-      long long tx, ty;
+      i64 tx, ty;
     };
 
     vector<Pt> pts;
@@ -63,7 +64,7 @@ class FunnyGames {
     vector<Q> qs;
     qs.reserve(1 << n2);
     for (int mask = 0; mask < (1 << n2); mask++) {
-      long long x = 0, y = 0;
+      i64 x = 0, y = 0;
       for (int i = 0; i < n2; i++)
         if (mask & (1 << i)) {
           x += dx[n1 + i];
@@ -74,10 +75,10 @@ class FunnyGames {
     sort(qs.begin(), qs.end(), [](const Q& a, const Q& b) { return a.tx > b.tx; });
 
     Fenwick bit((int)ys.size());
-    long long ans = 0;
+    i64 ans = 0;
     size_t pi = 0, qi = 0;
     while (qi < qs.size()) {
-      long long curTx = qs[qi].tx;
+      i64 curTx = qs[qi].tx;
       while (pi < pts.size() && pts[pi].x > curTx) {
         int id = lower_bound(ys.begin(), ys.end(), pts[pi].y) - ys.begin();
         bit.add(id, pts[pi].cnt);
@@ -91,12 +92,10 @@ class FunnyGames {
     return ans;
   }
 
-  static long long countWinningSmall(const vector<long long>& dx, const vector<long long>& dy,
-                                     int k) {
+  static i64 countWinningSmall(const vector<i64>& dx, const vector<i64>& dy, int k) {
     const int n = (int)dx.size();
-    long long ans = 0;
-    function<void(int, int, long long, long long)> dfs = [&](int i, int sz, long long x,
-                                                             long long y) {
+    i64 ans = 0;
+    function<void(int, int, i64, i64)> dfs = [&](int i, int sz, i64 x, i64 y) {
       if (i == n) {
         if (sz < k && x > 0 && y > 0)
           ans++;
@@ -110,12 +109,12 @@ class FunnyGames {
   }
 
 public:
-  long long countWays(vector<int> A, vector<int> B, vector<int> C, int k) {
+  i64 countWays(vector<int> A, vector<int> B, vector<int> C, int k) {
     const int n = (int)A.size();
-    vector<long long> dx(n), dy(n);
+    vector<i64> dx(n), dy(n);
     for (int i = 0; i < n; i++) {
-      dx[i] = (long long)A[i] - B[i];
-      dy[i] = (long long)A[i] - C[i];
+      dx[i] = (i64)A[i] - B[i];
+      dy[i] = (i64)A[i] - C[i];
     }
     return countWinningAnySize(dx, dy) - countWinningSmall(dx, dy, k);
   }

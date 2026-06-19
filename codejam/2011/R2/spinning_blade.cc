@@ -3,15 +3,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct Prefix2D {
   int R, C;
-  vector<vector<long long>> sum, sumx, sumy;
+  vector<vector<i64>> sum, sumx, sumy;
 
-  Prefix2D(int r, int c, const vector<vector<long long>>& w)
-      : R(r), C(c), sum(r + 1, vector<long long>(c + 1, 0)),
-        sumx(r + 1, vector<long long>(c + 1, 0)), sumy(r + 1, vector<long long>(c + 1, 0)) {
+  Prefix2D(int r, int c, const vector<vector<i64>>& w)
+      : R(r), C(c), sum(r + 1, vector<i64>(c + 1, 0)), sumx(r + 1, vector<i64>(c + 1, 0)),
+        sumy(r + 1, vector<i64>(c + 1, 0)) {
     for (int i = 0; i < r; i++) {
       for (int j = 0; j < c; j++) {
         sum[i + 1][j + 1] = sum[i][j + 1] + sum[i + 1][j] - sum[i][j] + w[i][j];
@@ -21,12 +22,12 @@ struct Prefix2D {
     }
   }
 
-  long long rect_sum(const vector<vector<long long>>& pref, int r1, int c1, int r2, int c2) const {
+  i64 rect_sum(const vector<vector<i64>>& pref, int r1, int c1, int r2, int c2) const {
     return pref[r2 + 1][c2 + 1] - pref[r1][c2 + 1] - pref[r2 + 1][c1] + pref[r1][c1];
   }
 
-  void blade_sums(int r1, int c1, int r2, int c2, long long& m, long long& mx, long long& my,
-                  const vector<vector<long long>>& w) const {
+  void blade_sums(int r1, int c1, int r2, int c2, i64& m, i64& mx, i64& my,
+                  const vector<vector<i64>>& w) const {
     m = rect_sum(sum, r1, c1, r2, c2);
     mx = rect_sum(sumx, r1, c1, r2, c2);
     my = rect_sum(sumy, r1, c1, r2, c2);
@@ -36,9 +37,9 @@ struct Prefix2D {
   }
 };
 
-bool balanced(long long m, long long mx, long long my, int r1, int c1, int r2, int c2) {
-  long long cx = c1 + c2;
-  long long cy = r1 + r2;
+bool balanced(i64 m, i64 mx, i64 my, int r1, int c1, int r2, int c2) {
+  i64 cx = c1 + c2;
+  i64 cy = r1 + r2;
   return 2 * mx == cx * m && 2 * my == cy * m;
 }
 
@@ -53,7 +54,7 @@ int main() {
   for (int tc = 1; tc <= T; tc++) {
     int R, C, D;
     cin >> R >> C >> D;
-    vector<vector<long long>> w(R, vector<long long>(C));
+    vector<vector<i64>> w(R, vector<i64>(C));
     for (int i = 0; i < R; i++) {
       string row;
       cin >> row;
@@ -70,7 +71,7 @@ int main() {
         for (int k = max_k; k >= 3; k--) {
           int r2 = r1 + k - 1;
           int c2 = c1 + k - 1;
-          long long m, mx, my;
+          i64 m, mx, my;
           pref.blade_sums(r1, c1, r2, c2, m, mx, my, w);
           if (balanced(m, mx, my, r1, c1, r2, c2)) {
             best = max(best, k);

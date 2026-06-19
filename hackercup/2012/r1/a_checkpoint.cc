@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 map<int, int> mp;
@@ -12,7 +13,7 @@ int find_comb(int x) {
   if (mp.count(x))
     return mp[x];
   for (int i = 1; i <= x; i++) {
-    long long k = 1;
+    i64 k = 1;
     for (int j = 1; j <= i; j++) {
       k = k * 1LL * (i + 1 - j) / j;
       if (k > x)

@@ -8,13 +8,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct EdgeInterval {
   int u, v, l, r;
 };
 
-long long pack_edge(int u, int v, int n) {
+i64 pack_edge(int u, int v, int n) {
   if (u > v) {
     swap(u, v);
   }
@@ -73,7 +74,7 @@ int main() {
   fin >> n >> k;
   dsu = DsuRollback(n);
 
-  unordered_map<long long, int> edge_start;
+  unordered_map<i64, int> edge_start;
   vector<int> query_times;
 
   for (int t = 0; t < k; ++t) {
@@ -87,7 +88,7 @@ int main() {
     fin >> u >> v;
     --u;
     --v;
-    const long long key = pack_edge(u, v, n);
+    const i64 key = pack_edge(u, v, n);
     if (op == '+') {
       edge_start[key] = t;
     } else {

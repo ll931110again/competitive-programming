@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr double TOL = 0.05;
@@ -23,7 +24,7 @@ char weight_to_char(int w) {
 
 int compute_c(const string& msg) {
   int n = (int)msg.size();
-  long long s = 0;
+  i64 s = 0;
   for (int i = 0; i < n; i++) {
     int w = char_weight(msg[i]);
     int coef = ((n - 1 - i) % 10) + 1;
@@ -34,7 +35,7 @@ int compute_c(const string& msg) {
 
 int compute_k(const string& msg, char Cch) {
   int n = (int)msg.size();
-  long long s = 0;
+  i64 s = 0;
   for (int i = 0; i < n; i++) {
     int w = char_weight(msg[i]);
     int coef = ((n - i) % 9) + 1;

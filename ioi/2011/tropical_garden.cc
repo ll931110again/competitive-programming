@@ -6,8 +6,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<long long> garden_local_answers;
-inline void answer(long long X) {
+using i64 = long long;
+vector<i64> garden_local_answers;
+inline void answer(i64 X) {
   garden_local_answers.push_back(X);
 }
 #else
@@ -113,7 +114,7 @@ void count_routes(int N, int M, int P, int R[][2], int Q, int G[]) {
 
   const int limit = 2 * (N + M) + 5;
   const int tail_start = 2 * M;
-  vector<long long> ways(limit + 1, 0);
+  vector<i64> ways(limit + 1, 0);
 
   vector<int> unit_period;
   for (int s = 0; s < N; ++s) {
@@ -138,8 +139,8 @@ void count_routes(int N, int M, int P, int R[][2], int Q, int G[]) {
 
   sort(unit_period.begin(), unit_period.end());
   for (int k = 0; k <= limit; ++k) {
-    ways[k] += static_cast<long long>(unit_period.end() -
-                                      lower_bound(unit_period.begin(), unit_period.end(), k));
+    ways[k] += static_cast<i64>(unit_period.end() -
+                                lower_bound(unit_period.begin(), unit_period.end(), k));
   }
 
   int seq_period = 0;
@@ -156,7 +157,7 @@ void count_routes(int N, int M, int P, int R[][2], int Q, int G[]) {
     }
   }
 
-  auto count_for_k = [&](long long K) -> long long {
+  auto count_for_k = [&](i64 K) -> i64 {
     if (K <= 0) {
       return 0;
     }
@@ -166,7 +167,7 @@ void count_routes(int N, int M, int P, int R[][2], int Q, int G[]) {
     if (seq_period == 0) {
       return ways[limit];
     }
-    const long long idx = tail_start + (K - tail_start) % seq_period;
+    const i64 idx = tail_start + (K - tail_start) % seq_period;
     return ways[static_cast<int>(idx)];
   };
 

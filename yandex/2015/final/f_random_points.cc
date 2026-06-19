@@ -1,27 +1,28 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
 int n;
-long long a[k_max_n];
+i64 a[k_max_n];
 int delta = 200;
 
-const long long GENERATOR_A = 134775813;
-const long long GENERATOR_C = 1;
+const i64 GENERATOR_A = 134775813;
+const i64 GENERATOR_C = 1;
 
-const long long X = 100000000;
-const long long DENOMINATOR = 1LL << 32;
+const i64 X = 100000000;
+const i64 DENOMINATOR = 1LL << 32;
 
-bool can_generate(long long candidate) {
-  long long state = candidate;
+bool can_generate(i64 candidate) {
+  i64 state = candidate;
   if (state * X / DENOMINATOR != a[0]) {
     return false;
   }
   for (int i = 1; i < n; i++) {
     state = (state * GENERATOR_A + GENERATOR_C) % DENOMINATOR;
-    long long ax = (state * X / DENOMINATOR);
+    i64 ax = (state * X / DENOMINATOR);
     if (ax != a[i]) {
       return false;
     }
@@ -30,8 +31,8 @@ bool can_generate(long long candidate) {
 }
 
 bool solve() {
-  long long s = a[0] * DENOMINATOR / X;
-  for (long long candidate = s - delta; candidate <= s + delta; candidate++)
+  i64 s = a[0] * DENOMINATOR / X;
+  for (i64 candidate = s - delta; candidate <= s + delta; candidate++)
     if (candidate >= 0 && candidate < DENOMINATOR) {
       if (can_generate(candidate)) {
         return true;

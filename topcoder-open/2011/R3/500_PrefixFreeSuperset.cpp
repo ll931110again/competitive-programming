@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class PrefixFreeSuperset {
   struct Node {
     int child[2];
@@ -54,9 +55,9 @@ class PrefixFreeSuperset {
     dfs(0);
   }
 
-  void collectAvailable(int v, int depth,
-                        priority_queue<pair<long long, int>, vector<pair<long long, int>>,
-                                       greater<pair<long long, int>>>& pq) {
+  void collectAvailable(
+      int v, int depth,
+      priority_queue<pair<i64, int>, vector<pair<i64, int>>, greater<pair<i64, int>>>& pq) {
     if (trie[v].blocked)
       return;
     if (!trie[v].terminal)
@@ -68,32 +69,30 @@ class PrefixFreeSuperset {
   }
 
 public:
-  long long minSumLength(vector<string> cur, long long k) {
+  i64 minSumLength(vector<string> cur, i64 k) {
     trie.clear();
     trie.push_back(Node());
-    long long base = 0;
+    i64 base = 0;
     for (const string& s : cur) {
-      base += (long long)s.size();
+      base += (i64)s.size();
       insertWord(s);
     }
     initBlocked();
 
-    long long need = k - (long long)cur.size();
+    i64 need = k - (i64)cur.size();
     if (need < 0)
       return -1;
 
-    priority_queue<pair<long long, int>, vector<pair<long long, int>>,
-                   greater<pair<long long, int>>>
-        pq;
+    priority_queue<pair<i64, int>, vector<pair<i64, int>>, greater<pair<i64, int>>> pq;
     collectAvailable(0, 0, pq);
 
-    long long extra = 0;
+    i64 extra = 0;
     while (need > 0) {
       if (pq.empty())
         return -1;
       auto top = pq.top();
       pq.pop();
-      long long depth = top.first;
+      i64 depth = top.first;
       int v = top.second;
       if (trie[v].blocked || trie[v].terminal)
         continue;
@@ -107,7 +106,7 @@ public:
         collectAvailable(trie[v].child[1], depth + 1, pq);
     }
 
-    long long ans = base + extra;
+    i64 ans = base + extra;
     if (ans > 1000000000000000000LL)
       return -2;
     return ans;

@@ -1,11 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 vector<vector<int>> a, breakpoint, pos;
 vector<int> idx_chain, idx_value;
-vector<long long> sum_chain;
+vector<i64> sum_chain;
 int m, n;
 
 } // namespace
@@ -50,7 +51,7 @@ int main() {
     }
   }
 
-  long long ret = 0;
+  i64 ret = 0;
   idx_value.resize(m + 1);
   idx_value[0] = -2;
 
@@ -75,7 +76,7 @@ int main() {
           low = mid + 1;
         }
       }
-      long long ssum = sum_chain[ans] + 1LL * (i - low_pos) * pos[i][j];
+      i64 ssum = sum_chain[ans] + 1LL * (i - low_pos) * pos[i][j];
       ssum -= 1LL * (i + 1) * (j - 1);
       ret += ssum;
 

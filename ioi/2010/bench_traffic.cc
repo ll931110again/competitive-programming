@@ -3,6 +3,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 bool read_traffic(const char* path, int& n, int p[], int s[], int d[], int& expect) {
@@ -65,7 +66,7 @@ int main() {
   cin.tie(nullptr);
 
   int p[1000005], s[1000005], d[1000005];
-  long long total_ms = 0;
+  i64 total_ms = 0;
   int ok = 0, fail = 0;
 
   printf("%-24s %8s %8s\n", "test", "n", "ms");
@@ -81,7 +82,7 @@ int main() {
       const auto t0 = chrono::steady_clock::now();
       const int got = LocateCentre(n, p, s, d);
       const auto t1 = chrono::steady_clock::now();
-      const long long ms = chrono::duration_cast<chrono::milliseconds>(t1 - t0).count();
+      const i64 ms = chrono::duration_cast<chrono::milliseconds>(t1 - t0).count();
       total_ms += ms;
 
       const char* name = strrchr(path.c_str(), '/');

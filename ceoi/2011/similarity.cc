@@ -8,6 +8,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 string pattern;
@@ -24,7 +25,7 @@ int main() {
   int m = static_cast<int>(text.size());
 
   vector<int> counts(26);
-  long long similarity = 0;
+  i64 similarity = 0;
   for (int i = 0; i < m; i++) {
     if (i < n) {
       counts[pattern[i] - 'a']++;

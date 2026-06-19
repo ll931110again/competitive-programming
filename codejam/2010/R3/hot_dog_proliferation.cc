@@ -11,11 +11,10 @@
 using namespace std;
 
 using i128 = __int128_t;
-using int64 = long long;
-
+using i64 = long long;
 namespace {
 
-int64 div_floor(int64 a, int64 b) {
+i64 div_floor(i64 a, i64 b) {
   if (b <= 0)
     exit(1);
   if (a >= 0)
@@ -24,7 +23,7 @@ int64 div_floor(int64 a, int64 b) {
 }
 
 // Sum of squares of n consecutive integers starting at `first`.
-i128 sum_sq_consecutive(int64 first, int64 n) {
+i128 sum_sq_consecutive(i64 first, i64 n) {
   if (n <= 0)
     return 0;
   i128 f = first;
@@ -37,17 +36,17 @@ i128 sum_sq_consecutive(int64 first, int64 n) {
 }
 
 struct Interval {
-  int64 lo, hi;
+  i64 lo, hi;
 };
 
 struct Seg {
-  int64 K = 0;
-  int64 S = 0;
+  i64 K = 0;
+  i64 S = 0;
   i128 Q = 0;
   vector<Interval> occ;
 };
 
-bool intervals_overlap(int64 a1, int64 b1, int64 a2, int64 b2) {
+bool intervals_overlap(i64 a1, i64 b1, i64 a2, i64 b2) {
   return a1 <= b2 && a2 <= b1;
 }
 
@@ -60,7 +59,7 @@ bool seg_overlap(const Seg& A, const Seg& B) {
 }
 
 // Terminal configuration for K chips on Z with total sum S (one component, ≤ one hole).
-Seg terminal_from_KS(int64 K, int64 S) {
+Seg terminal_from_KS(i64 K, i64 S) {
   Seg g;
   g.K = K;
   g.S = S;
@@ -75,15 +74,15 @@ Seg terminal_from_KS(int64 K, int64 S) {
 
   // Full consecutive K integers: x, x+1, ..., x+K-1
   {
-    int64 num = 2 * S - K * (K - 1);
-    int64 den = 2 * K;
-    int64 r = num % den;
+    i64 num = 2 * S - K * (K - 1);
+    i64 den = 2 * K;
+    i64 r = num % den;
     if (r < 0)
       r += den;
     if (r == 0) {
-      int64 x = num / den;
+      i64 x = num / den;
       if (K * x + K * (K - 1) / 2 == S) {
-        int64 hi = x + K - 1;
+        i64 hi = x + K - 1;
         g.Q = sum_sq_consecutive(x, K);
         g.occ.push_back({x, hi});
         return g;
@@ -94,18 +93,18 @@ Seg terminal_from_KS(int64 K, int64 S) {
   // H-segment: K+1 lattice points x..x+K, exactly one empty at y, x < y ≤ x+K.
   // Sum of all points x..x+K minus y equals S.
   // Bounds from x > (2S - K(K+1)) / (2K) and x ≤ (2K + 2S - K(K+1)) / (2K).
-  int64 low = div_floor(2 * S - K * (K + 1), 2 * K) + 1;
-  int64 high = div_floor(2 * K + 2 * S - K * (K + 1), 2 * K);
+  i64 low = div_floor(2 * S - K * (K + 1), 2 * K) + 1;
+  i64 high = div_floor(2 * K + 2 * S - K * (K + 1), 2 * K);
   low -= 3;
   high += 3;
 
-  for (int64 x = low; x <= high; ++x) {
+  for (i64 x = low; x <= high; ++x) {
     i128 T = (i128)(K + 1) * (2 * x + K) / 2;
     i128 Sp = S;
     i128 y128 = T - Sp;
     if (y128 < (i128)x + 1 || y128 > (i128)x + K)
       continue;
-    int64 y = (int64)y128;
+    i64 y = (i64)y128;
     if ((i128)y != y128)
       continue;
 
@@ -127,7 +126,7 @@ Seg terminal_from_KS(int64 K, int64 S) {
   exit(1);
 }
 
-Seg from_pile(int64 V, int64 P) {
+Seg from_pile(i64 V, i64 P) {
   return terminal_from_KS(V, V * P);
 }
 
@@ -146,12 +145,12 @@ int main() {
   for (int tc = 1; tc <= T; tc++) {
     int C;
     cin >> C;
-    vector<pair<int64, int64>> piles(C);
+    vector<pair<i64, i64>> piles(C);
     i128 sq_init = 0;
     for (int i = 0; i < C; i++) {
       cin >> piles[i].first >> piles[i].second;
-      int64 P = piles[i].first;
-      int64 V = piles[i].second;
+      i64 P = piles[i].first;
+      i64 V = piles[i].second;
       sq_init += (i128)V * (i128)P * (i128)P;
     }
 
@@ -181,7 +180,7 @@ int main() {
       sq_final += s.Q;
     i128 moves = (sq_final - sq_init) / 2;
 
-    int64 ans = (int64)moves;
+    i64 ans = (i64)moves;
     cout << "Case #" << tc << ": " << ans << "\n";
   }
   return 0;

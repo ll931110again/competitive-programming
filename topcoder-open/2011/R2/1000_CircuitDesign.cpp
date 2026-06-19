@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class CircuitDesign {
   static const int MOD = 1000000007;
 
@@ -10,10 +11,10 @@ class CircuitDesign {
   vector<int> botCells;
   int topId[51];
   int kTop, kBot;
-  long long fact[51];
+  i64 fact[51];
 
-  long long modPow(long long a, long long e) {
-    long long r = 1;
+  i64 modPow(i64 a, i64 e) {
+    i64 r = 1;
     while (e) {
       if (e & 1)
         r = r * a % MOD;
@@ -23,11 +24,11 @@ class CircuitDesign {
     return r;
   }
 
-  long long linext(const vector<vector<int>>& must, int k) {
+  i64 linext(const vector<vector<int>>& must, int k) {
     for (int i = 0; i < k; i++)
       if (must[i][i])
         return 0;
-    vector<long long> dp(1 << k);
+    vector<i64> dp(1 << k);
     dp[0] = 1;
     for (int mask = 0; mask < (1 << k); mask++) {
       if (!dp[mask])
@@ -49,7 +50,7 @@ class CircuitDesign {
     return dp[(1 << k) - 1];
   }
 
-  long long countBottom(const vector<vector<int>>& mustFull) {
+  i64 countBottom(const vector<vector<int>>& mustFull) {
     if (kBot == 0)
       return fact[n];
     vector<vector<int>> must(kBot, vector<int>(kBot));
@@ -59,14 +60,14 @@ class CircuitDesign {
           must[i][j] = 1;
       }
     }
-    long long ways = linext(must, kBot);
+    i64 ways = linext(must, kBot);
     ways = ways * fact[n] % MOD * modPow(fact[kBot], MOD - 2) % MOD;
     return ways;
   }
 
-  map<pair<int, vector<vector<int>>>, long long> memo;
+  map<pair<int, vector<vector<int>>>, i64> memo;
 
-  long long dfs(int maskT, vector<vector<int>>& mustFull) {
+  i64 dfs(int maskT, vector<vector<int>>& mustFull) {
     if (maskT == (1 << kTop) - 1)
       return countBottom(mustFull);
     auto key = make_pair(maskT, mustFull);
@@ -74,7 +75,7 @@ class CircuitDesign {
     if (it != memo.end())
       return it->second;
 
-    long long res = 0;
+    i64 res = 0;
     for (int ti = 0; ti < kTop; ti++) {
       if (maskT & (1 << ti))
         continue;
@@ -129,9 +130,9 @@ public:
 
     vector<vector<int>> mustFull(n + 1, vector<int>(n + 1));
     memo.clear();
-    long long inner = dfs(0, mustFull);
+    i64 inner = dfs(0, mustFull);
 
-    long long embed = fact[n] * modPow(fact[kTop], MOD - 2) % MOD;
+    i64 embed = fact[n] * modPow(fact[kTop], MOD - 2) % MOD;
     return (int)(inner * embed % MOD);
   }
 };

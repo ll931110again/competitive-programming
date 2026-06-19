@@ -1,13 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 struct EnclosingSquare {
-  long long getMinimum(long long n) {
+  i64 getMinimum(i64 n) {
     if (n < 2)
       return n + 1;
 
     n--;
-    long long ret = 1LL << 60;
+    i64 ret = 1LL << 60;
     for (int d = 1; d <= n / d; d++)
       if (n % d == 0) {
         ret = min(ret, candidate(n, d));
@@ -17,8 +18,8 @@ struct EnclosingSquare {
     return (ret >= (1LL << 60)) ? 0 : ret;
   }
 
-  long long candidate(long long n, long long d) {
-    long long rem = n / d + 2;
+  i64 candidate(i64 n, i64 d) {
+    i64 rem = n / d + 2;
     if (rem % d)
       return 1LL << 60;
     rem /= d;

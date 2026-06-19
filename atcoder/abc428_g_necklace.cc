@@ -7,6 +7,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr unsigned MOD = 998244353;
@@ -168,7 +169,7 @@ int main() {
   for (int i = 2; i <= U; i++) {
     if (!F[i].x)
       continue;
-    for (long long j = i, d = 1; j <= U; j *= i, ++d) {
+    for (i64 j = i, d = 1; j <= U; j *= i, ++d) {
       ans[j] += F[i] * totient[d] * inv_d[d];
     }
   }

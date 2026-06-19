@@ -2,6 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 100005;
@@ -46,7 +47,7 @@ int main() {
       }
     }
 
-    long long ans = 0;
+    i64 ans = 0;
     for (auto x : odds) {
       ans += x;
     }

@@ -1,9 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class ProductsOfDigits {
 public:
-  long long firstOccurrence(vector<int> prod) {
+  i64 firstOccurrence(vector<int> prod) {
     for (int i = 1; i <= 1000; i++) {
       bool check = true;
       for (int j = 0; j < prod.size(); j++)
@@ -13,10 +14,10 @@ public:
         return i;
     }
 
-    long long ret = 1LL << 62;
+    i64 ret = 1LL << 62;
     for (int last = 0; last < 1000; last++) {
       bool check = true;
-      long long ratio = -1;
+      i64 ratio = -1;
       for (int i = 0; i < prod.size(); i++) {
         int j = (i + last) % 1000, d = 1;
         for (int x = j, stp = 0; stp < 3; stp++, x /= 10)
@@ -29,7 +30,7 @@ public:
         } else if (prod[i] % d) {
           check = false;
         } else if (prod[i] != 0) {
-          long long tmp = prod[i] / d;
+          i64 tmp = prod[i] / d;
           if (ratio < 0)
             ratio = tmp;
           if (ratio != tmp)
@@ -42,14 +43,14 @@ public:
     return ret;
   }
 
-  long long P(long long x) {
-    long long d = 1;
+  i64 P(i64 x) {
+    i64 d = 1;
     for (; x; x /= 10)
       d *= (x % 10);
     return d;
   }
 
-  long long convert(long long ratio) {
+  i64 convert(i64 ratio) {
     if (ratio == 1)
       return 1;
     vector<int> digit;
@@ -58,7 +59,7 @@ public:
         digit.push_back(i);
         ratio /= i;
       }
-    long long ans = 0;
+    i64 ans = 0;
     for (int i = digit.size() - 1; i >= 0; i--)
       ans = ans * 10 + digit[i];
     return ans;

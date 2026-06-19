@@ -2,6 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 500005;
@@ -35,7 +36,7 @@ void update(int idx, int low, int high, int u, int v, int d) {
   update(idx, mid + 1, high, u, v, d);
 }
 
-long long solve() {
+i64 solve() {
   dist.clear();
   while (!q.empty()) {
     q.pop();
@@ -71,7 +72,7 @@ long long solve() {
     }
   }
 
-  long long ans = 0;
+  i64 ans = 0;
   for (int i = 1; i <= n; i++) {
     auto state = {0, i};
     int d = -1;

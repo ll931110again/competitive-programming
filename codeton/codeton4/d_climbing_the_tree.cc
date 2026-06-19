@@ -4,13 +4,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 int T, Q;
 
 struct Range {
-  long long min_value;
-  long long max_value;
+  i64 min_value;
+  i64 max_value;
 };
 
 Range get_range(int a, int b, int n) {
@@ -18,7 +19,7 @@ Range get_range(int a, int b, int n) {
     return Range{.min_value = 1, .max_value = a};
   }
 
-  long long base_height = 1LL * (n - 1) * (a - b);
+  i64 base_height = 1LL * (n - 1) * (a - b);
   return Range{.min_value = base_height + b + 1, .max_value = base_height + a};
 }
 
@@ -39,12 +40,12 @@ Range intersect(const Range& lhs, const Range& rhs, bool* ok) {
   return result;
 }
 
-long long query(int a, int b, long long tree_height) {
+i64 query(int a, int b, i64 tree_height) {
   if (tree_height <= a) {
     return 1;
   }
 
-  long long n = (tree_height - a) / (a - b);
+  i64 n = (tree_height - a) / (a - b);
   if ((tree_height - a) % (a - b)) {
     n++;
   }
@@ -57,7 +58,7 @@ long long query(int a, int b, long long tree_height) {
 
 void solve() {
   scanf("%d", &Q);
-  Range lhs = {.min_value = 1, .max_value = (long long)1e18};
+  Range lhs = {.min_value = 1, .max_value = (i64)1e18};
 
   while (Q--) {
     int event_type, a, b, n;
@@ -69,8 +70,8 @@ void solve() {
       lhs = intersect(lhs, rhs, &ok);
       printf("%d ", ok);
     } else {
-      long long min_dates = query(a, b, lhs.min_value);
-      long long max_dates = query(a, b, lhs.max_value);
+      i64 min_dates = query(a, b, lhs.min_value);
+      i64 max_dates = query(a, b, lhs.max_value);
       if (min_dates != max_dates) {
         printf("-1 ");
       } else {

@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class RobotSimulation {
   int dx[4], dy[4];
 
@@ -14,9 +15,8 @@ class RobotSimulation {
     return 3;
   }
 
-  long long runPeriod(long long& x, long long& y, const string& program,
-                      set<pair<long long, long long>>& vis) {
-    long long added = 0;
+  i64 runPeriod(i64& x, i64& y, const string& program, set<pair<i64, i64>>& vis) {
+    i64 added = 0;
     for (char c : program) {
       int d = dir(c);
       x += dx[d];
@@ -30,7 +30,7 @@ class RobotSimulation {
   }
 
 public:
-  long long cellsVisited(string program, int times) {
+  i64 cellsVisited(string program, int times) {
     dx[0] = 0;
     dy[0] = 1;
     dx[1] = 0;
@@ -48,10 +48,10 @@ public:
     if (allSame)
       return 1LL * times * L + 1;
 
-    map<tuple<long long, long long, int>, int> seen;
-    set<pair<long long, long long>> vis;
-    long long x = 0, y = 0;
-    long long total = 1;
+    map<tuple<i64, i64, int>, int> seen;
+    set<pair<i64, i64>> vis;
+    i64 x = 0, y = 0;
+    i64 total = 1;
     vis.insert({0, 0});
 
     for (int t = 0; t < times;) {
@@ -63,16 +63,16 @@ public:
         int full = rem / cycle;
         int extra = rem % cycle;
 
-        long long before = total;
+        i64 before = total;
         for (int i = t0 + 1; i <= t; i++)
           (void)i;
-        long long x2 = x, y2 = y;
-        set<pair<long long, long long>> vis2 = vis;
+        i64 x2 = x, y2 = y;
+        set<pair<i64, i64>> vis2 = vis;
         // rewind: re-simulate from t0 state is hard; instead simulate one cycle from current
         // at detection point (x,y) matches state at t0
-        long long tx = x, ty = y;
-        long long perAdd = runPeriod(tx, ty, program, vis2);
-        long long perNew = vis2.size() - vis.size();
+        i64 tx = x, ty = y;
+        i64 perAdd = runPeriod(tx, ty, program, vis2);
+        i64 perNew = vis2.size() - vis.size();
         total += perNew * full;
         for (int e = 0; e < extra; e++)
           total += runPeriod(x, y, program, vis);

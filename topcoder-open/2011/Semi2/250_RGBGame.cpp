@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class RGBGame {
   int n;
   vector<string> board;
@@ -67,7 +68,7 @@ public:
           setCell(i, j, board[i][j]);
 
     int q = (int)unknowns.size();
-    long long ways = 1;
+    i64 ways = 1;
     for (int i = 0; i < q; i++) {
       ways *= 3;
       if (ways > 3000000)

@@ -6,6 +6,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 4005;
@@ -17,8 +18,8 @@ struct Point {
 int m, n;
 Point a[k_max_n], b[k_max_n];
 
-long long dp[k_max_n][k_max_n];
-long long inf = 1e18;
+i64 dp[k_max_n][k_max_n];
+i64 inf = 1e18;
 int trace[k_max_n][k_max_n], assignment[k_max_n];
 
 } // namespace

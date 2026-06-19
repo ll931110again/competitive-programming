@@ -4,6 +4,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
@@ -13,7 +14,7 @@ int delta[k_max_n];
 
 struct Node {
   int cnt;
-  long long sum;
+  i64 sum;
 };
 
 Node tx[8 * k_max_n];
@@ -81,7 +82,7 @@ int main() {
     }
     init(1, 0, 2 * n);
 
-    long long ans = 0;
+    i64 ans = 0;
     add(1, 0, 2 * n, n);
 
     for (int i = 1; i <= n; i++) {
@@ -90,12 +91,12 @@ int main() {
       add(1, 0, 2 * n, delta[i] + n);
     }
 
-    stack<vector<long long>> ps;
-    long long ts = 0;
+    stack<vector<i64>> ps;
+    i64 ts = 0;
     ps.push({0, 1, 0});
 
     for (int i = 1; i <= n; i++) {
-      vector<long long> accum = {delta[i], 0, 0};
+      vector<i64> accum = {delta[i], 0, 0};
       while (!ps.empty() && ps.top()[0] >= delta[i]) {
         accum[1] += ps.top()[1];
         accum[2] += 1LL * delta[i] * ps.top()[1];

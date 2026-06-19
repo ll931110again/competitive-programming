@@ -2,16 +2,17 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 int T, n;
 
-void initial_insert(long long a) {
+void initial_insert(i64 a) {
   cout << a << endl;
   cout << flush;
 }
 
-int insert(long long x) {
+int insert(i64 x) {
   cout << "I " << x << endl;
   cout << flush;
 
@@ -20,7 +21,7 @@ int insert(long long x) {
   return cnt;
 }
 
-int query(long long y) {
+int query(i64 y) {
   cout << "Q " << y << endl;
   cout << flush;
 
@@ -29,7 +30,7 @@ int query(long long y) {
   return cnt;
 }
 
-void answer(int k, long long c) {
+void answer(int k, i64 c) {
   cout << "A " << k << ' ' << c << endl;
   cout << flush;
 }

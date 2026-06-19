@@ -1,11 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-using int64 = long long;
-
+using i64 = long long;
 namespace {
 
-const int64 k_inf = (int64)4e18;
+const i64 k_inf = (i64)4e18;
 
 } // namespace
 
@@ -16,29 +14,29 @@ int main() {
   int T;
   cin >> T;
   for (int tc = 1; tc <= T; tc++) {
-    int64 L;
+    i64 L;
     int N;
     cin >> L >> N;
-    vector<int64> B(N);
+    vector<i64> B(N);
     for (int i = 0; i < N; i++)
       cin >> B[i];
 
-    int64 g = 0;
-    for (int64 x : B)
+    i64 g = 0;
+    for (i64 x : B)
       g = gcd(g, x);
     if (L % g != 0) {
       cout << "Case #" << tc << ": IMPOSSIBLE\n";
       continue;
     }
 
-    int64 A = *max_element(B.begin(), B.end());
+    i64 A = *max_element(B.begin(), B.end());
     vector<int> shorter;
-    for (int64 x : B)
+    for (i64 x : B)
       if (x < A)
         shorter.push_back((int)x);
 
-    int64 p = L / A;
-    int64 q = L % A;
+    i64 p = L / A;
+    i64 q = L % A;
 
     if (shorter.empty()) {
       if (L % A == 0)
@@ -48,7 +46,7 @@ int main() {
       continue;
     }
 
-    vector<int64> dist((size_t)A, k_inf);
+    vector<i64> dist((size_t)A, k_inf);
     dist[0] = 0;
     deque<int> dq;
     dq.push_front(0);
@@ -56,7 +54,7 @@ int main() {
     while (!dq.empty()) {
       int r = dq.front();
       dq.pop_front();
-      int64 d = dist[(size_t)r];
+      i64 d = dist[(size_t)r];
       for (int b : shorter) {
         int sum = r + b;
         int nr = sum % A;
@@ -76,7 +74,7 @@ int main() {
       continue;
     }
 
-    int64 ans = p + dist[(size_t)q];
+    i64 ans = p + dist[(size_t)q];
     cout << "Case #" << tc << ": " << ans << "\n";
   }
   return 0;

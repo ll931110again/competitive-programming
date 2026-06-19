@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 class NumberGrid {
   int val(char c) {
     return c - '0';
@@ -15,8 +16,8 @@ public:
       for (int j = 0; j < m; j++)
         E[i][j] = val(hundreds[i][j]) * 100 + val(tens[i][j]) * 10 + val(ones[i][j]);
 
-    long long sumE = 0;
-    vector<long long> rowSum(n), colSum(m);
+    i64 sumE = 0;
+    vector<i64> rowSum(n), colSum(m);
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < m; j++) {
         sumE += E[i][j];
@@ -24,8 +25,8 @@ public:
         colSum[j] += E[i][j];
       }
     }
-    long long T = sumE / (n + m - 1);
-    vector<long long> A(n), B(m);
+    i64 T = sumE / (n + m - 1);
+    vector<i64> A(n), B(m);
     for (int i = 0; i < n; i++)
       A[i] = (rowSum[i] - T) / (m - 1);
     for (int j = 0; j < m; j++)
@@ -34,7 +35,7 @@ public:
     vector<vector<int>> G(n, vector<int>(m));
     for (int i = 0; i < n; i++)
       for (int j = 0; j < m; j++) {
-        long long g = A[i] + B[j] - E[i][j];
+        i64 g = A[i] + B[j] - E[i][j];
         if (g < 0 || g > 9)
           return {};
         G[i][j] = (int)g;

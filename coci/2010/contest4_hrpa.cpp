@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
-long long n;
-long long fibo[90];
+i64 n;
+i64 fibo[90];
 int cnt;
 
 } // namespace
@@ -24,7 +25,7 @@ int main() {
       break;
     }
   }
-  long long ret = n;
+  i64 ret = n;
   for (int i = cnt; i >= 0; i--)
     if (n >= fibo[i]) {
       n -= fibo[i];

@@ -8,15 +8,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 struct Fraction {
-  long long num = 0;
-  long long den = 1;
+  i64 num = 0;
+  i64 den = 1;
 
   Fraction() = default;
-  Fraction(long long n) : num(n), den(1) {}
-  Fraction(long long n, long long d) {
+  Fraction(i64 n) : num(n), den(1) {}
+  Fraction(i64 n, i64 d) {
     if (d < 0) {
       n = -n;
       d = -d;
@@ -30,7 +31,7 @@ struct Fraction {
     if (den == 0) {
       return;
     }
-    long long g = gcd(abs(num), abs(den));
+    i64 g = gcd(abs(num), abs(den));
     num /= g;
     den /= g;
   }
@@ -71,7 +72,7 @@ int rows, cols;
 vector<vector<Fraction>> eqs;
 Fraction vars[4];
 
-void add_equation(int i, int j, long long value) {
+void add_equation(int i, int j, i64 value) {
   vector<Fraction> eq(5);
   eq[0] = Fraction(1 - j - i + i * j);
   eq[1] = Fraction(j - i * j);

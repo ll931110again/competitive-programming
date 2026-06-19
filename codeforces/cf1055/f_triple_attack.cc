@@ -1,9 +1,7 @@
 
 #include <bits/stdc++.h>
 using namespace std;
-
-using ll = long long;
-
+using i64 = long long;
 namespace {
 
 constexpr int MAXN = 250002;
@@ -11,13 +9,13 @@ constexpr int LOG = 20;
 
 int T;
 int n;
-long long z;
+i64 z;
 int x[MAXN];
 int q;
 
 int nex[MAXN][LOG];
 int nex2[MAXN][LOG];
-ll step[MAXN][LOG];
+i64 step[MAXN][LOG];
 
 void solve_one() {
   cin >> n >> z;
@@ -27,7 +25,7 @@ void solve_one() {
 
   nex[n][0] = n;
   for (int i = 0; i < n; ++i) {
-    long long t = (long long)x[i] + z + 1;
+    i64 t = (i64)x[i] + z + 1;
     nex[i][0] = (int)(lower_bound(x, x + n, t) - x);
   }
 
@@ -81,7 +79,7 @@ void solve_one() {
       cout << 1 << '\n';
       continue;
     }
-    ll ret = 2;
+    i64 ret = 2;
     int cur = L;
     for (int j = LOG - 1; j >= 0; --j) {
       if (nex2[cur][j] < R) {

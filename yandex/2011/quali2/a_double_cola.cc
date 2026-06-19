@@ -4,6 +4,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 string s[5] = {"Sheldon", "Leonard", "Penny", "Rajesh", "Howard"};
@@ -16,7 +17,7 @@ int main() {
 
   int n;
   cin >> n;
-  long long T = 1;
+  i64 T = 1;
   while (1) {
     for (int iter = 0; iter < 5; iter++)
       if (n <= T) {

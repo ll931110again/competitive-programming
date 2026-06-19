@@ -3,14 +3,15 @@
 #define maxn 200005
 using namespace std;
 
+using i64 = long long;
 int T, n;
 int a[maxn];
 
-long long solve() {
-  long long ans = 0;
-  long long mx = 0;
+i64 solve() {
+  i64 ans = 0;
+  i64 mx = 0;
   for (int i = 0; i < n; i++) {
-    mx = max(mx, (long long)a[i]);
+    mx = max(mx, (i64)a[i]);
   }
   return ans;
 }

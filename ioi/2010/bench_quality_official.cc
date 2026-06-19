@@ -3,6 +3,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
 bool read_test(const char* path, int& r, int& c, int& h, int& w, int q[3001][3001]) {
@@ -73,7 +74,7 @@ int main() {
   }
 
   int q[3001][3001];
-  long long total_ms = 0;
+  i64 total_ms = 0;
   int ok = 0, fail = 0;
 
   printf("%-40s %8s %10s %8s\n", "test", "R", "C", "ms");
@@ -98,7 +99,7 @@ int main() {
     const auto t0 = chrono::steady_clock::now();
     const int got = rectangle(r, c, h, w, q);
     const auto t1 = chrono::steady_clock::now();
-    const long long ms = chrono::duration_cast<chrono::milliseconds>(t1 - t0).count();
+    const i64 ms = chrono::duration_cast<chrono::milliseconds>(t1 - t0).count();
     total_ms += ms;
 
     const bool pass = got == expect;

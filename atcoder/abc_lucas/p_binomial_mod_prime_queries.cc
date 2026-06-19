@@ -8,10 +8,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+using i64 = long long;
 namespace {
 
-int pow_mod(int a, int mod, long long e) {
-  long long r = 1, b = a % mod;
+int pow_mod(int a, int mod, i64 e) {
+  i64 r = 1, b = a % mod;
   while (e > 0) {
     if (e & 1)
       r = r * b % mod;
@@ -41,10 +42,10 @@ struct CombPrime {
     return int(1LL * fac[n] * ifac[k] % p * ifac[n - k] % p);
   }
 
-  int lucas(long long n, long long m) const {
+  int lucas(i64 n, i64 m) const {
     if (m < 0 || n < m)
       return 0;
-    long long res = 1;
+    i64 res = 1;
     while (n > 0 || m > 0) {
       const int ni = int(n % p);
       const int mi = int(m % p);
@@ -67,7 +68,7 @@ int main() {
   int T;
   cin >> T;
   while (T--) {
-    long long n, m;
+    i64 n, m;
     int p;
     cin >> n >> m >> p;
     CombPrime comb(p);
