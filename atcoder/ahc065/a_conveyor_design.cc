@@ -4,6 +4,7 @@
 // graph routes each box toward the exit; exports as many boxes as fit in 1e5 turns.
 
 #include <bits/stdc++.h>
+#include <chrono>
 using namespace std;
 
 using i64 = long long;
@@ -25,7 +26,7 @@ int cell_id(int r, int c) {
   return r * N + c;
 }
 
-void apply_rotate(int m, int d) {
+void apply_rotate(int m, int /*d*/) {
   const auto& b = belts[m];
   const int v0 = grid[b.r0][b.c0], v1 = grid[b.r1][b.c1];
   grid[b.r0][b.c0] = v1;
@@ -44,38 +45,70 @@ void try_remove(int& cur) {
   cur++;
 }
 
-bool build_path_warn(int seed) {
-  vector<vector<char>> vis(N, vector<char>(N, 0));
+int unvisited_degree(int r, int c, const vector<vector<char>>& vis) {
   constexpr int dr[4] = {-1, 1, 0, 0};
   constexpr int dc[4] = {0, 0, -1, 1};
+  int deg = 0;
+  for (int t = 0; t < 4; ++t) {
+    const int nr = r + dr[t], nc = c + dc[t];
+    if (nr >= 0 && nr < N && nc >= 0 && nc < N && !vis[nr][nc])
+      deg++;
+  }
+  return deg;
+}
+
+bool build_path_warnsdorff(int seed) {
+  constexpr int dr[4] = {-1, 1, 0, 0};
+  constexpr int dc[4] = {0, 0, -1, 1};
+  vector<vector<char>> vis(N, vector<char>(N, 0));
   path.clear();
-  int r = 0, c = EXIT_C;
-  for (int step = 0; step < NN; ++step) {
+
+  function<bool(int, int)> dfs = [&](int r, int c) -> bool {
     path.emplace_back(r, c);
     vis[r][c] = 1;
-    if (step + 1 == NN)
-      break;
-    vector<tuple<int, int, int>> cand;
+    if ((int)path.size() == NN)
+      return true;
+
+    vector<tuple<int, int, int, int>> cand;
     for (int t = 0; t < 4; ++t) {
       const int nr = r + dr[t], nc = c + dc[t];
       if (nr < 0 || nr >= N || nc < 0 || nc >= N || vis[nr][nc])
         continue;
-      int deg = 0;
-      for (int u = 0; u < 4; ++u) {
-        const int ar = nr + dr[u], ac = nc + dc[u];
-        if (ar >= 0 && ar < N && ac >= 0 && ac < N && !vis[ar][ac])
-          deg++;
-      }
-      cand.emplace_back(deg, nr, nc);
+      const int deg = unvisited_degree(nr, nc, vis);
+      const int tie = (seed * 1315423911 + r * 997 + c * 37 + t * 17) & 7;
+      cand.emplace_back(deg, tie, nr, nc);
     }
-    if (cand.empty())
+    if (cand.empty()) {
+      path.pop_back();
+      vis[r][c] = 0;
       return false;
+    }
     sort(cand.begin(), cand.end());
-    const int pick = (seed + step) % (int)cand.size();
-    tie(r, c) = pair<int, int>{get<1>(cand[pick]), get<2>(cand[pick])};
-  }
+    for (const auto& item : cand) {
+      if (dfs(get<2>(item), get<3>(item)))
+        return true;
+    }
+    path.pop_back();
+    vis[r][c] = 0;
+    return false;
+  };
+
+  if (!dfs(0, EXIT_C))
+    return false;
   reverse(path.begin(), path.end());
   return (int)path.size() == NN;
+}
+
+bool path_is_valid(const vector<pair<int, int>>& p) {
+  if ((int)p.size() != NN)
+    return false;
+  for (int i = 0; i + 1 < NN; ++i) {
+    const int dr = abs(p[i].first - p[i + 1].first);
+    const int dc = abs(p[i].second - p[i + 1].second);
+    if (dr + dc != 1)
+      return false;
+  }
+  return p.back() == pair<int, int>{0, EXIT_C};
 }
 
 i64 estimate_cost() {
@@ -95,8 +128,12 @@ i64 estimate_cost() {
 void build_path_and_belts() {
   vector<pair<int, int>> best;
   i64 best_c = (1LL << 60);
-  for (int t = 0; t < 64; ++t) {
-    if (!build_path_warn(t))
+  const auto deadline =
+      chrono::steady_clock::now() + chrono::milliseconds(800);
+  for (int t = 0; chrono::steady_clock::now() < deadline; ++t) {
+    if (!build_path_warnsdorff(t))
+      continue;
+    if (!path_is_valid(path))
       continue;
     const i64 c = estimate_cost();
     if (c < best_c) {
@@ -105,21 +142,18 @@ void build_path_and_belts() {
     }
   }
   if (best.empty()) {
-    path.clear();
-    for (int i = 0; i < N; ++i) {
-      if (i % 2 == 0) {
-        for (int j = 0; j < N; ++j)
-          path.emplace_back(i, j);
-      } else {
-        for (int j = N - 1; j >= 0; --j)
-          path.emplace_back(i, j);
-      }
+    for (int t = 0; t < 8192; ++t) {
+      if (!build_path_warnsdorff(t))
+        continue;
+      if (!path_is_valid(path))
+        continue;
+      best = path;
+      break;
     }
-    const int k = (int)(find(path.begin(), path.end(), pair<int, int>{0, EXIT_C}) - path.begin());
-    rotate(path.begin(), path.begin() + k + 1, path.end());
-  } else {
-    path = move(best);
   }
+  if (best.empty())
+    throw runtime_error("failed to build Hamiltonian path");
+  path = std::move(best);
   EXIT_IDX = NN - 1;
 
   belts.resize(NN - 1);

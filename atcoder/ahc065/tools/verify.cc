@@ -1,4 +1,4 @@
-// Local verifier for AHC065 A (matches problem rules).
+// Local verifier for AHC065 A (matches tools/src/lib.rs scoring rules).
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -70,10 +70,17 @@ int main() {
       const auto [r, c] = cells[i];
       vals[i] = grid[r][c];
     }
-    for (int i = 0; i < L; i++) {
-      const int ni = (i + d + L) % L;
-      const auto [r, c] = cells[ni];
-      grid[r][c] = vals[i];
+    if (d > 0) {
+      for (int i = 0; i < L; i++) {
+        const int ni = (i + 1) % L;
+        const auto [r, c] = cells[ni];
+        grid[r][c] = vals[i];
+      }
+    } else {
+      for (int i = 0; i < L; i++) {
+        const auto [r, c] = cells[i];
+        grid[r][c] = vals[(i + 1) % L];
+      }
     }
   };
 
@@ -108,7 +115,8 @@ int main() {
   }
 
   const long double score =
-      (B == NN) ? 1e6 + llround(1e6 * log2(1e5 / max(1, T))) : llround(1e6 * (long double)B / NN);
+      (B == NN) ? 1e6 + llround(1e6 * log2(1e5 / max(1, T)))
+                : llround(1e6 * (long double)B / NN);
   cout << "B=" << B << " T=" << T << " score=" << score << '\n';
   return 0;
 }

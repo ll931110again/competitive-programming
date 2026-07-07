@@ -1,0 +1,1 @@
+/Users/linh/code/competitive-programming/atcoder/ahc008/tools/target/release/vis: /Users/linh/code/competitive-programming/atcoder/ahc008/tools/src/bin/vis.rs /Users/linh/code/competitive-programming/atcoder/ahc008/tools/src/lib.rs

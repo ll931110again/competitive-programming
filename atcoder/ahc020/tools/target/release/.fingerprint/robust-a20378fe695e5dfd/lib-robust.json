@@ -1,0 +1,1 @@
+{"rustc":2639730858202328753,"features":"[]","declared_features":"[\"ieee754\", \"no_std\"]","target":6270567283006098395,"profile":2040997289075261528,"path":13513054043659969674,"deps":[],"local":[{"CheckDepInfo":{"dep_info":"release/.fingerprint/robust-a20378fe695e5dfd/dep-lib-robust","checksum":false}}],"rustflags":[],"config":2069994364910194474,"compile_kind":0}

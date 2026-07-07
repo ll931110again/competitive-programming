@@ -1,0 +1,53 @@
+    Blocking waiting for file lock on package cache
+    Finished `release` profile [optimized] target(s) in 0.07s
+warning: the following packages contain code that will be rejected by a future version of Rust: svg v0.10.0
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+     Running `target/release/tester /Users/linh/code/competitive-programming/atcoder/ahc008/build/a_territory`
+ULLURDRRUl
+ULLURDRRUr
+ULLURDRRUD
+ULLURDRRUu
+ULLURdRRUL
+UlLuRRRRUL
+UUlRRdRRUu
+uLUuRLRRUR
+RLLLRLRRUR
+uruLRdrRUR
+RDLurLDRUR
+uDrRUdrRUu
+RRDRrLDRuL
+uDDRDdrRRL
+RUruDLDRuL
+uDDLrdrRLL
+RUrLULDRLL
+uDULUDrRuu
+RuULUlDRLR
+uDUurUrRuR
+RdURDdDRRR
+uUURDLrrRR
+RDrRDLDDRR
+uUDRDdrrRR
+RDDRrLDUuu
+uuDuUdrURD
+RRDLULDruD
+ulDLUdrURd
+RDDLULDruL
+uRrLUdRDRD
+RRULrLRDul
+uRULUdlDRU
+RDUurLUDud
+UDULDdUrRL
+UDUuDLUUuL
+UDURDdUURd
+RDURDUUUuU
+.DrRDUUURU
+.DDRDUUUuL
+.DDRLUUrRL
+.DDRLLUDUL
+.LDRDLUDUL
+.LLRDDRDdU
+.LLuRDRDUl
+.llDRDrDUD
+.UDDrDDDuu
+trying to move to an impassible square (turn 46)
+Score = 0

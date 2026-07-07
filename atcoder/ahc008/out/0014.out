@@ -1,0 +1,43 @@
+    Finished `release` profile [optimized] target(s) in 0.02s
+warning: the following packages contain code that will be rejected by a future version of Rust: svg v0.10.0
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+     Running `target/release/tester /Users/linh/code/competitive-programming/atcoder/ahc008/build/a_territory`
+ULULLDDdRD
+lLuLLdDLRd
+rLRLLUDrRU
+DLuLLUDDRU
+ulLLLuDDRu
+LDLLLDDRRL
+LLULLDddRu
+UdlLURRLRD
+lLULLddRRD
+DrdlLULLRd
+uURDDULrrR
+RURlLuDUUR
+RrRUlLDURd
+RUdUDLuLuU
+RrRLlURLRU
+uDdUUlRllu
+DDUuUDRDDR
+DDUDlUulDu
+dDuLDDLDlD
+LDLRDuLlDD
+druLDLLDld
+LUDRlDLlUR
+dUDLUDuDUd
+UURrDdRlUU
+UURDDLRRUU
+RUdDldRRUu
+RULLDLRrlD
+RrLLLdRDDD
+uDLldUurDR
+DDLULLD.Dd
+DDLLrLD.DU
+dLUuUDd.DU
+LLULUdL.Du
+LluDULd.lR
+LUDLUdL.Uu
+LlDLULd.UD
+dURDUdL.UD
+trying to move to an impassible square (turn 37)
+Score = 0

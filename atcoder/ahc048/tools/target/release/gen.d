@@ -1,0 +1,1 @@
+/Users/linh/code/competitive-programming/atcoder/ahc048/tools/target/release/gen: /Users/linh/code/competitive-programming/atcoder/ahc048/tools/src/bin/gen.rs /Users/linh/code/competitive-programming/atcoder/ahc048/tools/src/lib.rs

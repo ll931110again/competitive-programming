@@ -1,0 +1,24 @@
+---
+description: Cap parallel subagents and heavy local jobs at one per CPU core
+alwaysApply: true
+---
+
+# Agent & parallel job concurrency
+
+This machine has limited RAM. **Never launch more concurrent Task subagents than logical CPU cores.**
+
+## Subagent launches
+
+1. Run `scripts/max_parallel_jobs.sh` (or `sysctl -n hw.logicalcpu` on macOS) to get the limit **N**.
+2. Launch **at most N** Task subagents in parallel; wait for the batch to finish before starting the next.
+3. Do **not** fan out dozens of agents in one turn (e.g. 20+ AHC solves at once).
+4. Prefer batching related work into fewer agents when each task is small.
+
+## Local parallelism (builds, testers, downloads)
+
+- `make -j$(scripts/max_parallel_jobs.sh)`, `xargs -P $(scripts/max_parallel_jobs.sh)`, etc.
+- Rust `cargo build` / AHC testers: avoid running many `cargo` builds simultaneously across contests.
+
+## GPU
+
+If GPU-backed agents exist, treat each GPU as one slot in the same cap (do not stack CPU + GPU agents beyond total core budget without user approval).

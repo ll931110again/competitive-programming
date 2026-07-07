@@ -1,0 +1,408 @@
+{
+  "ahc001": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 50,
+    "status": "ok"
+  },
+  "ahc002": {
+    "provisional": 100,
+    "pattern": "ja_total_only",
+    "local_in": 100,
+    "status": "ok"
+  },
+  "ahc003": {
+    "provisional": 100,
+    "pattern": "en_provisional_consist",
+    "local_in": 100,
+    "status": "ok"
+  },
+  "ahc004": {
+    "provisional": 100,
+    "pattern": "ja_total_only",
+    "local_in": 100,
+    "status": "ok"
+  },
+  "ahc005": {
+    "provisional": 100,
+    "pattern": "ja_total_only",
+    "local_in": 100,
+    "status": "ok"
+  },
+  "ahc006": {
+    "provisional": 100,
+    "pattern": "en_test_cases",
+    "local_in": 100,
+    "status": "ok"
+  },
+  "ahc007": {
+    "provisional": 150,
+    "pattern": "en_test_cases",
+    "local_in": 150,
+    "status": "ok"
+  },
+  "ahc008": {
+    "provisional": 100,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "ok"
+  },
+  "ahc009": {
+    "provisional": 100,
+    "pattern": "en_test_cases",
+    "local_in": 100,
+    "status": "ok"
+  },
+  "ahc010": {
+    "provisional": 100,
+    "pattern": "en_test_cases",
+    "local_in": 100,
+    "status": "ok"
+  },
+  "ahc011": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc012": {
+    "provisional": 100,
+    "pattern": "en_test_cases",
+    "local_in": 100,
+    "status": "ok"
+  },
+  "ahc013": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc014": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc015": {
+    "provisional": 200,
+    "pattern": "en_test_cases",
+    "local_in": 100,
+    "status": "missing 100 inputs"
+  },
+  "ahc016": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc017": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc018": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc019": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc020": {
+    "provisional": 300,
+    "pattern": "en_test_cases",
+    "local_in": 100,
+    "status": "missing 200 inputs"
+  },
+  "ahc021": {
+    "provisional": 150,
+    "pattern": "en_test_cases",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc022": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc023": {
+    "error": "HTTP Error 404: Not Found",
+    "provisional": 50,
+    "task": "asprocon10_a",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc024": {
+    "provisional": 150,
+    "pattern": "en_test_cases",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc025": {
+    "provisional": 100,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "ok"
+  },
+  "ahc026": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc027": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc028": {
+    "provisional": 150,
+    "pattern": "en_test_cases",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc029": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc030": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc031": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc032": {
+    "provisional": 150,
+    "pattern": null,
+    "local_in": 100,
+    "task": "ahc032_a",
+    "status": "missing 50 inputs"
+  },
+  "ahc033": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc034": {
+    "provisional": 150,
+    "pattern": null,
+    "local_in": 100,
+    "task": "ahc034_a",
+    "status": "missing 50 inputs"
+  },
+  "ahc035": {
+    "provisional": 300,
+    "pattern": "en_test_cases",
+    "local_in": 100,
+    "status": "missing 200 inputs"
+  },
+  "ahc036": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc037": {
+    "provisional": 150,
+    "pattern": null,
+    "local_in": 100,
+    "task": "ahc037_a",
+    "status": "missing 50 inputs"
+  },
+  "ahc038": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc039": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc040": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc041": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc042": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc043": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc044": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc045": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc046": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc047": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc048": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc049": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc050": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc051": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc052": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc053": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc054": {
+    "provisional": 100,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "ok"
+  },
+  "ahc055": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc056": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc057": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc058": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc059": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc060": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc061": {
+    "provisional": 100,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "ok"
+  },
+  "ahc062": {
+    "provisional": 100,
+    "pattern": "ja_total",
+    "local_in": 50,
+    "status": "missing 50 inputs"
+  },
+  "ahc063": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc064": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc065": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  },
+  "ahc066": {
+    "provisional": 50,
+    "pattern": "en_provisional",
+    "local_in": 100,
+    "status": "use first 50 of 100"
+  },
+  "ahc067": {
+    "provisional": 150,
+    "pattern": "ja_total",
+    "local_in": 100,
+    "status": "missing 50 inputs"
+  }
+}

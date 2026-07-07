@@ -1,0 +1,69 @@
+    Finished `release` profile [optimized] target(s) in 0.06s
+warning: the following packages contain code that will be rejected by a future version of Rust: svg v0.10.0
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+     Running `target/release/tester /Users/linh/code/competitive-programming/atcoder/ahc008/build/a_territory`
+DDRuDLLDDu
+DDRdDLLDDd
+DDRLDLLDDR
+DDRrrLLDdL
+DDRDlLLDLR
+DDRDULlDDL
+DDRrdLUDDR
+DDRURllDUl
+DDRURDDdlD
+DDRUdlDLDD
+DDRULUldul
+dDRrLUURLU
+LdRULlURLU
+dRRrLUUduU
+RdRDDllLDR
+RLrDlDULDR
+dLUDDDlLdr
+RdrDuDUdRU
+dRDDLDlRdr
+RRDDLlURRU
+dRrruUlRdr
+RdUULUURRL
+dLUUuUlDdL
+RLUULUUrUl
+dLrLuUlDUR
+RLDLLlUuLR
+ddDluUlLLD
+RRDDLlULLD
+dRDlUUlLLD
+RRrDllULur
+dRUlUUlLLD
+RRUDdl.uUr
+ddUlU..DDD
+ULUDR..Dur
+ULUlR..dLD
+RLrRR..RUr
+RLDRR..dDL
+RLDrR..RUL
+DLDUR..dll
+DdDUR..RDU
+dRDUR..dUU
+RRDUR..UDU
+dRrUD..UuU
+RRULR..LLR
+DRULR..LLR
+rRUlD..LUU
+DRUDU..LlU
+DdUDD..uDU
+LLUDU..Rur
+.LUDD..RDL
+.LrDU..RRL
+.LDDd..RRl
+.LDlU..RRU
+.LDRU..RDl
+.LDRU..RdU
+.LDrL..RRl
+.dDUU..udU
+.RDUL..DUl
+.RDUD..DLD
+.RRUD..LLD
+.RdUR..LLR
+.RRUR..LLR
+.RlUR..dLr
+trying to move to an impassible square (turn 63)
+Score = 0

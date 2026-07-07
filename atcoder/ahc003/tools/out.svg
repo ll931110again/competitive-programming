@@ -1,0 +1,22 @@
+<svg height="300" viewBox="0 0 940 300" width="940" xmlns="http://www.w3.org/2000/svg">
+<rect fill="white" height="300" width="940" x="0" y="0"/>
+<rect fill="none" height="240" stroke="black" stroke-width="2" width="860" x="40" y="20"/>
+<text font-size="20" text-anchor="middle" x="20" y="150">
+a/b
+</text>
+<text font-size="20" text-anchor="middle" x="20" y="30">
+1
+</text>
+<text font-size="20" text-anchor="middle" x="20" y="270">
+0
+</text>
+<text font-size="20" text-anchor="middle" x="470" y="285">
+k
+</text>
+<text font-size="20" text-anchor="middle" x="40" y="285">
+1
+</text>
+<text font-size="20" text-anchor="middle" x="905" y="285">
+1000
+</text>
+</svg>
