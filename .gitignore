@@ -17,6 +17,13 @@ __pycache__/
 midnightcodecup/2026/b_problem_outputs/
 midnightcodecup/2026/lost_cursor_b_submission.zip
 
+# AHC Rust tool build artifacts and local compiled solutions
+atcoder/**/tools/target/
+atcoder/ahc*/a_*
+!atcoder/ahc*/a_*.cc
+atcoder/ahc*/run
+atcoder/ahc*/verify
+
 # Ongoing AHC — do not commit or push until contest ends
 atcoder/ahc066/
 

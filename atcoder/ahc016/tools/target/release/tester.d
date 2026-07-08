@@ -1,1 +1,0 @@
-/Users/linh/code/competitive-programming/atcoder/ahc016/tools/target/release/tester: /Users/linh/code/competitive-programming/atcoder/ahc016/tools/src/bin/tester.rs /Users/linh/code/competitive-programming/atcoder/ahc016/tools/src/lib.rs
