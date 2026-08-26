@@ -3,31 +3,139 @@
 //
 // Sketch
 // ------
-// DP on the path from the rightmost leaf toward n. Prefix sums of reachable
-// ways, modulo 998244353. O(n).
+// Root the tree at n (1-based n, 0-based n-1). Node n is never removed and is
+// always inserted into S. The maximum leaf only grows, so the sequence of
+// newly inserted values is increasing.
+//
+// dp[x] = number of ways to reach a state whose current max(S) equals x.
+// x can be inserted on top of max(S) = i iff
+//   max(subtree(x) \ {x}) < i < x
+// because the rest of x's subtree must already have been peeled off by a
+// strictly larger outside leaf, and x itself must beat the current maximum.
+// Those i form a range, so prefix sums of dp give every transition in O(1).
+//
+// Transitions that finish by inserting n are special: x can be the last value
+// before n iff every node outside x's component among the children of n is
+// smaller than x (otherwise a larger leftover leaf would have been inserted
+// first). The initial state is the unique maximum original leaf.
+//
+// Complexity: O(n) per test.
 
 #include <bits/stdc++.h>
 using namespace std;
 
 namespace {
 
-constexpr int k_max_n = 200005;
-constexpr int kMod = 998'244'353;
-int T, n;
-vector<int> adj[k_max_n];
-int max_child[k_max_n];
+constexpr int kMod = 998244353;
 
-int64_t dp[k_max_n], prefix[k_max_n];
-bool reachable[k_max_n];
+struct Solver {
+  explicit Solver(int n) : n_(n), adj_(n), max_descendant_(n, -1) {}
 
-void dfs(int u, int p) {
-  max_child[u] = -1;
-  for (auto v : adj[u])
-    if (v != p) {
-      dfs(v, u);
-      max_child[u] = max({max_child[u], max_child[v], v});
+  void add_edge(int u, int v) {
+    adj_[u].push_back(v);
+    adj_[v].push_back(u);
+  }
+
+  int count_sets() {
+    if (static_cast<int>(adj_[n_ - 1].size()) == 1) {
+      return 1;
     }
-}
+
+    fill_max_descendants(n_ - 1, -1);
+    const vector<char> can_finish = finishing_nodes();
+
+    int start = -1;
+    for (int v = 0; v < n_; v++) {
+      if (static_cast<int>(adj_[v].size()) == 1) {
+        start = v;
+      }
+    }
+
+    vector<int> dp(n_), prefix(n_);
+    dp[start] = 1;
+    prefix[start] = 1;
+    for (int i = start + 1; i < n_ - 1; i++) {
+      const int low = max_descendant_[i] + 1;
+      if (low < i) {
+        dp[i] = prefix[i - 1];
+        if (low > 0) {
+          dp[i] -= prefix[low - 1];
+          if (dp[i] < 0) {
+            dp[i] += kMod;
+          }
+        }
+      }
+      prefix[i] = dp[i] + prefix[i - 1];
+      if (prefix[i] >= kMod) {
+        prefix[i] -= kMod;
+      }
+    }
+
+    int ans = 0;
+    for (int i = 0; i < n_; i++) {
+      if (can_finish[i]) {
+        ans += dp[i];
+        if (ans >= kMod) {
+          ans -= kMod;
+        }
+      }
+    }
+    return ans;
+  }
+
+private:
+  void fill_max_descendants(int v, int parent) {
+    for (int to : adj_[v]) {
+      if (to == parent) {
+        continue;
+      }
+      fill_max_descendants(to, v);
+      max_descendant_[v] = max({max_descendant_[v], to, max_descendant_[to]});
+    }
+  }
+
+  void collect_component(int v,
+                         int parent,
+                         set<int, greater<int>>& remaining,
+                         vector<int>& component) const {
+    remaining.erase(v);
+    component.push_back(v);
+    for (int to : adj_[v]) {
+      if (to != parent) {
+        collect_component(to, v, remaining, component);
+      }
+    }
+  }
+
+  vector<char> finishing_nodes() const {
+    set<int, greater<int>> remaining;
+    for (int v = 0; v < n_ - 1; v++) {
+      remaining.insert(v);
+    }
+
+    vector<char> ok(n_);
+    vector<int> component;
+    for (int child : adj_[n_ - 1]) {
+      collect_component(child, n_ - 1, remaining, component);
+      const int outside_max = *remaining.begin();
+      for (int v : component) {
+        if (v > outside_max) {
+          ok[v] = 1;
+        }
+      }
+      for (int v : component) {
+        remaining.insert(v);
+      }
+      component.clear();
+    }
+    ok[n_ - 1] = 1;
+    return ok;
+  }
+
+  int n_;
+  vector<vector<int>> adj_;
+  vector<int> max_descendant_;
+};
 
 } // namespace
 
@@ -35,98 +143,18 @@ int main() {
   ios_base::sync_with_stdio(false);
   cin.tie(nullptr);
 
-  int it = 0;
-
-  cin >> T;
-  while (T--) {
-    it++;
+  int test_count;
+  cin >> test_count;
+  while (test_count--) {
+    int n;
     cin >> n;
-
-    for (int i = 1; i <= n; i++) {
-      adj[i].clear();
-    }
-
-    for (int i = 1; i < n; i++) {
+    Solver solver(n);
+    for (int i = 0; i < n - 1; i++) {
       int u, v;
       cin >> u >> v;
-      adj[u].push_back(v);
-      adj[v].push_back(u);
+      solver.add_edge(u - 1, v - 1);
     }
-
-    dfs(n, -1);
-    for (int i = 0; i <= n; i++) {
-      dp[i] = prefix[i] = 0;
-    }
-
-    int initial_leaf = 0;
-    for (int i = n; i > 0; i--)
-      if (adj[i].size() == 1) {
-        initial_leaf = i;
-        break;
-      }
-
-    if (initial_leaf == n) {
-      cout << 1 << endl;
-      continue;
-    }
-
-    dp[initial_leaf] = 1;
-    prefix[initial_leaf] = 1;
-
-    for (int i = initial_leaf + 1; i < n; i++) {
-      dp[i] = 0;
-      if (max_child[i] < i) {
-        dp[i] = prefix[i - 1];
-        if (max_child[i] >= 0) {
-          dp[i] -= prefix[max_child[i]];
-          if (dp[i] < 0) {
-            dp[i] += kMod;
-          }
-        }
-      }
-      prefix[i] = (prefix[i - 1] + dp[i]) % kMod;
-    }
-
-    set<int, greater<int>> s;
-    vector<int> cur;
-
-    auto dfs2 = [&](auto self, int u, int p) -> void {
-      s.erase(u);
-      cur.push_back(u);
-      for (auto v : adj[u])
-        if (v != p) {
-          self(self, v, u);
-        }
-    };
-
-    for (int i = 1; i < n; i++) {
-      reachable[i] = false;
-      s.insert(i);
-    }
-
-    for (auto x : adj[n]) {
-      dfs2(dfs2, x, n);
-
-      for (auto z : cur) {
-        if (z > (*s.begin())) {
-          reachable[z] = true;
-        }
-      }
-
-      for (auto z : cur) {
-        s.insert(z);
-      }
-      cur.clear();
-    }
-
-    int64_t ans = 0;
-    for (int i = 1; i < n; i++)
-      if (reachable[i]) {
-        ans = (ans + dp[i]) % kMod;
-      }
-
-    cout << ans << endl;
+    cout << solver.count_sets() << '\n';
   }
-
   return 0;
 }

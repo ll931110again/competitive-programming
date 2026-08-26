@@ -3,51 +3,55 @@
 //
 // Sketch
 // ------
-// Binary search the load threshold and SOS/subset DP over n <= 18 items
-// to test whether extra capacity can form enough groups. O(2^n n log ANS).
+// It is optimal to place max(a) last. After that the last assignment adds
+// max(a) to a current minimum bin, so maximizing the final max(b) is equivalent
+// to maximizing the minimum bin value v among the other n-1 items, then adding
+// max(a).
+//
+// Binary-search v. A mask DP records the maximum (number of groups, leftover)
+// obtainable from a subset: appending an element either grows the leftover or
+// completes a new group once the leftover reaches v. Feasible iff the full
+// set produces at least k groups.
+//
+// Complexity: O(n 2^n log (n A)) per test, and sum 2^n <= 2^18.
 
 #include <bits/stdc++.h>
 using namespace std;
 
 namespace {
 
-constexpr int k_max_n = 18;
-int T, n, k;
-vector<int> a;
-pair<int, int64_t> dp[1 << k_max_n];
+int64_t max_unbalance(vector<int64_t> values, int bin_count) {
+  sort(values.begin(), values.end());
+  const int64_t extra = values.back();
+  values.pop_back();
+  const int m = static_cast<int>(values.size());
 
-int64_t solve() {
-  int extra = a.back();
-  a.pop_back();
-  n--;
-
-  int64_t low = 0, high = 1LL * extra * n, ans = low;
-  while (low <= high) {
-    int64_t mid = (low + high) / 2;
-    dp[0] = {0, 0};
-    for (int mask = 1; mask < (1 << n); mask++) {
-      dp[mask] = {0, 0};
-      for (int i = 0; i < n; i++)
-        if (mask & (1 << i)) {
-          auto cur = dp[mask ^ (1 << i)];
-          cur.second += a[i];
-          if (cur.second >= mid) {
-            cur.first++;
-            cur.second = 0;
-          }
-          dp[mask] = max(dp[mask], cur);
+  int64_t lo = 0;
+  int64_t hi = extra * max(m, 1);
+  while (lo < hi) {
+    const int64_t mid = lo + (hi - lo + 1) / 2;
+    vector<pair<int, int64_t>> dp(1 << m, {0, 0});
+    for (int mask = 1; mask < (1 << m); mask++) {
+      for (int i = 0; i < m; i++) {
+        if ((mask & (1 << i)) == 0) {
+          continue;
         }
+        pair<int, int64_t> cur = dp[mask ^ (1 << i)];
+        cur.second += values[i];
+        if (cur.second >= mid) {
+          cur.first++;
+          cur.second = 0;
+        }
+        dp[mask] = max(dp[mask], cur);
+      }
     }
-
-    if (dp[(1 << n) - 1].first >= k) {
-      ans = mid;
-      low = mid + 1;
+    if (dp[(1 << m) - 1].first >= bin_count) {
+      lo = mid;
     } else {
-      high = mid - 1;
+      hi = mid - 1;
     }
   }
-
-  return (ans + extra);
+  return lo + extra;
 }
 
 } // namespace
@@ -56,16 +60,16 @@ int main() {
   ios_base::sync_with_stdio(false);
   cin.tie(nullptr);
 
-  cin >> T;
-  while (T--) {
+  int test_count;
+  cin >> test_count;
+  while (test_count--) {
+    int n, k;
     cin >> n >> k;
-    a.resize(n);
-    for (int i = 0; i < n; i++) {
-      cin >> a[i];
+    vector<int64_t> values(n);
+    for (int64_t& x : values) {
+      cin >> x;
     }
-    sort(a.begin(), a.end());
-    cout << solve() << endl;
+    cout << max_unbalance(std::move(values), k) << '\n';
   }
-
   return 0;
 }
