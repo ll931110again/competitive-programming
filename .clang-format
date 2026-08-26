@@ -8,3 +8,9 @@ AllowShortLoopsOnASingleLine: false
 BreakBeforeBraces: Attach
 PointerAlignment: Left
 SortIncludes: false
+BinPackParameters: false
+BinPackArguments: false
+AllowAllParametersOfDeclarationOnNextLine: false
+PackConstructorInitializers: NextLine
+BreakConstructorInitializers: BeforeColon
+AllowShortBlocksOnASingleLine: Empty

@@ -1,3 +1,9 @@
+// Codeforces Spectral::Cup 2026 Round 3 — Who Watches the Watchpig
+// https://codeforces.com/contest/2245/problem/A
+//
+// Sketch
+// ------
+// Need 2k <= n. Count L among the first k and R among the last k. O(n).
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -25,7 +31,7 @@ int solve() {
 
 int main() {
   ios_base::sync_with_stdio(false);
-  cin.tie(0);
+  cin.tie(nullptr);
 
   cin >> T;
   while (T--) {

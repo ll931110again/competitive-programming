@@ -1,14 +1,20 @@
+// Codeforces Spectral::Cup 2026 Round 1 — Permutation Construction
+// https://codeforces.com/contest/2222/problem/D
+//
+// Sketch
+// ------
+// Rank prefix sums in decreasing order and emit that rank as the permutation
+// value. O(n log n).
 
 #include <bits/stdc++.h>
 using namespace std;
 
-using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
 int T, n;
 int a[k_max_n];
-i64 prefix[k_max_n];
+int64_t prefix[k_max_n];
 
 int id[k_max_n], ans[k_max_n];
 
@@ -16,7 +22,7 @@ int id[k_max_n], ans[k_max_n];
 
 int main() {
   ios_base::sync_with_stdio(false);
-  cin.tie(0);
+  cin.tie(nullptr);
 
   cin >> T;
   while (T--) {

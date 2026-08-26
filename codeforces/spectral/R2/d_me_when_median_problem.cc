@@ -1,3 +1,10 @@
+// Codeforces Spectral::Cup 2026 Round 2 — Me When Median Problem
+// https://codeforces.com/contest/2229/problem/D
+//
+// Sketch
+// ------
+// Binary search the median x. A check scans the two arrays as events and
+// tracks a running delta. O(n log A).
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -12,7 +19,7 @@ int a[k_max_n], b[k_max_n], events[2 * k_max_n];
 
 int main() {
   ios_base::sync_with_stdio(false);
-  cin.tie(0);
+  cin.tie(nullptr);
 
   cin >> T;
   while (T--) {

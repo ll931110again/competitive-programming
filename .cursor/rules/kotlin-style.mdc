@@ -1,0 +1,46 @@
+---
+description: Kotlin contest solution style — sketches, SWE structure, wrap params one per line
+globs: **/*.{kt,kts}
+alwaysApply: true
+---
+
+# Kotlin Competitive Programming Style
+
+Apply this to **new and edited** Kotlin Heroes / contest solutions (`.kt`). Do not mass-reformat unrelated files.
+
+Target **Kotlin 1.9** as on Codeforces. Prefer standard library collections and `readln()`.
+
+## File layout
+
+Name files `{letter}_{snake_case_title}.kt` under `kotlin/kotlinN/`.
+
+```kotlin
+// Codeforces {id} (Kotlin Heroes: Episode N) — X. Title
+// https://codeforces.com/contest/{id}/problem/X
+//
+// Sketch
+// ------
+// What is computed, the key idea, and the complexity.
+
+private fun readInt() = readln().toInt()
+private fun readInts() = readln().split(" ").map { it.toInt() }
+private fun readLongs() = readln().split(" ").map { it.toLong() }
+
+fun main() {
+    // read, solve, write
+}
+```
+
+## Structure
+
+- File-header **sketch** is required for non-trivial problems.
+- Helpers `private` unless they are the entry point. `fun main` stays top-level.
+- Types `PascalCase`. Functions and locals `snake_case` (Kotlin Heroes repo convention, not `camelCase` for new files).
+- Prefer `val` over `var`. Use `Long` for values that can exceed `2e9`.
+- One parameter per line **only when the signature does not fit**; otherwise keep a single line.
+- Interactive: flush after every query (`println` is enough if the stream is line-buffered; add `System.out.flush()` when required).
+- Multi-test: do not reuse mutable buffers without clearing.
+
+## Verify
+
+Run the official sample before finishing.

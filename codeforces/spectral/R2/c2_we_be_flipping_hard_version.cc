@@ -1,20 +1,26 @@
+// Codeforces Spectral::Cup 2026 Round 2 — We Be Flipping (hard)
+// https://codeforces.com/contest/2229/problem/C2
+//
+// Sketch
+// ------
+// Same suffix-flip idea as C1, with prefix sums of values and absolute values
+// to compute the minimum cost. O(n).
 
 #include <bits/stdc++.h>
 using namespace std;
 
-using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
 int T, n;
 int a[k_max_n];
-i64 ss[k_max_n], abs_s[k_max_n];
+int64_t ss[k_max_n], abs_s[k_max_n];
 
 } // namespace
 
 int main() {
   ios_base::sync_with_stdio(false);
-  cin.tie(0);
+  cin.tie(nullptr);
 
   cin >> T;
   while (T--) {
@@ -29,7 +35,7 @@ int main() {
       abs_s[i] = abs_s[i - 1] + abs(a[i]);
     }
 
-    i64 max_value = 0;
+    int64_t max_value = 0;
     for (int i = 1; i <= n; i++) {
       max_value += a[i];
     }
@@ -38,7 +44,7 @@ int main() {
 
     for (int i = 1; i <= n; i++) {
       if (a[i] > 0) {
-        i64 tmp = abs_s[i - 1] - a[i] + (ss[n] - ss[i]);
+        int64_t tmp = abs_s[i - 1] - a[i] + (ss[n] - ss[i]);
         if (max_value < tmp) {
           max_value = tmp;
           max_pos = i;

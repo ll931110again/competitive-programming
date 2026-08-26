@@ -16,6 +16,7 @@
   "ktlint.enabled": true,
   "files.associations": {
     "*.cc": "cpp",
-    "*.hpp": "cpp"
+    "*.hpp": "cpp",
+    "deque": "cpp"
   }
 }

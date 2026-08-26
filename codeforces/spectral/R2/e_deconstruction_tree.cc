@@ -1,25 +1,30 @@
+// Codeforces Spectral::Cup 2026 Round 2 — Deconstruction Tree
+// https://codeforces.com/contest/2229/problem/E
+//
+// Sketch
+// ------
+// DP on the path from the rightmost leaf toward n. Prefix sums of reachable
+// ways, modulo 998244353. O(n).
 
 #include <bits/stdc++.h>
 using namespace std;
 
-using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 200005;
-#define mod 998'244'353
-
+constexpr int kMod = 998'244'353;
 int T, n;
 vector<int> adj[k_max_n];
 int max_child[k_max_n];
 
-i64 dp[k_max_n], prefix[k_max_n];
+int64_t dp[k_max_n], prefix[k_max_n];
 bool reachable[k_max_n];
 
-void DFS(int u, int p) {
+void dfs(int u, int p) {
   max_child[u] = -1;
   for (auto v : adj[u])
     if (v != p) {
-      DFS(v, u);
+      dfs(v, u);
       max_child[u] = max({max_child[u], max_child[v], v});
     }
 }
@@ -28,7 +33,7 @@ void DFS(int u, int p) {
 
 int main() {
   ios_base::sync_with_stdio(false);
-  cin.tie(0);
+  cin.tie(nullptr);
 
   int it = 0;
 
@@ -48,7 +53,7 @@ int main() {
       adj[v].push_back(u);
     }
 
-    DFS(n, -1);
+    dfs(n, -1);
     for (int i = 0; i <= n; i++) {
       dp[i] = prefix[i] = 0;
     }
@@ -75,11 +80,11 @@ int main() {
         if (max_child[i] >= 0) {
           dp[i] -= prefix[max_child[i]];
           if (dp[i] < 0) {
-            dp[i] += mod;
+            dp[i] += kMod;
           }
         }
       }
-      prefix[i] = (prefix[i - 1] + dp[i]) % mod;
+      prefix[i] = (prefix[i - 1] + dp[i]) % kMod;
     }
 
     set<int, greater<int>> s;
@@ -114,10 +119,10 @@ int main() {
       cur.clear();
     }
 
-    i64 ans = 0;
+    int64_t ans = 0;
     for (int i = 1; i < n; i++)
       if (reachable[i]) {
-        ans = (ans + dp[i]) % mod;
+        ans = (ans + dp[i]) % kMod;
       }
 
     cout << ans << endl;

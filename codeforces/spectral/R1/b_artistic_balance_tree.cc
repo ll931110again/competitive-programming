@@ -1,8 +1,16 @@
+// Codeforces Spectral::Cup 2026 Round 1 — Artistic Balance Tree
+// https://codeforces.com/contest/2222/problem/B
+//
+// Sketch
+// ------
+// Split the array into even/odd positions. Operations on an index flip a
+// "marked" flag for that parity. After sorting each parity, the sequence is
+// non-decreasing iff each unmarked parity is sorted ascending and each marked
+// parity is sorted descending. O(n log n).
 
 #include <bits/stdc++.h>
 using namespace std;
 
-using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 100005;
@@ -13,7 +21,7 @@ vector<int> odds, evens;
 
 int main() {
   ios_base::sync_with_stdio(false);
-  cin.tie(0);
+  cin.tie(nullptr);
 
   cin >> T;
   while (T--) {
@@ -47,7 +55,7 @@ int main() {
       }
     }
 
-    i64 ans = 0;
+    int64_t ans = 0;
     for (auto x : odds) {
       ans += x;
     }

@@ -1,3 +1,9 @@
+// Codeforces Spectral::Cup 2026 Round 1 — Wonderful Contest
+// https://codeforces.com/contest/2222/problem/A
+//
+// Sketch
+// ------
+// YES iff some rating equals 100. O(n) per test.
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -11,7 +17,7 @@ int T, n;
 
 int main() {
   ios_base::sync_with_stdio(false);
-  cin.tie(0);
+  cin.tie(nullptr);
 
   cin >> T;
   while (T--) {

@@ -1,23 +1,29 @@
+// Codeforces Spectral::Cup 2026 Round 2 — Load Unbalancing
+// https://codeforces.com/contest/2229/problem/F
+//
+// Sketch
+// ------
+// Binary search the load threshold and SOS/subset DP over n <= 18 items
+// to test whether extra capacity can form enough groups. O(2^n n log ANS).
 
 #include <bits/stdc++.h>
 using namespace std;
 
-using i64 = long long;
 namespace {
 
 constexpr int k_max_n = 18;
 int T, n, k;
 vector<int> a;
-pair<int, i64> dp[1 << k_max_n];
+pair<int, int64_t> dp[1 << k_max_n];
 
-i64 solve() {
+int64_t solve() {
   int extra = a.back();
   a.pop_back();
   n--;
 
-  i64 low = 0, high = 1LL * extra * n, ans = low;
+  int64_t low = 0, high = 1LL * extra * n, ans = low;
   while (low <= high) {
-    i64 mid = (low + high) / 2;
+    int64_t mid = (low + high) / 2;
     dp[0] = {0, 0};
     for (int mask = 1; mask < (1 << n); mask++) {
       dp[mask] = {0, 0};
@@ -48,7 +54,7 @@ i64 solve() {
 
 int main() {
   ios_base::sync_with_stdio(false);
-  cin.tie(0);
+  cin.tie(nullptr);
 
   cin >> T;
   while (T--) {

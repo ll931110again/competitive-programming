@@ -1,3 +1,10 @@
+// Codeforces Spectral::Cup 2026 Round 3 — Construct an Array (hard)
+// https://codeforces.com/contest/2245/problem/D2
+//
+// Sketch
+// ------
+// Model constraints as a 2-colored graph. Peel vertices whose degree in
+// either color is 0; the leftover orientation is a valid construction. O(n+m).
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -70,7 +77,7 @@ void solve() {
 
 int main() {
   ios_base::sync_with_stdio(false);
-  cin.tie(0);
+  cin.tie(nullptr);
 
   cin >> T;
   while (T--) {

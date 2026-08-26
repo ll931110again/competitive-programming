@@ -1,57 +1,34 @@
-/*
- * Solutions for F - Familiar.
- * 
- * Consider the smallest element of the permutation, say x. This divides the permutation into two halves:
-   The remaining elements in the first half will be emptied by x, and the second half will always
-   have x in the stack.
-
- * Let f[i, j, c] be the number of (relative) permutations such that:
-    * All the constraints from i to j are satisfied.
-    * In the end, the stack has c remaining elements.
-
-   Initial conditions: f[i, i - 1, 0] = 1 for all 1 <= i <= n.
-
-   Recursion:
-      f[i, j, c] = sum(i <= k <= j) w[i, k] * f[k + 1, j, c - 1] * binom(j - i, k - i)
-      where w(i, j) is the number of (relative) permutations such that
-      all the constraints from i to j - 1 are satisfied.
-
-      w[i, i] = 1 for all 1 <= i <= n.
-      w[i, j] = f[i, j - 1, a_j] if a_j >= 0.
-      w[i, j] = sum_c f[i, j - 1, c] if a_j < 0.
-
-  The recursion here is O(N^4) which is too slow. To improve that, let's sum over the elements of f:
-    g[i, j] = sum f[i, j, c]
-
-  First, this simplifies calculation of w[i, j]:
-    w[i, j] = f[i, j - 1, a_j] if a_j >= 0 else g[i, j - 1]
-
-  sum over all c for f:
-    g[i, j] = sum_c f[i, j, c] = sum_c sum(i <= k <= j) w[i, k] * f[k + 1, j, c - 1] * binom(j - i, k - i)
-                     = sum(i <= k <= j) w[i, j] * binom(j - i, k - i) * sum_c f[k + 1, j, c - 1]
-                     = sum(i <= k <= j) w[i, j] * binom(j - i, k - i) * g[k + 1, j]
-
-  which gives a O(n^3) solution.
- */
+// Codeforces Spectral::Cup 2026 Round 3 — Familiar
+// https://codeforces.com/contest/2245/problem/F
+//
+// Sketch
+// ------
+// Interval DP on permutations with stack-height constraints. f[i][j][c] counts
+// relative permutations of [i, j] that end with c items on the stack; g is the
+// sum over c. Recurrence over the position of the minimum yields O(n^3).
 
 #include <bits/stdc++.h>
-#define maxn 505
 using namespace std;
 
+namespace {
+
+constexpr int kMaxN = 505;
+
 int T, n;
-int a[maxn];
+int a[kMaxN];
 
 int mod = 998'244'353;
-int binom[maxn][maxn];
+int binom[kMaxN][kMaxN];
 
-vector<int> f[maxn][maxn];
-int g[maxn][maxn];
+vector<int> f[kMaxN][kMaxN];
+int g[kMaxN][kMaxN];
 
-long long solve() {
+int64_t solve() {
   int sa = 0;
-  for (int i = 0; i < n; i++) if (a[i] >= 0) {
-    sa += a[i];
-  }
+  for (int i = 0; i < n; i++)
+    if (a[i] >= 0) {
+      sa += a[i];
+    }
   if (sa >= n) {
     return 0;
   }
@@ -67,9 +44,7 @@ long long solve() {
     g[i][i - 1] = 1;
   }
 
-  auto w = [&](int i, int j) {
-    return (a[j] >= 0) ? f[i][j - 1][a[j]] : g[i][j - 1];
-  };
+  auto w = [&](int i, int j) { return (a[j] >= 0) ? f[i][j - 1][a[j]] : g[i][j - 1]; };
 
   for (int l = 1; l <= n; l++) {
     for (int i = 1; i + l - 1 <= n; i++) {
@@ -77,7 +52,7 @@ long long solve() {
       if (a[j + 1] == -1) {
         g[i][j] = 0;
         for (int k = i; k <= j; k++) {
-          long long value = 1LL * binom[j - i][k - i] * g[k + 1][j] % mod;
+          int64_t value = 1LL * binom[j - i][k - i] * g[k + 1][j] % mod;
           value = value * w(i, k) % mod;
           g[i][j] = (g[i][j] + value) % mod;
         }
@@ -90,7 +65,7 @@ long long solve() {
               continue;
             }
 
-            long long value = 1LL * binom[j - i][k - i] * f[k + 1][j][t - 1] % mod;
+            int64_t value = 1LL * binom[j - i][k - i] * f[k + 1][j][t - 1] % mod;
             value = value * w(i, k) % mod;
             f[i][j][t] = (f[i][j][t] + value) % mod;
           }
@@ -104,10 +79,10 @@ long long solve() {
 
 int main() {
   ios_base::sync_with_stdio(false);
-  cin.tie(0);
+  cin.tie(nullptr);
 
   binom[0][0] = 1;
-  for (int i = 1; i < maxn; i++) {
+  for (int i = 1; i < kMaxN; i++) {
     for (int j = 0; j <= i; j++) {
       binom[i][j] = (binom[i - 1][j] + (j ? binom[i - 1][j - 1] : 0)) % mod;
     }

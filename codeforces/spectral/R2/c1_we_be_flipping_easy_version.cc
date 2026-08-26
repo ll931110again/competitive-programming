@@ -1,3 +1,10 @@
+// Codeforces Spectral::Cup 2026 Round 2 — We Be Flipping (easy)
+// https://codeforces.com/contest/2229/problem/C1
+//
+// Sketch
+// ------
+// Greedily flip suffixes from the right so every position becomes zero.
+// Record the flip operations. O(n).
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -12,7 +19,7 @@ int a[k_max_n];
 
 int main() {
   ios_base::sync_with_stdio(false);
-  cin.tie(0);
+  cin.tie(nullptr);
 
   cin >> T;
   while (T--) {

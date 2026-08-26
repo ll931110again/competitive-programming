@@ -1,18 +1,24 @@
+// Codeforces Spectral::Cup 2026 Round 1 — Seek the Truth
+// https://codeforces.com/contest/2222/problem/E
+//
+// Sketch
+// ------
+// Interactive. Distinguish AND / OR / XOR of a hidden mask by inserting 0 and
+// the all-ones value, then recover bits by inserting single-bit probes.
 
 #include <bits/stdc++.h>
 using namespace std;
 
-using i64 = long long;
 namespace {
 
 int T, n;
 
-void initial_insert(i64 a) {
+void initial_insert(int64_t a) {
   cout << a << endl;
   cout << flush;
 }
 
-int insert(i64 x) {
+int insert(int64_t x) {
   cout << "I " << x << endl;
   cout << flush;
 
@@ -21,7 +27,7 @@ int insert(i64 x) {
   return cnt;
 }
 
-int query(i64 y) {
+int query(int64_t y) {
   cout << "Q " << y << endl;
   cout << flush;
 
@@ -30,7 +36,7 @@ int query(i64 y) {
   return cnt;
 }
 
-void answer(int k, i64 c) {
+void answer(int k, int64_t c) {
   cout << "A " << k << ' ' << c << endl;
   cout << flush;
 }
@@ -39,7 +45,7 @@ void answer(int k, i64 c) {
 
 int main() {
   ios_base::sync_with_stdio(false);
-  cin.tie(0);
+  cin.tie(nullptr);
 
   cin >> T;
   while (T--) {

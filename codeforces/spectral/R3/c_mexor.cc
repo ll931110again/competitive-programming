@@ -1,7 +1,17 @@
+// Codeforces Spectral::Cup 2026 Round 3 — Mexor
+// https://codeforces.com/contest/2245/problem/C
+//
+// Sketch
+// ------
+// Construct an array whose XOR-mex related parameter equals k, or report
+// impossible. Bit-length of n/k drives the construction. O(n).
 
 #include <bits/stdc++.h>
-#define maxn 200005
 using namespace std;
+
+namespace {
+
+constexpr int kMaxN = 200005;
 
 int T, n, k;
 
@@ -64,7 +74,7 @@ void solve() {
 
 int main() {
   ios_base::sync_with_stdio(false);
-  cin.tie(0);
+  cin.tie(nullptr);
 
   cin >> T;
   while (T--) {

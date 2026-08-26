@@ -1,13 +1,23 @@
+// Codeforces Spectral::Cup 2026 Round 3 — Tom and Jerry
+// https://codeforces.com/contest/2245/problem/E
+//
+// Sketch
+// ------
+// On the tree, DFS through even-degree components and charge odd-degree
+// neighbors. The total is the number of winning first paths. O(n).
 
 #include <bits/stdc++.h>
-#define maxn 200005
 using namespace std;
 
-int T, n;
-vector<int> adj[maxn];
+namespace {
 
-long long solve() {
-  long long ans = 0;
+constexpr int kMaxN = 200005;
+
+int T, n;
+vector<int> adj[kMaxN];
+
+int64_t solve() {
+  int64_t ans = 0;
   int c = 0;
 
   vector<bool> vis(n);
@@ -40,7 +50,7 @@ long long solve() {
 
 int main() {
   ios_base::sync_with_stdio(false);
-  cin.tie(0);
+  cin.tie(nullptr);
 
   cin >> T;
   while (T--) {

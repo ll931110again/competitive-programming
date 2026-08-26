@@ -1,3 +1,11 @@
+// Codeforces Spectral::Cup 2026 Round 1 — Median Partition
+// https://codeforces.com/contest/2222/problem/C
+//
+// Sketch
+// ------
+// Let m be the median of the whole array. DP: max number of odd-length pieces
+// whose median is m. A segment is valid iff it contains m and m sits in the
+// median slot. O(n^2) per test.
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -14,7 +22,7 @@ int inf = 1e6;
 
 int main() {
   ios_base::sync_with_stdio(false);
-  cin.tie(0);
+  cin.tie(nullptr);
 
   cin >> T;
   while (T--) {

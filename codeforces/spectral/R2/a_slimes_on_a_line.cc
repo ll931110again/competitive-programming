@@ -1,3 +1,10 @@
+// Codeforces Spectral::Cup 2026 Round 2 — Slimes on a Line
+// https://codeforces.com/contest/2229/problem/A
+//
+// Sketch
+// ------
+// After sorting, the minimum possible max gap after equalizing toward the
+// middle is ceil((max - min) / 2). O(n log n).
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -12,7 +19,7 @@ int a[k_max_n];
 
 int main() {
   ios_base::sync_with_stdio(false);
-  cin.tie(0);
+  cin.tie(nullptr);
 
   cin >> T;
   while (T--) {

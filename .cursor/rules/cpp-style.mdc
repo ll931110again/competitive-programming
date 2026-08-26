@@ -1,61 +1,121 @@
 ---
-description: C++ solution style (SWE structure, concise CP headers)
+description: C++ contest solution style — SWE structure, sketches, int64_t, wrap params one per line
 globs: **/*.{cc,cpp,hh,h}
-alwaysApply: false
+alwaysApply: true
 ---
 
-# C++ Solution Style
+# C++ Competitive Programming Style
 
-LLVM formatting from `.clang-format` (2-space indent, 100 columns).
+Apply this to **new and edited contest solutions** (`.cc` / `.cpp`). Do not mass-reformat unrelated files. Library headers (`lib/*.hh`) follow the Library section instead.
 
-## Includes (concise)
+Target **C++17** (Codeforces GNU G++17 / C++20). Prefer standard, defined behavior. No compiler extensions except repo `bits/stdc++.h` in standalone solutions.
 
-Standalone solutions:
+Format with the repo `.clang-format`: LLVM, 2-space indent, 100 columns, braces attach, `int* x` (pointer left).
 
-```cpp
-#include <bits/stdc++.h>
-using namespace std;
-```
+## File layout
 
-Use the repo `bits/stdc++.h` when the system header is missing. Do **not** paste long explicit include lists into solutions.
+Name contest files `{letter}_{snake_case_title}.cc`, e.g. `f_building_tree.cc`. Put them under the contest folder (`codeforces/spectral/R1/`, …).
 
-`lib/` headers: explicit includes only, no `bits/stdc++.h`, named namespace (e.g. `delaunay2d`).
-
-## File header
+Standalone solutions start with a **sketch**, then includes, then an anonymous namespace, then `main`:
 
 ```cpp
 // Platform Contest — Problem Title
 // https://judge-url/problem/X
 //
-// Algorithm summary and complexity (keep short).
+// Sketch
+// ------
+// What is being computed, the key formula, the algorithm, and why it is fast
+// enough. Include the complexity.
+#include <bits/stdc++.h>
+using namespace std;
+
+namespace {
+// types and helpers
+}  // namespace
+
+int main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  // read, solve, write
+  return 0;
+}
 ```
+
+Use repo `bits/stdc++.h` when the system header is missing. Do **not** paste long STL include lists into solutions.
+
+**Contest submissions must be self-contained.** Inline DSU/FFT/… in the solution file. Do not `#include "../../../lib/..."`.
+
+## Comments
+
+- File-header sketch is required for non-trivial problems (the “why”, not a line-by-line restatement).
+- Comment non-obvious invariants, formulas, and UB-sensitive code.
+- Do not narrate `i++`.
+
+## Naming and types
+
+- Types: `PascalCase`. Functions, variables, files: `snake_case`.
+- Constants: `kPascalCase` or `constexpr` (never `#define maxn`).
+- Private members: trailing underscore (`cost_`).
+- 64-bit integers: **`int64_t`**, not `long long`, `ll`, or `i64`.
+- `nullptr`, not `NULL` or `0`. Prefer `const` on non-mutating locals, parameters, and methods.
+
+## Functions and constructors
+
+Put **all parameters on one line** when they fit in the 100-column limit. If they do not fit, wrap **one parameter per line** — never bin-pack a few on the first line and the rest on the next.
+
+```cpp
+// GOOD — fits
+bool unite(int a, int b)
+
+// BAD — wrapped but bin-packed
+Solver(int vertex_count, int m, const vector<pair<int, int>>& endpoints,
+       const vector<int>& weights, const vector<int>& query_colors)
+
+// GOOD — does not fit, so one per line
+Solver(
+    int vertex_count,
+    int m,
+    const vector<pair<int, int>>& endpoints,
+    const vector<int>& weights,
+    const vector<int>& query_colors)
+```
+
+Same rule for call sites and constructor initializer lists: one line if it fits, otherwise one item per line.
+
+Mark single-argument constructors `explicit`.
+
+Do not evaluate a value and `std::move` the same object in one argument list — argument order is unspecified (MSVC often right-to-left). Pass sizes/counts as separate parameters.
+
+Use `std::move`, not unqualified `move`.
 
 ## Structure (SWE)
 
-- Integer alias: `using i64 = long long;` after `using namespace std;` (or with other type aliases in `lib/`).
-- Use `i64` instead of raw `long long` or `ll` / `int64` aliases.
-- Types: `PascalCase`. Functions/variables: `snake_case`. Constants: `kPascalCase` or `constexpr`.
-- Internal helpers in an anonymous `namespace { ... }`.
-- Prefer small structs and named functions over large global arrays when reasonable.
-- `main`: fast I/O, then solve.
+- Put helpers in `namespace { ... }`.
+- Prefer small structs with named methods over global arrays and `#define`.
+- Keep data members private when the type has invariants; expose `find` / `unite` / `size`, not raw `parent[]`.
+- Prefer STL (`vector`, `iota`) over C arrays for new solutions.
+- Reset **all** per-test state in multi-test problems (adjacency lists, timestamps, static arrays).
+- Convert to 0-based at input; convert back only if the judge wants 1-based output.
+- Fast I/O as above. Use `'\n'` in batch problems; `endl` only when the protocol requires a flush (interactive).
 
-## Tooling
+## Correctness
 
-- `bash scripts/format_cpp.sh` — clang-format all C++ files.
-- `python3 scripts/normalize_i64.py` — replace `long long` / `ll` with `i64`.
-- `python3 scripts/normalize_headers.py` — collapse STL includes to `bits/stdc++.h` + `using namespace std`.
-- `python3 scripts/refactor_swe_style.py` — anonymous namespace, `kMaxN` constants, PascalCase structs, `snake_case` helpers, fast I/O in `main`.
-- `make test` — build and run C++ library tests (Google Test + Buck2).
+- Stay inside constraints; state complexity in the sketch and meet TL/ML.
+- Avoid UB: OOB, uninit reads, signed overflow, dangling references, invalid iterator use.
+- Watch integer overflow: use `int64_t` for products and answers that can exceed `2e9`.
+- Interactive: flush every query. Multiple tests: do not reuse `visited` without a timestamp/clear.
 
-## Library tests (`tests/`)
+## Verify
 
-- Use Google Test (`TEST(Suite, Name)`), not custom `main` harnesses or shell wrappers.
-- Shared helpers live in `tests/support/`.
-- Register new executables with `cxx_test(...)` in `tests/BUCK`.
-- Test sources: explicit includes + `gtest/gtest.h`; no `bits/stdc++.h`.
+Run the official sample (and a brute on small random cases when the idea is delicate) before calling the task done.
+
+## Library (`lib/*.hh`) and tests
+
+- Explicit includes, `std::` qualification, named namespace (e.g. `delaunay2d`). No `bits/stdc++.h`, no `using namespace std`.
+- Tests: Google Test in `tests/`, `cxx_test` in `tests/BUCK`, helpers in `tests/support/`.
 
 ## Exceptions
 
-- IOI/grader signatures (`race.h`, `grader.h`, …) stay **before** `bits/stdc++.h`.
-- TopCoder `class` shells: normalize headers only; do not rewrite class APIs.
-- `lib/*.hh`: explicit includes and `std::`, no `bits/stdc++.h`.
+- IOI/grader headers (`race.h`, …) stay **before** `bits/stdc++.h`.
+- TopCoder class shells: do not rewrite the published API.
+- Do not mass-rewrite old `maxn` / `i64` files unless the user asked.
