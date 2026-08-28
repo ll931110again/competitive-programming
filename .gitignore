@@ -52,6 +52,10 @@ codeforces/.cf_cookie
 # Huawei 2026 local solutions (do not commit)
 codeforces/huawei2026/
 
+# CF 2251 local binaries
+codeforces/cf2251/stress
+codeforces/cf2251/tune
+
 # IOI 2011 local test binaries
 ioi/2011/garden_test
 ioi/2011/parrots_test

@@ -70,6 +70,28 @@ cxx_binary(
 )
 
 cxx_test(
+    name = "edge_cloud_test",
+    srcs = [
+        "edge_cloud_test.cc",
+    ],
+    include_directories = [
+        ".",
+        "..",
+    ],
+    compiler_flags = [
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+    ],
+    compatible_with = COMPATIBLE_WITH,
+    link_style = "static",
+    deps = [
+        "//deps:gtest",
+        "//deps:gtest_main",
+    ],
+)
+
+cxx_test(
     name = "delaunay2d_test",
     srcs = [
         "delaunay2d_test.cc",
